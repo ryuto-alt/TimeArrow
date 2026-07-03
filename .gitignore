@@ -1,0 +1,7 @@
+# DX12 Engine project
+build/
+out/
+*.user
+imgui.ini
+.vs/
+*.tmp
