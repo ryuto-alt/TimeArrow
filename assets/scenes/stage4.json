@@ -87,7 +87,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       },
       "luaScript": {
         "enabled": true,
@@ -237,7 +240,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       }
     },
     {
@@ -343,7 +349,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       },
       "luaScript": {
         "enabled": true,
@@ -408,7 +417,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       },
       "luaScript": {
         "enabled": true,
@@ -483,7 +495,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       },
       "luaScript": {
         "enabled": true,
@@ -538,7 +553,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       },
       "luaScript": {
         "enabled": true,
@@ -593,7 +611,10 @@
           0.0,
           0.0
         ],
-        "worldSpace": true
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
       },
       "luaScript": {
         "enabled": true,

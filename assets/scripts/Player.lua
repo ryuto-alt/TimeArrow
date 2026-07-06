@@ -21,6 +21,7 @@ properties = {
   { name = "minSkip",       type = "float",  default = 2.0,  min = 0,  max = 20, label = "最小先送り量(軽く引いた時)" },
   { name = "maxSkip",       type = "float",  default = 10.0, min = 0,  max = 30, label = "最大先送り量(引き絞りきった時)" },
   { name = "maxDrawTime",   type = "float",  default = 3.0,  min = 0.2, max = 8, label = "引き絞り最大秒数" },
+  { name = "aimTurnSpeed",  type = "float",  default = 270.0,min = 30,  max = 1080,label = "照準の旋回速度(度/秒。WASDでいきなり真上/真下にならないように)" },
   { name = "climbSpeed",    type = "float",  default = 4.0,  min = 1,  max = 12, label = "ツタを登る速度" },
   { name = "targets",       type = "string", default = "",                      label = "先送り対象(カンマ区切り)" },
   { name = "standables",    type = "string", default = "",                      label = "乗れる足場(カンマ区切り)" },
@@ -238,8 +239,10 @@ local function updateMovement(self, dt)
   end
 end
 
--- 引いてる間の照準方向(8方向・アナログはスティックでそのまま角度)。無入力なら向いてる方
-local function aimDir(self)
+-- 入力から「狙いたい方向」を出す(離散8方向 or アナログ)。無入力なら向いてる方。
+-- これは目標角度であって、実際の照準はupdateDraw内でaimAngleを毎フレーム少しずつ
+-- 近づけていく(WASDでいきなり真上/真下を向かず、だんだん回転するように)。
+local function aimTargetDir(self)
   local ax, ay = 0, 0
   if keyDown("LEFT") or keyDown("A") then ax = ax - 1 end
   if keyDown("RIGHT") or keyDown("D") then ax = ax + 1 end
@@ -313,9 +316,21 @@ local function updateDraw(self, dt)
   local canDraw = self.hasArrow and not self.arrowFlying and not self.arrowStuck
 
   if drawHeld and canDraw then
-    if not self.drawing then self.drawing = true; self.drawT = 0 end
+    if not self.drawing then
+      self.drawing = true
+      self.drawT = 0
+      self.aimAngle = math.deg(math.atan(self.aimY or 0, self.aimX or self.facing))
+    end
     self.drawT = math.min(self.drawT + dt, self.maxDrawTime)
-    local ax, ay = aimDir(self)
+
+    -- 目標方向へ aimTurnSpeed(度/秒)で少しずつ回す(WASDでも滑らかに旋回する照準)
+    local tx, ty = aimTargetDir(self)
+    local targetAngle = math.deg(math.atan(ty, tx))
+    local delta = angleDelta(self.aimAngle, targetAngle)
+    local maxStep = self.aimTurnSpeed * dt
+    self.aimAngle = self.aimAngle + clamp(delta, -maxStep, maxStep)
+    local rad = math.rad(self.aimAngle)
+    local ax, ay = math.cos(rad), math.sin(rad)
     self.aimX, self.aimY = ax, ay
 
     local p = self.transform.position
