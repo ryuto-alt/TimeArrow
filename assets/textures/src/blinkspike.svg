@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="384" viewBox="0 0 256 384">
+  <defs>
+    <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe1c2"/>
+      <stop offset="0.35" stop-color="#ff9a4d"/>
+      <stop offset="1" stop-color="#a8391a"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#ffb347" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 台座 -->
+  <rect x="70" y="330" width="116" height="34" rx="8" fill="#3a2a20" stroke="#1c130d" stroke-width="4"/>
+
+  <!-- 結晶質のトゲ本体(角ばった刃) -->
+  <path d="M128 6 L172 150 L156 330 L100 330 L84 150 Z"
+        fill="url(#crystal)" stroke="#5c1f0e" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M128 6 L150 150 L128 330 L106 150 Z" fill="#ffcf9e" opacity="0.55"/>
+
+  <!-- 中心の発光ライン(ON/OFFの明滅を強調するコア) -->
+  <rect x="120" y="40" width="16" height="270" rx="8" fill="url(#core)"/>
+
+  <!-- 側面の刻みエネルギーライン -->
+  <g stroke="#ffe1c2" stroke-width="3" opacity="0.8" stroke-linecap="round">
+    <line x1="100" y1="150" x2="86" y2="180"/>
+    <line x1="156" y1="150" x2="170" y2="180"/>
+    <line x1="104" y1="230" x2="92" y2="255"/>
+    <line x1="152" y1="230" x2="164" y2="255"/>
+  </g>
+</svg>

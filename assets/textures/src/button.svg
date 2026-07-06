@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="90" viewBox="0 0 200 90">
+  <defs>
+    <linearGradient id="btnbase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a5063"/>
+      <stop offset="1" stop-color="#282c37"/>
+    </linearGradient>
+    <radialGradient id="btnglow" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#fff6d8"/>
+      <stop offset="0.55" stop-color="#ffd24d"/>
+      <stop offset="1" stop-color="#c98a00"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 台座 -->
+  <rect x="4" y="46" width="192" height="40" rx="10" fill="url(#btnbase)" stroke="#1c1f27" stroke-width="5"/>
+
+  <!-- 押しボタン本体(黄=時間色と区別する押下ギミック色) -->
+  <ellipse cx="100" cy="42" rx="72" ry="24" fill="url(#btnglow)" stroke="#8a5c00" stroke-width="5"/>
+  <ellipse cx="100" cy="36" rx="52" ry="14" fill="#ffffff" opacity="0.35"/>
+</svg>

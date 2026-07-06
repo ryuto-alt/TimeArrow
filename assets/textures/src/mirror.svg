@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <defs>
+    <linearGradient id="mirglass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eaf8ff"/>
+      <stop offset="0.45" stop-color="#8fd6ff"/>
+      <stop offset="1" stop-color="#2f8fd6"/>
+    </linearGradient>
+    <linearGradient id="mirshine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="0.3" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 枠(斜めパネルの土台) -->
+  <rect x="10" y="10" width="220" height="220" rx="14" fill="none"/>
+
+  <!-- 鏡面ガラス本体(斜めの帯) -->
+  <path d="M6 168 L72 234 L234 72 L168 6 Z" fill="url(#mirglass)" stroke="#1c5f8a" stroke-width="6" stroke-linejoin="round"/>
+
+  <!-- ハイライト(反射のきらめき) -->
+  <path d="M40 158 L82 200 L200 82 L158 40 Z" fill="url(#mirshine)"/>
+  <path d="M60 118 L118 176" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+  <path d="M96 84 L154 142" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+</svg>

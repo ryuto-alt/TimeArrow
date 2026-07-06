@@ -1,7 +1,25 @@
 {
   "start": "scenes/title.json",
   "flow": {
-    "scenes/title.json":  { "next": "scenes/stage1.json", "onFail": "" },
-    "scenes/stage1.json": { "next": "scenes/title.json",  "onFail": "" }
+    "scenes/title.json": {
+      "next": "scenes/stage1.json",
+      "onFail": ""
+    },
+    "scenes/stage1.json": {
+      "next": "scenes/stage2.json",
+      "onFail": ""
+    },
+    "scenes/stage2.json": {
+      "next": "scenes/stage3.json",
+      "onFail": ""
+    },
+    "scenes/stage3.json": {
+      "next": "scenes/stage4.json",
+      "onFail": ""
+    },
+    "scenes/stage4.json": {
+      "next": "scenes/title.json",
+      "onFail": ""
+    }
   }
 }

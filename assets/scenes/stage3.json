@@ -31,17 +31,17 @@
           {
             "name": "scenePath",
             "type": "string",
-            "value": "scenes/stage1.json"
+            "value": "scenes/stage3.json"
           },
           {
             "name": "title",
             "type": "string",
-            "value": "STAGE 1"
+            "value": "STAGE 3"
           },
           {
             "name": "markers",
             "type": "string",
-            "value": "1:壁が動き出す"
+            "value": "5:ゲートが開く,8:ゲートが閉じる"
           }
         ]
       }
@@ -161,7 +161,7 @@
           {
             "name": "targets",
             "type": "string",
-            "value": "CrushWall1"
+            "value": "GateDoor1"
           },
           {
             "name": "standables",
@@ -181,7 +181,7 @@
           {
             "name": "solids",
             "type": "string",
-            "value": "CrushWall1"
+            "value": "GateDoor1"
           },
           {
             "name": "mirrors",
@@ -262,11 +262,11 @@
       "primitive": "box"
     },
     {
-      "name": "Spike1",
+      "name": "Blade1",
       "transform": {
         "position": [
-          5.0,
-          1.1,
+          6.0,
+          1.2,
           0.0
         ],
         "rotation": [
@@ -275,8 +275,8 @@
           0.0
         ],
         "scale": [
-          1.0,
-          2.2,
+          1.3,
+          1.3,
           1.0
         ]
       },
@@ -293,7 +293,7 @@
           1.0,
           1.0
         ],
-        "texturePath": "textures/needle_rgba.png",
+        "texturePath": "textures/pendulum_rgba.png",
         "uvMax": [
           1.0,
           1.0
@@ -306,8 +306,23 @@
       },
       "luaScript": {
         "enabled": true,
-        "scriptPath": "scripts/Wall.lua",
+        "scriptPath": "scripts/Pendulum.lua",
         "props": [
+          {
+            "name": "period",
+            "type": "float",
+            "value": 2.2
+          },
+          {
+            "name": "amplitude",
+            "type": "float",
+            "value": 2.0
+          },
+          {
+            "name": "startPhase",
+            "type": "float",
+            "value": 0.0
+          },
           {
             "name": "deadly",
             "type": "bool",
@@ -317,10 +332,10 @@
       }
     },
     {
-      "name": "CrushWall1",
+      "name": "GateDoor1",
       "transform": {
         "position": [
-          10.0,
+          11.0,
           2.1,
           0.0
         ],
@@ -330,7 +345,7 @@
           0.0
         ],
         "scale": [
-          1.8,
+          1.6,
           4.2,
           1.0
         ]
@@ -348,7 +363,7 @@
           1.0,
           1.0
         ],
-        "texturePath": "textures/crushwall_rgba.png",
+        "texturePath": "textures/gate_rgba.png",
         "uvMax": [
           1.0,
           1.0
@@ -361,32 +376,22 @@
       },
       "luaScript": {
         "enabled": true,
-        "scriptPath": "scripts/CrushWall.lua",
+        "scriptPath": "scripts/TimedDoor.lua",
         "props": [
           {
-            "name": "startT",
+            "name": "openT",
             "type": "float",
-            "value": 1.0
+            "value": 5.0
           },
           {
-            "name": "axisX",
+            "name": "closeT",
             "type": "float",
-            "value": -1.0
+            "value": 8.0
           },
           {
-            "name": "speed",
+            "name": "sinkAmount",
             "type": "float",
-            "value": 0.4
-          },
-          {
-            "name": "travel",
-            "type": "float",
-            "value": 6.0
-          },
-          {
-            "name": "ghostTime",
-            "type": "float",
-            "value": 0.5
+            "value": 4.5
           },
           {
             "name": "listenButton",
@@ -451,7 +456,7 @@
           {
             "name": "next",
             "type": "string",
-            "value": "scenes/stage2.json"
+            "value": "scenes/stage4.json"
           }
         ]
       }

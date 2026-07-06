@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="384" viewBox="0 0 160 384">
+  <defs>
+    <linearGradient id="vvbody" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3f7a34"/>
+      <stop offset="0.5" stop-color="#6fa84a"/>
+      <stop offset="1" stop-color="#2a5626"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 蔦の本体(縦方向に伸びる、根元=下端固定) -->
+  <rect x="58" y="0" width="44" height="384" rx="22" fill="url(#vvbody)" stroke="#22401e" stroke-width="5"/>
+
+  <!-- 巻きひげ -->
+  <g fill="none" stroke="#2a5626" stroke-width="6" stroke-linecap="round">
+    <path d="M58 60 C 40 50, 30 75, 16 68"/>
+    <path d="M102 150 C 120 140, 130 165, 144 158"/>
+    <path d="M58 240 C 40 230, 30 255, 16 248"/>
+    <path d="M102 330 C 120 320, 130 345, 144 338"/>
+  </g>
+
+  <!-- 葉っぱ -->
+  <g fill="#7fc158" stroke="#2a5626" stroke-width="2">
+    <ellipse cx="18" cy="60" rx="14" ry="8" transform="rotate(-20 18 60)"/>
+    <ellipse cx="144" cy="150" rx="14" ry="8" transform="rotate(25 144 150)"/>
+    <ellipse cx="18" cy="240" rx="14" ry="8" transform="rotate(-15 18 240)"/>
+    <ellipse cx="144" cy="330" rx="12" ry="7" transform="rotate(20 144 330)"/>
+  </g>
+
+  <!-- 育っている(スキップ)証の淡い光の実 -->
+  <g fill="#eaf8ff" opacity="0.9">
+    <circle cx="80" cy="100" r="7"/>
+    <circle cx="80" cy="200" r="7"/>
+    <circle cx="80" cy="300" r="7"/>
+  </g>
+  <g fill="none" stroke="#bfe9ff" stroke-width="2" opacity="0.7">
+    <circle cx="80" cy="100" r="11"/>
+    <circle cx="80" cy="200" r="11"/>
+    <circle cx="80" cy="300" r="11"/>
+  </g>
+</svg>

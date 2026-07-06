@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <defs>
+    <radialGradient id="gem" cx="0.35" cy="0.35" r="0.75">
+      <stop offset="0" stop-color="#fff6d8"/>
+      <stop offset="0.5" stop-color="#ffd24d"/>
+      <stop offset="1" stop-color="#c98a00"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 柄(リング部分) -->
+  <circle cx="62" cy="96" r="40" fill="none" stroke="#c98a00" stroke-width="16"/>
+  <circle cx="62" cy="96" r="40" fill="none" stroke="url(#gem)" stroke-width="8" opacity="0.8"/>
+
+  <!-- 中央の宝玉 -->
+  <circle cx="62" cy="96" r="17" fill="url(#gem)" stroke="#8a5c00" stroke-width="3"/>
+  <circle cx="55" cy="89" r="5" fill="#ffffff" opacity="0.8"/>
+
+  <!-- シャフト -->
+  <rect x="98" y="88" width="72" height="16" rx="4" fill="#ffd24d" stroke="#8a5c00" stroke-width="4"/>
+
+  <!-- 歯(ギザギザ、時計の歯車風) -->
+  <g fill="#ffd24d" stroke="#8a5c00" stroke-width="4">
+    <rect x="126" y="104" width="12" height="22" rx="2"/>
+    <rect x="146" y="104" width="12" height="30" rx="2"/>
+    <rect x="164" y="88" width="10" height="16" rx="2"/>
+  </g>
+</svg>

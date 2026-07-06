@@ -31,17 +31,17 @@
           {
             "name": "scenePath",
             "type": "string",
-            "value": "scenes/stage1.json"
+            "value": "scenes/stage4.json"
           },
           {
             "name": "title",
             "type": "string",
-            "value": "STAGE 1"
+            "value": "STAGE 4"
           },
           {
             "name": "markers",
             "type": "string",
-            "value": "1:壁が動き出す"
+            "value": ""
           }
         ]
       }
@@ -161,12 +161,12 @@
           {
             "name": "targets",
             "type": "string",
-            "value": "CrushWall1"
+            "value": ""
           },
           {
             "name": "standables",
             "type": "string",
-            "value": ""
+            "value": "Lift1"
           },
           {
             "name": "climbables",
@@ -176,12 +176,12 @@
           {
             "name": "pits",
             "type": "string",
-            "value": ""
+            "value": "Pit1"
           },
           {
             "name": "solids",
             "type": "string",
-            "value": "CrushWall1"
+            "value": ""
           },
           {
             "name": "mirrors",
@@ -241,10 +241,10 @@
       }
     },
     {
-      "name": "Floor",
+      "name": "FloorA",
       "transform": {
         "position": [
-          8.0,
+          4.0,
           -0.5,
           0.0
         ],
@@ -254,7 +254,7 @@
           0.0
         ],
         "scale": [
-          16.0,
+          8.0,
           1.0,
           3.0
         ]
@@ -262,10 +262,191 @@
       "primitive": "box"
     },
     {
-      "name": "Spike1",
+      "name": "Pit1",
       "transform": {
         "position": [
+          9.5,
+          -0.5,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          3.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "FloorB",
+      "transform": {
+        "position": [
+          13.5,
+          -0.5,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
           5.0,
+          1.0,
+          3.0
+        ]
+      },
+      "primitive": "box"
+    },
+    {
+      "name": "Button2",
+      "transform": {
+        "position": [
+          2.0,
+          0.35,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.9,
+          0.45,
+          1.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": true,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 5,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/button_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/Button.lua",
+        "props": [
+          {
+            "name": "linkTarget",
+            "type": "string",
+            "value": "Lift1"
+          },
+          {
+            "name": "standOn",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "arrowHit",
+            "type": "bool",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "Lift1",
+      "transform": {
+        "position": [
+          9.5,
+          -0.625,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          3.0,
+          1.25,
+          3.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": true,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 5,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/platform_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/RisePlatform.lua",
+        "props": [
+          {
+            "name": "arriveT",
+            "type": "float",
+            "value": 999.0
+          },
+          {
+            "name": "riseTime",
+            "type": "float",
+            "value": 0.5
+          },
+          {
+            "name": "hideY",
+            "type": "float",
+            "value": -100.0
+          },
+          {
+            "name": "triggerName",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "listenButton",
+            "type": "bool",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "Spike2",
+      "transform": {
+        "position": [
+          12.5,
           1.1,
           0.0
         ],
@@ -317,12 +498,12 @@
       }
     },
     {
-      "name": "CrushWall1",
+      "name": "Decor1",
       "transform": {
         "position": [
-          10.0,
-          2.1,
-          0.0
+          8.0,
+          8.5,
+          3.5
         ],
         "rotation": [
           0.0,
@@ -330,8 +511,8 @@
           0.0
         ],
         "scale": [
-          1.8,
-          4.2,
+          0.9,
+          0.9,
           1.0
         ]
       },
@@ -343,12 +524,12 @@
           1,
           1
         ],
-        "layer": 5,
+        "layer": 4,
         "size": [
           1.0,
           1.0
         ],
-        "texturePath": "textures/crushwall_rgba.png",
+        "texturePath": "textures/ball_rgba.png",
         "uvMax": [
           1.0,
           1.0
@@ -361,37 +542,12 @@
       },
       "luaScript": {
         "enabled": true,
-        "scriptPath": "scripts/CrushWall.lua",
+        "scriptPath": "scripts/SuckIn.lua",
         "props": [
           {
-            "name": "startT",
+            "name": "shrinkTime",
             "type": "float",
-            "value": 1.0
-          },
-          {
-            "name": "axisX",
-            "type": "float",
-            "value": -1.0
-          },
-          {
-            "name": "speed",
-            "type": "float",
-            "value": 0.4
-          },
-          {
-            "name": "travel",
-            "type": "float",
-            "value": 6.0
-          },
-          {
-            "name": "ghostTime",
-            "type": "float",
-            "value": 0.5
-          },
-          {
-            "name": "listenButton",
-            "type": "bool",
-            "value": false
+            "value": 0.9
           }
         ]
       }
@@ -451,7 +607,7 @@
           {
             "name": "next",
             "type": "string",
-            "value": "scenes/stage2.json"
+            "value": "scenes/title.json"
           }
         ]
       }

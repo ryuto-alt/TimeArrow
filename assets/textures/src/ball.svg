@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="rockbody" cx="0.35" cy="0.32" r="0.8">
+      <stop offset="0" stop-color="#9a8570"/>
+      <stop offset="0.5" stop-color="#6b5847"/>
+      <stop offset="1" stop-color="#3c3128"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="128" cy="128" r="118" fill="url(#rockbody)" stroke="#241d17" stroke-width="7"/>
+  <ellipse cx="92" cy="86" rx="34" ry="22" fill="#c2ad94" opacity="0.4"/>
+
+  <!-- ひび割れ(危険な岩塊であることを示す質感) -->
+  <g fill="none" stroke="#241d17" stroke-width="4" stroke-linecap="round" opacity="0.75">
+    <path d="M60 150 L96 130 L92 96"/>
+    <path d="M96 130 L140 148 L150 190"/>
+    <path d="M150 60 L160 100 L196 108"/>
+    <path d="M170 150 L206 150"/>
+  </g>
+  <g fill="#241d17" opacity="0.5">
+    <circle cx="70" cy="70" r="7"/>
+    <circle cx="180" cy="190" r="9"/>
+    <circle cx="200" cy="90" r="6"/>
+    <circle cx="60" cy="190" r="6"/>
+  </g>
+</svg>

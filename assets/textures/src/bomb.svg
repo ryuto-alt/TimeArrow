@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="260" viewBox="0 0 220 260">
+  <defs>
+    <radialGradient id="bombbody" cx="0.38" cy="0.34" r="0.75">
+      <stop offset="0" stop-color="#5a6274"/>
+      <stop offset="0.5" stop-color="#2c303b"/>
+      <stop offset="1" stop-color="#14161c"/>
+    </radialGradient>
+    <radialGradient id="bombrune" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#eaf8ff" stop-opacity="1"/>
+      <stop offset="0.55" stop-color="#5fc2ff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#5fc2ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="spark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe1a3"/>
+      <stop offset="1" stop-color="#ff8a2a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 導火線 -->
+  <path d="M112 62 C 104 40, 128 34, 118 12" fill="none" stroke="#8a6a3c" stroke-width="7" stroke-linecap="round"/>
+  <path d="M118 8 L128 4 L132 16 L142 14 L136 26 L146 30 L132 34 Z" fill="url(#spark)" stroke="#a8391a" stroke-width="2"/>
+
+  <!-- 本体 -->
+  <circle cx="110" cy="160" r="92" fill="url(#bombbody)" stroke="#0c0d10" stroke-width="6"/>
+  <ellipse cx="80" cy="128" rx="30" ry="20" fill="#7d869a" opacity="0.35"/>
+
+  <!-- 起爆位置=先送り対象を示すルーン(正面プレート) -->
+  <circle cx="110" cy="168" r="46" fill="url(#bombrune)"/>
+  <circle cx="110" cy="168" r="32" fill="none" stroke="#bfe9ff" stroke-width="4"/>
+  <g stroke="#eaf8ff" stroke-width="4" stroke-linecap="round">
+    <line x1="110" y1="142" x2="110" y2="128"/>
+    <line x1="110" y1="194" x2="110" y2="208"/>
+    <line x1="84" y1="168" x2="70" y2="168"/>
+    <line x1="136" y1="168" x2="150" y2="168"/>
+  </g>
+  <circle cx="110" cy="168" r="7" fill="#ffffff"/>
+
+  <!-- リベット -->
+  <g fill="#0c0d10">
+    <circle cx="42" cy="160" r="6"/>
+    <circle cx="178" cy="160" r="6"/>
+    <circle cx="110" cy="242" r="6"/>
+  </g>
+</svg>
