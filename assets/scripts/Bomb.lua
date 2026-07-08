@@ -16,10 +16,13 @@ function OnStart(self)
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
   self.exploded = false
+  self.ffRemain = 0
 
   events:on("time_skip", function(data)
     if data.target ~= self.name or self.exploded then return end
-    self.clock = self.clock + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)。導火線が縮む間が生まれ、起爆に"溜め"がつく
+    self.ffRemain = self.ffRemain + data.amount
+    self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 10, 1.0, 0.7, 0.3)
   end)
 end
@@ -27,6 +30,11 @@ end
 function OnUpdate(self, dt)
   if self.exploded then return end
   self.clock = self.clock + dt
+  if self.ffRemain > 0 then
+    local step = math.min(self.ffRemain, self.ffSpeed * dt)
+    self.clock = self.clock + step
+    self.ffRemain = self.ffRemain - step
+  end
   if self.clock < self.boomT then return end
 
   self.exploded = true

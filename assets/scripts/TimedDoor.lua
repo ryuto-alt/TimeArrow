@@ -22,10 +22,13 @@ function OnStart(self)
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
   self.buttonOpen = false
+  self.ffRemain = 0
 
   events:on("time_skip", function(data)
     if data.target ~= self.name then return end
-    self.clock = self.clock + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)して、開閉の動きが見えるようにする
+    self.ffRemain = self.ffRemain + data.amount
+    self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 10, 0.3, 0.75, 1.0)
   end)
 
@@ -41,13 +44,25 @@ function OnUpdate(self, dt)
     open = self.buttonOpen
   else
     self.clock = self.clock + dt
+    if self.ffRemain > 0 then
+      local step = math.min(self.ffRemain, self.ffSpeed * dt)
+      self.clock = self.clock + step
+      self.ffRemain = self.ffRemain - step
+    end
     open = self.clock >= self.openT and self.clock < self.closeT
   end
 
   local y = open and (self.by - self.sinkAmount) or self.by
   self.transform.position = Vec3.new(self.bx, y, self.bz)
 
-  if open or not self.deadly then return end
+  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  end
+
+  -- 早送り中は途中経過なので即死判定しない(従来のワープと同じ扱い)
+  if open or not self.deadly or self.ffRemain > 0 then return end
   local s = self.transform.scale
   local pl = scene:findEntity("Player")
   if not (pl and pl:isValid()) then return end

@@ -16,12 +16,15 @@ function OnStart(self)
   self.clock = 0
   self.buttonUp = false
   self.curFrac = 0
+  self.ffRemain = 0
   self.transform.position = Vec3.new(self.bx, self.hideY, self.bz)
 
   local listenName = self.triggerName ~= "" and self.triggerName or self.name
   events:on("time_skip", function(data)
     if data.target ~= listenName then return end
-    self.clock = self.clock + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)して、動いて見えるようにする
+    self.ffRemain = self.ffRemain + data.amount
+    self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 12, 0.3, 0.75, 1.0)
   end)
 
@@ -46,8 +49,19 @@ function OnUpdate(self, dt)
     frac = self.curFrac
   else
     self.clock = self.clock + dt
+    if self.ffRemain > 0 then
+      local step = math.min(self.ffRemain, self.ffSpeed * dt)
+      self.clock = self.clock + step
+      self.ffRemain = self.ffRemain - step
+    end
     frac = clamp((self.clock - self.arriveT) / self.riseTime, 0, 1)
   end
   local y = lerp(self.hideY, self.by, frac)
   self.transform.position = Vec3.new(self.bx, y, self.bz)
+
+  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  end
 end

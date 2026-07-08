@@ -78,6 +78,12 @@ function OnStart(self)
   self.standTopY  = nil
   self.standDX    = 0
 
+  -- 早送り中で実体のない solid(CrushWall等)。名前→残り秒。期間中は物理ブロックしない
+  self.ghostSolids = {}
+  events:on("solid_ghost", function(data)
+    if data.target then self.ghostSolids[data.target] = data.duration or 0.35 end
+  end)
+
   -- 開始位置が地面に埋まっていた場合の保険として、初回のみ接地高さへスナップする
   if p.y < self.groundY + self.halfHeight then
     self.transform.position = Vec3.new(p.x, self.groundY + self.halfHeight, p.z)
@@ -133,7 +139,7 @@ local function blockedBySolid(self, nx)
   local p = self.transform.position
   for _, name in ipairs(self.solidList) do
     local e = scene:findEntity(name)
-    if e and e:isValid() then
+    if e and e:isValid() and not (self.ghostSolids[name] and self.ghostSolids[name] > 0) then
       local ep, es = e.transform.position, e.transform.scale
       local hw, hh = es.x * 0.5, es.y * 0.5
       if math.abs(p.y - ep.y) < (self.halfHeight + hh) then
@@ -437,6 +443,9 @@ local function drawHud(self, hudY)
 end
 
 function OnUpdate(self, dt)
+  for name, t in pairs(self.ghostSolids) do
+    self.ghostSolids[name] = t - dt
+  end
   updateStandables(self, dt)
   updateMovement(self, dt)
   updateDraw(self, dt)

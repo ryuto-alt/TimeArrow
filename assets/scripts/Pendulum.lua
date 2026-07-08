@@ -17,21 +17,36 @@ function OnStart(self)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = self.startPhase
+  self.ffRemain = 0
 
   events:on("time_skip", function(data)
     if data.target ~= self.name then return end
-    self.clock = self.clock + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)して、振り子が高速で振れて見えるようにする
+    self.ffRemain = self.ffRemain + data.amount
+    self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.transform.position.x, self.by, self.bz, 8, 0.3, 0.75, 1.0)
   end)
 end
 
 function OnUpdate(self, dt)
   self.clock = self.clock + dt
+  if self.ffRemain > 0 then
+    local step = math.min(self.ffRemain, self.ffSpeed * dt)
+    self.clock = self.clock + step
+    self.ffRemain = self.ffRemain - step
+  end
   local ang = math.sin((self.clock / self.period) * math.pi * 2)
   local nx = self.bx + ang * self.amplitude
   self.transform.position = Vec3.new(nx, self.by, self.bz)
 
-  if not self.deadly then return end
+  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  end
+
+  -- 早送り中は途中の位相を"経由しただけ"なので即死判定しない(従来のワープと同じ扱い)
+  if not self.deadly or self.ffRemain > 0 then return end
   local s = self.transform.scale
   local pl = scene:findEntity("Player")
   if not (pl and pl:isValid()) then return end

@@ -21,17 +21,31 @@ function OnStart(self)
   local s = self.transform.scale
   self.baseScaleX, self.baseScaleY, self.baseScaleZ = s.x, s.y, s.z
   self.clock = 0
+  self.ffRemain = 0
   applyGrowth(self, 0)
 
   events:on("time_skip", function(data)
     if data.target ~= self.name then return end
-    self.clock = self.clock + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)して、育つ様子が見えるようにする
+    self.ffRemain = self.ffRemain + data.amount
+    self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.transform.position.x, self.transform.position.y, self.bz, 10, 0.6, 0.9, 0.4)
   end)
 end
 
 function OnUpdate(self, dt)
   self.clock = self.clock + dt
+  if self.ffRemain > 0 then
+    local step = math.min(self.ffRemain, self.ffSpeed * dt)
+    self.clock = self.clock + step
+    self.ffRemain = self.ffRemain - step
+  end
   local frac = clamp((self.clock - self.growT) / self.growDuration, 0, 1)
   applyGrowth(self, frac)
+
+  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  end
 end

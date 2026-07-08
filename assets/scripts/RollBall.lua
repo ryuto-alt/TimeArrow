@@ -22,22 +22,39 @@ function OnStart(self)
   self.clock = 0
   self.brokeGoal = false
   self.passedGoal = false
+  self.ffRemain = 0
 
   events:on("time_skip", function(data)
     if data.target ~= self.name then return end
-    self.clock = self.clock + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)して、転がって飛んでいく様子が見えるようにする
+    self.ffRemain = self.ffRemain + data.amount
+    self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.transform.position.x, self.by, self.bz, 12, 0.85, 0.7, 0.55)
   end)
 end
 
 function OnUpdate(self, dt)
   self.clock = self.clock + dt
+  if self.ffRemain > 0 then
+    local step = math.min(self.ffRemain, self.ffSpeed * dt)
+    self.clock = self.clock + step
+    self.ffRemain = self.ffRemain - step
+  end
   if self.passedGoal then return end
 
   local elapsed = math.max(0, self.clock - self.rollT)
   local nx = self.bx + self.axisX * self.rollSpeed * elapsed
   local s = self.transform.scale
   self.transform.position = Vec3.new(nx, self.by, self.bz)
+
+  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  end
+
+  -- 早送り中の途中位置では判定しない(従来のワープ同様、危険区間を"経由せず"飛び越せる)
+  if self.ffRemain > 0 then return end
 
   local goal = scene:findEntity(self.goalName)
   if goal and goal:isValid() then
