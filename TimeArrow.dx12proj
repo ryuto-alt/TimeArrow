@@ -1,7 +1,7 @@
 {
   "assetsDir": "assets",
-  "defaultScene": "scenes/stage1.json",
-  "lastOpenedScene": "scenes/stage1.json",
+  "defaultScene": "scenes/title.json",
+  "lastOpenedScene": "scenes/title.json",
   "name": "TimeArrow",
   "scriptsDir": "scripts",
   "version": "0.1.0"
