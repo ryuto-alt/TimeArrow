@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="384" viewBox="0 0 256 384">
+  <defs>
+    <linearGradient id="stone" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3a3f4d"/>
+      <stop offset="0.5" stop-color="#4a5063"/>
+      <stop offset="1" stop-color="#333844"/>
+    </linearGradient>
+    <radialGradient id="rune" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#bfe9ff" stop-opacity="1"/>
+      <stop offset="0.55" stop-color="#5fc2ff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#5fc2ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 石の門柱フレーム -->
+  <rect x="14" y="8" width="228" height="368" rx="18" fill="url(#stone)" stroke="#20232c" stroke-width="6"/>
+  <rect x="30" y="24" width="196" height="336" rx="10" fill="#282c37" stroke="#171a21" stroke-width="4"/>
+
+  <!-- 上下の歯車飾り(時間モチーフ) -->
+  <g fill="#20232c" stroke="#12141a" stroke-width="2">
+    <circle cx="128" cy="40" r="18"/>
+    <circle cx="128" cy="344" r="18"/>
+  </g>
+  <g fill="none" stroke="#5fc2ff" stroke-width="3" opacity="0.85">
+    <circle cx="128" cy="40" r="11"/>
+    <circle cx="128" cy="344" r="11"/>
+  </g>
+
+  <!-- 中央の発光ルーン(矢の着弾ターゲット/スイッチとして機能することを示す) -->
+  <circle cx="128" cy="192" r="70" fill="url(#rune)"/>
+  <circle cx="128" cy="192" r="52" fill="none" stroke="#bfe9ff" stroke-width="4"/>
+  <circle cx="128" cy="192" r="36" fill="none" stroke="#eaf8ff" stroke-width="3" opacity="0.9"/>
+  <g stroke="#eaf8ff" stroke-width="4" stroke-linecap="round">
+    <line x1="128" y1="146" x2="128" y2="128"/>
+    <line x1="128" y1="238" x2="128" y2="256"/>
+    <line x1="82" y1="192" x2="64" y2="192"/>
+    <line x1="174" y1="192" x2="192" y2="192"/>
+  </g>
+  <circle cx="128" cy="192" r="10" fill="#ffffff"/>
+
+  <!-- 縦の刻み模様 -->
+  <g stroke="#171a21" stroke-width="2" opacity="0.6">
+    <line x1="52" y1="76" x2="52" y2="308"/>
+    <line x1="204" y1="76" x2="204" y2="308"/>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="72" viewBox="0 0 240 72">
+  <defs>
+    <linearGradient id="shaft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#eaf8ff" stop-opacity="0"/>
+      <stop offset="0.15" stop-color="#bfe9ff"/>
+      <stop offset="1" stop-color="#eaf8ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 羽根(後端) -->
+  <path d="M8 36 L38 18 L30 36 L38 54 Z" fill="#5fc2ff" stroke="#2f8fd6" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- 軸(発光する光の筋) -->
+  <rect x="30" y="30" width="150" height="12" rx="6" fill="url(#shaft)"/>
+
+  <!-- 鏃(先端) -->
+  <path d="M170 8 L236 36 L170 64 L182 36 Z" fill="#eaf8ff" stroke="#2f8fd6" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M178 20 L220 36 L178 52 Z" fill="#5fc2ff" opacity="0.7"/>
+</svg>

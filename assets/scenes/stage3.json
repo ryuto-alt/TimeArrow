@@ -1,0 +1,692 @@
+{
+  "entities": [
+    {
+      "name": "GameManager",
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/GameManager.lua",
+        "props": [
+          {
+            "name": "T",
+            "type": "float",
+            "value": 10.0
+          },
+          {
+            "name": "scenePath",
+            "type": "string",
+            "value": "scenes/stage3.json"
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "value": "STAGE 3"
+          },
+          {
+            "name": "markers",
+            "type": "string",
+            "value": "5:ゲートが開く,8:ゲートが閉じる"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Player",
+      "transform": {
+        "position": [
+          2.0,
+          0.6,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.8,
+          1.1,
+          1.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": false,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 6,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/player_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/Player.lua",
+        "props": [
+          {
+            "name": "speed",
+            "type": "float",
+            "value": 6.0
+          },
+          {
+            "name": "jumpSpeed",
+            "type": "float",
+            "value": 12.5
+          },
+          {
+            "name": "gravity",
+            "type": "float",
+            "value": 22.0
+          },
+          {
+            "name": "groundY",
+            "type": "float",
+            "value": 0.0
+          },
+          {
+            "name": "halfW",
+            "type": "float",
+            "value": 0.4
+          },
+          {
+            "name": "halfHeight",
+            "type": "float",
+            "value": 0.55
+          },
+          {
+            "name": "arrowSpeed",
+            "type": "float",
+            "value": 15.0
+          },
+          {
+            "name": "arrowRange",
+            "type": "float",
+            "value": 18.0
+          },
+          {
+            "name": "arrowHalf",
+            "type": "float",
+            "value": 0.1
+          },
+          {
+            "name": "minSkip",
+            "type": "float",
+            "value": 2.0
+          },
+          {
+            "name": "maxSkip",
+            "type": "float",
+            "value": 10.0
+          },
+          {
+            "name": "maxDrawTime",
+            "type": "float",
+            "value": 3.0
+          },
+          {
+            "name": "climbSpeed",
+            "type": "float",
+            "value": 4.0
+          },
+          {
+            "name": "targets",
+            "type": "string",
+            "value": "GateDoor1"
+          },
+          {
+            "name": "standables",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "climbables",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "pits",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "solids",
+            "type": "string",
+            "value": "GateDoor1"
+          },
+          {
+            "name": "mirrors",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "maxBounces",
+            "type": "int",
+            "value": 4
+          }
+        ]
+      }
+    },
+    {
+      "name": "Arrow",
+      "transform": {
+        "position": [
+          0.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.9,
+          0.27,
+          1.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": false,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 7,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/arrow_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
+      }
+    },
+    {
+      "name": "Floor",
+      "transform": {
+        "position": [
+          8.0,
+          -0.5,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          16.0,
+          1.0,
+          3.0
+        ]
+      },
+      "primitive": "box"
+    },
+    {
+      "name": "Blade1",
+      "transform": {
+        "position": [
+          6.0,
+          1.2,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.3,
+          1.3,
+          1.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": true,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 5,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/pendulum_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/Pendulum.lua",
+        "props": [
+          {
+            "name": "period",
+            "type": "float",
+            "value": 2.2
+          },
+          {
+            "name": "amplitude",
+            "type": "float",
+            "value": 2.0
+          },
+          {
+            "name": "startPhase",
+            "type": "float",
+            "value": 0.0
+          },
+          {
+            "name": "deadly",
+            "type": "bool",
+            "value": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "GateDoor1",
+      "transform": {
+        "position": [
+          11.0,
+          2.1,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.6,
+          4.2,
+          1.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": true,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 5,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/gate_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/TimedDoor.lua",
+        "props": [
+          {
+            "name": "openT",
+            "type": "float",
+            "value": 5.0
+          },
+          {
+            "name": "closeT",
+            "type": "float",
+            "value": 8.0
+          },
+          {
+            "name": "sinkAmount",
+            "type": "float",
+            "value": 4.5
+          },
+          {
+            "name": "listenButton",
+            "type": "bool",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "Exit",
+      "transform": {
+        "position": [
+          14.5,
+          0.65,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.3,
+          1.3,
+          1.0
+        ]
+      },
+      "sprite2d": {
+        "billboard": true,
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "layer": 5,
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/exit_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true,
+        "shaderPath": "",
+        "shaderAlphaBlend": false,
+        "effectValue": 0.0
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/Exit.lua",
+        "props": [
+          {
+            "name": "radius",
+            "type": "float",
+            "value": 1.0
+          },
+          {
+            "name": "next",
+            "type": "string",
+            "value": "scenes/stage4.json"
+          }
+        ]
+      }
+    },
+    {
+      "materialTextureOverrides": [
+        {
+          "albedo": "textures/needle_rgba.png"
+        }
+      ],
+      "shader": "shaders/backdrop.hlsl",
+      "name": "Backdrop",
+      "primitive": "box",
+      "transform": {
+        "position": [
+          8.0,
+          6.0,
+          7.0
+        ],
+        "rotation": [
+          0.0,
+          180.0,
+          0.0
+        ],
+        "scale": [
+          20.0,
+          12.0,
+          1.0
+        ]
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/BackgroundCollapse.lua",
+        "props": [
+          {
+            "name": "T",
+            "type": "float",
+            "value": 10.0
+          },
+          {
+            "name": "collapseAt",
+            "type": "float",
+            "value": 0.5
+          },
+          {
+            "name": "suckInAt",
+            "type": "float",
+            "value": 0.75
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sun",
+      "transform": {
+        "position": [
+          8.0,
+          10.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "directionalLight": {
+        "ambient": 0.5,
+        "color": [
+          1.0,
+          0.97,
+          0.9
+        ],
+        "direction": [
+          -0.35,
+          -1.0,
+          -0.3
+        ],
+        "intensity": 1.15
+      }
+    },
+    {
+      "name": "GameCamera",
+      "transform": {
+        "position": [
+          8.0,
+          13.0,
+          -14.0
+        ],
+        "rotation": [
+          30.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "camera": {
+        "farClip": 1000.0,
+        "fovDegrees": 50.0,
+        "isActive": true,
+        "nearClip": 0.1,
+        "orthoSize": 6.0,
+        "projection": 0
+      }
+    },
+    {
+      "name": "Grid",
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "primitive": "box",
+      "gridPlane": {}
+    }
+  ],
+  "postProcess": {
+    "bloom": 0.5,
+    "bloomOn": false,
+    "bloomThreshold": 0.75,
+    "brightness": 0.0,
+    "brightnessOn": false,
+    "chromatic": 0.5,
+    "chromaticOn": false,
+    "contrast": 1.0,
+    "contrastOn": false,
+    "ditherLevels": 4,
+    "ditherOn": false,
+    "enabled": true,
+    "exposure": 1.0,
+    "exposureOn": false,
+    "fxaaOn": false,
+    "glitch": 0.3,
+    "glitchOn": false,
+    "grain": 0.3,
+    "grainOn": false,
+    "grayscale": 1.0,
+    "grayscaleOn": false,
+    "hueOn": false,
+    "hueShift": 0.0,
+    "invert": 1.0,
+    "invertOn": false,
+    "lens": 0.3,
+    "lensOn": false,
+    "outline": 1.0,
+    "outlineColor": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "outlineOn": false,
+    "pixelSize": 8.0,
+    "pixelizeOn": false,
+    "posterize": 6,
+    "posterizeOn": false,
+    "radial": 0.3,
+    "radialOn": false,
+    "saturation": 1.0,
+    "saturationOn": false,
+    "scanline": 0.5,
+    "scanlineOn": false,
+    "sepia": 1.0,
+    "sepiaOn": false,
+    "sharpen": 0.5,
+    "sharpenOn": false,
+    "tint": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "tintOn": false,
+    "vignette": 0.5,
+    "vignetteOn": false,
+    "warmth": 0.0,
+    "warmthOn": false,
+    "waveAmp": 0.01,
+    "waveFreq": 12.0,
+    "waveOn": false,
+    "waveSpeed": 2.0
+  },
+  "skybox": {
+    "drawSkybox": true,
+    "envMapPath": "",
+    "iblIntensity": 1.0,
+    "skyboxIntensity": 1.0
+  },
+  "ssao": {
+    "bias": 0.025,
+    "blur": true,
+    "enabled": false,
+    "intensity": 1.0,
+    "power": 1.5,
+    "radius": 0.5,
+    "sampleCount": 16
+  },
+  "version": 1
+}

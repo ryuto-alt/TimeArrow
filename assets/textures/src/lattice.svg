@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="400" viewBox="0 0 200 400">
+  <defs>
+    <linearGradient id="latbar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#565e70"/>
+      <stop offset="0.5" stop-color="#9aa3b5"/>
+      <stop offset="1" stop-color="#565e70"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 上下フレーム -->
+  <rect x="0" y="0" width="200" height="20" fill="#33384a" stroke="#1c1f27" stroke-width="4"/>
+  <rect x="0" y="380" width="200" height="20" fill="#33384a" stroke="#1c1f27" stroke-width="4"/>
+
+  <!-- 縦格子(矢だけ通り抜けられる=隙間だらけの柵) -->
+  <g stroke="#1c1f27" stroke-width="3">
+    <rect x="14"  y="18" width="20" height="364" rx="8" fill="url(#latbar)"/>
+    <rect x="58"  y="18" width="20" height="364" rx="8" fill="url(#latbar)"/>
+    <rect x="102" y="18" width="20" height="364" rx="8" fill="url(#latbar)"/>
+    <rect x="146" y="18" width="20" height="364" rx="8" fill="url(#latbar)"/>
+    <rect x="166" y="18" width="20" height="364" rx="8" fill="url(#latbar)"/>
+  </g>
+
+  <!-- 横のかんぬき(装飾) -->
+  <rect x="0" y="120" width="200" height="14" fill="#282c37" opacity="0.85"/>
+  <rect x="0" y="266" width="200" height="14" fill="#282c37" opacity="0.85"/>
+</svg>

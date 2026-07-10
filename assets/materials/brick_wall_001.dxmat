@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/brick_wall_001/brick_wall_001_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/brick_wall_001/brick_wall_001_arm.png",
+  "metallic": 1.0,
+  "name": "brick_wall_001",
+  "normal": "textures/brick_wall_001/brick_wall_001_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}

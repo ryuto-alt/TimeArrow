@@ -5,3 +5,4 @@ out/
 imgui.ini
 .vs/
 *.tmp
+assets/.thumbcache/
