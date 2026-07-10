@@ -40,7 +40,17 @@
             "value": 16.0
           },
           {
-            "name": "hitRadius",
+            "name": "arrowHitRadius",
+            "type": "float",
+            "value": 0.08
+          },
+          {
+            "name": "fallbackHitWidth",
+            "type": "float",
+            "value": 1.0
+          },
+          {
+            "name": "fallbackHitHeight",
             "type": "float",
             "value": 1.0
           },
@@ -65,6 +75,56 @@
             "value": "SpikeWall1,SpikeWall2,Gate1"
           },
           {
+            "name": "drawKey",
+            "type": "string",
+            "value": "L"
+          },
+          {
+            "name": "rewindKey",
+            "type": "string",
+            "value": "Q"
+          },
+          {
+            "name": "moveLeftKey",
+            "type": "string",
+            "value": "A"
+          },
+          {
+            "name": "moveRightKey",
+            "type": "string",
+            "value": "D"
+          },
+          {
+            "name": "moveUpKey",
+            "type": "string",
+            "value": "W"
+          },
+          {
+            "name": "moveDownKey",
+            "type": "string",
+            "value": "S"
+          },
+          {
+            "name": "jumpKey",
+            "type": "string",
+            "value": "SPACE"
+          },
+          {
+            "name": "showInputDebug",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "targets",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "fixedTargets",
+            "type": "string",
+            "value": ""
+          },
+          {
             "name": "camOffsetX",
             "type": "float",
             "value": 0.0
@@ -80,7 +140,7 @@
             "value": -13.0
           }
         ],
-        "scriptPath": "scripts/Player.lua"
+        "scriptPath": "scripts/Player_ObjectSizeHitbox.lua"
       },
       "name": "Player",
       "sprite2d": {
@@ -129,6 +189,27 @@
       }
     },
     {
+      "luaScript": {
+        "enabled": true,
+        "props": [
+          {
+            "name": "autoRecoverDelay",
+            "type": "float",
+            "value": 5.0
+          },
+          {
+            "name": "autoRecoverSpeed",
+            "type": "float",
+            "value": 18.0
+          },
+          {
+            "name": "recoverRadius",
+            "type": "float",
+            "value": 1.0
+          }
+        ],
+        "scriptPath": "scripts/Arrow.lua"
+      },
       "name": "Arrow",
       "primitive": "box",
       "transform": {
@@ -173,6 +254,20 @@
             "value": 0.0
           },
           {
+            "name": "minOffset",
+            "type": "float",
+            "value": 0.0
+          },
+          {
+            "name": "hitBoxSize",
+            "type": "vec3",
+            "value": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
             "name": "deadlyRadius",
             "type": "float",
             "value": 0.9
@@ -183,7 +278,7 @@
             "value": 0.5
           }
         ],
-        "scriptPath": "scripts/TimeObject.lua"
+        "scriptPath": "scripts/TimeObject_ObjectSizeHitbox.lua"
       },
       "name": "SpikeWall1",
       "sprite2d": {
@@ -255,6 +350,15 @@
             "value": 0.0
           },
           {
+            "name": "hitBoxSize",
+            "type": "vec3",
+            "value": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
             "name": "deadlyRadius",
             "type": "float",
             "value": 0.9
@@ -265,7 +369,7 @@
             "value": 0.5
           }
         ],
-        "scriptPath": "scripts/TimeObject.lua"
+        "scriptPath": "scripts/TimeObject_ObjectSizeHitbox.lua"
       },
       "name": "SpikeWall2",
       "sprite2d": {
@@ -337,6 +441,15 @@
             "value": 0.0
           },
           {
+            "name": "hitBoxSize",
+            "type": "vec3",
+            "value": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
             "name": "deadlyRadius",
             "type": "float",
             "value": 0.9
@@ -347,7 +460,7 @@
             "value": 0.5
           }
         ],
-        "scriptPath": "scripts/TimeObject.lua"
+        "scriptPath": "scripts/TimeObject_ObjectSizeHitbox.lua"
       },
       "name": "Gate1",
       "sprite2d": {
@@ -459,6 +572,26 @@
       }
     },
     {
+      "luaScript": {
+        "enabled": true,
+        "props": [
+          {
+            "name": "hitBoxSize",
+            "type": "vec3",
+            "value": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "name": "notifyOnHit",
+            "type": "bool",
+            "value": true
+          }
+        ],
+        "scriptPath": "scripts/FiexdObject_ObjectSizeHitbox.lua"
+      },
       "name": "Floor",
       "primitive": "box",
       "transform": {
