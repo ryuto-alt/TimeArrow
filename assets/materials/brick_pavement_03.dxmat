@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/brick_pavement_03/brick_pavement_03_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/brick_pavement_03/brick_pavement_03_arm.png",
+  "metallic": 1.0,
+  "name": "brick_pavement_03",
+  "normal": "textures/brick_pavement_03/brick_pavement_03_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}

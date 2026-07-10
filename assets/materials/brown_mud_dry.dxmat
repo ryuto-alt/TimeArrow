@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/brown_mud_dry/brown_mud_dry_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/brown_mud_dry/brown_mud_dry_arm.png",
+  "metallic": 1.0,
+  "name": "brown_mud_dry",
+  "normal": "textures/brown_mud_dry/brown_mud_dry_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}
