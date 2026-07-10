@@ -231,6 +231,8 @@ function OnStart(self)
   self.stuckX, self.stuckY = 0, 0
   self.stuckElapsed = 0
   self.arrowReturning = false
+  self.stuckTargetName = nil
+  self.stuckOffsetX, self.stuckOffsetY, self.stuckOffsetZ = 0, 0, 0
   self.shotFromX, self.shotFromY = 0, 0
 
   -- 弓を引いている状態と、現在の照準方向。
@@ -420,8 +422,21 @@ local function stickArrow(self, arrowE, hitTargetName)
   self.stuckX, self.stuckY = ap.x, ap.y
   self.stuckElapsed = 0
   self.arrowReturning = false
+  self.stuckTargetName = nil
+  self.stuckOffsetX, self.stuckOffsetY, self.stuckOffsetZ = 0, 0, 0
 
   if hitTargetName then
+    local target = scene:findEntity(hitTargetName)
+    if target and target:isValid() then
+      local targetPosition = target.transform.position
+
+      -- 動く対象に刺さった矢は、対象のローカル相対位置を覚えて追従できるようにする。
+      self.stuckTargetName = hitTargetName
+      self.stuckOffsetX = ap.x - targetPosition.x
+      self.stuckOffsetY = ap.y - targetPosition.y
+      self.stuckOffsetZ = ap.z - targetPosition.z
+    end
+
     -- 時間を動かす/動かさないに関係なく、矢が当たった事実を対象へ通知する。
     events:emit("arrow_hit", {
       target = hitTargetName,
@@ -448,13 +463,38 @@ local function recoverArrow(self, arrowE)
   self.arrowStuck = false
   self.arrowReturning = false
   self.stuckElapsed = 0
+  self.stuckTargetName = nil
+  self.stuckOffsetX, self.stuckOffsetY, self.stuckOffsetZ = 0, 0, 0
   self.hasArrow = true
   arrowE.transform.position = Vec3.new(0, -100, 0)
   setArrowDirection(arrowE, 1, 0)
 end
 
+-- 動く対象に刺さっている間、矢の位置を対象の移動へ追従させる。
+local function updateStuckArrowAttachment(self, arrowE)
+  if self.arrowReturning or self.stuckTargetName == nil then
+    return
+  end
+
+  local target = scene:findEntity(self.stuckTargetName)
+  if not (target and target:isValid()) then
+    return
+  end
+
+  local targetPosition = target.transform.position
+  local nextX = targetPosition.x + self.stuckOffsetX
+  local nextY = targetPosition.y + self.stuckOffsetY
+  local nextZ = targetPosition.z + self.stuckOffsetZ
+
+  -- 自動回収が始まるまでは、刺さった対象に対する相対位置を維持する。
+  arrowE.transform.position = Vec3.new(nextX, nextY, nextZ)
+  self.stuckX, self.stuckY = nextX, nextY
+end
+
 -- 刺さった矢が一定時間回収されなかった場合、プレイヤーへ向かって戻す。
 local function updateArrowAutoRecover(self, arrowE, dt)
+  updateStuckArrowAttachment(self, arrowE)
+
   local playerPosition = self.transform.position
   local arrowPosition = arrowE.transform.position
   local dx = playerPosition.x - arrowPosition.x
