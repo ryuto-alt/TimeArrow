@@ -5,175 +5,33 @@
         "enabled": true,
         "props": [
           {
-            "name": "speed",
+            "name": "T",
             "type": "float",
-            "value": 6.0
+            "value": 10.0
           },
           {
-            "name": "jumpSpeed",
-            "type": "float",
-            "value": 9.5
-          },
-          {
-            "name": "gravity",
-            "type": "float",
-            "value": 22.0
-          },
-          {
-            "name": "groundY",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "halfHeight",
-            "type": "float",
-            "value": 0.8
-          },
-          {
-            "name": "arrowSpeed",
-            "type": "float",
-            "value": 14.0
-          },
-          {
-            "name": "arrowRange",
-            "type": "float",
-            "value": 16.0
-          },
-          {
-            "name": "arrowHitRadius",
-            "type": "float",
-            "value": 0.08
-          },
-          {
-            "name": "fallbackHitWidth",
-            "type": "float",
-            "value": 1.0
-          },
-          {
-            "name": "fallbackHitHeight",
-            "type": "float",
-            "value": 1.0
-          },
-          {
-            "name": "recoverRadius",
-            "type": "float",
-            "value": 1.0
-          },
-          {
-            "name": "skipAmount",
-            "type": "float",
-            "value": 1.0
-          },
-          {
-            "name": "canRewind",
-            "type": "bool",
-            "value": false
-          },
-          {
-            "name": "targets",
+            "name": "scenePath",
             "type": "string",
-            "value": "SpikeWall1,SpikeWall2,Gate1"
+            "value": "scenes/stage1.json"
           },
           {
-            "name": "drawKey",
+            "name": "title",
             "type": "string",
-            "value": "L"
+            "value": "STAGE 1"
           },
           {
-            "name": "rewindKey",
+            "name": "markers",
             "type": "string",
-            "value": "Q"
-          },
-          {
-            "name": "moveLeftKey",
-            "type": "string",
-            "value": "A"
-          },
-          {
-            "name": "moveRightKey",
-            "type": "string",
-            "value": "D"
-          },
-          {
-            "name": "moveUpKey",
-            "type": "string",
-            "value": "W"
-          },
-          {
-            "name": "moveDownKey",
-            "type": "string",
-            "value": "S"
-          },
-          {
-            "name": "jumpKey",
-            "type": "string",
-            "value": "SPACE"
-          },
-          {
-            "name": "showInputDebug",
-            "type": "bool",
-            "value": true
-          },
-          {
-            "name": "targets",
-            "type": "string",
-            "value": ""
-          },
-          {
-            "name": "fixedTargets",
-            "type": "string",
-            "value": ""
-          },
-          {
-            "name": "camOffsetX",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "camOffsetY",
-            "type": "float",
-            "value": 2.5
-          },
-          {
-            "name": "camOffsetZ",
-            "type": "float",
-            "value": -13.0
+            "value": "1:壁が動き出す"
           }
         ],
-        "scriptPath": "scripts/Player_ObjectSizeHitbox.lua"
+        "scriptPath": "scripts/GameManager.lua"
       },
-      "name": "Player",
-      "sprite2d": {
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 10,
-        "shaderAlphaBlend": false,
-        "shaderPath": "",
-        "size": [
-          1.600000023841858,
-          1.600000023841858
-        ],
-        "texturePath": "textures/player.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
+      "name": "GameManager",
       "transform": {
         "position": [
-          -10.0,
-          0.800000011920929,
+          0.0,
+          0.0,
           0.0
         ],
         "rotation": [
@@ -193,25 +51,183 @@
         "enabled": true,
         "props": [
           {
-            "name": "autoRecoverDelay",
+            "name": "speed",
             "type": "float",
-            "value": 5.0
+            "value": 6.0
           },
           {
-            "name": "autoRecoverSpeed",
+            "name": "jumpSpeed",
+            "type": "float",
+            "value": 12.5
+          },
+          {
+            "name": "gravity",
+            "type": "float",
+            "value": 22.0
+          },
+          {
+            "name": "groundY",
+            "type": "float",
+            "value": 0.0
+          },
+          {
+            "name": "halfW",
+            "type": "float",
+            "value": 0.4
+          },
+          {
+            "name": "halfHeight",
+            "type": "float",
+            "value": 0.55
+          },
+          {
+            "name": "arrowSpeed",
+            "type": "float",
+            "value": 15.0
+          },
+          {
+            "name": "arrowRange",
             "type": "float",
             "value": 18.0
           },
           {
-            "name": "recoverRadius",
+            "name": "arrowHalf",
             "type": "float",
-            "value": 1.0
+            "value": 0.1
+          },
+          {
+            "name": "minSkip",
+            "type": "float",
+            "value": 2.0
+          },
+          {
+            "name": "maxSkip",
+            "type": "float",
+            "value": 10.0
+          },
+          {
+            "name": "maxDrawTime",
+            "type": "float",
+            "value": 3.0
+          },
+          {
+            "name": "climbSpeed",
+            "type": "float",
+            "value": 4.0
+          },
+          {
+            "name": "targets",
+            "type": "string",
+            "value": "CrushWall1"
+          },
+          {
+            "name": "standables",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "climbables",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "pits",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "solids",
+            "type": "string",
+            "value": "CrushWall1"
+          },
+          {
+            "name": "mirrors",
+            "type": "string",
+            "value": ""
+          },
+          {
+            "name": "maxBounces",
+            "type": "int",
+            "value": 4
           }
         ],
-        "scriptPath": "scripts/Arrow.lua"
+        "scriptPath": "scripts/Player.lua"
       },
+      "name": "Player",
+      "sprite2d": {
+        "billboard": false,
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "effectValue": 0.0,
+        "layer": 6,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/player_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true
+      },
+      "transform": {
+        "position": [
+          2.0,
+          0.6000000238418579,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.800000011920929,
+          1.100000023841858,
+          1.0
+        ]
+      }
+    },
+    {
       "name": "Arrow",
-      "primitive": "box",
+      "sprite2d": {
+        "billboard": false,
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "effectValue": 0.0,
+        "layer": 7,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/arrow_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true
+      },
       "transform": {
         "position": [
           0.0,
@@ -225,8 +241,32 @@
         ],
         "scale": [
           0.8999999761581421,
-          0.18000000715255737,
-          0.18000000715255737
+          0.27000001072883606,
+          1.0
+        ]
+      }
+    },
+    {
+      "materialAssets": [
+        "materials/blue_floor_tiles_01.dxmat"
+      ],
+      "name": "Floor",
+      "primitive": "box",
+      "transform": {
+        "position": [
+          8.0,
+          -0.5,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          16.0,
+          1.0,
+          3.0
         ]
       }
     },
@@ -235,54 +275,16 @@
         "enabled": true,
         "props": [
           {
-            "name": "axis",
-            "type": "vec3",
-            "value": [
-              -1.0,
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "name": "amplitude",
-            "type": "float",
-            "value": 1.0000000272564224e+16
-          },
-          {
-            "name": "minOffset",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "minOffset",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "hitBoxSize",
-            "type": "vec3",
-            "value": [
-              1.0,
-              1.0,
-              1.0
-            ]
-          },
-          {
-            "name": "deadlyRadius",
-            "type": "float",
-            "value": 0.9
-          },
-          {
-            "name": "blockRatio",
-            "type": "float",
-            "value": 0.5
+            "name": "deadly",
+            "type": "bool",
+            "value": true
           }
         ],
-        "scriptPath": "scripts/TimeObject_ObjectSizeHitbox.lua"
+        "scriptPath": "scripts/Wall.lua"
       },
-      "name": "SpikeWall1",
+      "name": "Spike1",
       "sprite2d": {
-        "billboard": false,
+        "billboard": true,
         "color": [
           1.0,
           1.0,
@@ -294,10 +296,10 @@
         "shaderAlphaBlend": false,
         "shaderPath": "",
         "size": [
-          1.2000000476837158,
-          2.200000047683716
+          1.0,
+          1.0
         ],
-        "texturePath": "textures/needle.png",
+        "texturePath": "textures/needle_rgba.png",
         "uvMax": [
           1.0,
           1.0
@@ -310,7 +312,7 @@
       },
       "transform": {
         "position": [
-          -3.0,
+          5.0,
           1.100000023841858,
           0.0
         ],
@@ -321,7 +323,7 @@
         ],
         "scale": [
           1.0,
-          1.0,
+          2.200000047683716,
           1.0
         ]
       }
@@ -331,49 +333,41 @@
         "enabled": true,
         "props": [
           {
-            "name": "axis",
-            "type": "vec3",
-            "value": [
-              -1.0,
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "name": "amplitude",
+            "name": "startT",
             "type": "float",
-            "value": 3.0
+            "value": 1.0
           },
           {
-            "name": "minOffset",
+            "name": "axisX",
             "type": "float",
-            "value": 0.0
+            "value": -1.0
           },
           {
-            "name": "hitBoxSize",
-            "type": "vec3",
-            "value": [
-              1.0,
-              1.0,
-              1.0
-            ]
-          },
-          {
-            "name": "deadlyRadius",
+            "name": "speed",
             "type": "float",
-            "value": 0.9
+            "value": 0.4
           },
           {
-            "name": "blockRatio",
+            "name": "travel",
+            "type": "float",
+            "value": 6.0
+          },
+          {
+            "name": "ghostTime",
             "type": "float",
             "value": 0.5
+          },
+          {
+            "name": "listenButton",
+            "type": "bool",
+            "value": false
           }
         ],
-        "scriptPath": "scripts/TimeObject_ObjectSizeHitbox.lua"
+        "scriptPath": "scripts/CrushWall.lua"
       },
-      "name": "SpikeWall2",
+      "name": "CrushWall1",
       "sprite2d": {
-        "billboard": false,
+        "billboard": true,
         "color": [
           1.0,
           1.0,
@@ -382,167 +376,13 @@
         ],
         "effectValue": 0.0,
         "layer": 5,
-        "shaderAlphaBlend": false,
-        "shaderPath": "",
+        "shaderAlphaBlend": true,
+        "shaderPath": "shaders/dissolve.hlsl",
         "size": [
-          1.2000000476837158,
-          2.200000047683716
-        ],
-        "texturePath": "textures/needle.png",
-        "uvMax": [
           1.0,
           1.0
         ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          4.0,
-          1.100000023841858,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "axis",
-            "type": "vec3",
-            "value": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "name": "amplitude",
-            "type": "float",
-            "value": 2.5
-          },
-          {
-            "name": "minOffset",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "hitBoxSize",
-            "type": "vec3",
-            "value": [
-              1.0,
-              1.0,
-              1.0
-            ]
-          },
-          {
-            "name": "deadlyRadius",
-            "type": "float",
-            "value": 0.9
-          },
-          {
-            "name": "blockRatio",
-            "type": "float",
-            "value": 0.5
-          }
-        ],
-        "scriptPath": "scripts/TimeObject_ObjectSizeHitbox.lua"
-      },
-      "name": "Gate1",
-      "sprite2d": {
-        "billboard": false,
-        "color": [
-          0.75,
-          0.8500000238418579,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 5,
-        "shaderAlphaBlend": false,
-        "shaderPath": "",
-        "size": [
-          1.2000000476837158,
-          2.200000047683716
-        ],
-        "texturePath": "textures/needle.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          7.0,
-          1.100000023841858,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          90.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "radius",
-            "type": "float",
-            "value": 1.2
-          },
-          {
-            "name": "next",
-            "type": "string",
-            "value": "scenes/title.json"
-          }
-        ],
-        "scriptPath": "scripts/Exit.lua"
-      },
-      "name": "Exit",
-      "sprite2d": {
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 5,
-        "shaderAlphaBlend": false,
-        "shaderPath": "",
-        "size": [
-          1.399999976158142,
-          1.7999999523162842
-        ],
-        "texturePath": "textures/exit.png",
+        "texturePath": "textures/crushwall_rgba.png",
         "uvMax": [
           1.0,
           1.0
@@ -556,7 +396,7 @@
       "transform": {
         "position": [
           10.0,
-          0.8999999761581421,
+          2.0999999046325684,
           0.0
         ],
         "rotation": [
@@ -565,8 +405,8 @@
           0.0
         ],
         "scale": [
-          1.0,
-          1.0,
+          1.7999999523162842,
+          4.199999809265137,
           1.0
         ]
       }
@@ -576,87 +416,134 @@
         "enabled": true,
         "props": [
           {
-            "name": "hitBoxSize",
-            "type": "vec3",
-            "value": [
-              1.0,
-              1.0,
-              1.0
-            ]
+            "name": "radius",
+            "type": "float",
+            "value": 1.0
           },
           {
-            "name": "notifyOnHit",
-            "type": "bool",
-            "value": true
+            "name": "next",
+            "type": "string",
+            "value": "scenes/stage2.json"
           }
         ],
-        "scriptPath": "scripts/FiexdObject_ObjectSizeHitbox.lua"
+        "scriptPath": "scripts/Exit.lua"
       },
-      "name": "Floor",
-      "primitive": "box",
+      "name": "Exit",
+      "sprite2d": {
+        "billboard": true,
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "effectValue": 0.0,
+        "layer": 5,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
+        "size": [
+          1.0,
+          1.0
+        ],
+        "texturePath": "textures/exit_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "worldSpace": true
+      },
       "transform": {
         "position": [
-          0.0,
-          -2.9862353801727295,
+          14.5,
+          0.6499999761581421,
           0.0
         ],
         "rotation": [
-          -0.0,
+          0.0,
           0.0,
           0.0
         ],
         "scale": [
-          28.0,
-          5.915812015533447,
-          3.0
+          1.2999999523162842,
+          1.2999999523162842,
+          1.0
         ]
       }
     },
     {
-      "name": "__primitive_plane__",
-      "primitive": "plane",
-      "shader": "DissolveShader.hlsl",
+      "luaScript": {
+        "enabled": true,
+        "props": [
+          {
+            "name": "T",
+            "type": "float",
+            "value": 10.0
+          },
+          {
+            "name": "collapseAt",
+            "type": "float",
+            "value": 0.5
+          },
+          {
+            "name": "suckInAt",
+            "type": "float",
+            "value": 0.75
+          }
+        ],
+        "scriptPath": "scripts/BackgroundCollapse.lua"
+      },
+      "materialAssets": [
+        "materials/blue_floor_tiles_01.dxmat"
+      ],
+      "materialTextureOverrides": [
+        {
+          "albedo": "textures/needle_rgba.png"
+        }
+      ],
+      "name": "Backdrop",
+      "primitive": "box",
+      "shader": "shaders/backdrop.hlsl",
       "transform": {
         "position": [
-          -2.0851961934909014e-08,
-          3.059797393234476e-07,
+          8.0,
+          6.0,
           7.0
         ],
         "rotation": [
-          -90.0,
-          -1.7067566204787e-07,
+          0.0,
+          180.0,
           0.0
         ],
         "scale": [
-          0.699999988079071,
-          0.9999991059303284,
-          0.699999988079071
+          20.0,
+          12.0,
+          1.0
         ]
-      },
-      "uvTiling": {
-        "u": 0.009999999776482582,
-        "v": 0.009999999776482582
       }
     },
     {
       "directionalLight": {
-        "ambient": 0.30000001192092896,
+        "ambient": 0.5,
         "color": [
           1.0,
           0.9700000286102295,
           0.8999999761581421
         ],
         "direction": [
-          -0.4000000059604645,
+          -0.3499999940395355,
           -1.0,
           -0.30000001192092896
         ],
-        "intensity": 1.2999999523162842
+        "intensity": 1.149999976158142
       },
       "name": "Sun",
       "transform": {
         "position": [
-          0.0,
+          8.0,
           10.0,
           0.0
         ],
@@ -678,18 +565,18 @@
         "fovDegrees": 50.0,
         "isActive": true,
         "nearClip": 0.10000000149011612,
-        "orthoSize": 10.0,
+        "orthoSize": 6.0,
         "projection": 0
       },
       "name": "GameCamera",
       "transform": {
         "position": [
-          -10.0,
-          2.5,
-          -13.0
+          8.0,
+          13.0,
+          -14.0
         ],
         "rotation": [
-          0.0,
+          30.0,
           0.0,
           0.0
         ],
@@ -731,11 +618,11 @@
     "aeLogMin": -8.0,
     "aeSpeed": 2.0,
     "autoExposureOn": false,
-    "bloom": 0.4000000059604645,
+    "bloom": 0.5,
     "bloomKnee": 0.5,
     "bloomOn": false,
     "bloomRadius": 0.6499999761581421,
-    "bloomThreshold": 1.0,
+    "bloomThreshold": 0.75,
     "brightness": 0.0,
     "brightnessOn": false,
     "chromatic": 0.5,
