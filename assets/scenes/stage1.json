@@ -5,14 +5,79 @@
         "enabled": true,
         "props": [
           {
-            "name": "targets",
-            "type": "string",
-            "value": "SpikeWall1,SpikeWall2,Gate1"
+            "name": "speed",
+            "type": "float",
+            "value": 6.0
+          },
+          {
+            "name": "jumpSpeed",
+            "type": "float",
+            "value": 9.5
+          },
+          {
+            "name": "gravity",
+            "type": "float",
+            "value": 22.0
+          },
+          {
+            "name": "groundY",
+            "type": "float",
+            "value": 0.0
+          },
+          {
+            "name": "halfHeight",
+            "type": "float",
+            "value": 0.8
+          },
+          {
+            "name": "arrowSpeed",
+            "type": "float",
+            "value": 14.0
+          },
+          {
+            "name": "arrowRange",
+            "type": "float",
+            "value": 16.0
+          },
+          {
+            "name": "hitRadius",
+            "type": "float",
+            "value": 1.0
+          },
+          {
+            "name": "recoverRadius",
+            "type": "float",
+            "value": 1.0
+          },
+          {
+            "name": "skipAmount",
+            "type": "float",
+            "value": 1.0
           },
           {
             "name": "canRewind",
             "type": "bool",
             "value": false
+          },
+          {
+            "name": "targets",
+            "type": "string",
+            "value": "SpikeWall1,SpikeWall2,Gate1"
+          },
+          {
+            "name": "camOffsetX",
+            "type": "float",
+            "value": 0.0
+          },
+          {
+            "name": "camOffsetY",
+            "type": "float",
+            "value": 2.5
+          },
+          {
+            "name": "camOffsetZ",
+            "type": "float",
+            "value": -13.0
           }
         ],
         "scriptPath": "scripts/Player.lua"
@@ -26,12 +91,15 @@
           1.0,
           1.0
         ],
+        "effectValue": 0.0,
         "layer": 10,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
         "size": [
           1.600000023841858,
           1.600000023841858
         ],
-        "texturePath": "textures/player_rgba.png",
+        "texturePath": "textures/player.png",
         "uvMax": [
           1.0,
           1.0
@@ -89,20 +157,30 @@
             "name": "axis",
             "type": "vec3",
             "value": [
+              -1.0,
               0.0,
-              1.0,
               0.0
             ]
           },
           {
             "name": "amplitude",
             "type": "float",
-            "value": 3.0
+            "value": 1.0000000272564224e+16
+          },
+          {
+            "name": "minOffset",
+            "type": "float",
+            "value": 0.0
           },
           {
             "name": "deadlyRadius",
             "type": "float",
             "value": 0.9
+          },
+          {
+            "name": "blockRatio",
+            "type": "float",
+            "value": 0.5
           }
         ],
         "scriptPath": "scripts/TimeObject.lua"
@@ -116,12 +194,15 @@
           1.0,
           1.0
         ],
+        "effectValue": 0.0,
         "layer": 5,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
         "size": [
           1.2000000476837158,
           2.200000047683716
         ],
-        "texturePath": "textures/needle_rgba.png",
+        "texturePath": "textures/needle.png",
         "uvMax": [
           1.0,
           1.0
@@ -158,8 +239,8 @@
             "name": "axis",
             "type": "vec3",
             "value": [
+              -1.0,
               0.0,
-              1.0,
               0.0
             ]
           },
@@ -169,9 +250,19 @@
             "value": 3.0
           },
           {
+            "name": "minOffset",
+            "type": "float",
+            "value": 0.0
+          },
+          {
             "name": "deadlyRadius",
             "type": "float",
             "value": 0.9
+          },
+          {
+            "name": "blockRatio",
+            "type": "float",
+            "value": 0.5
           }
         ],
         "scriptPath": "scripts/TimeObject.lua"
@@ -185,12 +276,15 @@
           1.0,
           1.0
         ],
+        "effectValue": 0.0,
         "layer": 5,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
         "size": [
           1.2000000476837158,
           2.200000047683716
         ],
-        "texturePath": "textures/needle_rgba.png",
+        "texturePath": "textures/needle.png",
         "uvMax": [
           1.0,
           1.0
@@ -238,9 +332,19 @@
             "value": 2.5
           },
           {
+            "name": "minOffset",
+            "type": "float",
+            "value": 0.0
+          },
+          {
             "name": "deadlyRadius",
             "type": "float",
             "value": 0.9
+          },
+          {
+            "name": "blockRatio",
+            "type": "float",
+            "value": 0.5
           }
         ],
         "scriptPath": "scripts/TimeObject.lua"
@@ -254,12 +358,15 @@
           1.0,
           1.0
         ],
+        "effectValue": 0.0,
         "layer": 5,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
         "size": [
           1.2000000476837158,
           2.200000047683716
         ],
-        "texturePath": "textures/needle_rgba.png",
+        "texturePath": "textures/needle.png",
         "uvMax": [
           1.0,
           1.0
@@ -314,12 +421,15 @@
           1.0,
           1.0
         ],
+        "effectValue": 0.0,
         "layer": 5,
+        "shaderAlphaBlend": false,
+        "shaderPath": "",
         "size": [
           1.399999976158142,
           1.7999999523162842
         ],
-        "texturePath": "textures/exit_rgba.png",
+        "texturePath": "textures/exit.png",
         "uvMax": [
           1.0,
           1.0
@@ -354,40 +464,45 @@
       "transform": {
         "position": [
           0.0,
-          -0.5,
+          -2.9862353801727295,
           0.0
         ],
         "rotation": [
-          0.0,
+          -0.0,
           0.0,
           0.0
         ],
         "scale": [
           28.0,
-          1.0,
+          5.915812015533447,
           3.0
         ]
       }
     },
     {
-      "name": "Backdrop",
-      "primitive": "box",
+      "name": "__primitive_plane__",
+      "primitive": "plane",
+      "shader": "DissolveShader.hlsl",
       "transform": {
         "position": [
-          0.0,
-          5.0,
+          -2.0851961934909014e-08,
+          3.059797393234476e-07,
           7.0
         ],
         "rotation": [
-          0.0,
-          0.0,
+          -90.0,
+          -1.7067566204787e-07,
           0.0
         ],
         "scale": [
-          30.0,
-          12.0,
-          1.0
+          0.699999988079071,
+          0.9999991059303284,
+          0.699999988079071
         ]
+      },
+      "uvTiling": {
+        "u": 0.009999999776482582,
+        "v": 0.009999999776482582
       }
     },
     {
