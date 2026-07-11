@@ -1058,14 +1058,14 @@
         "slideOffset": 80.0
       },
       "uiButton": {
-        "clickSound": "",
+        "clickSound": "audio/ui_click.wav",
         "hoverColor": [
           0.8999999761581421,
           1.0,
           1.100000023841858,
           1.0
         ],
-        "hoverSound": "",
+        "hoverSound": "audio/ui_hover.wav",
         "interactable": true,
         "normalColor": [
           0.2800000011920929,
@@ -1225,14 +1225,14 @@
         "slideOffset": 80.0
       },
       "uiButton": {
-        "clickSound": "",
+        "clickSound": "audio/ui_click.wav",
         "hoverColor": [
           0.8999999761581421,
           1.0,
           1.100000023841858,
           1.0
         ],
-        "hoverSound": "",
+        "hoverSound": "audio/ui_hover.wav",
         "interactable": true,
         "normalColor": [
           0.2800000011920929,
@@ -1392,14 +1392,14 @@
         "slideOffset": 80.0
       },
       "uiButton": {
-        "clickSound": "",
+        "clickSound": "audio/ui_click.wav",
         "hoverColor": [
           0.8999999761581421,
           1.0,
           1.100000023841858,
           1.0
         ],
-        "hoverSound": "",
+        "hoverSound": "audio/ui_hover.wav",
         "interactable": true,
         "normalColor": [
           0.2800000011920929,

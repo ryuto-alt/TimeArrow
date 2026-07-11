@@ -13,6 +13,7 @@ local function setPaused(self, on)
   _G.gamePaused = on
   time.setScale(on and 0 or 1)
   physics:setPaused(on)
+  audio:playSFX("audio/ui_click.wav", false)
   if on then
     scene:setUiVisible(self.canvas, true)
     scene:showUi(self.canvas) -- 出現アニメをリプレイ
@@ -65,18 +66,21 @@ function OnStart(self)
     self.bgm = e.value
     saveNum("opt_bgm", self.bgm)
     applyAudio(self)
+    audio:playSFX("audio/ui_hover.wav", false) -- 音量確認を兼ねたティック音
   end)
 
   events:on("ui_se", function(e)
     self.se = e.value
     saveNum("opt_se", self.se)
     applyAudio(self)
+    audio:playSFX("audio/ui_hover.wav", false)
   end)
 
   events:on("ui_mute", function(e)
     self.mute = e.value > 0.5
     saveNum("opt_mute", self.mute and 1 or 0)
     applyAudio(self)
+    audio:playSFX("audio/ui_click.wav", false)
   end)
 end
 
