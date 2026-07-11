@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/terrazzo_tiles/terrazzo_tiles_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/terrazzo_tiles/terrazzo_tiles_arm.png",
+  "metallic": 1.0,
+  "name": "terrazzo_tiles",
+  "normal": "textures/terrazzo_tiles/terrazzo_tiles_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}

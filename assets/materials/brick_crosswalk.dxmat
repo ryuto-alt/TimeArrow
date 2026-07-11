@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/brick_crosswalk/brick_crosswalk_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/brick_crosswalk/brick_crosswalk_arm.png",
+  "metallic": 1.0,
+  "name": "brick_crosswalk",
+  "normal": "textures/brick_crosswalk/brick_crosswalk_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}

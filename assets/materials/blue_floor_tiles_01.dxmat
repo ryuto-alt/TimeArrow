@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/blue_floor_tiles_01/blue_floor_tiles_01_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/blue_floor_tiles_01/blue_floor_tiles_01_arm.png",
+  "metallic": 1.0,
+  "name": "blue_floor_tiles_01",
+  "normal": "textures/blue_floor_tiles_01/blue_floor_tiles_01_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}

@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/brown_floor_tiles/brown_floor_tiles_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/brown_floor_tiles/brown_floor_tiles_arm.png",
+  "metallic": 1.0,
+  "name": "brown_floor_tiles",
+  "normal": "textures/brown_floor_tiles/brown_floor_tiles_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}
