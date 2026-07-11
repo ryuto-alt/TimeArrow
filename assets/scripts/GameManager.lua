@@ -62,6 +62,7 @@ local function drawSeekBar(self)
 end
 
 function OnUpdate(self, dt)
+  if _G.gamePaused then return end -- ポーズ中はシークバーもRリトライも止める(PauseMenu.lua)
   if self.state == "play" then
     self.t = self.t + dt
     if self.t >= self.T then

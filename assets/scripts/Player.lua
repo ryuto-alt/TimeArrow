@@ -443,6 +443,7 @@ local function drawHud(self, hudY)
 end
 
 function OnUpdate(self, dt)
+  if _G.gamePaused then return end -- ポーズ中は入力もHUD描画も止める(PauseMenu.lua)
   for name, t in pairs(self.ghostSolids) do
     self.ghostSolids[name] = t - dt
   end
@@ -455,5 +456,5 @@ function OnUpdate(self, dt)
   drawHud(self, screenH - 24)
   ui:text(20, screenH - 56, "A/D move  SPACE jump  W/S climb  E(hold) draw+aim 8-way, release to fire  R retry", 16, 0.75, 0.78, 0.85, 1)
 
-  if keyPressed("ESC") or padPressed("START") then goToScene("scenes/title.json", 0.5) end
+  -- ESC/START はポーズメニュー(PauseMenu.lua)が受ける。タイトルへはメニューの QUIT から。
 end
