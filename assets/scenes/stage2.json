@@ -649,9 +649,9 @@
     },
     {
       "name": "SeekThumb",
-      "parent": 11,
-      "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.5, 1.0],
-                  "offsetMin": [0.0, -19.0], "offsetMax": [24.0, 3.0], "visible": true, "order": 2 },
+      "parent": 12,
+      "uiRect": { "anchorMin": [0.0, 0.5], "anchorMax": [0.0, 0.5], "pivot": [0.5, 0.5],
+                  "offsetMin": [0.0, -11.0], "offsetMax": [24.0, 11.0], "visible": true, "order": 2 },
       "uiImage": { "texturePath": "textures/seekbar_point_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
                    "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [0.0, 0.0, 0.0, 0.0],
                    "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 }
