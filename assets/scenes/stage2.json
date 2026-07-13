@@ -630,31 +630,13 @@
       "uiCanvas": { "refWidth": 1280.0, "refHeight": 720.0, "scaleMode": 0, "sortOrder": 0, "visible": true }
     },
     {
-      "name": "SeekTrack",
+      "name": "SeekBar",
       "parent": 11,
       "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.5, 1.0],
                   "offsetMin": [0.0, -16.0], "offsetMax": [0.0, 0.0], "visible": true, "order": 0 },
-      "uiImage": { "texturePath": "", "color": [1.0, 1.0, 1.0, 0.25], "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0],
-                   "sliceBorder": [0.0, 0.0, 0.0, 0.0], "cornerRadius": 0.0, "raycastBlock": false,
-                   "fillAmount": 1.0, "fillDir": 0 }
-    },
-    {
-      "name": "SeekFill",
-      "parent": 11,
-      "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.5, 1.0],
-                  "offsetMin": [0.0, -16.0], "offsetMax": [0.0, 0.0], "visible": true, "order": 1 },
-      "uiImage": { "texturePath": "", "color": [0.9, 0.06, 0.06, 1.0], "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0],
-                   "sliceBorder": [0.0, 0.0, 0.0, 0.0], "cornerRadius": 0.0, "raycastBlock": false,
-                   "fillAmount": 0.0, "fillDir": 0 }
-    },
-    {
-      "name": "SeekThumb",
-      "parent": 12,
-      "uiRect": { "anchorMin": [0.0, 0.5], "anchorMax": [0.0, 0.5], "pivot": [0.5, 0.5],
-                  "offsetMin": [0.0, -11.0], "offsetMax": [24.0, 11.0], "visible": true, "order": 2 },
-      "uiImage": { "texturePath": "textures/seekbar_point_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
-                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [0.0, 0.0, 0.0, 0.0],
-                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 }
+      "uiSlider": { "value": 0.0, "minValue": 0.0, "maxValue": 10.0, "step": 0.0, "onChangeEvent": "",
+                    "trackColor": [1.0, 1.0, 1.0, 0.25], "fillColor": [0.9, 0.06, 0.06, 1.0],
+                    "knobColor": [1.0, 0.15, 0.15, 1.0], "interactable": false }
     },
     {
       "name": "ScreenFlash",
