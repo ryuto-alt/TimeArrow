@@ -1,23 +1,29 @@
 -- GameManager.lua -- 「動画」の再生ヘッドそのもの。ステージに1個だけ空エンティティに付ける。
 -- 世界時計 t を毎フレーム進め、t >= T(動画の長さ)で TIME UP。プレイヤーの死亡(player_died)も
 -- ここで受けて、短い演出の後にシーン再読込(=このステージの動画を最初から再生し直す)。
--- ゴール到達は Exit.lua から "stage_cleared" イベントで受け取り、CLEARリボンを見せてから遷移する。
--- HUD(シークバー/結果リボン)は新UIシステム(UICanvas/UIImage/UIAnimator)側のエンティティを
--- scene:setUiFill/setUiText/setUiColor/showUi で操作する(即時ui:*は使わない)。
+-- ゴール到達は Exit.lua から "stage_cleared" イベントで受け取り、遷移前に一拍おく。
+-- HUDは「YouTube風シークバー(トラック+赤の塗り+画像のつまみ)」+「画面フラッシュ」のみ。
+-- 文字は一切出さない(矢を撃った時/失敗した時に画面がごちゃつくのを避けるため)。
+-- つまみ(SeekThumb)は setUiPosition 相当のAPIが無いので、scene:tweenUi の dx(相対移動)を
+-- 毎フレーム「今回のフレームでの目標X - 前回の目標X」だけ投げて動かす(tweenUiのmoveはUIRect.offsetを
+-- 直接書き換える実装なので、後発のtweenは直前のtweenが書いた値を基点に積み上がり、ドリフトしない)。
 properties = {
   { name = "T",         type = "float",  default = 10.0,                     label = "動画の長さ(秒。仕様書により全ステージ共通10.0秒)" },
   { name = "scenePath",  type = "string", default = "scenes/stage1.json",     label = "このシーン自身のパス(リトライ用)" },
-  { name = "title",      type = "string", default = "",                      label = "ステージ名(HUD表示、空可)" },
-  { name = "markers",    type = "string", default = "",                      label = "シークバーの目印 '秒:ラベル' をカンマ区切りで(現状未使用)" },
+  { name = "title",      type = "string", default = "",                      label = "ステージ名(現状HUD非表示、記録用)" },
+  { name = "markers",    type = "string", default = "",                      label = "シークバーの目印(現状未使用)" },
 }
 
-local seekFill, seekLabel, ribbon, ribbonText
+local THUMB_MARGIN = 12.0   -- SeekThumbの半幅(offsetMax.x - offsetMin.x = 24なので半分)
+local CANVAS_W = 1280.0
 
-local function showResult(text, r, g, b)
-  if not (ribbon and ribbon:isValid()) then return end
-  scene:setUiText(ribbonText, text)
-  scene:setUiColor(ribbonText, r, g, b, 1.0)
-  scene:showUi(ribbon)
+local seekFill, seekThumb, screenFlash
+local lastFrac = 0
+
+local function flash(r, g, b, a, fadeDur)
+  if not (screenFlash and screenFlash:isValid()) then return end
+  scene:setUiColor(screenFlash, r, g, b, a)
+  scene:tweenUi(screenFlash, { alpha = 0.0, duration = fadeDur, easing = "out" })
 end
 
 function OnStart(self)
@@ -26,74 +32,61 @@ function OnStart(self)
   self.waitT = 0
   self.nextScene = nil
 
-  seekFill   = scene:findEntity("SeekBarFill")
-  seekLabel  = scene:findEntity("SeekBarLabel")
-  ribbon     = scene:findEntity("ResultRibbon")
-  ribbonText = scene:findEntity("ResultRibbonText")
+  seekFill    = scene:findEntity("SeekFill")
+  seekThumb   = scene:findEntity("SeekThumb")
+  screenFlash = scene:findEntity("ScreenFlash")
+  lastFrac = 0
 
   events:on("player_died", function()
     if self.state == "play" then
       self.state = "dead"
-      self.waitT = 0.5
+      self.waitT = 0.6
       fx:pulse(0.6)
-      showResult("MISS...", 0.75, 0.18, 0.15)
+      flash(0.85, 0.12, 0.1, 0.55, 0.7)
     end
   end)
 
   events:on("stage_goal_ruined", function()
     if self.state == "play" then
-      showResult("GOAL DESTROYED...", 0.9, 0.4, 0.3)
+      flash(0.55, 0.2, 0.7, 0.4, 0.5)
     end
   end)
 
   events:on("stage_cleared", function(data)
     if self.state == "play" then
       self.state = "cleared"
-      self.waitT = 1.1
+      self.waitT = 0.9
       self.nextScene = (data and data.next) or "scenes/title.json"
       fx:pulse(0.5)
-      showResult("STAGE CLEAR!", 0.75, 0.5, 0.05)
+      flash(0.4, 0.9, 0.5, 0.45, 0.6)
     end
   end)
-end
-
-local function drawSeekBar(self)
-  local frac = clamp(self.t / self.T, 0, 1)
-  local remaining = self.T - self.t
-  if seekFill and seekFill:isValid() then
-    scene:setUiFill(seekFill, frac)
-    local low = remaining <= 5
-    if low then
-      local flash = 0.5 + 0.5 * math.sin(self.t * 14)
-      scene:setUiColor(seekFill, 0.95 * flash, 0.3, 0.28, 0.95)
-    else
-      scene:setUiColor(seekFill, 0.3, 0.75, 0.95, 0.95)
-    end
-  end
-  if seekLabel and seekLabel:isValid() then
-    local label = (self.title ~= "" and (self.title .. "  ") or "") .. string.format("%.1f / %.1f s", self.t, self.T)
-    scene:setUiText(seekLabel, label)
-  end
 end
 
 function OnUpdate(self, dt)
   if self.state == "play" then
     self.t = self.t + dt
+    local frac = clamp(self.t / self.T, 0, 1)
+    if seekFill and seekFill:isValid() then scene:setUiFill(seekFill, frac) end
+    if seekThumb and seekThumb:isValid() and frac ~= lastFrac then
+      local span = CANVAS_W - 2.0 * THUMB_MARGIN
+      local deltaPx = span * (frac - lastFrac)
+      scene:tweenUi(seekThumb, { dx = deltaPx, duration = dt, easing = "linear" })
+      lastFrac = frac
+    end
     if self.t >= self.T then
       self.state = "over"
       self.waitT = 0.7
       fx:pulse(0.7)
-      showResult("TIME UP", 0.7, 0.55, 0.1)
+      flash(0.85, 0.55, 0.1, 0.5, 0.7)
     end
-    drawSeekBar(self)
   elseif self.state == "dead" or self.state == "over" or self.state == "cleared" then
     self.waitT = self.waitT - dt
     if self.waitT <= 0 then
-      if self.state == "cleared" then
-        self.state = "reloading"
+      self.state = "reloading"
+      if self.nextScene then
         goToScene(self.nextScene, 0.5)
       else
-        self.state = "reloading"
         goToScene(self.scenePath, 0.3)
       end
     end

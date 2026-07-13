@@ -95,12 +95,6 @@ function OnStart(self)
   if arrowE and arrowE:isValid() then
     arrowE.transform.position = Vec3.new(0, -100, 0)
   end
-
-  self.uiArrowStatus = scene:findEntity("ArrowStatusText")
-  self.uiGaugePanel  = scene:findEntity("DrawGaugePanel")
-  self.uiGaugeFill   = scene:findEntity("DrawGaugeFill")
-  self.uiGaugeText   = scene:findEntity("DrawGaugeText")
-  self.gaugeShown = false
 end
 
 -- 乗れる足場(standables)を毎フレーム探し、水平範囲内かつ足元がだいたい上面以上なら
@@ -435,33 +429,6 @@ local function updateArrow(self, dt)
   end
 end
 
-local function updateHud(self)
-  if self.drawing then
-    if not self.gaugeShown then
-      self.gaugeShown = true
-      if self.uiGaugePanel and self.uiGaugePanel:isValid() then scene:setUiVisible(self.uiGaugePanel, true) end
-      if self.uiGaugeFill and self.uiGaugeFill:isValid() then scene:setUiVisible(self.uiGaugeFill, true) end
-      if self.uiGaugeText and self.uiGaugeText:isValid() then scene:setUiVisible(self.uiGaugeText, true) end
-    end
-    local frac = clamp(self.drawT / self.maxDrawTime, 0, 1)
-    local amount = lerp(self.minSkip, self.maxSkip, frac)
-    if self.uiGaugeFill and self.uiGaugeFill:isValid() then scene:setUiFill(self.uiGaugeFill, frac) end
-    if self.uiGaugeText and self.uiGaugeText:isValid() then
-      scene:setUiText(self.uiGaugeText, string.format("+%.1fs", amount))
-    end
-  elseif self.gaugeShown then
-    self.gaugeShown = false
-    if self.uiGaugePanel and self.uiGaugePanel:isValid() then scene:setUiVisible(self.uiGaugePanel, false) end
-    if self.uiGaugeFill and self.uiGaugeFill:isValid() then scene:setUiVisible(self.uiGaugeFill, false) end
-    if self.uiGaugeText and self.uiGaugeText:isValid() then scene:setUiVisible(self.uiGaugeText, false) end
-  end
-
-  if self.uiArrowStatus and self.uiArrowStatus:isValid() then
-    local arrowState = self.hasArrow and "READY" or (self.arrowFlying and "FLYING" or "STUCK (touch it to recover)")
-    scene:setUiText(self.uiArrowStatus, "Arrow: " .. arrowState)
-  end
-end
-
 function OnUpdate(self, dt)
   for name, t in pairs(self.ghostSolids) do
     self.ghostSolids[name] = t - dt
@@ -470,7 +437,6 @@ function OnUpdate(self, dt)
   updateMovement(self, dt)
   updateDraw(self, dt)
   updateArrow(self, dt)
-  updateHud(self)
 
   if keyPressed("ESC") or padPressed("START") then goToScene("scenes/title.json", 0.5) end
 end
