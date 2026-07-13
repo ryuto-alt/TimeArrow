@@ -22,6 +22,10 @@
       "onFail": ""
     },
     "scenes/stage4.json": {
+      "next": "scenes/stage5.json",
+      "onFail": ""
+    },
+    "scenes/stage5.json": {
       "next": "scenes/game_clear.json",
       "onFail": ""
     },

@@ -5,8 +5,8 @@
         "enabled": true,
         "props": [
           { "name": "T", "type": "float", "value": 10.0 },
-          { "name": "scenePath", "type": "string", "value": "scenes/stage2.json" },
-          { "name": "title", "type": "string", "value": "STAGE 2" },
+          { "name": "scenePath", "type": "string", "value": "scenes/stage5.json" },
+          { "name": "title", "type": "string", "value": "STAGE 5" },
           { "name": "markers", "type": "string", "value": "" }
         ],
         "scriptPath": "scripts/GameManager.lua"
@@ -31,11 +31,11 @@
           { "name": "maxSkip", "type": "float", "value": 10.0 },
           { "name": "maxDrawTime", "type": "float", "value": 3.0 },
           { "name": "climbSpeed", "type": "float", "value": 4.0 },
-          { "name": "targets", "type": "string", "value": "Button2" },
+          { "name": "targets", "type": "string", "value": "Wall5a,Button5" },
           { "name": "standables", "type": "string", "value": "" },
           { "name": "climbables", "type": "string", "value": "" },
           { "name": "pits", "type": "string", "value": "" },
-          { "name": "solids", "type": "string", "value": "Wall2" },
+          { "name": "solids", "type": "string", "value": "Wall5a,Wall5b" },
           { "name": "mirrors", "type": "string", "value": "" },
           { "name": "maxBounces", "type": "int", "value": 4 }
         ],
@@ -62,26 +62,49 @@
       "materialAssets": ["materials/blue_floor_tiles_01.dxmat"],
       "name": "Floor",
       "primitive": "box",
-      "transform": { "position": [8.0, -0.5, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [16.0, 1.0, 3.0] }
+      "transform": { "position": [12.0, -0.5, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [24.0, 1.0, 3.0] }
     },
     {
       "luaScript": {
         "enabled": true,
         "props": [
-          { "name": "linkTarget", "type": "string", "value": "Wall2" },
+          { "name": "startT", "type": "float", "value": 0.0 },
+          { "name": "axisX", "type": "float", "value": -1.0 },
+          { "name": "speed", "type": "float", "value": 0.08 },
+          { "name": "travel", "type": "float", "value": 10.0 },
+          { "name": "ghostTime", "type": "float", "value": 0.35 },
+          { "name": "materializeTime", "type": "float", "value": 0.25 },
+          { "name": "listenButton", "type": "bool", "value": false },
+          { "name": "startActive", "type": "bool", "value": true }
+        ],
+        "scriptPath": "scripts/CrushWall.lua"
+      },
+      "name": "Wall5a",
+      "sprite2d": {
+        "billboard": false, "color": [1.0, 1.0, 1.0, 1.0], "effectValue": 0.0, "layer": 5,
+        "shaderAlphaBlend": true, "shaderPath": "shaders/dissolve.hlsl", "size": [1.0, 1.0],
+        "texturePath": "textures/crushwall_rgba.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true
+      },
+      "transform": { "position": [7.0, 4.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.2, 8.0, 1.0] }
+    },
+    {
+      "luaScript": {
+        "enabled": true,
+        "props": [
+          { "name": "linkTarget", "type": "string", "value": "Wall5b" },
           { "name": "standOn", "type": "bool", "value": false },
           { "name": "arrowHit", "type": "bool", "value": true },
           { "name": "skipAmount", "type": "float", "value": 2.5 }
         ],
         "scriptPath": "scripts/Button.lua"
       },
-      "name": "Button2",
+      "name": "Button5",
       "sprite2d": {
         "billboard": false, "color": [1.0, 1.0, 1.0, 1.0], "effectValue": 0.0, "layer": 5,
         "shaderAlphaBlend": false, "shaderPath": "", "size": [1.0, 1.0],
         "texturePath": "textures/button_rgba.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true
       },
-      "transform": { "position": [5.0, 2.2, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [0.7, 0.7, 1.0] }
+      "transform": { "position": [13.2, 2.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [0.7, 0.7, 1.0] }
     },
     {
       "luaScript": {
@@ -98,20 +121,20 @@
         ],
         "scriptPath": "scripts/CrushWall.lua"
       },
-      "name": "Wall2",
+      "name": "Wall5b",
       "sprite2d": {
         "billboard": false, "color": [1.0, 1.0, 1.0, 1.0], "effectValue": 0.0, "layer": 5,
         "shaderAlphaBlend": true, "shaderPath": "shaders/dissolve.hlsl", "size": [1.0, 1.0],
         "texturePath": "textures/crushwall_rgba.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true
       },
-      "transform": { "position": [9.0, 4.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.2, 8.0, 1.0] }
+      "transform": { "position": [14.0, 4.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.2, 8.0, 1.0] }
     },
     {
       "luaScript": {
         "enabled": true,
         "props": [
           { "name": "radius", "type": "float", "value": 1.2 },
-          { "name": "next", "type": "string", "value": "scenes/stage3.json" }
+          { "name": "next", "type": "string", "value": "scenes/game_clear.json" }
         ],
         "scriptPath": "scripts/Exit.lua"
       },
@@ -121,7 +144,7 @@
         "shaderAlphaBlend": false, "shaderPath": "", "size": [1.0, 1.0],
         "texturePath": "textures/exit_rgba.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true
       },
-      "transform": { "position": [11.0, 0.6499999761581421, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.2999999523162842, 1.2999999523162842, 1.0] }
+      "transform": { "position": [22.0, 0.6499999761581421, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.2999999523162842, 1.2999999523162842, 1.0] }
     },
     {
       "luaScript": {
@@ -138,7 +161,7 @@
       "name": "Backdrop",
       "primitive": "box",
       "shader": "shaders/BackdropCollapse.hlsl",
-      "transform": { "position": [8.0, 6.0, 7.0], "rotation": [0.0, 180.0, 0.0], "scale": [20.0, 12.0, 1.0] }
+      "transform": { "position": [12.0, 6.0, 7.0], "rotation": [0.0, 180.0, 0.0], "scale": [28.0, 12.0, 1.0] }
     },
     {
       "directionalLight": {
@@ -146,12 +169,12 @@
         "direction": [-0.3499999940395355, -1.0, -0.30000001192092896], "intensity": 1.149999976158142
       },
       "name": "Sun",
-      "transform": { "position": [8.0, 10.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.0, 1.0, 1.0] }
+      "transform": { "position": [12.0, 10.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.0, 1.0, 1.0] }
     },
     {
-      "camera": { "farClip": 1000.0, "fovDegrees": 50.0, "isActive": true, "nearClip": 0.10000000149011612, "orthoSize": 6.0, "projection": 0 },
+      "camera": { "farClip": 1000.0, "fovDegrees": 50.0, "isActive": true, "nearClip": 0.10000000149011612, "orthoSize": 7.5, "projection": 0 },
       "name": "GameCamera",
-      "transform": { "position": [8.0, 13.0, -14.0], "rotation": [30.0, 0.0, 0.0], "scale": [1.0, 1.0, 1.0] }
+      "transform": { "position": [12.0, 13.0, -14.0], "rotation": [30.0, 0.0, 0.0], "scale": [1.0, 1.0, 1.0] }
     },
     {
       "gridPlane": { "size": 500.0 },
@@ -165,7 +188,7 @@
     },
     {
       "name": "SeekBar",
-      "parent": 11,
+      "parent": 12,
       "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.5, 1.0],
                   "offsetMin": [0.0, -16.0], "offsetMax": [0.0, 0.0], "visible": true, "order": 0 },
       "uiSlider": { "value": 0.0, "minValue": 0.0, "maxValue": 10.0, "step": 0.0, "onChangeEvent": "",
@@ -174,7 +197,7 @@
     },
     {
       "name": "ScreenFlash",
-      "parent": 11,
+      "parent": 12,
       "uiRect": { "anchorMin": [0.0, 0.0], "anchorMax": [1.0, 1.0], "pivot": [0.5, 0.5],
                   "offsetMin": [0.0, 0.0], "offsetMax": [0.0, 0.0], "visible": true, "order": 3 },
       "uiImage": { "texturePath": "", "color": [1.0, 1.0, 1.0, 0.0], "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0],

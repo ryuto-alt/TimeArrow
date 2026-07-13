@@ -1,10 +1,12 @@
 -- Button.lua -- プレイヤーが乗る、または矢を刺すことで押せるボタン。
--- 押すたびに events:emit("button_toggle", {target=linkTarget}) を発行して連動先(壁/リフト/格子/扉)を
--- トグルする。連動先は各スクリプトの listenButton=true + button_toggle 受信で反応する。
+-- skipAmount>0 なら連動先へ events:emit("time_skip", {target=linkTarget, amount=skipAmount}) を送り、
+-- 先送り演出(ビーム/火花/衝撃波+ゴーストタイムの半透明化)ごと連動先(CrushWall等)を動かす。
+-- skipAmount=0 のときは従来通り events:emit("button_toggle", {target=linkTarget}) で動作/停止をトグルする。
 properties = {
   { name = "linkTarget", type = "string", default = "",   label = "連動先エンティティ名" },
   { name = "standOn",    type = "bool",   default = true, label = "プレイヤーが乗ると押せる" },
   { name = "arrowHit",   type = "bool",   default = true, label = "矢を刺すと押せる(Player.targetsに登録要)" },
+  { name = "skipAmount", type = "float",  default = 0.0,  min = 0, max = 30, label = "連動先へ送る先送り量(0ならbutton_toggleを送る)" },
 }
 
 local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
@@ -13,7 +15,11 @@ end
 
 local function press(self)
   if self.linkTarget ~= "" then
-    events:emit("button_toggle", { target = self.linkTarget })
+    if self.skipAmount > 0 then
+      events:emit("time_skip", { target = self.linkTarget, amount = self.skipAmount })
+    else
+      events:emit("button_toggle", { target = self.linkTarget })
+    end
   end
   FX.spark(self.bx, self.by, self.bz, 10, 1.0, 0.85, 0.3)
   fx:pulse(0.12)

@@ -13,6 +13,7 @@ properties = {
   { name = "ghostTime",   type = "float", default = 0.35, min = 0.05,max = 2,  label = "先送り直後にすり抜けられる時間" },
   { name = "materializeTime", type = "float", default = 0.25, min = 0.05, max = 1, label = "再出現時にディゾルブで実体化する時間" },
   { name = "listenButton",type = "bool",  default = false,                    label = "ボタン連動(押すたび動作/停止を切替)" },
+  { name = "startActive", type = "bool",  default = true,                     label = "ボタン連動時の初期状態(false=最初は停止)" },
 }
 
 local function posAt(self, clockValue)
@@ -27,7 +28,7 @@ function OnStart(self)
   self.clock = 0
   self.ghostT = 0
   self.ffRemain = 0
-  self.buttonActive = true
+  self.buttonActive = self.startActive
   self.landX = self.bx
   self.markerAccum = 0
   self.materializeT = 0  -- >0の間、到着直後のディゾルブ実体化フェードを再生中

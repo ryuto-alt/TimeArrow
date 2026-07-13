@@ -5,6 +5,7 @@ local STAGES = {
   { path = "scenes/stage2.json", name = "STAGE 2" },
   { path = "scenes/stage3.json", name = "STAGE 3" },
   { path = "scenes/stage4.json", name = "STAGE 4" },
+  { path = "scenes/stage5.json", name = "STAGE 5" },
 }
 local SLIDE = 160.0
 local OUT_DUR = 0.16
