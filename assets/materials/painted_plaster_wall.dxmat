@@ -1,0 +1,15 @@
+{
+  "albedo": "textures/painted_plaster_wall/painted_plaster_wall_diff.jpg",
+  "license": "CC0",
+  "metalRoughness": "textures/painted_plaster_wall/painted_plaster_wall_arm.png",
+  "metallic": 1.0,
+  "name": "painted_plaster_wall",
+  "normal": "textures/painted_plaster_wall/painted_plaster_wall_nor_gl.png",
+  "roughness": 1.0,
+  "source": "Poly Haven",
+  "uvTiling": [
+    1.0,
+    1.0
+  ],
+  "version": 1
+}

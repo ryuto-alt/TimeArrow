@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="chevgrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff6d8"/>
+      <stop offset="1" stop-color="#ffd24d"/>
+    </linearGradient>
+  </defs>
+  <path d="M18 8 L50 32 L18 56 L18 40 L34 32 L18 24 Z" fill="url(#chevgrad)" stroke="#8a5c00" stroke-width="3" stroke-linejoin="round"/>
+</svg>

@@ -12,12 +12,12 @@
           {
             "name": "scenePath",
             "type": "string",
-            "value": "scenes/stage1.json"
+            "value": "scenes/stage2.json"
           },
           {
             "name": "title",
             "type": "string",
-            "value": "STAGE 1"
+            "value": "STAGE 2"
           },
           {
             "name": "markers",
@@ -520,7 +520,7 @@
       ],
       "name": "Backdrop",
       "primitive": "box",
-      "shader": "shaders/backdrop.hlsl",
+      "shader": "shaders/BackdropCollapse.hlsl",
       "transform": {
         "position": [
           8.0,
@@ -624,6 +624,93 @@
           1.0
         ]
       }
+    },
+    {
+      "name": "HudCanvas",
+      "uiCanvas": { "refWidth": 1280.0, "refHeight": 720.0, "scaleMode": 0, "sortOrder": 0, "visible": true }
+    },
+    {
+      "name": "SeekBarPanel",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
+                  "offsetMin": [-360.0, 10.0], "offsetMax": [360.0, 40.0], "visible": true, "order": 0 },
+      "uiImage": { "texturePath": "textures/ui_panel_rgba.png", "color": [0.08, 0.09, 0.13, 0.85],
+                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [16.0, 16.0, 16.0, 16.0],
+                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 }
+    },
+    {
+      "name": "SeekBarFill",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
+                  "offsetMin": [-354.0, 13.0], "offsetMax": [354.0, 37.0], "visible": true, "order": 1 },
+      "uiImage": { "texturePath": "textures/ui_bar_fill_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
+                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [10.0, 10.0, 10.0, 10.0],
+                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 0.0, "fillDir": 0 }
+    },
+    {
+      "name": "SeekBarLabel",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
+                  "offsetMin": [-360.0, 44.0], "offsetMax": [360.0, 66.0], "visible": true, "order": 2 },
+      "uiText": { "text": "0.0 / 10.0 s", "fontSize": 18.0, "color": [1.0, 1.0, 1.0, 1.0], "alignH": 1, "alignV": 0, "wrap": false }
+    },
+    {
+      "name": "ArrowStatusText",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 1.0],
+                  "offsetMin": [24.0, -56.0], "offsetMax": [320.0, -26.0], "visible": true, "order": 3 },
+      "uiText": { "text": "Arrow: READY", "fontSize": 20.0, "color": [1.0, 1.0, 1.0, 1.0], "alignH": 0, "alignV": 1, "wrap": false }
+    },
+    {
+      "name": "DrawGaugePanel",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 1.0],
+                  "offsetMin": [24.0, -90.0], "offsetMax": [244.0, -68.0], "visible": false, "order": 4 },
+      "uiImage": { "texturePath": "textures/ui_panel_rgba.png", "color": [0.08, 0.09, 0.13, 0.85],
+                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [10.0, 10.0, 10.0, 10.0],
+                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 }
+    },
+    {
+      "name": "DrawGaugeFill",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 1.0],
+                  "offsetMin": [27.0, -87.0], "offsetMax": [241.0, -71.0], "visible": false, "order": 5 },
+      "uiImage": { "texturePath": "textures/ui_bar_fill_rgba.png", "color": [0.6, 0.9, 1.0, 1.0],
+                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [8.0, 8.0, 8.0, 8.0],
+                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 0.0, "fillDir": 0 }
+    },
+    {
+      "name": "DrawGaugeText",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 1.0],
+                  "offsetMin": [252.0, -90.0], "offsetMax": [340.0, -68.0], "visible": false, "order": 6 },
+      "uiText": { "text": "+2.0s", "fontSize": 18.0, "color": [0.6, 0.9, 1.0, 1.0], "alignH": 0, "alignV": 1, "wrap": false }
+    },
+    {
+      "name": "ControlsHint",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.5, 1.0],
+                  "offsetMin": [-500.0, -40.0], "offsetMax": [500.0, -16.0], "visible": true, "order": 7 },
+      "uiText": { "text": "A/D move  SPACE jump  W/S climb  E(hold) draw+aim, release to fire  R retry",
+                  "fontSize": 15.0, "color": [0.78, 0.8, 0.86, 1.0], "alignH": 1, "alignV": 1, "wrap": false }
+    },
+    {
+      "name": "ResultRibbon",
+      "parent": 11,
+      "uiRect": { "anchorMin": [0.5, 0.5], "anchorMax": [0.5, 0.5], "pivot": [0.5, 0.5],
+                  "offsetMin": [-220.0, -68.0], "offsetMax": [220.0, 68.0], "visible": false, "order": 8 },
+      "uiImage": { "texturePath": "textures/ui_ribbon_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
+                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [60.0, 30.0, 60.0, 30.0],
+                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 },
+      "uiAnimator": { "showAnim": 2, "showDuration": 0.3, "showDelay": 0.0, "showEasing": 4, "slideOffset": 80.0,
+                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
+    },
+    {
+      "name": "ResultRibbonText",
+      "parent": 20,
+      "uiRect": { "anchorMin": [0.0, 0.0], "anchorMax": [1.0, 1.0], "pivot": [0.5, 0.5],
+                  "offsetMin": [0.0, 0.0], "offsetMax": [0.0, 0.0], "visible": true, "order": 0 },
+      "uiText": { "text": "MISS...", "fontSize": 36.0, "color": [0.15, 0.16, 0.2, 1.0], "alignH": 1, "alignV": 1, "wrap": false }
     }
   ],
   "postProcess": {

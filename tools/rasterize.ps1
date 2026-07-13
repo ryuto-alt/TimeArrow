@@ -25,7 +25,13 @@ $targets = @(
   @{ name = "arrow";     w = 240; h = 72  },
   @{ name = "button";    w = 200; h = 90  },
   @{ name = "lattice";   w = 200; h = 400 },
-  @{ name = "mirror";    w = 240; h = 240 }
+  @{ name = "mirror";    w = 240; h = 240 },
+  @{ name = "ui_panel";          w = 192; h = 128 },
+  @{ name = "ui_menu_button";    w = 240; h = 84  },
+  @{ name = "ui_bar_fill";       w = 64;  h = 32  },
+  @{ name = "ui_chevron";        w = 64;  h = 64  },
+  @{ name = "ui_ribbon";         w = 520; h = 160 },
+  @{ name = "ui_title_ornament"; w = 480; h = 48  }
 )
 
 foreach ($t in $targets) {

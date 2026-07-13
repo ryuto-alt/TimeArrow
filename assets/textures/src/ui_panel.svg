@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="128" viewBox="0 0 192 128">
+  <defs>
+    <linearGradient id="panelbase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a5063"/>
+      <stop offset="1" stop-color="#20232c"/>
+    </linearGradient>
+    <linearGradient id="panelsheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 外枠 -->
+  <rect x="6" y="6" width="180" height="116" rx="18" fill="url(#panelbase)" stroke="#14161c" stroke-width="6"/>
+  <!-- 上部ハイライト -->
+  <rect x="14" y="14" width="164" height="40" rx="12" fill="url(#panelsheen)"/>
+  <!-- 内枠(彫り込みライン) -->
+  <rect x="16" y="16" width="160" height="96" rx="12" fill="none" stroke="#0d0f14" stroke-width="2" opacity="0.6"/>
+
+  <!-- 四隅のシアン差し色ノッチ(時間モチーフ) -->
+  <path d="M6 30 L6 6 L30 6" fill="none" stroke="#5fc2ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M162 6 L186 6 L186 30" fill="none" stroke="#5fc2ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M186 98 L186 122 L162 122" fill="none" stroke="#5fc2ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M30 122 L6 122 L6 98" fill="none" stroke="#5fc2ff" stroke-width="4" stroke-linecap="round"/>
+</svg>

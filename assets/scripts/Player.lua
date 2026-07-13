@@ -95,6 +95,12 @@ function OnStart(self)
   if arrowE and arrowE:isValid() then
     arrowE.transform.position = Vec3.new(0, -100, 0)
   end
+
+  self.uiArrowStatus = scene:findEntity("ArrowStatusText")
+  self.uiGaugePanel  = scene:findEntity("DrawGaugePanel")
+  self.uiGaugeFill   = scene:findEntity("DrawGaugeFill")
+  self.uiGaugeText   = scene:findEntity("DrawGaugeText")
+  self.gaugeShown = false
 end
 
 -- 乗れる足場(standables)を毎フレーム探し、水平範囲内かつ足元がだいたい上面以上なら
@@ -429,16 +435,30 @@ local function updateArrow(self, dt)
   end
 end
 
-local function drawHud(self, hudY)
+local function updateHud(self)
   if self.drawing then
-    local frac = self.drawT / self.maxDrawTime
-    local amount = lerp(self.minSkip, self.maxSkip, clamp(frac, 0, 1))
-    ui:rect(20, hudY - 30, 220, 14, 0.08, 0.1, 0.14, 0.85, 4)
-    ui:rect(20, hudY - 30, 220 * clamp(frac, 0, 1), 14, 0.35, 0.8, 1.0, 0.95, 4)
-    ui:text(250, hudY - 34, string.format("+%.1fs", amount), 22, 0.6, 0.9, 1.0, 1)
-  else
+    if not self.gaugeShown then
+      self.gaugeShown = true
+      if self.uiGaugePanel and self.uiGaugePanel:isValid() then scene:setUiVisible(self.uiGaugePanel, true) end
+      if self.uiGaugeFill and self.uiGaugeFill:isValid() then scene:setUiVisible(self.uiGaugeFill, true) end
+      if self.uiGaugeText and self.uiGaugeText:isValid() then scene:setUiVisible(self.uiGaugeText, true) end
+    end
+    local frac = clamp(self.drawT / self.maxDrawTime, 0, 1)
+    local amount = lerp(self.minSkip, self.maxSkip, frac)
+    if self.uiGaugeFill and self.uiGaugeFill:isValid() then scene:setUiFill(self.uiGaugeFill, frac) end
+    if self.uiGaugeText and self.uiGaugeText:isValid() then
+      scene:setUiText(self.uiGaugeText, string.format("+%.1fs", amount))
+    end
+  elseif self.gaugeShown then
+    self.gaugeShown = false
+    if self.uiGaugePanel and self.uiGaugePanel:isValid() then scene:setUiVisible(self.uiGaugePanel, false) end
+    if self.uiGaugeFill and self.uiGaugeFill:isValid() then scene:setUiVisible(self.uiGaugeFill, false) end
+    if self.uiGaugeText and self.uiGaugeText:isValid() then scene:setUiVisible(self.uiGaugeText, false) end
+  end
+
+  if self.uiArrowStatus and self.uiArrowStatus:isValid() then
     local arrowState = self.hasArrow and "READY" or (self.arrowFlying and "FLYING" or "STUCK (touch it to recover)")
-    ui:text(20, hudY - 34, "Arrow: " .. arrowState, 22, 1, 1, 1, 1)
+    scene:setUiText(self.uiArrowStatus, "Arrow: " .. arrowState)
   end
 end
 
@@ -450,10 +470,7 @@ function OnUpdate(self, dt)
   updateMovement(self, dt)
   updateDraw(self, dt)
   updateArrow(self, dt)
-
-  local screenH = SCREEN_H or 720
-  drawHud(self, screenH - 24)
-  ui:text(20, screenH - 56, "A/D move  SPACE jump  W/S climb  E(hold) draw+aim 8-way, release to fire  R retry", 16, 0.75, 0.78, 0.85, 1)
+  updateHud(self)
 
   if keyPressed("ESC") or padPressed("START") then goToScene("scenes/title.json", 0.5) end
 end

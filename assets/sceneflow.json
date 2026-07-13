@@ -2,6 +2,10 @@
   "start": "scenes/title.json",
   "flow": {
     "scenes/title.json": {
+      "next": "scenes/stage_select.json",
+      "onFail": ""
+    },
+    "scenes/stage_select.json": {
       "next": "scenes/stage1.json",
       "onFail": ""
     },
@@ -18,7 +22,11 @@
       "onFail": ""
     },
     "scenes/stage4.json": {
-      "next": "scenes/title.json",
+      "next": "scenes/game_clear.json",
+      "onFail": ""
+    },
+    "scenes/game_clear.json": {
+      "next": "scenes/stage_select.json",
       "onFail": ""
     }
   }

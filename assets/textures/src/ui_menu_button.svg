@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="84" viewBox="0 0 240 84">
+  <defs>
+    <linearGradient id="mbtnbase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#565c70"/>
+      <stop offset="1" stop-color="#2a2e39"/>
+    </linearGradient>
+    <linearGradient id="mbtnsheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="232" height="76" rx="20" fill="url(#mbtnbase)" stroke="#14161c" stroke-width="5"/>
+  <rect x="10" y="9" width="220" height="30" rx="14" fill="url(#mbtnsheen)"/>
+  <rect x="7" y="7" width="226" height="70" rx="17" fill="none" stroke="#ffd24d" stroke-width="2.5" opacity="0.8"/>
+</svg>
