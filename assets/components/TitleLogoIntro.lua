@@ -44,7 +44,7 @@ end
 
 local function brightColor(i)
   local u = (i - 1) / 8.0
-  return 0.50 + 0.32 * u, 0.88 + 0.08 * u, 1.0
+  return 1.0, 0.50 + 0.16 * u, 0.08 + 0.12 * u   -- 深い琥珀ゴールド(左→右で明るく)
 end
 
 function OnStart(self)
@@ -57,6 +57,8 @@ function OnStart(self)
       self.chars[i] = { ent = e, px = t.position.x, py = t.position.y, pz = t.position.z,
                         s = t.scale.x, lit = false }
       scene:setColor(e, DIM[1], DIM[2], DIM[3])   -- 未点灯で開始(サビで点灯)
+      local o = scene:findEntity("TitleCharOut" .. i)
+      if o and o:isValid() then self.chars[i].out = o end
     end
   end
   local function grab(name)
@@ -282,5 +284,13 @@ function OnUpdate(self, dt)
     local brill = 0
     if c.lit then brill = clamp01((t - c.litAt) / 0.22) end
     scene:setMeshParams(c.ent, brill, 0, 0, 0)
+    -- 発光アウトライン(文字の背後に少し拡大して追従)
+    if c.out then
+      c.out.transform.position = Vec3.new(x, y, c.pz + 0.25)
+      c.out.transform.rotation = Vec3.new(0, 0, rz)
+      c.out.transform.scale    = Vec3.new(c.s * sxm, c.s * sym, c.s * sxm)
+      scene:setMeshEffect(c.out, beats)
+      scene:setMeshParams(c.out, brill, 0, 0, 0)
+    end
   end
 end
