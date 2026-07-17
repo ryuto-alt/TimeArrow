@@ -12,6 +12,10 @@ function OnStart(self)
   events:on("start_clicked", function(e)
     startGame(e and e.source)
   end)
+
+  events:on("quit_clicked", function(e)
+    quitGame(e and e.source)
+  end)
 end
 
 function startGame(buttonEntity)
@@ -21,6 +25,15 @@ function startGame(buttonEntity)
     scene:tweenUi(buttonEntity, { scale = 0.9, duration = 0.12, easing = "in" })
   end
   goToScene("scenes/stage_select.json", 0.5)
+end
+
+function quitGame(buttonEntity)
+  if done then return end
+  done = true
+  if buttonEntity then
+    scene:tweenUi(buttonEntity, { scale = 0.9, duration = 0.12, easing = "in" })
+  end
+  quit()
 end
 
 function OnUpdate(self, dt)

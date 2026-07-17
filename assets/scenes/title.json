@@ -108,113 +108,602 @@
       }
     },
     {
-      "luaScript": { "enabled": true, "props": [], "scriptPath": "scripts/title.lua" },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/title.lua"
+      },
       "name": "TitleController",
-      "transform": { "position": [0.0, 0.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [1.0, 1.0, 1.0] }
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
     },
     {
       "name": "TitleCanvas",
-      "uiCanvas": { "refWidth": 1280.0, "refHeight": 720.0, "scaleMode": 0, "sortOrder": 0, "visible": true }
-    },
-    {
-      "name": "TitleBanner",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-420.0, 72.0], "offsetMax": [420.0, 466.0], "visible": true, "order": 0 },
-      "uiImage": { "texturePath": "textures/ui_panel_rgba.png", "color": [0.08, 0.09, 0.13, 0.78],
-                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [32.0, 32.0, 32.0, 32.0],
-                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 }
-    },
-    {
-      "name": "TitleHeading",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-400.0, 92.0], "offsetMax": [400.0, 160.0], "visible": true, "order": 1 },
-      "uiText": { "text": "TIME ARROW", "fontSize": 56.0, "color": [1.0, 0.85, 0.3, 1.0], "alignH": 1, "alignV": 0, "wrap": false },
-      "uiAnimator": { "showAnim": 2, "showDuration": 0.4, "showDelay": 0.0, "showEasing": 4, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
-    },
-    {
-      "name": "TitleOrnament",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-130.0, 168.0], "offsetMax": [130.0, 194.0], "visible": true, "order": 2 },
-      "uiImage": { "texturePath": "textures/ui_title_ornament_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
-                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [0.0, 0.0, 0.0, 0.0],
-                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 },
-      "uiAnimator": { "showAnim": 1, "showDuration": 0.5, "showDelay": 0.15, "showEasing": 2, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
-    },
-    {
-      "name": "TitleSubtitle",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-400.0, 200.0], "offsetMax": [400.0, 226.0], "visible": true, "order": 3 },
-      "uiText": { "text": "-- 時を先送りさせる矢 --", "fontSize": 22.0, "color": [0.85, 0.9, 1.0, 1.0], "alignH": 1, "alignV": 0, "wrap": false },
-      "uiAnimator": { "showAnim": 1, "showDuration": 0.5, "showDelay": 0.25, "showEasing": 2, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
-    },
-    {
-      "name": "DemoBarTrack",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-240.0, 238.0], "offsetMax": [240.0, 262.0], "visible": true, "order": 4 },
-      "uiImage": { "texturePath": "textures/ui_panel_rgba.png", "color": [0.1, 0.11, 0.15, 0.9],
-                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [16.0, 16.0, 16.0, 16.0],
-                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 1.0, "fillDir": 0 },
-      "uiAnimator": { "showAnim": 1, "showDuration": 0.5, "showDelay": 0.35, "showEasing": 2, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
-    },
-    {
-      "name": "DemoBarFill",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-236.0, 241.0], "offsetMax": [236.0, 259.0], "visible": true, "order": 5 },
-      "uiImage": { "texturePath": "textures/ui_bar_fill_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
-                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [8.0, 8.0, 8.0, 8.0],
-                   "cornerRadius": 0.0, "raycastBlock": false, "fillAmount": 0.5, "fillDir": 0 },
-      "uiAnimator": { "showAnim": 1, "showDuration": 0.5, "showDelay": 0.35, "showEasing": 2, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiCanvas": {
+        "refHeight": 720.0,
+        "refWidth": 1280.0,
+        "scaleMode": 0,
+        "sortOrder": 0,
+        "visible": true
+      }
     },
     {
       "name": "StartButton",
       "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-130.0, 278.0], "offsetMax": [130.0, 346.0], "visible": true, "order": 6 },
-      "uiImage": { "texturePath": "textures/ui_menu_button_rgba.png", "color": [1.0, 1.0, 1.0, 1.0],
-                   "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0], "sliceBorder": [24.0, 24.0, 24.0, 24.0],
-                   "cornerRadius": 0.0, "raycastBlock": true, "fillAmount": 1.0, "fillDir": 0 },
-      "uiButton": { "onClickEvent": "start_clicked", "normalColor": [1.0, 1.0, 1.0, 1.0],
-                    "hoverColor": [1.0, 0.92, 0.7, 1.0], "pressedColor": [0.78, 0.72, 0.56, 1.0],
-                    "interactable": true, "hoverSound": "", "clickSound": "" },
-      "uiAnimator": { "showAnim": 2, "showDuration": 0.4, "showDelay": 0.5, "showEasing": 4, "slideOffset": 80.0,
-                       "hoverScale": 1.06, "pressScale": 0.94, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.059999942779541,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 0.9399999976158142,
+        "showAnim": 2,
+        "showDelay": 0.3,
+        "showDuration": 0.4000000059604645,
+        "showEasing": 4,
+        "slideOffset": 80.0
+      },
+      "uiButton": {
+        "clickSound": "",
+        "hoverColor": [
+          1.0,
+          0.9200000166893005,
+          0.699999988079071,
+          1.0
+        ],
+        "hoverSound": "",
+        "interactable": true,
+        "normalColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "onClickEvent": "start_clicked",
+        "pressedColor": [
+          0.7799999713897705,
+          0.7200000286102295,
+          0.5600000023841858,
+          1.0
+        ]
+      },
+      "uiImage": {
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "textures/ui_button_retro_cyan_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
+      },
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.0
+        ],
+        "anchorMin": [
+          0.5,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          120.0,
+          536.0
+        ],
+        "offsetMin": [
+          -120.0,
+          410.0
+        ],
+        "order": 6,
+        "pivot": [
+          0.5,
+          0.0
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
+      }
+    },
+    {
+      "name": "QuitButton",
+      "parent": 5,
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.059999942779541,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 0.9399999976158142,
+        "showAnim": 2,
+        "showDelay": 0.42,
+        "showDuration": 0.4000000059604645,
+        "showEasing": 4,
+        "slideOffset": 80.0
+      },
+      "uiButton": {
+        "clickSound": "",
+        "hoverColor": [
+          1.0,
+          0.9200000166893005,
+          0.699999988079071,
+          1.0
+        ],
+        "hoverSound": "",
+        "interactable": true,
+        "normalColor": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "onClickEvent": "quit_clicked",
+        "pressedColor": [
+          0.7799999713897705,
+          0.7200000286102295,
+          0.5600000023841858,
+          1.0
+        ]
+      },
+      "uiImage": {
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "textures/ui_button_retro_cyan_rgba.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
+      },
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.0
+        ],
+        "anchorMin": [
+          0.5,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          120.0,
+          682.0
+        ],
+        "offsetMin": [
+          -120.0,
+          556.0
+        ],
+        "order": 7,
+        "pivot": [
+          0.5,
+          0.0
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
+      }
     },
     {
       "name": "StartButtonLabel",
-      "parent": 12,
-      "uiRect": { "anchorMin": [0.0, 0.0], "anchorMax": [1.0, 1.0], "pivot": [0.5, 0.5],
-                  "offsetMin": [0.0, 0.0], "offsetMax": [0.0, 0.0], "visible": true, "order": 0 },
-      "uiText": { "text": "START", "fontSize": 28.0, "color": [1.0, 1.0, 1.0, 1.0], "alignH": 1, "alignV": 1, "wrap": false }
+      "parent": 6,
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiRect": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          0.0,
+          0.0
+        ],
+        "offsetMin": [
+          0.0,
+          0.0
+        ],
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
+      },
+      "uiText": {
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
+        "color": [
+          0.85,
+          0.97,
+          1.0,
+          1.0
+        ],
+        "fontPath": "",
+        "fontSize": 34.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 3.0,
+        "outlineColor": [
+          0.02,
+          0.08,
+          0.18,
+          1.0
+        ],
+        "outlineWidth": 2.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "START",
+        "typewriterSpeed": 0.0,
+        "wrap": false
+      }
     },
     {
-      "name": "StartCaption",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-400.0, 354.0], "offsetMax": [400.0, 376.0], "visible": true, "order": 7 },
-      "uiText": { "text": "SPACE / ENTER / A(pad) でもスタートできます", "fontSize": 16.0, "color": [0.75, 0.78, 0.85, 1.0], "alignH": 1, "alignV": 0, "wrap": false },
-      "uiAnimator": { "showAnim": 1, "showDuration": 0.5, "showDelay": 0.65, "showEasing": 2, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
+      "name": "QuitButtonLabel",
+      "parent": 7,
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiRect": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          0.0,
+          0.0
+        ],
+        "offsetMin": [
+          0.0,
+          0.0
+        ],
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
+      },
+      "uiText": {
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
+        "color": [
+          0.85,
+          0.97,
+          1.0,
+          1.0
+        ],
+        "fontPath": "",
+        "fontSize": 34.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 3.0,
+        "outlineColor": [
+          0.02,
+          0.08,
+          0.18,
+          1.0
+        ],
+        "outlineWidth": 2.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "QUIT",
+        "typewriterSpeed": 0.0,
+        "wrap": false
+      }
     },
     {
-      "name": "ControlsHint",
-      "parent": 5,
-      "uiRect": { "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0],
-                  "offsetMin": [-400.0, 392.0], "offsetMax": [400.0, 450.0], "visible": true, "order": 8 },
-      "uiText": { "text": "A/D move   SPACE jump   W/S climb   E(hold) draw+aim 8-way, release to fire   R retry stage   Gamepad: Stick move / A jump / X(hold) draw+aim",
-                  "fontSize": 15.0, "color": [0.78, 0.8, 0.86, 1.0], "alignH": 1, "alignV": 0, "wrap": true },
-      "uiAnimator": { "showAnim": 1, "showDuration": 0.5, "showDelay": 0.8, "showEasing": 2, "slideOffset": 80.0,
-                       "hoverScale": 1.0, "pressScale": 1.0, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
+      "luaScript": {
+        "enabled": true,
+        "props": [
+          {
+            "name": "floatAmp",
+            "type": "float",
+            "value": 0.25
+          },
+          {
+            "name": "floatSpeed",
+            "type": "float",
+            "value": 0.5
+          },
+          {
+            "name": "swayDeg",
+            "type": "float",
+            "value": 2.5
+          },
+          {
+            "name": "swaySpeed",
+            "type": "float",
+            "value": 0.35
+          }
+        ],
+        "scriptPath": "components/TitleLogoMotion.lua"
+      },
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/titlelogo_v5.fbx"
+      },
+      "name": "TitleLogo",
+      "transform": {
+        "position": [
+          -10.0,
+          3.700000047683716,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          0.014700000174343586,
+          0.014700000174343586,
+          0.014700000174343586
+        ]
+      }
     }
   ],
   "postProcess": {

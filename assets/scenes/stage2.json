@@ -310,39 +310,6 @@
         "scriptPath": "scripts/Button.lua"
       },
       "name": "Button2",
-      "sprite2d": {
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 5,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/button_rgba.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
       "transform": {
         "position": [
           5.0,
@@ -359,6 +326,13 @@
           0.699999988079071,
           1.0
         ]
+      },
+      "meshRenderer": {
+        "modelPath": "models/Button/Button.obj"
+      },
+      "material": {
+        "metallic": 0.05,
+        "roughness": 0.6
       }
     },
     {
@@ -627,11 +601,11 @@
       "transform": {
         "position": [
           8.0,
-          13.0,
-          -14.0
+          8.86,
+          -10.08
         ],
         "rotation": [
-          30.0,
+          28.0,
           0.0,
           0.0
         ],
@@ -886,18 +860,11 @@
       }
     },
     {
-      "material": {
-        "metallic": 0.0,
-        "roughness": 0.5
-      },
-      "meshRenderer": {
-        "modelPath": "models/Block/Block.obj"
-      },
-      "name": "Block",
+      "name": "Needle2",
       "transform": {
         "position": [
-          0.0,
-          0.0,
+          6.5,
+          0.2,
           0.0
         ],
         "rotation": [
@@ -906,9 +873,32 @@
           0.0
         ],
         "scale": [
-          0.009999999776482582,
-          0.009999999776482582,
-          0.009999999776482582
+          1.0,
+          0.4,
+          1.0
+        ]
+      },
+      "meshRenderer": {
+        "modelPath": "models/Needle_Small/Needle_Small.obj"
+      },
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.35
+      },
+      "luaScript": {
+        "enabled": true,
+        "scriptPath": "scripts/Wall.lua",
+        "props": [
+          {
+            "name": "deadly",
+            "type": "bool",
+            "value": true
+          },
+          {
+            "name": "hitScale",
+            "type": "float",
+            "value": 0.75
+          }
         ]
       }
     }
