@@ -985,26 +985,17 @@
           1.399999976158142,
           1.399999976158142
         ]
-      }
+      },
+      "shader": "TitleGlow.hlsl"
     },
     {
       "luaScript": {
         "enabled": true,
         "props": [
           {
-            "name": "charDelay",
+            "name": "danceAmp",
             "type": "float",
-            "value": 0.09
-          },
-          {
-            "name": "dropHeight",
-            "type": "float",
-            "value": 2.4
-          },
-          {
-            "name": "waveAmp",
-            "type": "float",
-            "value": 0.06
+            "value": 1.0
           }
         ],
         "scriptPath": "components/TitleLogoIntro.lua"
@@ -1025,6 +1016,39 @@
           1.0,
           1.0,
           1.0
+        ]
+      }
+    },
+    {
+      "name": "TitleBow",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_bow.fbx"
+      },
+      "material": {
+        "metallic": 0.45,
+        "roughness": 0.25
+      },
+      "color": [
+        0.75,
+        0.92,
+        1.0
+      ],
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -19.0,
+          2.9,
+          2.2
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          2.0,
+          2.0,
+          2.0
         ]
       }
     }
