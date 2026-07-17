@@ -205,7 +205,7 @@
           0.699999988079071,
           1.0
         ],
-        "hoverSound": "",
+        "hoverSound": "audio/ui/menu_select.wav",
         "interactable": true,
         "normalColor": [
           1.0,
@@ -353,14 +353,14 @@
         "slideOffset": 80.0
       },
       "uiButton": {
-        "clickSound": "",
+        "clickSound": "audio/ui/menu_enter.wav",
         "hoverColor": [
           1.0,
           0.9200000166893005,
           0.699999988079071,
           1.0
         ],
-        "hoverSound": "",
+        "hoverSound": "audio/ui/menu_select.wav",
         "interactable": true,
         "normalColor": [
           1.0,

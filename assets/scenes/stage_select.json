@@ -84,7 +84,7 @@
                    "cornerRadius": 0.0, "raycastBlock": true, "fillAmount": 1.0, "fillDir": 0 },
       "uiButton": { "onClickEvent": "stage_prev", "normalColor": [1.0, 1.0, 1.0, 1.0],
                     "hoverColor": [1.0, 0.95, 0.8, 1.0], "pressedColor": [0.8, 0.75, 0.6, 1.0],
-                    "interactable": true, "hoverSound": "", "clickSound": "" },
+                    "interactable": true, "hoverSound": "audio/ui/menu_select.wav", "clickSound": "" },
       "uiAnimator": { "showAnim": 0, "showDuration": 0.35, "showDelay": 0.0, "showEasing": 2, "slideOffset": 80.0,
                        "hoverScale": 1.15, "pressScale": 0.9, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
     },
@@ -98,7 +98,7 @@
                    "cornerRadius": 0.0, "raycastBlock": true, "fillAmount": 1.0, "fillDir": 0 },
       "uiButton": { "onClickEvent": "stage_next", "normalColor": [1.0, 1.0, 1.0, 1.0],
                     "hoverColor": [1.0, 0.95, 0.8, 1.0], "pressedColor": [0.8, 0.75, 0.6, 1.0],
-                    "interactable": true, "hoverSound": "", "clickSound": "" },
+                    "interactable": true, "hoverSound": "audio/ui/menu_select.wav", "clickSound": "" },
       "uiAnimator": { "showAnim": 0, "showDuration": 0.35, "showDelay": 0.0, "showEasing": 2, "slideOffset": 80.0,
                        "hoverScale": 1.15, "pressScale": 0.9, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
     },
@@ -112,7 +112,7 @@
                    "cornerRadius": 0.0, "raycastBlock": true, "fillAmount": 1.0, "fillDir": 0 },
       "uiButton": { "onClickEvent": "stage_play", "normalColor": [1.0, 1.0, 1.0, 1.0],
                     "hoverColor": [1.0, 0.92, 0.7, 1.0], "pressedColor": [0.78, 0.72, 0.56, 1.0],
-                    "interactable": true, "hoverSound": "", "clickSound": "" },
+                    "interactable": true, "hoverSound": "audio/ui/menu_select.wav", "clickSound": "" },
       "uiAnimator": { "showAnim": 2, "showDuration": 0.35, "showDelay": 0.1, "showEasing": 4, "slideOffset": 80.0,
                        "hoverScale": 1.06, "pressScale": 0.94, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
     },
@@ -133,7 +133,7 @@
                    "cornerRadius": 0.0, "raycastBlock": true, "fillAmount": 1.0, "fillDir": 0 },
       "uiButton": { "onClickEvent": "stage_back", "normalColor": [0.85, 0.85, 0.85, 1.0],
                     "hoverColor": [1.0, 1.0, 1.0, 1.0], "pressedColor": [0.7, 0.7, 0.7, 1.0],
-                    "interactable": true, "hoverSound": "", "clickSound": "" },
+                    "interactable": true, "hoverSound": "audio/ui/menu_select.wav", "clickSound": "" },
       "uiAnimator": { "showAnim": 1, "showDuration": 0.35, "showDelay": 0.0, "showEasing": 2, "slideOffset": 80.0,
                        "hoverScale": 1.05, "pressScale": 0.95, "hoverSpeed": 14.0, "loopAnim": 0, "loopSpeed": 1.0, "loopAmount": 8.0 }
     },

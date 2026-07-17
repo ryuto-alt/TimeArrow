@@ -49,6 +49,16 @@ end
 
 function OnStart(self)
   self.clock = 0
+  self.chargeAt = nil
+  self.departAt = nil
+  -- START押下(title_warp.wav 再生開始)→溜め: 文字が震えてしゃがみ、矢が引き絞られる(音の立ち上がり0.5s)
+  events:on("title_charge", function()
+    if not self.chargeAt then self.chargeAt = self.clock end
+  end)
+  -- クライマックス(0.5s)で発進: 矢が先陣を切って右へ飛び出し、文字が左から順にホップして追いかける
+  events:on("title_depart", function()
+    if not self.departAt then self.departAt = self.clock end
+  end)
   self.chars = {}
   for i = 1, CHAR_N do
     local e = scene:findEntity("TitleChar" .. i)
@@ -106,6 +116,11 @@ function OnUpdate(self, dt)
   if self.cam then
     local c = self.cam
     local z = c.pz - 1.3 + 1.3 * easeInQuad(clamp01(t / T_DROP))
+    if self.departAt then
+      -- 発進の勢いに合わせてカメラも前へ加速
+      local u = t - self.departAt
+      z = z + 2.2 * u * u
+    end
     local sx, sy = 0, 0
     local sh = (t - T_IMPACT) / 0.20
     if sh >= 0 and sh < 1 then
@@ -212,6 +227,26 @@ function OnUpdate(self, dt)
       a.ent.transform.rotation = Vec3.new(0, 0, rz)
       a.ent.transform.scale    = Vec3.new(sx, a.sy, a.sz)
     end
+
+    -- 溜め: 矢が震えながら左へ引き絞られる(弓を引くイメージ、warpの立ち上がりと同期)
+    if self.chargeAt and not self.departAt then
+      local u = math.min((t - self.chargeAt) / 0.5, 1)
+      local tr = math.sin(t * 45) * 0.02 * u
+      a.ent.transform.position = Vec3.new(a.px - 0.55 * easeInQuad(u), a.py + tr, a.pz)
+      a.ent.transform.rotation = Vec3.new(0, 0, 1.5 * u)
+    end
+
+    -- 発進: 引き絞った位置から右へ加速して画面外へ(火花の尾を引く)。ワイプはこの矢を追う形になる
+    if self.departAt and t > self.departAt then
+      local u = t - self.departAt
+      local ax = a.px - 0.55 * (1 - math.min(u * 6, 1)) + 34.0 * u * u
+      a.ent.transform.position = Vec3.new(ax, a.py, a.pz)
+      a.ent.transform.rotation = Vec3.new(0, 0, 0)
+      if u < 0.6 then
+        fx:burst{ x = ax - 6, y = a.py, z = a.pz, kind = "spark", count = 4,
+                  size = 0.30, r = 1, g = 0.72, b = 0.2, speed = 3, dx = -1 }
+      end
+    end
   end
 
   -- ── 文字 ────────────────────────────────────────────
@@ -274,6 +309,27 @@ function OnUpdate(self, dt)
           local ds = 1 + (0.05 * bounce + 0.035 * barPulse) * self.danceAmp
           sxm, sym = sxm * ds, sym * ds
         end
+      end
+    end
+
+    -- 溜め: 震えながら低くしゃがむ(発射の予備動作。warpの立ち上がりと同期して強まる)
+    if self.chargeAt and not self.departAt then
+      local u = math.min((t - self.chargeAt) / 0.5, 1)
+      local tr = (math.sin(t * 35 + i * 1.7) + math.sin(t * 51 + i)) * 0.02 * u
+      x = x + tr
+      y = y - 0.22 * u * u + tr * 0.7
+      rz = rz - 3 * u
+      sxm = sxm * (1 + 0.06 * u)
+      sym = sym * (1 - 0.10 * u)
+    end
+
+    -- 発進: 左の文字から順にホップして矢を追い、右へ加速して画面外へ
+    if self.departAt then
+      local u = (t - self.departAt) - (i - 1) * 0.05
+      if u > 0 then
+        x = x + 16.0 * u * u
+        y = y + 0.8 * math.sin(math.min(u * 7.0, math.pi))
+        rz = rz + 22 * math.min(u * 2.5, 1)
       end
     end
 
