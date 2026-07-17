@@ -1,12 +1,18 @@
 {
   "entities": [
     {
+      "color": [
+        0.05000000074505806,
+        0.07000000029802322,
+        0.12999999523162842
+      ],
       "name": "Backdrop",
       "primitive": "box",
+      "shader": "TitleBackdrop.hlsl",
       "transform": {
         "position": [
-          0.0,
-          5.0,
+          -10.0,
+          2.5,
           7.0
         ],
         "rotation": [
@@ -15,8 +21,8 @@
           0.0
         ],
         "scale": [
-          30.0,
-          12.0,
+          66.0,
+          34.0,
           1.0
         ]
       }
@@ -186,7 +192,7 @@
         "loopSpeed": 1.0,
         "pressScale": 0.9399999976158142,
         "showAnim": 2,
-        "showDelay": 0.3,
+        "showDelay": 0.30000001192092896,
         "showDuration": 0.4000000059604645,
         "showEasing": 4,
         "slideOffset": 80.0
@@ -341,7 +347,7 @@
         "loopSpeed": 1.0,
         "pressScale": 0.9399999976158142,
         "showAnim": 2,
-        "showDelay": 0.42,
+        "showDelay": 0.41999998688697815,
         "showDuration": 0.4000000059604645,
         "showEasing": 4,
         "slideOffset": 80.0
@@ -522,8 +528,8 @@
         "charAnimAmount": 4.0,
         "charAnimSpeed": 2.0,
         "color": [
-          0.85,
-          0.97,
+          0.8500000238418579,
+          0.9700000286102295,
           1.0,
           1.0
         ],
@@ -538,9 +544,9 @@
         "gradientDir": 0,
         "letterSpacing": 3.0,
         "outlineColor": [
-          0.02,
-          0.08,
-          0.18,
+          0.019999999552965164,
+          0.07999999821186066,
+          0.18000000715255737,
           1.0
         ],
         "outlineWidth": 2.0,
@@ -614,8 +620,8 @@
         "charAnimAmount": 4.0,
         "charAnimSpeed": 2.0,
         "color": [
-          0.85,
-          0.97,
+          0.8500000238418579,
+          0.9700000286102295,
           1.0,
           1.0
         ],
@@ -630,9 +636,9 @@
         "gradientDir": 0,
         "letterSpacing": 3.0,
         "outlineColor": [
-          0.02,
-          0.08,
-          0.18,
+          0.019999999552965164,
+          0.07999999821186066,
+          0.18000000715255737,
           1.0
         ],
         "outlineWidth": 2.0,
@@ -653,44 +659,24 @@
       }
     },
     {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "floatAmp",
-            "type": "float",
-            "value": 0.25
-          },
-          {
-            "name": "floatSpeed",
-            "type": "float",
-            "value": 0.5
-          },
-          {
-            "name": "swayDeg",
-            "type": "float",
-            "value": 2.5
-          },
-          {
-            "name": "swaySpeed",
-            "type": "float",
-            "value": 0.35
-          }
-        ],
-        "scriptPath": "components/TitleLogoMotion.lua"
-      },
+      "color": [
+        0.5,
+        0.8799999952316284,
+        1.0
+      ],
       "material": {
         "metallic": 0.3499999940395355,
         "roughness": 0.20000000298023224
       },
       "meshRenderer": {
-        "modelPath": "model/fbxmodel/titlelogo_v5.fbx"
+        "modelPath": "model/fbxmodel/tl6_char1.fbx"
       },
-      "name": "TitleLogo",
+      "name": "TitleChar1",
+      "shader": "TitleGlow.hlsl",
       "transform": {
         "position": [
-          -10.0,
-          3.700000047683716,
+          -16.200000762939453,
+          4.393499851226807,
           2.0
         ],
         "rotation": [
@@ -699,9 +685,346 @@
           0.0
         ],
         "scale": [
-          0.014700000174343586,
-          0.014700000174343586,
-          0.014700000174343586
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.5400000214576721,
+        0.8899999856948853,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char2.fbx"
+      },
+      "name": "TitleChar2",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -14.649999618530273,
+          4.42579984664917,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.5799999833106995,
+        0.8999999761581421,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char3.fbx"
+      },
+      "name": "TitleChar3",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -13.100000381469727,
+          4.228300094604492,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.6200000047683716,
+        0.9100000262260437,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char4.fbx"
+      },
+      "name": "TitleChar4",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -11.550000190734863,
+          4.490600109100342,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.6600000262260437,
+        0.9200000166893005,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char5.fbx"
+      },
+      "name": "TitleChar5",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -10.0,
+          4.442500114440918,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.699999988079071,
+        0.9300000071525574,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char6.fbx"
+      },
+      "name": "TitleChar6",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -8.449999809265137,
+          4.392000198364258,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.7400000095367432,
+        0.9399999976158142,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char7.fbx"
+      },
+      "name": "TitleChar7",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -6.900000095367432,
+          4.3881001472473145,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.7799999713897705,
+        0.949999988079071,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char8.fbx"
+      },
+      "name": "TitleChar8",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -5.349999904632568,
+          4.394700050354004,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        0.8199999928474426,
+        0.9599999785423279,
+        1.0
+      ],
+      "material": {
+        "metallic": 0.3499999940395355,
+        "roughness": 0.20000000298023224
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_char9.fbx"
+      },
+      "name": "TitleChar9",
+      "shader": "TitleGlow.hlsl",
+      "transform": {
+        "position": [
+          -3.799999952316284,
+          4.413700103759766,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.7000000476837158,
+          1.7000000476837158,
+          1.7000000476837158
+        ]
+      }
+    },
+    {
+      "color": [
+        1.0,
+        0.6600000262260437,
+        0.18000000715255737
+      ],
+      "material": {
+        "metallic": 0.5,
+        "roughness": 0.30000001192092896
+      },
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_arrow.fbx"
+      },
+      "name": "TitleArrow",
+      "transform": {
+        "position": [
+          -8.84000015258789,
+          2.9000000953674316,
+          2.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0499999523162842,
+          1.399999976158142,
+          1.399999976158142
+        ]
+      }
+    },
+    {
+      "luaScript": {
+        "enabled": true,
+        "props": [
+          {
+            "name": "charDelay",
+            "type": "float",
+            "value": 0.09
+          },
+          {
+            "name": "dropHeight",
+            "type": "float",
+            "value": 2.4
+          },
+          {
+            "name": "waveAmp",
+            "type": "float",
+            "value": 0.06
+          }
+        ],
+        "scriptPath": "components/TitleLogoIntro.lua"
+      },
+      "name": "TitleLogoDirector",
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
         ]
       }
     }

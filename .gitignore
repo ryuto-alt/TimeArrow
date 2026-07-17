@@ -9,3 +9,4 @@ assets/.thumbcache/
 dx12_crash.dmp
 dx12_crash.log
 dx12_engine.log
+validate_report.txt
