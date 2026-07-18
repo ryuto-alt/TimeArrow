@@ -24,6 +24,7 @@ local T_NOCK   = beatAt(14.6)  -- 7.068 矢つがえ
 local T_DROP   = beatAt(16)    -- 7.725 サビ/発射
 local FLIGHT   = 0.20
 local T_IMPACT = T_DROP + FLIGHT
+local SKIP_TO  = T_DROP + 0.05 -- イントロスキップの着地点(title.lua と一致させること)
 
 local CHAR_N   = 9
 local NOCK_SX  = 0.32
@@ -58,6 +59,10 @@ function OnStart(self)
   -- クライマックス(0.5s)で発進: 矢が先陣を切って右へ飛び出し、文字が左から順にホップして追いかける
   events:on("title_depart", function()
     if not self.departAt then self.departAt = self.clock end
+  end)
+  -- イントロスキップ(title.lua が BGM ごとサビ頭へシークするのに同期して演出時計もジャンプ)
+  events:on("title_skip", function()
+    if self.clock < SKIP_TO then self.clock = SKIP_TO end
   end)
   self.chars = {}
   for i = 1, CHAR_N do
