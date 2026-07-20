@@ -16,6 +16,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from camera_fit import backdrop_for, camera_for
+
 ROOT = Path(__file__).resolve().parents[2]
 SCENES = ROOT / "assets" / "scenes"
 
@@ -109,7 +111,7 @@ STAGES["stage1"] = dict(
         floor("FloorR", 12.0, 16.0),
         # 橋の上面は床とツライチ(0.0)。段差があると standable は横から乗れず落ちる
         lift("Bridge1", 7.0, 12.0, 0.0, thick=0.6),
-        btn("Target1", (9.5, 3.2, 0.0), "Bridge1"),
+        btn("Target1", (10.5, 5.0, 0.0), "Bridge1"),
     ],
 )
 
@@ -261,8 +263,17 @@ def build(stage: str):
     by_name["Exit"]["transform"]["position"] = [ex, ey, 0.0]
     if "GoalGate" in by_name:
         by_name["GoalGate"]["transform"]["position"] = [ex, ey - 0.15, 0.8]
-    cx, cy, cz = spec["camera"]
-    by_name["GameCamera"]["transform"]["position"] = [cx, cy, cz]
+    # カメラは固定値ではなく、実際の画角(FOV50/16:9/俯角)から逆算して毎回合わせる
+    cam_ents = [e for e in kept if not is_ui(e)] + spec["entities"]
+    pos, pitch = camera_for(cam_ents)
+    by_name["GameCamera"]["transform"]["position"] = pos
+    by_name["GameCamera"]["transform"]["rotation"] = [pitch, 0.0, 0.0]
+
+    # 奥の壁は画角いっぱいに。縁が見えていると床下がただの空になる
+    if "Backdrop" in by_name:
+        btf = by_name["Backdrop"]["transform"]
+        bpos, bscale = backdrop_for(pos, pitch, btf["position"][2])
+        btf["position"], btf["scale"] = bpos, bscale
 
     # 地形/ギミックを差し替え。UI は末尾に固めて parent を貼り直す
     gameplay = [e for e in kept if not is_ui(e)]

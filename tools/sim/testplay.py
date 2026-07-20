@@ -17,8 +17,8 @@ def aim(deg):
 SOLUTIONS = {
     "stage1": [
         (0.0, Inputs(move=1)),
-        (1.05, Inputs(move=0, draw=True, aim=aim(37))),   # 的を狙う
-        (1.15, Inputs(move=0, draw=False, aim=aim(37))),  # 発射
+        (1.05, Inputs(move=0, draw=True, aim=aim(45))),   # 的を狙う
+        (1.15, Inputs(move=0, draw=False, aim=aim(45))),  # 発射
         (2.2, Inputs(move=1)),                            # 橋を渡ってゴールへ
     ],
     "stage2": [
