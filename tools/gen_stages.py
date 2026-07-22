@@ -72,9 +72,9 @@ def player(x, y, targets="", standables="", climbables="", arrowStops="", solids
     # 視認性: 見た目だけ1割強拡大(当たり判定 halfW/halfHeight は据え置き=寛容側)
     e["transform"]["scale"] = [0.9, 1.2, 1.0]
     e["luaScript"]["props"] = [
-        prop("speed", "float", 5.0), prop("jumpSpeed", "float", 11.6),
+        prop("speed", "float", 5.0), prop("jumpSpeed", "float", 12.4),
         prop("gravity", "float", 40.0), prop("killY", "float", -4.0),
-        prop("halfW", "float", 0.4), prop("halfHeight", "float", 0.55),
+        prop("halfW", "float", 0.34), prop("halfHeight", "float", 0.55),
         prop("arrowSpeed", "float", 15.0), prop("arrowRange", "float", 18.0),
         prop("arrowHalf", "float", 0.1), prop("minSkip", "float", 2.0),
         prop("maxSkip", "float", 10.0), prop("maxDrawTime", "float", 3.0),
@@ -234,11 +234,6 @@ def turret(name, x, y, period=2.4, shotSpeed=6.0, rng=14.0, phase=0.0):
     shots = [mesh(f"{name}_p{i}", "Cannonball", 0, -100, 0.55, 0.55, 0.55)
              for i in (1, 2, 3)]
     return [t] + shots
-
-
-def hourglass(name, x, y):
-    return mesh(name, "Hourglass", x, y + 0.75, 1.1, 1.1, 1.1, shader=TIMEWARP,
-                lua=script("Hourglass.lua", [prop("spinSpeed", "float", 20.0)]))
 
 
 def lattice(name, x, y=1.8):
@@ -416,7 +411,7 @@ build(2, [
 # 錠1(待つか払うか)→二重スラム→錠2は歩きながら種まき→サンド閉門Z
 build(3, [
     gm(3, S3["limit"]),
-    player(0.8, 0.55, targets="Lock1,GateS1,GateS2,Lock2,GateZ,HG3",
+    player(0.8, 0.55, targets="Lock1,GateS1,GateS2,Lock2,GateZ",
            arrowStops="F3,StepA3,StepB3",
            solids="F3,StepA3,StepB3"
                   "Lock1,GateS1,GateS2,Lock2,GateZ", rewindShots=S3["rw"]),
@@ -426,7 +421,6 @@ build(3, [
     block("StepA3", 6.6, 0.6, 1.1, 1.2),
     block("StepB3", 7.8, 0.85, 1.1, 1.7),
     door("Lock1", 10.6, openT=S3["lock1"], closeT=9999.0),
-    hourglass("HG3", 13.8, 0.0),                  # 時の砂時計=返金バンクの教育係
     patch("P3a", 16.0, 17.7, 0.7),
     door("GateS1", 20.5, openT=0.0, closeT=S3["slam1"]),
     patch("P3b", 23.5, 25.2, 0.7),
@@ -439,10 +433,10 @@ build(3, [
 # ── STAGE 4「動かせない締切+動く壁」(幅64) ──────────────────────────
 build(4, [
     gm(4, S4["limit"]),
-    player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4,Ham4,Ham4X,HG4,CW4,GateZ4",
+    player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4,Ham4,Ham4X,CW4,GateZ4",
            arrowStops="F4a,PitF4,F4b",
            solids="F4a,PitF4,F4b"
-                  "GateA4,Lock4,GateB4,CW4,GateZ4,HG4", rewindShots=S4["rw"]),
+                  "GateA4,Lock4,GateB4,CW4,GateZ4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
     exit_(62.5, 0.65, "scenes/stage5.json"), gate(62.5, 0.5),
     block("F4a", 9.4, -0.5, 18.8, 1.0),           # [0,18.8]
@@ -455,7 +449,6 @@ build(4, [
     pendulum("Saw4", 19.4, 1.3, 1.4, period=4.0, amplitude=1.0, phase=0.0),
     door("GateB4", 24.4, openT=0.0, closeT=S4["closeB"]),
     hammer("Ham4", 30.0, 3.5, 1.2, period=3.4, maxAngle=55.0),
-    hourglass("HG4", 33.5, 0.0),
     crushwall("CW4", 37.0, 1.7, 1.0, 3.4, startT=S4["cwStart"], axisX=1.0,
               speed=S4["cwSpeed"], travel=S4["cwTravel"], ghostTime=1.4),
     patch("P4c", 55.0, 56.7, 0.7),
@@ -505,11 +498,11 @@ build(5, [
 # → P3地上へ降りて種まき錠Z→出口
 build(6, [
     gm(6, S6["limit"]),
-    player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Ham6X,Tur6,HG6",
+    player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Ham6X,Tur6",
            arrowStops="F6,WallW6,WallW62"
                       "St6a,St6b,St6c,St6d,L6",
            solids="F6,WallW6,WallW62"
-                  "St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6,HG6",
+                  "St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6",
            rewindShots=S6["rw"]),
     copy.deepcopy(arrow),
     exit_(92.0, 0.65, "scenes/stage7.json"), gate(92.0, 0.5),
@@ -530,7 +523,6 @@ build(6, [
     beacon("Bomb62", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
     breakwall("WallW62", 45.4, 6.0, 0.9, 3.2),    # レッジ上の壁
     door("GateE6", 52.0, openT=0.0, closeT=S6["closeE"], base=4.4),
-    hourglass("HG6", 66.0, 0.0),
     hammer("Ham6", 70.5, 3.5, 1.2, period=3.2, maxAngle=55.0),
     patch("P6c", 68.0, 69.7, 0.7),
     patch("P6d", 73.0, 74.7, 0.7),
@@ -543,12 +535,12 @@ build(6, [
 # →格子L1が開く→地上東進→ツタ(FF)→最上層東進(刃3)→錠Z種まき→出口
 build(7, [
     gm(7, S7["limit"]),
-    player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX,HG7",
+    player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX",
            climbables="Vine7",
            arrowStops="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F"
                       "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F",
            solids="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F"
-                  "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7,HG7",
+                  "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7",
            rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
     exit_(101.5, 9.45, "scenes/stage8.json"), gate(101.5, 9.3),
@@ -570,7 +562,6 @@ build(7, [
     door("LockD7", 22.0, openT=S7["lockD"], closeT=9999.0, base=4.4),
     hammer("Ham7a", 30.0, 3.9, 1.2, period=3.4, maxAngle=50.0),
     hammer("Ham7b", 44.0, 3.9, 1.2, period=2.6, maxAngle=50.0, phase=1.1),
-    hourglass("HG7", 54.0, 0.0),
     block("St7a", 62.3, 0.55, 0.7, 1.1),
     block("St7b", 63.0, 1.1, 0.7, 2.2),
     block("St7c", 63.7, 1.65, 0.7, 3.3),
@@ -639,9 +630,9 @@ build(8, [
 # ── ギミックラボ(stage0: 新ギミック実機検証用。セレクト未登録)─────────
 build(0, [
     gm(0, 120),
-    player(1.0, 0.55, targets="LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret,LabHourglass",
+    player(1.0, 0.55, targets="LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret",
            standables="LabCrumble",
-           arrowStops="LabF,LabLedge", solids="LabF,LabLedge,LabTurret,LabHourglass,LabFan", rewindShots=9),
+           arrowStops="LabF,LabLedge", solids="LabF,LabLedge,LabTurret,LabFan", rewindShots=9),
     copy.deepcopy(arrow),
     exit_(34.0, 0.65, "scenes/title.json"), gate(34.0, 0.5),
     block("LabF", 18.0, -0.5, 36.0, 1.0),
@@ -649,7 +640,6 @@ build(0, [
     block("LabLedge", 8.2, 5.4, 2.4, 0.5),        # サージでしか届かない棚
     crumble("LabCrumble", 12.5, 2.2, 1.6, 1.6),
     hammer("LabHammer", 17.0, 3.6, 1.2, period=3.2, maxAngle=55.0),
-    hourglass("LabHourglass", 21.5, 0.0),
     turret("LabTurret", 30.0, 1.0, period=2.4, shotSpeed=6.0, rng=12.0),
 ], limit=120, width=36)
 

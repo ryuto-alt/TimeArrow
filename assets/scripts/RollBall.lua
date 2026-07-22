@@ -129,7 +129,7 @@ function OnUpdate(self, dt)
   local pl = scene:findEntity("Player")
   if pl and pl:isValid() then
     local pp, ps = pl.transform.position, pl.transform.scale
-    if overlapAABB(nx, self.by, s.x * 0.5 * self.hitScale, s.y * 0.5 * self.hitScale, pp.x, pp.y, ps.x * 0.5, ps.y * 0.5) then
+    if overlapAABB(nx, self.by, s.x * 0.5 * self.hitScale, s.y * 0.5 * self.hitScale, pp.x, pp.y, 0.30, 0.42) then
       events:emit("player_died", {})
     end
   end

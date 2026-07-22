@@ -168,7 +168,7 @@
      {
       "name": "jumpSpeed",
       "type": "float",
-      "value": 11.6
+      "value": 12.4
      },
      {
       "name": "gravity",
@@ -183,7 +183,7 @@
      {
       "name": "halfW",
       "type": "float",
-      "value": 0.4
+      "value": 0.34
      },
      {
       "name": "halfHeight",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Lock1,GateS1,GateS2,Lock2,GateZ,HG3"
+      "value": "Lock1,GateS1,GateS2,Lock2,GateZ"
      },
      {
       "name": "standables",
@@ -633,45 +633,6 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hourglass/Hourglass.obj"
-   },
-   "name": "HG3",
-   "transform": {
-    "position": [
-     13.8,
-     0.75,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.1,
-     1.1
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "spinSpeed",
-      "type": "float",
-      "value": 20.0
-     }
-    ],
-    "scriptPath": "scripts/Hourglass.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -1414,7 +1375,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 27,
+   "parent": 26,
    "transform": {
     "position": [
      0.0,
@@ -1488,7 +1449,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 27,
+   "parent": 26,
    "transform": {
     "position": [
      0.0,
@@ -1694,7 +1655,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 27
+   "parent": 26
   },
   {
    "name": "TimeLeft",
@@ -1786,7 +1747,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 27
+   "parent": 26
   },
   {
    "name": "DrawAmount",
@@ -1878,7 +1839,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 27
+   "parent": 26
   },
   {
    "name": "RewindCount",
@@ -1970,7 +1931,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 27
+   "parent": 26
   }
  ]
 }

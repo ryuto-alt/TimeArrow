@@ -168,7 +168,7 @@
      {
       "name": "jumpSpeed",
       "type": "float",
-      "value": 11.6
+      "value": 12.4
      },
      {
       "name": "gravity",
@@ -183,7 +183,7 @@
      {
       "name": "halfW",
       "type": "float",
-      "value": 0.4
+      "value": 0.34
      },
      {
       "name": "halfHeight",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret,LabHourglass"
+      "value": "LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "LabF,LabLedge,LabTurret,LabHourglass,LabFan"
+      "value": "LabF,LabLedge,LabTurret,LabFan"
      },
      {
       "name": "mirrors",
@@ -799,45 +799,6 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Hourglass/Hourglass.obj"
-   },
-   "name": "LabHourglass",
-   "transform": {
-    "position": [
-     21.5,
-     0.75,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.1,
-     1.1
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "spinSpeed",
-      "type": "float",
-      "value": 20.0
-     }
-    ],
-    "scriptPath": "scripts/Hourglass.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
     "modelPath": "models/Turret/Turret.obj"
    },
    "name": "LabTurret",
@@ -1253,7 +1214,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 24,
+   "parent": 23,
    "transform": {
     "position": [
      0.0,
@@ -1327,7 +1288,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 24,
+   "parent": 23,
    "transform": {
     "position": [
      0.0,
@@ -1533,7 +1494,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 23
   },
   {
    "name": "TimeLeft",
@@ -1625,7 +1586,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 23
   },
   {
    "name": "DrawAmount",
@@ -1717,7 +1678,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 23
   },
   {
    "name": "RewindCount",
@@ -1809,7 +1770,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 23
   }
  ]
 }

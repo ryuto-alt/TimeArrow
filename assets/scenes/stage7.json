@@ -168,7 +168,7 @@
      {
       "name": "jumpSpeed",
       "type": "float",
-      "value": 11.6
+      "value": 12.4
      },
      {
       "name": "gravity",
@@ -183,7 +183,7 @@
      {
       "name": "halfW",
       "type": "float",
-      "value": 0.4
+      "value": 0.34
      },
      {
       "name": "halfHeight",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX,HG7"
+      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7,HG7"
+      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
      },
      {
       "name": "mirrors",
@@ -1460,45 +1460,6 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Hourglass/Hourglass.obj"
-   },
-   "name": "HG7",
-   "transform": {
-    "position": [
-     54.0,
-     0.75,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.1,
-     1.1
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "spinSpeed",
-      "type": "float",
-      "value": 20.0
-     }
-    ],
-    "scriptPath": "scripts/Hourglass.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
    "name": "St7a",
@@ -2278,7 +2239,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 50,
+   "parent": 49,
    "transform": {
     "position": [
      0.0,
@@ -2352,7 +2313,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 50,
+   "parent": 49,
    "transform": {
     "position": [
      0.0,
@@ -2558,7 +2519,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 50
+   "parent": 49
   },
   {
    "name": "TimeLeft",
@@ -2650,7 +2611,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 50
+   "parent": 49
   },
   {
    "name": "DrawAmount",
@@ -2742,7 +2703,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 50
+   "parent": 49
   },
   {
    "name": "RewindCount",
@@ -2834,7 +2795,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 50
+   "parent": 49
   }
  ]
 }

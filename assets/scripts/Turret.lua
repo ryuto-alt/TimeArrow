@@ -85,7 +85,7 @@ function OnUpdate(self, dt)
       if x then
         e.transform.position = Vec3.new(x, y, self.bz)
         if self.ffRemain <= 0 and pp
-           and math.abs(pp.x - x) < 0.48 and math.abs(pp.y - y) < 0.6 then
+           and math.abs(pp.x - x) < 0.42 and math.abs(pp.y - y) < 0.52 then
           events:emit("player_died", {})
         end
       else

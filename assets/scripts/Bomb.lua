@@ -78,7 +78,7 @@ function OnUpdate(self, dt)
   if pl and pl:isValid() then
     local pp, ps = pl.transform.position, pl.transform.scale
     if overlapAABB(self.bx, self.by, s.x * 0.5 * self.blastScale, s.y * 0.5 * self.blastScale,
-                    pp.x, pp.y, ps.x * 0.5, ps.y * 0.5) then
+                    pp.x, pp.y, 0.30, 0.42) then
       events:emit("player_died", {})
     end
   end

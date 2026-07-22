@@ -190,7 +190,7 @@ function OnUpdate(self, dt)
   local pl = scene:findEntity("Player")
   if not (pl and pl:isValid()) then return end
   local pp = pl.transform.position
-  if math.abs(pp.x - hx) < (self.hitHalf + 0.4) and math.abs(pp.y - hy) < (self.hitHalf + 0.45) then
+  if math.abs(pp.x - hx) < (self.hitHalf + 0.30) and math.abs(pp.y - hy) < (self.hitHalf + 0.42) then
     events:emit("player_died", {})
   end
 end
