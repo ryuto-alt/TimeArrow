@@ -12,6 +12,7 @@ import json, copy, os, sys
 SCENES = r"C:\Users\ryuto\game\TimeArrow\assets\scenes"
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sim"))
 from camera_fit import content_box, fit  # noqa: E402
+from knobs import K  # noqa: E402  タイミング定数の単一の真実源
 
 tpl = json.load(open(os.path.join(SCENES, "stage2.json"), encoding="utf-8"))
 T = {e["name"]: e for e in tpl["entities"]}
@@ -164,6 +165,34 @@ def target(name, x, y, s=1.3):
     return mesh(name, "Target_Bull", x, y, s, s, 0.5)
 
 
+def vine(name, x, bottomY, height, growT, growDur=1.0):
+    return mesh(name, "Vine", x, bottomY + height * 0.5, 1.0, height, 1.0,
+                lua=script("GrowVine.lua", [
+                    prop("growT", "float", float(growT)),
+                    prop("growDuration", "float", float(growDur)),
+                    prop("bottomY", "float", float(bottomY)),
+                    prop("unitHeight", "float", 1.0)]))
+
+
+def crushwall(name, x, y, sx, sy, startT, axisX, speed, travel, ghostTime=1.4):
+    return mesh(name, "Link_Wall", x, y, sx, sy, 1.0, shader=TIMEWARP,
+                lua=script("CrushWall.lua", [
+                    prop("startT", "float", float(startT)), prop("axisX", "float", float(axisX)),
+                    prop("speed", "float", float(speed)), prop("travel", "float", float(travel)),
+                    prop("ghostTime", "float", float(ghostTime)),
+                    prop("materializeTime", "float", 0.25),
+                    prop("listenButton", "bool", False), prop("startActive", "bool", True)]))
+
+
+def ferry(name, x, y, period, amplitude, phase):
+    # 乗れる横行フェリー(Pendulum.lua deadly=false)
+    return mesh(name, "Move_Block", x, y, 2.4, 0.5, 1.0, shader=TIMEWARP,
+                lua=script("Pendulum.lua", [
+                    prop("period", "float", float(period)), prop("amplitude", "float", float(amplitude)),
+                    prop("startPhase", "float", float(phase)), prop("deadly", "bool", False),
+                    prop("hitScale", "float", 0.8)]))
+
+
 def lattice(name, x, y=1.8):
     return mesh(name, "Gate_Grill", x, y, 0.75, 3.6, 1.0,
                 lua=script("Lattice.lua", [prop("listenButton", "bool", True),
@@ -284,174 +313,273 @@ def patch(pfx, xa, xb, nw=0.9):
             block(f"{pfx}R", xb, 0.85, 1.1, 1.7)]
 
 
-# ══ STAGE 1「遅すぎる橋」 15s / RW1 (幅33) ═══════════════════════════
+# ══ 大型化レイアウト(2026-07-22 v3)══════════════════════════════════
+# 各ステージ2〜4フェーズ構成。時間knobは tools/knobs.py の K を参照(単一の真実源)。
+# 層: 地上=床上0 / デッキ=床上4.4(スラブy4.15) / 最上層=床上8.8(スラブy8.55)
+
+S1, S2, S3, S4 = K["s1"], K["s2"], K["s3"], K["s4"]
+S5, S6, S7, S8 = K["s5"], K["s6"], K["s7"], K["s8"]
+
+# ── STAGE 1「遅すぎる橋・二連」(幅45) ────────────────────────────────
 build(1, [
-    gm(1, 15),
-    player(1.0, 0.55, targets="Target1", standables="Bridge1",
-           arrowStops="FloorL,FloorR", solids="FloorL,FloorR", rewindShots=1),
+    gm(1, S1["limit"]),
+    player(1.0, 0.55, targets="Target1,Target2", standables="Bridge1,Bridge2",
+           arrowStops="FloorA,FloorB,FloorC", solids="FloorA,FloorB,FloorC",
+           rewindShots=S1["rw"]),
     copy.deepcopy(arrow),
-    exit_(31.0, 0.65, "scenes/stage2.json"), gate(31.0, 0.5),
-    block("FloorL", 10.0, -0.5, 20.0, 1.0),
-    block("FloorR", 30.5, -0.5, 5.0, 1.0),
-    riseplat("Bridge1", 24.0, -0.3, 8.0, 0.6, arriveT=0.0, waitHeight=6.0, riseTime=15.0,
-             trigger="Target1"),
-    target("Target1", 24.0, 6.8, 1.3),   # 撃つ的: x16-18から45°射線上。当てると橋の時計が進む
+    exit_(43.0, 0.65, "scenes/stage2.json"), gate(43.0, 0.5),
+    block("FloorA", 7.0, -0.5, 14.0, 1.0),        # [0,14]
+    riseplat("Bridge1", 17.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S1["rise1"], trigger="Target1"),
+    target("Target1", 17.0, 6.75, 1.3),           # x11付近から45°射線上
     beacon("Target1"),
-], limit=15, width=33)
+    block("FloorB", 25.0, -0.5, 10.0, 1.0),       # [20,30]
+    riseplat("Bridge2", 33.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S1["rise2"], trigger="Target2"),
+    target("Target2", 33.0, 6.75, 1.3),           # x27付近から45°射線上
+    beacon("Target2"),
+    block("FloorC", 40.5, -0.5, 9.0, 1.0),        # [36,45]
+], limit=S1["limit"], width=45)
 
-# ══ STAGE 2「二枚の閉門」 16s / RW2 (幅28) ═══════════════════════════
+# ── STAGE 2「四枚の閉門回廊」(幅52) ──────────────────────────────────
+# スラム(必ず閉→RW)とスプリント(急げば開いてる)の混合で「走るか呼ぶか」を判断させる
 build(2, [
-    gm(2, 16),
-    player(0.8, 0.55, targets="GateA,GateB",
-           arrowStops="F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR",
-           solids="F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,GateA,GateB", rewindShots=2),
+    gm(2, S2["limit"]),
+    player(0.8, 0.55, targets="GateA,GateB,GateC,GateD",
+           arrowStops="F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,P2dL,P2dR,P2eL,P2eR",
+           solids="F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,P2dL,P2dR,P2eL,P2eR,"
+                  "GateA,GateB,GateC,GateD", rewindShots=S2["rw"]),
     copy.deepcopy(arrow),
-    exit_(25.8, 0.65, "scenes/stage3.json"), gate(25.8, 0.5),
-    block("F2", 14.0, -0.5, 28.0, 1.0),
-    patch("P2a", 4.6, 6.3, 0.7),
-    patch("P2b", 9.0, 10.7, 0.7),
-    door("GateA", 13.0, openT=0.0, closeT=2.8),
-    patch("P2c", 16.4, 18.1, 0.7),
-    door("GateB", 21.5, openT=0.0, closeT=6.0),
-], limit=16, width=28)
+    exit_(49.5, 0.65, "scenes/stage3.json"), gate(49.5, 0.5),
+    block("F2", 26.0, -0.5, 52.0, 1.0),
+    patch("P2a", 5.0, 6.7, 0.7),
+    patch("P2b", 10.0, 11.7, 0.7),
+    door("GateA", 14.6, openT=0.0, closeT=S2["closeA"]),      # スラム
+    patch("P2c", 17.5, 19.2, 0.7),
+    door("GateB", 22.5, openT=0.0, closeT=S2["closeB"]),      # スプリント
+    patch("P2d", 25.5, 27.2, 0.7),
+    patch("P2e", 30.5, 32.2, 0.7),
+    door("GateC", 35.5, openT=0.0, closeT=S2["closeC"]),      # スラム2
+    door("GateD", 43.0, openT=0.0, closeT=S2["closeD"]),      # スプリント2
+], limit=S2["limit"], width=52)
 
-# ══ STAGE 3「錠と門」 20s / RW1 (幅30) ═══════════════════════════════
+# ── STAGE 3「三つの錠の取引」(幅58) ──────────────────────────────────
+# 錠1(待つか払うか)→二重スラム→錠2は歩きながら種まき→サンド閉門Z
 build(3, [
-    gm(3, 20),
-    player(0.8, 0.55, targets="Lock3,Gate3",
-           arrowStops="F3,StepA3,StepB3,P3aL,P3aR",
-           solids="F3,StepA3,StepB3,P3aL,P3aR,Lock3,Gate3", rewindShots=1),
+    gm(3, S3["limit"]),
+    player(0.8, 0.55, targets="Lock1,GateS1,GateS2,Lock2,GateZ,Vine1",
+           climbables="Vine1",
+           arrowStops="F3,StepA3,StepB3,P3aL,P3aR,P3bL,P3bR,P3cL,P3cR",
+           solids="F3,StepA3,StepB3,P3aL,P3aR,P3bL,P3bR,P3cL,P3cR,"
+                  "Lock1,GateS1,GateS2,Lock2,GateZ", rewindShots=S3["rw"]),
     copy.deepcopy(arrow),
-    exit_(26.8, 0.65, "scenes/stage4.json"), gate(26.8, 0.5),
-    block("F3", 15.0, -0.5, 30.0, 1.0),
-    block("StepA3", 7.4, 0.6, 1.1, 1.2),
-    block("StepB3", 8.6, 0.85, 1.1, 1.7),
-    door("Lock3", 11.4, openT=22.0, closeT=9999.0),
-    patch("P3a", 15.4, 17.0, 0.7),
-    door("Gate3", 21.4, openT=0.0, closeT=1.5),
-], limit=20, width=30)
+    exit_(54.0, 0.65, "scenes/stage4.json"), gate(54.0, 0.5),
+    block("F3", 29.0, -0.5, 58.0, 1.0),
+    block("StepA3", 6.6, 0.6, 1.1, 1.2),
+    block("StepB3", 7.8, 0.85, 1.1, 1.7),
+    door("Lock1", 10.6, openT=S3["lock1"], closeT=9999.0),
+    vine("Vine1", 13.5, bottomY=0.0, height=4.5, growT=0.0, growDur=0.5),  # 育ち済=銀行
+    patch("P3a", 16.0, 17.7, 0.7),
+    door("GateS1", 20.5, openT=0.0, closeT=S3["slam1"]),
+    patch("P3b", 23.5, 25.2, 0.7),
+    door("GateS2", 28.5, openT=0.0, closeT=S3["slam2"]),
+    door("Lock2", 38.0, openT=S3["lock2"], closeT=9999.0),    # x22-28から種まき(射程18)
+    patch("P3c", 41.5, 43.2, 0.7),
+    door("GateZ", 46.5, openT=0.0, closeT=S3["closeZ"]),      # サンド
+], limit=S3["limit"], width=58)
 
-# ══ STAGE 4「動かせない締切」 23s / RW2 (幅30) ═══════════════════════
+# ── STAGE 4「動かせない締切+動く壁」(幅64) ──────────────────────────
 build(4, [
-    gm(4, 23),
-    player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4",
-           arrowStops="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR",
-           solids="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,GateA4,Lock4,GateB4", rewindShots=2),
+    gm(4, S4["limit"]),
+    player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4,CW4,GateZ4",
+           arrowStops="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,P4cL,P4cR",
+           solids="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,P4cL,P4cR,"
+                  "GateA4,Lock4,GateB4,CW4,GateZ4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
-    exit_(28.6, 0.65, "scenes/stage5.json"), gate(28.6, 0.5),
+    exit_(62.5, 0.65, "scenes/stage5.json"), gate(62.5, 0.5),
     block("F4a", 9.4, -0.5, 18.8, 1.0),           # [0,18.8]
-    block("PitF4", 19.4, -1.5, 1.2, 1.0),         # 退避ピット床(上面-1.0)
-    block("F4b", 25.0, -0.5, 10.0, 1.0),          # [20,30]
+    block("PitF4", 19.4, -1.5, 1.2, 1.0),
+    block("F4b", 42.0, -0.5, 44.0, 1.0),          # [20,64]
     patch("P4a", 4.0, 5.7, 0.7),
     patch("P4b", 8.8, 10.4, 0.7),
-    door("GateA4", 13.0, openT=0.0, closeT=2.6),
-    door("Lock4", 15.4, openT=25.0, closeT=9999.0),
+    door("GateA4", 13.0, openT=0.0, closeT=S4["slamA"]),
+    door("Lock4", 15.4, openT=S4["lockOpen"], closeT=9999.0),
     pendulum("Saw4", 19.4, 1.3, 1.4, period=4.0, amplitude=1.0, phase=0.0),
-    door("GateB4", 24.4, openT=0.0, closeT=15.0),
-], limit=23, width=30)
+    door("GateB4", 24.4, openT=0.0, closeT=S4["closeB"]),
+    crushwall("CW4", 37.0, 1.7, 1.0, 3.4, startT=S4["cwStart"], axisX=1.0,
+              speed=S4["cwSpeed"], travel=S4["cwTravel"], ghostTime=1.4),
+    patch("P4c", 55.0, 56.7, 0.7),
+    door("GateZ4", 59.5, openT=0.0, closeT=S4["closeZ"]),
+], limit=S4["limit"], width=64)
 
-# ══ STAGE 5「時の昇降機」 26s / RW3 (幅34) ═══════════════════════════
+# ── STAGE 5「時の昇降機・改」(幅88, 3層) ─────────────────────────────
+# P1リフト昇降 → P2デッキ: 大玉チェイス(ピットからRWで背後へ送る)+錠D種まき
+# → P3地上→ツタ(FF)→最上層: フェリー→閉門Y(サンド)→錠Z→出口
 build(5, [
-    gm(5, 26),
-    player(0.8, 0.55, targets="Lift5,Gate5,Ball5,Lock5",
-           standables="Lift5",
-           arrowStops="F5,StepA5,StepB5,D5a,D5b,PitF5",
-           solids="F5,StepA5,StepB5,D5a,D5b,PitF5,Gate5,Lock5", rewindShots=3),
+    gm(5, S5["limit"]),
+    player(0.8, 0.55, targets="Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5",
+           standables="Lift5,Ferry5", climbables="Vine5",
+           arrowStops="F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b",
+           solids="F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,"
+                  "Gate5,LockD5,GateY5,LockZ5", rewindShots=S5["rw"]),
     copy.deepcopy(arrow),
-    exit_(32.6, 4.65, "scenes/stage6.json"), gate(32.6, 4.5),
-    block("F5", 17.0, -0.5, 34.0, 1.0),
+    exit_(85.5, 9.45, "scenes/stage6.json"), gate(85.5, 9.3),
+    block("F5", 44.0, -0.5, 88.0, 1.0),
     block("StepA5", 4.2, 0.6, 1.1, 1.2),
     needle("N5", 4.9, 0.2, 0.6, 0.4),
     block("StepB5", 5.6, 0.85, 1.1, 1.7),
-    riseplat("Lift5", 12.5, -0.3, 3.0, 0.5, arriveT=14.0, waitHeight=4.3, riseTime=1.0),
-    block("D5a", 20.0, 3.75, 8.0, 0.5),           # デッキ[16,24]
-    block("PitF5", 24.6, 2.55, 1.2, 0.5),         # 退避ピット床(上面2.8)
-    block("D5b", 29.6, 3.75, 8.8, 0.5),           # デッキ[25.2,34]
-    door("Gate5", 17.2, openT=0.0, closeT=2.6, base=4.0),
-    rollball("Ball5", 20.5, 4.75, 1.5, rollT=0.0, speed=0.55),
-    door("Lock5", 30.4, openT=30.0, closeT=9999.0, base=4.0),
-], limit=26, width=34)
+    riseplat("Lift5", 12.5, -0.3, 3.0, 0.5, arriveT=S5["lift"], waitHeight=4.3, riseTime=1.0),
+    block("D5a", 22.0, 3.75, 12.0, 0.5),          # デッキ[16,28]
+    block("PitR1F", 28.6, 2.55, 1.2, 0.5),        # 退避ピット1(上面2.8)
+    block("D5b", 34.6, 3.75, 10.8, 0.5),          # [29.2,40]
+    block("PitR2F", 40.6, 2.55, 1.2, 0.5),        # 退避ピット2
+    block("D5c", 46.6, 3.75, 10.8, 0.5),          # [41.2,52]
+    door("Gate5", 17.2, openT=0.0, closeT=S5["slamG"], base=4.0),
+    rollball("Ball5", 19.5, 4.75, 1.5, rollT=S5["ballRoll"], speed=S5["ballSpeed"]),
+    door("LockD5", 46.0, openT=S5["lockD"], closeT=9999.0, base=4.0),
+    vine("Vine5", 61.2, bottomY=0.0, height=8.9, growT=S5["vineGrow"], growDur=1.2),
+    beacon("Vine5", color=(0.4, 1.0, 0.5, 0.9), offset=0.8),
+    block("T5a", 66.0, 8.55, 8.0, 0.5),           # 最上層[62,70]
+    ferry("Ferry5", 72.0, 8.55, period=S5["ferryP"], amplitude=2.2, phase=0.0),
+    block("T5b", 81.0, 8.55, 14.0, 0.5),          # [74,88]
+    door("GateY5", 76.5, openT=0.0, closeT=S5["closeY"], base=8.8),
+    door("LockZ5", 82.0, openT=S5["lockZ"], closeT=9999.0, base=8.8),
+], limit=S5["limit"], width=88)
 
-# ══ STAGE 6「導火線」 30s / RW2 (幅34) ═══════════════════════════════
+# ── STAGE 6「二本の導火線」(幅96, 2層) ───────────────────────────────
+# P1地上の爆弾1 → P2レッジの爆弾2(レッジ上からしか撃てない=順序)+スラムE
+# → P3地上へ降りて種まき錠Z→出口
 build(6, [
-    gm(6, 30),
-    player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Lock6",
-           arrowStops="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,WallW6",
-           solids="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,WallW6,GateA6,GateC6,Lock6",
-           rewindShots=2),
+    gm(6, S6["limit"]),
+    player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6",
+           arrowStops="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,P6dL,P6dR,WallW6,WallW62,"
+                      "St6a,St6b,St6c,St6d,L6",
+           solids="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,P6dL,P6dR,WallW6,WallW62,"
+                  "St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6",
+           rewindShots=S6["rw"]),
     copy.deepcopy(arrow),
-    exit_(32.0, 0.65, "scenes/stage7.json"), gate(32.0, 0.5),
-    block("F6", 17.0, -0.5, 34.0, 1.0),
+    exit_(92.0, 0.65, "scenes/stage7.json"), gate(92.0, 0.5),
+    block("F6", 48.0, -0.5, 96.0, 1.0),
     patch("P6a", 4.4, 6.1, 0.7),
     patch("P6b", 9.4, 11.0, 0.7),
-    door("GateA6", 13.6, openT=0.0, closeT=2.8),
-    bomb("Bomb6", 17.6, 0.45, boomT=24.0, wallTarget="WallW6"),
+    door("GateA6", 13.6, openT=0.0, closeT=S6["slamA"]),
+    bomb("Bomb6", 17.6, 0.45, boomT=S6["boom1"], wallTarget="WallW6"),
+    beacon("Bomb6", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
     breakwall("WallW6", 18.6, 1.7, 0.9, 3.4),
-    door("GateC6", 21.6, openT=0.0, closeT=12.0),
-    patch("P6c", 23.6, 25.2, 0.7),
-    door("Lock6", 27.6, openT=21.0, closeT=9999.0),
-], limit=30, width=34)
+    door("GateC6", 21.6, openT=0.0, closeT=S6["closeC"]),
+    block("St6a", 25.4, 0.55, 0.7, 1.1),
+    block("St6b", 26.1, 1.1, 0.7, 2.2),
+    block("St6c", 26.8, 1.65, 0.7, 3.3),
+    block("St6d", 27.5, 2.2, 0.7, 4.4),
+    block("L6", 46.25, 4.15, 35.5, 0.5),          # レッジ[28.5,64]
+    bomb("Bomb62", 44.0, 4.85, boomT=S6["boom2"], wallTarget="WallW62"),
+    beacon("Bomb62", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
+    breakwall("WallW62", 45.4, 6.0, 0.9, 3.2),    # レッジ上の壁
+    door("GateE6", 52.0, openT=0.0, closeT=S6["closeE"], base=4.4),
+    patch("P6c", 68.0, 69.7, 0.7),
+    patch("P6d", 73.0, 74.7, 0.7),
+    door("LockZ6", 80.0, openT=S6["lockZ"], closeT=9999.0),   # 降りてからx66-70で種まき
+], limit=S6["limit"], width=96)
 
-# ══ STAGE 7「時計塔の往復」 36s / RW3 (幅31) ═════════════════════════
+# ── STAGE 7「時計塔大回廊」(幅104, 3層) ──────────────────────────────
+# 地上東進→階段→デッキ西進(刃リズム2種+錠D)→塔上ボタン(デッキからのみ射線)
+# →格子L1が開く→地上東進→ツタ(FF)→最上層東進(刃3)→錠Z種まき→出口
 build(7, [
-    gm(7, 36),
-    player(1.4, 0.55, targets="GateA7,LockD7,ButtonB7,Saw7",
-           arrowStops="F7,Tower7,P7aL,P7aR,P7bL,P7bR,WallE7,D7a,D7b,PitF7,St7a,St7b,St7c,St7d",
-           solids="F7,Tower7,P7aL,P7aR,P7bL,P7bR,WallE7,D7a,D7b,PitF7,St7a,St7b,St7c,St7d,"
-                  "GateA7,LockD7,LatticeL7", rewindShots=3),
+    gm(7, S7["limit"]),
+    player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7",
+           climbables="Vine7",
+           arrowStops="F7,Tower1,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
+                      "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F",
+           solids="F7,Tower1,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
+                  "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7",
+           rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
-    exit_(14.2, 0.65, "scenes/stage8.json"), gate(14.2, 0.5),
-    block("F7", 15.5, -0.5, 31.0, 1.0),
-    block("Tower7", 0.5, 3.1, 0.8, 6.2),
-    button("ButtonB7", 0.5, 6.65, "LatticeL7"),
-    beacon("ButtonB7", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
+    exit_(101.5, 9.45, "scenes/stage8.json"), gate(101.5, 9.3),
+    block("F7", 52.0, -0.5, 104.0, 1.0),
+    block("Tower1", 17.0, 2.5, 0.8, 5.0),
+    button("Button1", 17.0, 5.45, "LatticeL1"),
+    beacon("Button1", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
     patch("P7a", 3.4, 5.0, 0.7),
     patch("P7b", 7.2, 8.8, 0.7),
-    door("GateA7", 11.4, openT=0.0, closeT=2.3),
-    lattice("LatticeL7", 13.3),
-    block("WallE7", 15.4, 1.95, 0.8, 3.9),
-    block("St7a", 27.7, 0.55, 0.7, 1.1),
-    block("St7b", 28.4, 1.1, 0.7, 2.2),
-    block("St7c", 29.1, 1.65, 0.7, 3.3),
-    block("St7d", 29.8, 2.2, 0.7, 4.4),
-    block("D7a", 8.9, 4.15, 12.6, 0.5),           # デッキ[2.6,15.2]
-    block("PitF7", 16.0, 3.15, 1.6, 0.5),         # デッキピット床(上面3.4)
-    block("D7b", 23.0, 4.15, 12.4, 0.5),          # デッキ[16.8,29.2]
-    pendulum("Saw7", 16.0, 5.7, 1.4, period=4.0, amplitude=1.2, phase=0.0),
-    door("LockD7", 4.4, openT=26.0, closeT=9999.0, base=4.4),
-], limit=36, width=31)
+    door("GateA7", 11.4, openT=0.0, closeT=S7["slamA"]),
+    block("D7a", 28.0, 4.15, 20.0, 0.5),          # デッキ[18,38]
+    block("Pit1F", 38.8, 3.15, 1.6, 0.5),         # 刃ピット1
+    block("D7b", 44.8, 4.15, 10.4, 0.5),          # [39.6,50]
+    block("Pit2F", 50.8, 3.15, 1.6, 0.5),         # 刃ピット2
+    block("D7c", 56.2, 4.15, 9.2, 0.5),           # [51.6,60.8]
+    pendulum("Saw7a", 38.8, 5.7, 1.4, period=S7["sawP1"], amplitude=1.2, phase=0.0),
+    pendulum("Saw7b", 50.8, 5.7, 1.4, period=S7["sawP2"], amplitude=1.0, phase=0.0),
+    door("LockD7", 22.0, openT=S7["lockD"], closeT=9999.0, base=4.4),
+    block("St7a", 62.3, 0.55, 0.7, 1.1),
+    block("St7b", 63.0, 1.1, 0.7, 2.2),
+    block("St7c", 63.7, 1.65, 0.7, 3.3),
+    block("St7d", 64.4, 2.2, 0.7, 4.4),
+    lattice("LatticeL1", 68.5),
+    vine("Vine7", 72.5, bottomY=0.0, height=8.9, growT=S7["vineGrow"], growDur=1.2),
+    beacon("Vine7", color=(0.4, 1.0, 0.5, 0.9), offset=0.8),
+    block("T7a", 80.0, 8.55, 12.0, 0.5),          # 最上層[74,86]
+    block("Pit3F", 86.8, 7.55, 1.6, 0.5),         # 刃ピット3(上面7.8)
+    block("T7b", 95.9, 8.55, 16.2, 0.5),          # [87.6,104]
+    pendulum("Saw7c", 86.8, 10.1, 1.4, period=S7["sawP3"], amplitude=1.0, phase=0.0),
+    door("LockZ7", 98.0, openT=S7["lockZ"], closeT=9999.0, base=8.8),
+], limit=S7["limit"], width=104)
 
-# ══ STAGE 8「時計職人の卒業試験」 38s / RW4 (幅36) ═══════════════════
+# ── STAGE 8「時計職人の卒業試験・大」(幅120, 3層4フェーズ) ────────────
+# P1スラム+爆弾壁 → P2デッキ: スラムD+爆弾F圏内で錠E種まき → P3地上:
+# スプリント門+リフト(FFで降ろしRWで乗って最上層へ) → P4最上層: 大玉レース+
+# 退避ピット+スラムY+錠Z二重種まき→出口
 build(8, [
-    gm(8, 38),
-    player(0.8, 0.55, targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,BankSaw8",
-           arrowStops="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8",
-           solids="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8,"
-                  "GateA8,GateC8,GateD8,LockE8", rewindShots=4),
+    gm(8, S8["limit"]),
+    player(0.8, 0.55,
+           targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,GateG8,Lift8,"
+                   "Ball8,GateY8,LockZ8",
+           standables="Lift8",
+           arrowStops="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,"
+                      "P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F",
+           solids="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,"
+                  "P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F,"
+                  "GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8",
+           rewindShots=S8["rw"]),
     copy.deepcopy(arrow),
-    exit_(33.4, 5.05, "scenes/game_clear.json"), gate(33.4, 4.9),
-    block("F8", 18.0, -0.5, 36.0, 1.0),
+    exit_(116.0, 9.45, "scenes/game_clear.json"), gate(116.0, 9.3),
+    block("F8", 60.0, -0.5, 120.0, 1.0),
     patch("P8a", 4.0, 5.4, 0.5),
     patch("P8b", 8.0, 9.4, 0.5),
-    door("GateA8", 12.2, openT=0.0, closeT=2.6),
-    bomb("Bomb8", 15.2, 0.45, boomT=26.0, wallTarget="WallW8"),
+    door("GateA8", 12.2, openT=0.0, closeT=S8["slamA"]),
+    bomb("Bomb8", 15.2, 0.45, boomT=S8["boomB"], wallTarget="WallW8"),
+    beacon("Bomb8", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
     breakwall("WallW8", 16.2, 1.6, 0.9, 3.2),
-    door("GateC8", 18.6, openT=0.0, closeT=13.0),
+    door("GateC8", 18.6, openT=0.0, closeT=S8["closeC"]),
     block("St8a", 20.6, 0.55, 0.7, 1.1),
     block("St8b", 21.3, 1.1, 0.7, 2.2),
     block("St8c", 22.0, 1.65, 0.7, 3.3),
-    block("D8", 29.3, 4.15, 13.4, 0.5),           # デッキ[22.6,36]
-    door("GateD8", 24.0, openT=0.0, closeT=10.5, base=4.4),
-    bomb("BombF8", 31.0, 4.85, boomT=22.0, wallTarget=""),
-    door("LockE8", 32.4, openT=36.0, closeT=9999.0, base=4.4),
-    pendulum("BankSaw8", 19.0, 6.6, 1.8, period=4.0, amplitude=0.0, phase=0.0, deadly=False),
-], limit=38, width=36)
+    block("D8a", 31.3, 4.15, 17.4, 0.5),          # デッキ[22.6,40]
+    door("GateD8", 24.0, openT=0.0, closeT=S8["slamD"], base=4.4),
+    bomb("BombF8", 31.0, 4.85, boomT=S8["boomF"], wallTarget=""),
+    beacon("BombF8", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
+    door("LockE8", 33.5, openT=S8["lockE"], closeT=9999.0, base=4.4),
+    block("PitS8F", 37.8, 3.15, 1.6, 0.5),        # デッキ刃ピット(銀行)
+    pendulum("SawB8", 37.8, 5.7, 1.4, period=4.0, amplitude=1.0, phase=0.0),
+    patch("P8c", 46.0, 47.4, 0.5),
+    patch("P8d", 52.0, 53.4, 0.5),
+    door("GateG8", 58.0, openT=0.0, closeT=S8["closeG"]),     # スプリント門
+    riseplat("Lift8", 68.0, -0.3, 3.0, 0.5, arriveT=S8["lift"], waitHeight=8.7, riseTime=1.2),
+    beacon("Lift8", color=(0.4, 0.8, 1.0, 0.9), offset=0.8),
+    block("T8", 95.0, 8.55, 50.0, 0.5),           # 最上層[70,120]
+    rollball("Ball8", 76.0, 9.55, 1.5, rollT=S8["ballRoll"], speed=S8["ballSpeed"]),
+    block("PitT8F", 86.6, 7.55, 1.2, 0.5),        # 最上層退避ピット(上面7.8)
+    door("GateY8", 94.0, openT=0.0, closeT=S8["closeY"], base=8.8),
+    door("LockZ8", 110.0, openT=S8["lockZ"], closeT=9999.0, base=8.8),
+], limit=S8["limit"], width=120)
 
-# ── 検証: JSON再読込 + parent整合 + 閉門の最速到達チェック ─────────────
+# ── 検証: JSON再読込 + parent整合 + スラム門の最速到達チェック ─────────
 WALK, HOPJ = 5.0, 0.15
-SLAMS = {  # stage: (gate x, closeT, 経路上のホップ数, スタートx)
-    2: (13.0, 2.8, 5, 0.8), 4: (13.0, 2.6, 4, 0.8), 6: (13.6, 2.8, 4, 0.8),
-    7: (11.4, 2.3, 4, 1.4), 8: (12.2, 2.6, 4, 0.8),
+SLAMS = {
+    2: (14.6, K["s2"]["closeA"], 5, 0.8),
+    4: (13.0, K["s4"]["slamA"], 4, 0.8),
+    6: (13.6, K["s6"]["slamA"], 4, 0.8),
+    7: (11.4, K["s7"]["slamA"], 4, 1.4),
+    8: (12.2, K["s8"]["slamA"], 4, 0.8),
 }
 for n in range(1, 9):
     s = json.load(open(os.path.join(SCENES, f"stage{n}.json"), encoding="utf-8"))
@@ -459,7 +587,7 @@ for n in range(1, 9):
     for e in s["entities"]:
         if "parent" in e:
             assert names[e["parent"]] == "HudCanvas", (n, e["name"])
-    assert "PlayerMarker" in names and "RewindCount" in names
+    assert "PlayerMarker" in names
     if n in SLAMS:
         gx, ct, hops, sx = SLAMS[n]
         fastest = (gx - sx) / WALK + hops * HOPJ

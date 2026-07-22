@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 16.0
+      "value": 16.5
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA,GateB"
+      "value": "GateA,GateB,GateC,GateD"
      },
      {
       "name": "standables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR"
+      "value": "F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,P2dL,P2dR,P2eL,P2eR"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,GateA,GateB"
+      "value": "F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,P2dL,P2dR,P2eL,P2eR,GateA,GateB,GateC,GateD"
      },
      {
       "name": "mirrors",
@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 2
+      "value": 3
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     25.8,
+     49.5,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     25.8,
+     49.5,
      0.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "F2",
    "transform": {
     "position": [
-     14.0,
+     26.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     28.0,
+     52.0,
      1.0,
      3.0
     ]
@@ -512,7 +512,7 @@
    "name": "P2aL",
    "transform": {
     "position": [
-     4.6,
+     5.0,
      0.6,
      0.0
     ],
@@ -539,7 +539,7 @@
    "name": "P2aN",
    "transform": {
     "position": [
-     5.449999999999999,
+     5.85,
      0.2,
      0.0
     ],
@@ -582,7 +582,7 @@
    "name": "P2aR",
    "transform": {
     "position": [
-     6.3,
+     6.7,
      0.85,
      0.0
     ],
@@ -609,7 +609,7 @@
    "name": "P2bL",
    "transform": {
     "position": [
-     9.0,
+     10.0,
      0.6,
      0.0
     ],
@@ -636,7 +636,7 @@
    "name": "P2bN",
    "transform": {
     "position": [
-     9.85,
+     10.85,
      0.2,
      0.0
     ],
@@ -679,7 +679,7 @@
    "name": "P2bR",
    "transform": {
     "position": [
-     10.7,
+     11.7,
      0.85,
      0.0
     ],
@@ -706,7 +706,7 @@
    "name": "GateAFrame",
    "transform": {
     "position": [
-     13.0,
+     14.6,
      2.0,
      0.0
     ],
@@ -733,7 +733,7 @@
    "name": "GateA",
    "transform": {
     "position": [
-     13.0,
+     14.6,
      1.8,
      0.0
     ],
@@ -786,7 +786,7 @@
    "name": "P2cL",
    "transform": {
     "position": [
-     16.4,
+     17.5,
      0.6,
      0.0
     ],
@@ -813,7 +813,7 @@
    "name": "P2cN",
    "transform": {
     "position": [
-     17.25,
+     18.35,
      0.2,
      0.0
     ],
@@ -856,7 +856,7 @@
    "name": "P2cR",
    "transform": {
     "position": [
-     18.1,
+     19.2,
      0.85,
      0.0
     ],
@@ -883,7 +883,7 @@
    "name": "GateBFrame",
    "transform": {
     "position": [
-     21.5,
+     22.5,
      2.0,
      0.0
     ],
@@ -910,7 +910,7 @@
    "name": "GateB",
    "transform": {
     "position": [
-     21.5,
+     22.5,
      1.8,
      0.0
     ],
@@ -936,7 +936,361 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 6.0
+      "value": 8.5
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2dL",
+   "transform": {
+    "position": [
+     25.5,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P2dN",
+   "transform": {
+    "position": [
+     26.35,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.7,
+     0.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2dR",
+   "transform": {
+    "position": [
+     27.2,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2eL",
+   "transform": {
+    "position": [
+     30.5,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P2eN",
+   "transform": {
+    "position": [
+     31.35,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.7,
+     0.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2eR",
+   "transform": {
+    "position": [
+     32.2,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateCFrame",
+   "transform": {
+    "position": [
+     35.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateC",
+   "transform": {
+    "position": [
+     35.5,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 14.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateDFrame",
+   "transform": {
+    "position": [
+     43.0,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateD",
+   "transform": {
+    "position": [
+     43.0,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 15.5
      },
      {
       "name": "slideTime",
@@ -1028,7 +1382,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 16.0
+      "value": 16.5
      },
      {
       "name": "collapseAt",
@@ -1056,8 +1410,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     14.0,
-     2.8000000000000003,
+     26.0,
+     5.2,
      7.0
     ],
     "rotation": [
@@ -1066,8 +1420,8 @@
      0.0
     ],
     "scale": [
-     64.96,
-     33.879999999999995,
+     120.63999999999999,
+     62.92,
      1.0
     ]
    }
@@ -1090,7 +1444,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     14.0,
+     26.0,
      10.0,
      0.0
     ],
@@ -1154,7 +1508,7 @@
      {
       "name": "maxX",
       "type": "float",
-      "value": 16.9
+      "value": 40.9
      },
      {
       "name": "minY",
@@ -1169,17 +1523,17 @@
      {
       "name": "fullX",
       "type": "float",
-      "value": 14.0
+      "value": 26.0
      },
      {
       "name": "fullY",
       "type": "float",
-      "value": 13.54
+      "value": 26.24
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -18.94
+      "value": -34.62
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -1238,7 +1592,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 24,
+   "parent": 34,
    "transform": {
     "position": [
      0.0,
@@ -1297,7 +1651,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 16.0,
+    "maxValue": 16.5,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1312,7 +1666,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 24,
+   "parent": 34,
    "transform": {
     "position": [
      0.0,
@@ -1518,7 +1872,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 34
   },
   {
    "name": "TimeLeft",
@@ -1606,11 +1960,11 @@
      2.0,
      2.0
     ],
-    "text": "16.0",
+    "text": "16.5",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 34
   },
   {
    "name": "DrawAmount",
@@ -1702,7 +2056,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 34
   },
   {
    "name": "RewindCount",
@@ -1794,7 +2148,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 24
+   "parent": 34
   }
  ]
 }

@@ -13,6 +13,7 @@
 """
 
 import math
+from knobs import K
 
 WALK = 5.0
 ARROW_V = 15.0
@@ -239,196 +240,269 @@ def report(name, limit, shots, plans, margin=(1.5, 6.0), quiet=False):
 ALL_OK = True
 
 # ════════════════════════════════════════════════════════════════════
-# S1「遅すぎる橋」 15s / RW1 — 幅33: FloorL[0,20] 橋[20,28](降下15s) FloorR[28,33]
+# S1「遅すぎる橋」2連橋(幅45, RW1) — gen_stages.py 座標に一致
+# FloorA[0,14] Bridge1 x17(span14-20) FloorB[20,30] Bridge2 x33(span30-36)
+# FloorC[36,45] 出口43。橋の時計 clock=real+off、riseTime到達で全下降。
 # ════════════════════════════════════════════════════════════════════
+S1 = K["s1"]
 
 
 def s1_noarrow(r):
-    r.walk(18.7, "橋の縁まで")
-    r.wait(max(0.0, 15.0 - r.clock("Bridge1")), "橋の自然降下待ち")
-    r.walk(8.3 + 2.7, "橋を渡ってゴール")
+    r.walk(13.0, "FloorA奥(x14)へ")
+    r.wait(max(0.0, S1["rise1"] - r.clock("Target1")), "橋1自然降下待ち")
+    r.walk(6.0, "橋1を渡る")
+    r.walk(10.0, "FloorB横断(x30)")
+    r.wait(max(0.0, S1["rise2"] - r.clock("Target2")), "橋2自然降下待ち")
+    r.walk(6.0, "橋2を渡る")
+    r.walk(7.0, "ゴールへ")
 
 
 def s1_plan(r):
-    r.walk(15.0, "射撃位置x16へ")
-    r.ff("Bridge1", 10.0, dist=10.0, label="降下中の橋へフル")
-    r.walk(3.7, "橋の縁へ")
-    r.wait(max(0.0, 15.0 - r.clock("Bridge1")), "残りの降下待ち")
-    r.walk(8.3 + 2.7, "橋を渡ってゴール")
+    # x1で射程18ぎりぎりのTarget1を即射→FloorA奥へ歩く間に降下が進む
+    r.ff("Target1", 10.0, dist=17.2, label="出発点から橋1へフル加速")
+    r.walk(13.0, "FloorA奥(x14)へ")
+    r.wait(max(0.0, S1["rise1"] - r.clock("Target1")), "残りの降下待ち")
+    r.walk(6.0, "橋1を渡る")
+    # FloorBに降りた瞬間(x20)Target2は射程14.4で届く→即2本撃って橋2を沈める
+    r.ff("Target2", 10.0, dist=14.4, label="橋2へ1本目")
+    r.ff("Target2", 10.0, dist=14.4, label="橋2へ2本目(rise2=32は1本では届かない)")
+    r.walk(10.0, "FloorB横断(x30)")
+    r.wait(max(0.0, S1["rise2"] - r.clock("Target2")), "残りの降下待ち")
+    r.walk(6.0, "橋2を渡る")
+    r.walk(7.0, "ゴールへ")
 
 
-ALL_OK &= report("S1 遅すぎる橋", 15, 1, [
+ALL_OK &= report("S1 遅すぎる橋", S1["limit"], S1["rw"], [
     ("矢なし", s1_noarrow, False),
     ("RWのみ(橋は上がるだけ)", s1_noarrow, False),
     ("想定解", s1_plan, True),
-], margin=(1.5, 5.0))
+], margin=(1.5, 6.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S2「二枚の閉門」 16s / RW2 — 幅28: 針山x4.6-6.3/x9-10.7 GateA x13(閉2.8)
-#   針山x16.4-18.1 GateB x21.5(閉6.0) 出口25.8
+# S2「四枚の閉門回廊」(幅52, RW3) — gen_stages.py 座標に一致
+# F2[0,52] P2a[5,6.7] P2b[10,11.7] GateA x14.6 P2c[17.5,19.2] GateB x22.5
+# P2d[25.5,27.2] P2e[30.5,32.2] GateC x35.5 GateD x43.0 出口49.5
 # ════════════════════════════════════════════════════════════════════
+S2 = K["s2"]
 
 
 def s2_route_to_A(r):
-    r.walk(3.0, "針山1へ")
-    r.hops(3.4, 3, "針山1")
-    r.walk(1.9)
-    r.hops(3.4, 2, "針山2")
-    r.walk(1.5, "GateA前")
+    r.walk(4.2, "P2aへ")
+    r.hops(1.7, 3, "針山1")
+    r.walk(3.3, "P2bへ")
+    r.hops(1.7, 2, "針山2")
+    r.walk(2.9, "GateA前")
 
 
 def s2_noarrow(r):
     s2_route_to_A(r)
-    r.gate_pass("GateA", 2.8)
+    r.gate_pass("GateA", S2["closeA"])
 
 
 def s2_ffonly(r):
     s2_route_to_A(r)
     r.ff("GateA", 2.0, dist=1.5, label="FFは閉門を進めるだけ")
-    r.gate_pass("GateA", 2.8)
+    r.gate_pass("GateA", S2["closeA"])
 
 
 def s2_plan(r):
     s2_route_to_A(r)
-    r.rw("GateA", 6.0, dist=1.5, label="呼び戻し")
-    r.gate_reopen_pass("GateA", 2.8)
-    r.walk(2.2)
-    r.hops(3.4, 2, "針山3")
-    r.walk(2.2, "GateB前")
-    r.rw("GateB", 8.0, dist=1.5, label="呼び戻し")
-    r.gate_reopen_pass("GateB", 6.0)
-    r.walk(4.3, "ゴール")
+    r.rw("GateA", 10.0, dist=1.5, label="スラムAを呼び戻す")
+    r.gate_reopen_pass("GateA", S2["closeA"])
+    r.walk(2.9, "P2cへ")
+    r.hops(1.7, 2, "針山3")
+    r.walk(3.3, "GateB前")
+    r.gate_pass("GateB", S2["closeB"], "スプリントで間に合う")
+    r.walk(3.0, "P2dへ")
+    r.hops(1.7, 2, "針山4")
+    r.walk(3.3, "P2eへ")
+    r.hops(1.7, 2, "針山5")
+    r.walk(3.3, "GateC前")
+    r.rw("GateC", 10.0, dist=1.5, label="スラム2を呼び戻す")
+    r.gate_reopen_pass("GateC", S2["closeC"])
+    r.walk(7.5, "GateD前")
+    r.gate_pass("GateD", S2["closeD"], "スプリント2")
+    r.walk(6.5, "ゴール")
 
 
-ALL_OK &= report("S2 二枚の閉門", 16, 2, [
+ALL_OK &= report("S2 四枚の閉門回廊", S2["limit"], S2["rw"], [
     ("矢なし", s2_noarrow, False),
     ("FFのみ", s2_ffonly, False),
     ("想定解", s2_plan, True),
 ], margin=(2.0, 14.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S3「錠と門」 20s / RW1 — 幅30: 射撃台x7.4-8.6 錠x11.4(開22) 針山x15-18
-#   閉門x21.4(閉1.5) 出口26.8
+# S3「三つの錠の取引」(幅58, RW3) — gen_stages.py 座標に一致
+# StepA3 x6.6/StepB3 x7.8(射撃台) Lock1 x10.6 Vine1 x13.5(育ち済) P3a[16,17.7]
+# GateS1 x20.5(スラム1) P3b[23.5,25.2] GateS2 x28.5(スラム2) Lock2 x38
+# (x22-28で種まき) P3c[41.5,43.2] GateZ x46.5(サンド) 出口54
 # ════════════════════════════════════════════════════════════════════
+S3 = K["s3"]
 
 
-def s3_route(r):
-    r.walk(6.0, "段差へ")
-    r.hops(2.0, 2, "射撃台(段差二段)へ")
+def s3_route_to_shot(r):
+    r.walk(5.8, "段差へ")
+    r.hops(1.2, 2, "射撃台(段差二段)へ")
+
+
+def s3_route_S1(r):
+    r.walk(5.7, "Vine1経由でP3aへ")
+    r.hops(1.7, 2, "針山1")
+    r.walk(2.8, "GateS1前")
+
+
+def s3_route_S2(r):
+    r.walk(3.0, "P3bへ")
+    r.hops(1.7, 2, "針山2")
+    r.walk(3.3, "GateS2前")
 
 
 def s3_noarrow(r):
-    s3_route(r)
-    r.lock_wait("Lock3", 22.0)
-    r.walk(9.0, "針山区間")
-    r.gate_pass("Gate3", 1.5)
+    s3_route_to_shot(r)
+    r.lock_wait("Lock1", S3["lock1"])
+    s3_route_S1(r)
+    r.gate_pass("GateS1", S3["slam1"])
 
 
 def s3_ffonly(r):
-    s3_route(r)
-    r.ff("Lock3", 10.0, dist=2.8)
-    r.ff("Lock3", 10.0, dist=2.8)
-    r.lock_wait("Lock3", 22.0)
-    r.walk(6.0)
-    r.hops(3.0, 2)
-    r.gate_pass("Gate3", 1.5)
+    s3_route_to_shot(r)
+    r.ff("Lock1", 10.0, dist=2.8)
+    r.ff("Lock1", 10.0, dist=2.8)
+    r.lock_wait("Lock1", S3["lock1"])
+    s3_route_S1(r)
+    r.ff("GateS1", 2.0, dist=1.5, label="FFは閉門を進めるだけ")
+    r.gate_pass("GateS1", S3["slam1"])
 
 
 def s3_rwonly(r):
-    s3_route(r)
-    r.lock_wait("Lock3", 22.0)
-    r.walk(6.0)
-    r.hops(3.0, 2)
-    r.walk(1.4)
-    r.rw("Gate3", 10.0, dist=1.2, label="1発では届かない")
-    r.gate_reopen_pass("Gate3", 1.5)
+    # FFなしなのでLock1もLock2も自然開通まで丸ごと待つしかない
+    s3_route_to_shot(r)
+    r.lock_wait("Lock1", S3["lock1"])
+    s3_route_S1(r)
+    r.rw("GateS1", 10.0, dist=1.5, label="スラム1(#1)")
+    r.gate_reopen_pass("GateS1", S3["slam1"])
+    s3_route_S2(r)
+    r.rw("GateS2", 10.0, dist=1.5, label="スラム2(#2)")
+    r.gate_reopen_pass("GateS2", S3["slam2"])
+    r.walk(9.5, "Lock2前")
+    r.lock_wait("Lock2", S3["lock2"], "種まき無しなので自然開通まで待つ")
+    r.walk(3.5, "P3cへ")
+    r.hops(1.7, 2, "針山3")
+    r.walk(3.3, "GateZ前")
+    r.rw("GateZ", 10.0, dist=1.2, label="サンド(#3, 1発目)")
+    r.gate_reopen_pass("GateZ", S3["closeZ"])
+    r.rw("GateZ", 10.0, dist=1.2, label="サンド(#4, 予算オーバー)")
+    r.gate_reopen_pass("GateZ", S3["closeZ"])
 
 
 def s3_plan(r):
-    s3_route(r)
-    r.ff("Lock3", 10.0, dist=2.8, label="錠へ1本目")
-    r.ff("Lock3", 10.0, dist=2.8, label="錠へ2本目")
-    r.lock_wait("Lock3", 22.0)
-    r.walk(2.6)
-    r.hops(3.0, 2, "針山")
-    r.walk(2.4, "Gate3前")
-    r.rw("Gate3", 10.0, dist=1.2, label="閉門を呼び戻す")
-    r.gate_reopen_pass("Gate3", 1.5)
-    r.walk(5.4, "ゴール")
+    s3_route_to_shot(r)
+    r.ff("Lock1", 10.0, dist=2.8, label="錠1へ1本目")
+    r.ff("Lock1", 10.0, dist=2.8, label="錠1へ2本目")
+    r.lock_wait("Lock1", S3["lock1"])
+    s3_route_S1(r)
+    r.rw("GateS1", 10.0, dist=1.5, label="スラム1を呼び戻す")
+    r.gate_reopen_pass("GateS1", S3["slam1"])
+    r.walk(3.0, "P3bの手前(x23.5)で錠2へ種まき")
+    r.ff("Lock2", 10.0, dist=14.0, label="◆種まき1: 錠2へ")
+    r.ff("Lock2", 10.0, dist=14.0, label="◆種まき2: 自然開通を待たず済むように")
+    r.hops(1.7, 2, "針山2")
+    r.walk(3.3, "GateS2前")
+    r.rw("GateS2", 10.0, dist=1.5, label="スラム2を呼び戻す")
+    r.gate_reopen_pass("GateS2", S3["slam2"])
+    r.walk(9.5, "Lock2前")
+    r.lock_wait("Lock2", S3["lock2"], "種まき済みなのでほぼ待たずに開く")
+    r.walk(3.5, "P3cへ")
+    r.hops(1.7, 2, "針山3")
+    r.walk(3.3, "GateZ前")
+    r.gate_pass("GateZ", S3["closeZ"], "種まき経路は間に合う")
+    r.walk(7.5, "ゴール")
 
 
-ALL_OK &= report("S3 錠と門", 20, 1, [
+ALL_OK &= report("S3 三つの錠の取引", S3["limit"], S3["rw"], [
     ("矢なし", s3_noarrow, False),
     ("FFのみ", s3_ffonly, False),
     ("RWのみ", s3_rwonly, False),
     ("想定解", s3_plan, True),
-], margin=(1.5, 6.0))
+], margin=(2.0, 8.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S4「動かせない締切」 23s / RW2 — 幅30: 針山x4-6.4/x8.4-10.4 スラムA x13(閉2.6)
-#   錠x15.4(開25) 刃ピットbx19.4[18.8,20.0] 閉門B x24.4(閉15) 出口28.6
+# S4「動かせない締切+動く壁」(幅64, RW3) — gen_stages.py 座標に一致
+# P4a[4,5.7] P4b[8.8,10.4] GateA4 x13.0(スラム) Lock4 x15.4 刃ピットbx19.4
+# GateB4 x24.4(サンド) CW4 x37(動く壁) P4c[55,56.7] GateZ4 x59.5(サンド2) 出口62.5
 # ════════════════════════════════════════════════════════════════════
+S4 = K["s4"]
 S4_SAW = dict(bx=19.4, amp=1.0, period=4.0, phase=0.0, pit0=18.8, pit1=20.0)
 
 
 def s4_route_to_A(r):
-    r.walk(2.6, "針山1へ")
-    r.hops(3.2, 2, "針山1")
-    r.walk(1.6)
-    r.hops(2.8, 2, "針山2")
-    r.walk(2.0, "スラムA前")
+    r.walk(3.2, "P4aへ")
+    r.hops(1.7, 2, "針山1")
+    r.walk(3.1, "P4bへ")
+    r.hops(1.6, 2, "針山2")
+    r.walk(2.6, "GateA4前")
 
 
 def s4_noarrow(r):
     s4_route_to_A(r)
-    r.gate_pass("GateA4", 2.6)
+    r.gate_pass("GateA4", S4["slamA"])
 
 
 def s4_rwonly(r):
     s4_route_to_A(r)
-    r.rw("GateA4", 4.0, dist=1.5, label="スラムA")
-    r.gate_reopen_pass("GateA4", 2.6)
-    r.lock_wait("Lock4", 25.0)
+    r.rw("GateA4", 10.0, dist=1.5, label="スラムA")
+    r.gate_reopen_pass("GateA4", S4["slamA"])
+    r.walk(2.4, "Lock4前")
+    r.lock_wait("Lock4", S4["lockOpen"])
     r.pit_cross("Saw4", **S4_SAW, x0=16.6, x1=22.1)
-    r.walk(1.6)
+    r.walk(2.3, "GateB4前")
     r.rw("GateB4", 10.0, dist=1.2, label="残1発(上限10で届かない)")
-    r.gate_reopen_pass("GateB4", 15.0)
+    r.gate_reopen_pass("GateB4", S4["closeB"])
 
 
 def s4_plan(r):
     s4_route_to_A(r)
-    r.rw("GateA4", 4.0, dist=1.5, label="スラムA呼び戻し")
-    r.gate_reopen_pass("GateA4", 2.6)
-    r.walk(1.4, "射撃位置")
+    r.rw("GateA4", 10.0, dist=1.5, label="スラムA呼び戻し")
+    r.gate_reopen_pass("GateA4", S4["slamA"])
+    r.walk(2.4, "射撃位置")
     r.ff("Lock4", 10.0, dist=1.5, label="錠へ1本目")
     r.ff("Lock4", 10.0, dist=1.5, label="錠へ2本目")
-    r.lock_wait("Lock4", 25.0)
+    r.lock_wait("Lock4", S4["lockOpen"])
     r.pit_cross("Saw4", **S4_SAW, x0=16.6, x1=22.1, label="退避ピットで刃越え")
-    r.walk(1.6, "GateB前")
-    r.gate_pass("GateB4", 15.0, "サンドの締切")
-    r.walk(4.0, "ゴール")
+    r.walk(2.3, "GateB4前")
+    r.gate_pass("GateB4", S4["closeB"], "サンドの締切")
+    r.walk(12.6, "CW4前")
+    r.ff("CW4", 2.0, dist=1.5, label="動く壁をゴースト通過")
+    r.wait(0.4, "ゴースト通過中")
+    r.walk(18.0, "P4cへ")
+    r.hops(1.7, 2, "針山3")
+    r.walk(2.8, "GateZ4前")
+    r.gate_pass("GateZ4", S4["closeZ"], "壁が止まる前に通過")
+    r.walk(3.0, "ゴール")
 
 
-ALL_OK &= report("S4 動かせない締切", 23, 2, [
+ALL_OK &= report("S4 動かせない締切+動く壁", S4["limit"], S4["rw"], [
     ("矢なし", s4_noarrow, False),
     ("FFのみ", s4_noarrow, False),
     ("RWのみ", s4_rwonly, False),
     ("想定解", s4_plan, True),
-], margin=(1.5, 6.0))
+], margin=(2.0, 8.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S5「時の昇降機」 26s / RW3 — 幅34: 針山x4.2-5.8 リフトx12.5[11,14](自然降下14)
-#   デッキ[16,34]y4 スラムx16.6(閉2.6) 大玉x20.5(速0.55) 退避ピット[24,25.2]
-#   終錠x30.4(開30) 出口x32.6
+# S5「時の昇降機・改」(幅88, RW4, 3層) — gen_stages.py 座標に一致
+# StepA5 x4.2/N5 x4.9/StepB5 x5.6 Lift5 x12.5 デッキ[16,52] Gate5 x17.2
+# Ball5 x19.5 PitR1F x28.6 LockD5 x46 Vine5 x61.2 最上層[62,88] Ferry5 x72
+# GateY5 x76.5 LockZ5 x82 出口85.5
 # ════════════════════════════════════════════════════════════════════
-S5_BALL = dict(bx=20.5, rollT=0.0, speed=0.55)
-S5_GOAL = 32.6
+S5 = K["s5"]
+S5_BALL = dict(bx=19.5, rollT=S5["ballRoll"], speed=S5["ballSpeed"])
+S5_GOAL = 85.5
 
 
 def s5_ground(r):
-    r.walk(3.2, "針山へ")
-    r.hops(1.8, 2, "針山")
-    r.walk(2.4, "リフト射撃位置x8")
+    r.walk(3.4, "針山へ")
+    r.hops(1.4, 2, "針山")
+    r.walk(2.4, "リフト射撃位置x8へ")
 
 
 def s5_noarrow(r):
@@ -446,98 +520,148 @@ def s5_ffonly(r):
 
 def s5_rwonly(r):
     s5_ground(r)
-    r.wait(max(0.0, 14.0 - r.clock("Lift5")), "自然降下待ち")
+    r.wait(max(0.0, S5["lift"] - r.clock("Lift5")), "自然降下待ち")
     r.walk(4.5, "乗り込み")
-    r.rw("Lift5", 10.0, dist=0.5, label="巻き上げ")
+    r.rw("Lift5", 10.0, dist=0.5, label="巻き上げ(#1)")
     r.wait(0.6)
-    r.walk(2.6, "スラム前")
-    r.rw("Gate5", 10.0, dist=1.0, label="1発目(時計が古く開かない)")
-    r.gate_reopen_pass("Gate5", 2.6)
-    r.rw("Gate5", 10.0, dist=1.0, label="2発目でようやく開く")
-    r.gate_reopen_pass("Gate5", 2.6)
-    r.goal_alive("Ball5", **S5_BALL, goal_x=S5_GOAL, label="玉に矢が残っていない")
+    r.walk(4.7, "スラム前")
+    r.rw("Gate5", 10.0, dist=1.0, label="スラムGを呼び戻す(#2)")
+    r.gate_reopen_pass("Gate5", S5["slamG"])
+    r.walk(11.4, "退避ピット1へ")
+    r.wait(0.3, "ピットに降りる")
+    r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(#3)")
+    r.wait(0.8)
+    r.wait(0.3)
+    r.walk(17.4, "LockD前(種まき無し)")
+    r.lock_wait("LockD5", S5["lockD"], "自然開通まで待つ")
+    r.walk(6.0, "デッキ端52で降りる")
+    r.wait(0.3, "地上へ")
+    r.walk(9.2, "Vine5前")
+    r.wait(max(0.0, S5["vineGrow"] - r.clock("Vine5")), "ツタの自然成長待ち(長い)")
+    r.wait(2.2, "ツタを登る")
+    r.walk(14.8, "GateY5前(種まき無し)")
+    r.rw("GateY5", 10.0, dist=1.0, label="最後の1発(#4)")
+    r.gate_reopen_pass("GateY5", S5["closeY"])
 
 
 def s5_plan(r):
     s5_ground(r)
     r.ff("Lift5", 10.0, dist=4.5, label="リフトへ1本目")
-    r.ff("Lift5", 4.0, dist=4.5, label="リフトへ2本目(時計14で着地)")
+    r.ff("Lift5", 4.0, dist=4.5, label="リフトへ2本目(時計がlift到達)")
     r.walk(4.5, "乗り込み")
-    r.rw("Lift5", 10.0, dist=0.5, label="乗ったまま巻き上げ=上昇!")
+    r.rw("Lift5", 10.0, dist=0.5, label="乗ったまま巻き上げ=上昇!(#1)")
     r.wait(0.6, "デッキへ移る")
-    r.walk(2.6, "スラム前")
-    r.rw("Gate5", 10.0, dist=1.0, label="呼び戻し(時計が若く1発)")
-    r.gate_reopen_pass("Gate5", 2.6)
-    r.walk(7.2, "退避ピットへ")
+    r.walk(4.7, "スラム前")
+    r.rw("Gate5", 10.0, dist=1.0, label="呼び戻し(時計が若く1発, #2)")
+    r.gate_reopen_pass("Gate5", S5["slamG"])
+    r.walk(11.4, "退避ピット1へ")
     r.wait(0.3, "ピットに降りる")
-    r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(頭上を逆走)")
+    r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(頭上を逆走, #3)")
     r.wait(0.8, "通過待ち")
     r.wait(0.3, "ピットから出る")
-    r.walk(5.2, "デッキを右へ")
-    r.ball_block_check("Ball5", **S5_BALL, px=30.0, label="先行確認")
-    r.ff("Lock5", 10.0, dist=1.5, label="終錠へ1本目")
-    r.ff("Lock5", 10.0, dist=1.5, label="終錠へ2本目")
-    r.lock_wait("Lock5", 30.0)
+    r.walk(3.4, "種まき位置(x32)へ")
+    r.ff("LockD5", 10.0, dist=14.0, label="◆種まき: 終錠へ")
+    r.walk(14.0, "デッキを進む(x46)")
+    r.lock_wait("LockD5", S5["lockD"])
+    r.walk(6.0, "デッキ端52で降りる")
+    r.wait(0.3, "地上へ飛び降りる")
+    r.walk(9.2, "Vine5前(x61.2)")
+    r.ff("Vine5", 10.0, dist=1.0, label="ツタへ1本目")
+    r.ff("Vine5", 10.0, dist=1.0, label="ツタへ2本目(即育つ)")
+    r.lock_wait("Vine5", S5["vineGrow"])
+    r.wait(2.2, "ツタを登る(climbSpeed4)")
+    r.walk(4.8, "種まき位置(x66)へ")
+    r.ff("LockZ5", 10.0, dist=16.0, label="◆種まき: 終錠Zへ(フェリー手前)")
+    r.walk(4.0, "フェリー乗り場(x70)へ")
+    r.wait(S5["ferryP"] / 2, "フェリーの間合い")
+    r.walk(2.2, "フェリーで渡る(振れ幅2.2)")
+    r.walk(2.5, "GateY5前")
+    r.gate_pass("GateY5", S5["closeY"], "サンドの締切")
+    r.walk(5.5, "LockZ5前")
+    r.lock_wait("LockZ5", S5["lockZ"])
     r.goal_alive("Ball5", **S5_BALL, goal_x=S5_GOAL, label="レース勝利")
-    r.walk(2.2, "ゴール")
+    r.walk(3.5, "ゴール")
 
 
-ALL_OK &= report("S5 時の昇降機", 26, 3, [
+ALL_OK &= report("S5 時の昇降機・改", S5["limit"], S5["rw"], [
     ("矢なし", s5_noarrow, False),
     ("FFのみ", s5_ffonly, False),
-    ("RWのみ(スラムに2発必要で玉に届かない)", s5_rwonly, False),
+    ("RWのみ", s5_rwonly, False),
     ("想定解", s5_plan, True),
-], margin=(1.5, 10.0))
+], margin=(2.0, 12.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S6「導火線」 30s / RW2 — 幅34: 針山x4.4-7/x9.4-11.6 スラムA x13.6(閉2.8)
-#   爆弾x17.6+壁x18.6(自然24) 閉門C x21.6(閉12) 針山x23.6-26.2 錠x27.6(開21) 出口32
+# S6「二本の導火線」(幅96, RW3, 2層) — gen_stages.py 座標に一致
+# P6a[4.4,6.1] P6b[9.4,11.0] GateA6 x13.6 Bomb6 x17.6/WallW6 x18.6
+# GateC6 x21.6 階段25.4-27.5 レッジ[28.5,64] Bomb62 x44/WallW62 x45.4
+# GateE6 x52 P6c[68,69.7] P6d[73,74.7] LockZ6 x80 出口92
 # ════════════════════════════════════════════════════════════════════
+S6 = K["s6"]
 
 
 def s6_route_to_A(r):
-    r.walk(3.0, "針山1へ")
-    r.hops(3.2, 2, "針山1")
-    r.walk(1.8)
-    r.hops(2.8, 2, "針山2")
-    r.walk(2.0, "スラムA前")
+    r.walk(3.6, "P6aへ")
+    r.hops(1.7, 2, "針山1")
+    r.walk(3.3, "P6bへ")
+    r.hops(1.6, 2, "針山2")
+    r.walk(2.6, "GateA6前")
 
 
 def s6_noarrow(r):
     s6_route_to_A(r)
-    r.gate_pass("GateA6", 2.8)
+    r.gate_pass("GateA6", S6["slamA"])
 
 
 def s6_rwonly(r):
     s6_route_to_A(r)
-    r.rw("GateA6", 4.0, dist=1.5, label="スラムA")
-    r.gate_reopen_pass("GateA6", 2.8)
-    r.walk(2.2, "爆弾の安全圏x15.8で待機")
-    r.bomb_wait_boom("BombB6", 24.0)
-    r.walk(4.2, "瓦礫を抜けC前へ")
-    r.rw("GateC6", 10.0, dist=1.2, label="1発目(届かない)")
-    r.gate_reopen_pass("GateC6", 12.0)
+    r.rw("GateA6", 10.0, dist=1.5, label="スラムA(#1)")
+    r.gate_reopen_pass("GateA6", S6["slamA"])
+    r.walk(2.2, "爆弾の安全圏x15.8")
+    r.bomb_wait_boom("Bomb6", S6["boom1"], "自然爆発まで待つ(長い)")
+    r.walk(5.8, "瓦礫を抜けC前へ")
+    r.rw("GateC6", 10.0, dist=1.2, label="サンド(#2)")
+    r.rw("GateC6", 10.0, dist=1.2, label="サンド(#3, もう予算がない)")
+    r.gate_reopen_pass("GateC6", S6["closeC"])
+    r.walk(6.9, "階段でレッジへ")
+    r.walk(13.5, "レッジを進む")
+    r.bomb_wait_boom("Bomb62", S6["boom2"], "自然爆発まで待つ(長い)")
+    r.walk(10.0, "瓦礫を抜けE前へ")
+    r.rw("GateE6", 10.0, dist=1.2, label="スラム(#4, 予算オーバー)")
+    r.gate_reopen_pass("GateE6", S6["closeE"])
 
 
 def s6_plan(r):
     s6_route_to_A(r)
-    r.rw("GateA6", 4.0, dist=1.5, label="スラムA呼び戻し")
-    r.gate_reopen_pass("GateA6", 2.8)
+    r.rw("GateA6", 10.0, dist=1.5, label="スラムA呼び戻し(#1)")
+    r.gate_reopen_pass("GateA6", S6["slamA"])
     r.walk(2.2, "安全圏x15.8から狙う")
-    r.ff("BombB6", 10.0, dist=1.9, label="導火線を1本目")
-    r.ff("BombB6", 10.0, dist=1.9, label="2本目→ほぼ即起爆")
-    r.wait(0.5, "爆発")
-    r.walk(4.2, "瓦礫を抜ける")
-    r.gate_pass("GateC6", 12.0, "まだ開いている")
-    r.walk(2.4)
-    r.hops(2.6, 2, "針山3")
-    r.walk(1.6, "錠前")
-    r.ff("Lock6", 10.0, dist=1.5, label="錠へ(半分だけ前借り)")
-    r.lock_wait("Lock6", 21.0)
-    r.walk(4.4, "ゴール")
+    r.ff("Bomb6", 10.0, dist=1.9, label="導火線1本目")
+    r.ff("Bomb6", 10.0, dist=1.9, label="2本目→ほぼ即起爆")
+    r.bomb_wait_boom("Bomb6", S6["boom1"])
+    r.walk(5.8, "瓦礫を抜けてGateC6前へ")
+    r.gate_pass("GateC6", S6["closeC"], "まだ開いている")
+    r.walk(6.9, "階段でレッジへ")
+    r.walk(13.5, "レッジを進む(x42へ)")
+    r.ff("Bomb62", 10.0, dist=2.0, label="導火線2の1本目(爆風外から)")
+    r.ff("Bomb62", 10.0, dist=2.0, label="2本目→起爆")
+    r.bomb_wait_boom("Bomb62", S6["boom2"])
+    r.walk(10.0, "瓦礫を抜けてGateE6前へ")
+    r.rw("GateE6", 10.0, dist=1.2, label="スラムを呼び戻す(#2)")
+    r.gate_reopen_pass("GateE6", S6["closeE"])
+    r.walk(12.0, "レッジ端64へ")
+    r.wait(0.3, "地上へ降りる")
+    r.walk(2.0, "種まき位置(x66)へ")
+    r.ff("LockZ6", 10.0, dist=14.0, label="◆種まき: 終錠へ(水平)")
+    r.walk(2.0, "P6cへ")
+    r.hops(1.7, 2, "針山3")
+    r.walk(3.3, "P6dへ")
+    r.hops(1.7, 2, "針山4")
+    r.walk(5.3, "LockZ6前")
+    r.lock_wait("LockZ6", S6["lockZ"])
+    r.walk(12.0, "ゴール")
 
 
-ALL_OK &= report("S6 導火線", 30, 2, [
+ALL_OK &= report("S6 二本の導火線", S6["limit"], S6["rw"], [
     ("矢なし", s6_noarrow, False),
     ("FFのみ", s6_noarrow, False),
     ("RWのみ", s6_rwonly, False),
@@ -545,165 +669,189 @@ ALL_OK &= report("S6 導火線", 30, 2, [
 ], margin=(1.5, 8.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S7「時計塔の往復」 36s / RW3 — 幅31: 塔x0.5(ボタン) 針山x3.4-5.6/x7.2-9.4
-#   スラムA x11.4(閉2.3) 格子x13.3 出口x14.2(袋小路) 壁x15.4 階段x27.7-29.8
-#   デッキ[2.6,26.4]y4.4 刃ピットbx16[15.2,16.8] 錠D x4.4(開26)
+# S7「時計塔大回廊」(幅104, RW4, 3層) — gen_stages.py 座標に一致
+# P7a[3.4,5.0] P7b[7.2,8.8] GateA7 x11.4 地上東進→階段62.3-64.4→デッキ[18,60.8]
+# Pit2F x50.8(sawP2) Pit1F x38.8(sawP1) LockD7 x22 Button1(x17,y5.45)
+# LatticeL1 x68.5 Vine7 x72.5 最上層[74,104] Pit3F x86.8(sawP3) LockZ7 x98 出口101.5
 # ════════════════════════════════════════════════════════════════════
-S7_SAW = dict(bx=16.0, amp=1.2, period=4.0, phase=0.0, pit0=16.8, pit1=15.2)
+S7 = K["s7"]
+S7_SAW2 = dict(bx=50.8, amp=1.0, phase=0.0, pit0=51.6, pit1=50.0)
+S7_SAW1 = dict(bx=38.8, amp=1.2, phase=0.0, pit0=39.6, pit1=38.0)
+S7_SAW3 = dict(bx=86.8, amp=1.0, phase=0.0, pit0=86.0, pit1=87.6)
 
 
 def s7_route_to_A(r):
-    r.walk(2.0, "針山1へ")
-    r.hops(3.2, 2, "針山1")
-    r.walk(1.6)
-    r.hops(3.2, 2, "針山2")
-    r.walk(2.0, "スラムA前")
+    r.walk(2.0, "P7aへ")
+    r.hops(1.6, 2, "針山1")
+    r.walk(2.2, "P7bへ")
+    r.hops(1.6, 2, "針山2")
+    r.walk(2.6, "GateA7前")
 
 
 def s7_noarrow(r):
     s7_route_to_A(r)
-    r.gate_pass("GateA7", 2.3)
+    r.gate_pass("GateA7", S7["slamA"])
 
 
 def s7_rwonly(r):
     s7_route_to_A(r)
-    r.rw("GateA7", 4.0, dist=1.5, label="スラムA")
-    r.gate_reopen_pass("GateA7", 2.3)
-    r.walk(17.0, "地上を東へ")
-    r.hops(2.8, 4, "階段でデッキへ")
-    r.walk(10.5, "デッキを西へ")
-    r.pit_cross("Saw7", **S7_SAW, x0=18.5, x1=13.6, label="(西向き)")
-    r.walk(9.2, "錠D前")
-    r.lock_wait("LockD7", 26.0)
-    r.dead = "ボタンはFF矢でしか押せない → 格子が開かず出口に入れない"
+    r.rw("GateA7", 10.0, dist=1.5, label="スラムA")
+    r.gate_reopen_pass("GateA7", S7["slamA"])
+    r.walk(53.0, "地上を東へ(階段まで)")
+    r.hops(2.1, 4, "階段でデッキへ")
+    r.walk(11.6, "デッキを西へ(刃ピット2手前)")
+    r.pit_cross("Saw7b", **S7_SAW2, period=S7["sawP2"], x0=52.8, x1=48.6)
+    r.walk(6.6, "刃ピット1手前へ")
+    r.pit_cross("Saw7a", **S7_SAW1, period=S7["sawP1"], x0=42.0, x1=35.6)
+    r.walk(13.6, "LockD7前")
+    r.lock_wait("LockD7", S7["lockD"])
+    r.walk(3.0, "デッキ西端(x19)へ")
+    r.dead = "RW矢はButton1に反応しない(FF専用)→格子L1が開かず先へ進めない"
 
 
 def s7_plan(r):
     s7_route_to_A(r)
-    r.rw("GateA7", 4.0, dist=1.5, label="スラムA呼び戻し")
-    r.gate_reopen_pass("GateA7", 2.3)
-    r.walk(17.0, "地上を東へ(頭上のデッキと塔を観察)")
-    r.hops(2.8, 4, "階段でデッキへ")
-    r.walk(10.5, "デッキを西へ")
-    r.pit_cross("Saw7", **S7_SAW, x0=18.5, x1=13.6, label="(西向き)")
-    r.walk(9.2, "錠D前")
+    r.rw("GateA7", 10.0, dist=1.5, label="スラムA呼び戻し")
+    r.gate_reopen_pass("GateA7", S7["slamA"])
+    r.walk(53.0, "地上を東へ(階段まで)")
+    r.hops(2.1, 4, "階段でデッキへ")
+    r.walk(11.6, "デッキを西へ(刃ピット2手前)")
+    r.pit_cross("Saw7b", **S7_SAW2, period=S7["sawP2"], x0=52.8, x1=48.6, label="(西向き)")
+    r.walk(6.6, "刃ピット1手前へ")
+    r.pit_cross("Saw7a", **S7_SAW1, period=S7["sawP1"], x0=42.0, x1=35.6, label="(西向き)")
+    r.walk(13.6, "LockD7前")
     r.ff("LockD7", 10.0, dist=1.5, label="錠Dへ1本目")
     r.ff("LockD7", 8.0, dist=1.5, label="錠Dへ2本目(待つより得)")
-    r.lock_wait("LockD7", 26.0)
-    r.walk(0.7, "デッキ左端")
-    r.ff("ButtonB7", 2.0, dist=3.2, label="塔上のボタンへFF矢→格子が開く")
-    r.walk(0.5, "縁へ")
+    r.lock_wait("LockD7", S7["lockD"])
+    r.walk(3.0, "デッキ西端(x19)へ")
+    r.ff("Button1", 2.0, dist=2.4, label="塔上のボタンへFF矢→格子L1が開く")
     r.wait(0.5, "飛び降り")
-    r.walk(11.1, "地上を東へ、開いた格子x13.3をくぐる")
-    r.walk(0.9, "袋小路の出口へ")
+    r.walk(49.5, "地上を東へ、開いた格子L1をくぐる")
+    r.walk(4.0, "Vine7前")
+    r.ff("Vine7", 10.0, dist=1.0, label="ツタへ1本目")
+    r.ff("Vine7", 10.0, dist=1.0, label="ツタへ2本目(即育つ)")
+    r.lock_wait("Vine7", S7["vineGrow"])
+    r.wait(2.2, "ツタを登る(climbSpeed4)")
+    r.walk(11.3, "刃ピット3手前へ")
+    r.pit_cross("Saw7c", **S7_SAW3, period=S7["sawP3"], x0=83.8, x1=89.8, label="(東向き)")
+    r.ff("LockZ7", 10.0, dist=8.2, label="◆種まき: 終錠へ")
+    r.walk(8.2, "LockZ7前")
+    r.lock_wait("LockZ7", S7["lockZ"])
+    r.walk(3.5, "ゴール")
 
 
-ALL_OK &= report("S7 時計塔の往復", 36, 3, [
+ALL_OK &= report("S7 時計塔大回廊", S7["limit"], S7["rw"], [
     ("矢なし", s7_noarrow, False),
     ("FFのみ", s7_noarrow, False),
     ("RWのみ", s7_rwonly, False),
     ("想定解", s7_plan, True),
-], margin=(2.0, 10.0))
+], margin=(3.0, 14.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S8「時計職人の卒業試験」 38s / RW4 — 幅36: 針山x4-6.2/x8.2-10.2 スラムA x12.2(閉2.6)
-#   爆弾x15.2+壁x16.2(自然26) 閉門C x18.6(閉13) 階段x20.6-22 デッキ[22.6,36]y4.4
-#   スラムD x24(閉10.5) 種まき射点x30 爆弾F x31(自然22,待機圏を薙ぐ) 終錠x32.4(開36)
-#   銀行ノコx19,y6.6 出口x33.4
+# S8「時計職人の卒業試験・大」(幅120, RW5, 3層4フェーズ) — gen_stages.py 座標に一致
+# P8a[4,5.4] P8b[8,9.4] GateA8 x12.2 Bomb8 x15.2/WallW8 x16.2 GateC8 x18.6
+# 階段20.6-22 デッキ[22.6,40] GateD8 x24 BombF8 x31 LockE8 x33.5 SawB8 x37.8
+# P8c[46,47.4] P8d[52,53.4] GateG8 x58 Lift8 x68 最上層[70,120] Ball8 x76
+# PitT8F x86.6 GateY8 x94 LockZ8 x110 出口116
 # ════════════════════════════════════════════════════════════════════
+S8 = K["s8"]
+S8_BALL = dict(bx=76.0, rollT=S8["ballRoll"], speed=S8["ballSpeed"])
+S8_GOAL = 116.0
 
 
 def s8_route_to_A(r):
-    r.walk(2.6, "針山1へ")
-    r.hops(2.8, 2, "針山1")
-    r.walk(1.4)
-    r.hops(2.6, 2, "針山2")
-    r.walk(1.4, "スラムA前")
+    r.walk(3.2, "P8aへ")
+    r.hops(1.4, 2, "針山1")
+    r.walk(2.6, "P8bへ")
+    r.hops(1.4, 2, "針山2")
+    r.walk(2.8, "GateA8前")
 
 
 def s8_noarrow(r):
     s8_route_to_A(r)
-    r.gate_pass("GateA8", 2.6)
+    r.gate_pass("GateA8", S8["slamA"])
 
 
 def s8_rwonly(r):
     s8_route_to_A(r)
-    r.rw("GateA8", 4.0, dist=1.5, label="スラムA")
-    r.gate_reopen_pass("GateA8", 2.6)
+    r.rw("GateA8", 10.0, dist=1.5, label="スラムA(#1)")
+    r.gate_reopen_pass("GateA8", S8["slamA"])
     r.walk(1.0, "安全圏で待機")
-    r.bomb_wait_boom("BombB8", 26.0)
-    r.walk(3.4, "瓦礫を抜けC前")
-    r.rw("GateC8", 10.0, dist=1.2, label="C 1発目")
-    r.gate_reopen_pass("GateC8", 13.0)
-    r.rw("GateC8", 10.0, dist=1.2, label="C 2発目")
-    r.gate_reopen_pass("GateC8", 13.0)
-    r.walk(2.0)
-    r.hops(2.0, 4, "階段→デッキ")
-    r.walk(1.4, "スラムD前")
-    r.rw("GateD8", 10.0, dist=1.2, label="D 残り1発(時計-10でもまだ閉)")
-    r.gate_reopen_pass("GateD8", 10.5)
+    r.bomb_wait_boom("Bomb8", S8["boomB"], "自然爆発まで待つ(長い)")
+    r.walk(5.4, "瓦礫を抜けC前へ")
+    r.rw("GateC8", 10.0, dist=1.2, label="C(#2)")
+    r.rw("GateC8", 10.0, dist=1.2, label="C(#3, 予算が減る)")
+    r.gate_reopen_pass("GateC8", S8["closeC"])
+    r.walk(2.0, "階段へ")
+    r.hops(1.4, 3, "階段→デッキ")
+    r.walk(2.0, "GateD前")
+    r.rw("GateD8", 10.0, dist=1.2, label="D(#4, 残り1発)")
+    r.gate_reopen_pass("GateD8", S8["slamD"])
+    r.walk(7.8, "LockE8圏内へ")
+    r.lock_wait("LockE8", S8["lockE"], "種まき無しで自然開通待ち")
+    if r.clock("BombF8") >= S8["boomF"]:
+        r.dead = r.dead or "爆弾Fが自然爆発するまで待つ間に爆死"
+    r.walk(30.0, "GateY8前へ(残りRWなし)")
+    r.rw("GateY8", 10.0, dist=1.0, label="Y(#5, 予算オーバー)")
+    r.gate_reopen_pass("GateY8", S8["closeY"])
 
 
 def s8_plan(r):
     s8_route_to_A(r)
-    r.rw("GateA8", 4.0, dist=1.5, label="スラムA呼び戻し")
-    r.gate_reopen_pass("GateA8", 2.6)
+    r.rw("GateA8", 10.0, dist=1.5, label="スラムA呼び戻し(#1)")
+    r.gate_reopen_pass("GateA8", S8["slamA"])
     r.walk(1.0, "安全圏x13.2から")
-    r.ff("BombB8", 10.0, dist=2.0, label="導火線1本目")
-    r.ff("BombB8", 10.0, dist=2.0, label="2本目(時計まだ25前後)")
-    r.ff("BombB8", 4.0, dist=2.0, label="3本目→起爆")
-    r.wait(0.5, "爆発")
-    r.walk(3.4, "瓦礫を抜ける")
-    r.gate_pass("GateC8", 13.0, "サンドの締切")
+    r.ff("Bomb8", 10.0, dist=2.0, label="導火線1本目")
+    r.ff("Bomb8", 10.0, dist=2.0, label="2本目")
+    r.ff("Bomb8", 4.0, dist=2.0, label="3本目→起爆")
+    r.bomb_wait_boom("Bomb8", S8["boomB"])
+    r.walk(5.4, "瓦礫を抜けてGateC8前へ")
+    r.gate_pass("GateC8", S8["closeC"], "サンドの締切")
     r.walk(2.0, "階段へ")
-    r.hops(2.0, 4, "階段→デッキ")
-    r.walk(1.4, "スラムD前")
-    r.rw("GateD8", 10.0, dist=1.2, label="D呼び戻し(時計が若く1発)")
-    r.gate_reopen_pass("GateD8", 10.5)
-    r.walk(6.0, "種まき射点x30へ(爆弾Fの手前)")
-    r.ff("LockE8", 10.0, dist=2.6, label="◆種まき1: 終錠へ")
-    r.ff("LockE8", 10.0, dist=2.6, label="◆種まき2: 爆弾Fが吹く前に開くように")
-    r.rw("BankSaw8", 10.0, dist=8.0, label="◆銀行: 空転ノコへ返金")
-    r.walk(1.6, "錠前へ")
-    r.lock_wait("LockE8", 36.0)
-    if r.clock("BombF8") >= 22.0:
-        r.dead = r.dead or f"爆弾F爆発時に待機圏内(実{r.real:.1f} >= 22)"
-    r.note(f"爆弾Fまで残り{22.0 - r.clock('BombF8'):.1f}s で錠を通過")
-    r.walk(1.0, "ゴール")
+    r.hops(1.4, 3, "階段→デッキ")
+    r.walk(2.0, "GateD8前")
+    r.rw("GateD8", 10.0, dist=1.2, label="D呼び戻し(#2)")
+    r.gate_reopen_pass("GateD8", S8["slamD"])
+    r.walk(7.8, "爆弾Fの圏内x31.8から種まき")
+    r.ff("LockE8", 10.0, dist=1.7, label="◆種まき1: 終錠Eへ")
+    r.ff("LockE8", 10.0, dist=1.7, label="◆種まき2: 爆発前に開けるように")
+    r.walk(1.7, "LockE8前")
+    r.lock_wait("LockE8", S8["lockE"])
+    if r.clock("BombF8") >= S8["boomF"]:
+        r.dead = r.dead or "爆弾Fの爆風内に留まってしまった"
+    r.walk(4.3, "刃ピット(銀行,任意)を過ぎて")
+    r.wait(0.3, "地上へ降りる")
+    r.walk(8.2, "P8cへ")
+    r.hops(1.4, 2, "針山3")
+    r.walk(4.6, "P8dへ")
+    r.hops(1.4, 2, "針山4")
+    r.walk(4.6, "GateG8前")
+    r.gate_pass("GateG8", S8["closeG"], "スプリント")
+    r.walk(10.0, "Lift8前")
+    r.ff("Lift8", 10.0, dist=4.5, label="リフトへ1本目")
+    r.ff("Lift8", 10.0, dist=4.5, label="リフトへ2本目")
+    r.walk(4.5, "乗り込み")
+    r.rw("Lift8", 10.0, dist=0.5, label="乗ったまま巻き上げ=最上層へ(#3)")
+    r.wait(0.6, "最上層へ移る")
+    r.walk(8.0, "Ball8を横目に先行(x76付近)")
+    r.walk(18.0, "退避ピットを過ぎてGateY8前へ")
+    r.rw("GateY8", 10.0, dist=1.0, label="スラムを呼び戻す(#4)")
+    r.gate_reopen_pass("GateY8", S8["closeY"])
+    r.walk(2.0, "種まき位置(x96)へ")
+    r.ff("LockZ8", 10.0, dist=14.0, label="◆種まき1: 終錠Zへ(二重)")
+    r.ff("LockZ8", 10.0, dist=14.0, label="◆種まき2")
+    r.walk(14.0, "LockZ8前")
+    r.lock_wait("LockZ8", S8["lockZ"])
+    r.goal_alive("Ball8", **S8_BALL, goal_x=S8_GOAL, label="ゴール死守")
+    r.walk(6.0, "ゴール")
 
 
-def s8_single_seed(r):
-    s8_route_to_A(r)
-    r.rw("GateA8", 4.0, dist=1.5)
-    r.gate_reopen_pass("GateA8", 2.6)
-    r.walk(1.0)
-    r.ff("BombB8", 10.0, dist=2.0)
-    r.ff("BombB8", 10.0, dist=2.0)
-    r.ff("BombB8", 4.0, dist=2.0)
-    r.wait(0.5)
-    r.walk(3.4)
-    r.gate_pass("GateC8", 13.0)
-    r.walk(2.0)
-    r.hops(2.0, 4)
-    r.walk(1.4)
-    r.rw("GateD8", 10.0, dist=1.2)
-    r.gate_reopen_pass("GateD8", 10.5)
-    r.walk(6.0)
-    r.ff("LockE8", 10.0, dist=2.6, label="種まき1発のみ")
-    r.walk(1.6)
-    r.lock_wait("LockE8", 36.0)
-    if r.clock("BombF8") >= 22.0:
-        r.dead = r.dead or f"爆弾Fが待機中に爆発(実{r.real:.1f} >= 22)"
-    r.walk(1.0)
-
-
-ALL_OK &= report("S8 時計職人の卒業試験", 38, 4, [
+ALL_OK &= report("S8 時計職人の卒業試験・大", S8["limit"], S8["rw"], [
     ("矢なし", s8_noarrow, False),
     ("FFのみ", s8_noarrow, False),
     ("RWのみ", s8_rwonly, False),
-    ("種まき1発(爆弾Fに焼かれる)", s8_single_seed, False),
     ("想定解", s8_plan, True),
-], margin=(2.0, 10.0))
+], margin=(3.0, 12.0))
 
 print("\n" + "═" * 68)
 print("判定:", "ALL OK" if ALL_OK else "NG あり — 数値を調整せよ")
