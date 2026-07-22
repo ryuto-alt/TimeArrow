@@ -36,8 +36,7 @@ K = {
     "s7": dict(limit=100.0, rw=4, rev7=2.6, lockD=30.0, sawP1=4.0, sawP2=3.0,
                vineGrow=40.0, sawP3=5.0, lockZ=68.0),
 
-    # S8「時計職人の卒業試験・大」4フェーズ総合
-    "s8": dict(limit=96.0, rw=5, slamA=2.4, boomB=26.0, closeC=13.0, slamD=10.5,
-               lockE=36.0, boomF=22.0, closeG=30.0, lift=55.0,
-               ballRoll=60.0, ballSpeed=0.5, closeY=45.0, lockZ=80.0),
+    # S8「時計職人の卒業試験」門は2枚だけ。習った道具の総ざらい5フェーズ
+    "s8": dict(limit=86.0, rw=4, slamA=2.4, boomB=18.0, boomF=19.0, lockE=34.0,
+               rev8=3.0, ferryP=7.0, lift=58.0),
 }

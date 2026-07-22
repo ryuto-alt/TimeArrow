@@ -608,55 +608,71 @@ build(7, [
     door("LockZ7", 98.0, openT=S7["lockZ"], closeT=9999.0, base=8.8),
 ], limit=S7["limit"], width=104)
 
-# ── STAGE 8「時計職人の卒業試験・大」(幅120, 3層4フェーズ) ────────────
-# P1スラム+爆弾壁 → P2デッキ: スラムD+爆弾F圏内で錠E種まき → P3地上:
-# スプリント門+リフト(FFで降ろしRWで乗って最上層へ) → P4最上層: 大玉レース+
-# 退避ピット+スラムY+錠Z二重種まき→出口
+# ── STAGE 8「時計職人の卒業試験」(幅120, 3層5フェーズ) ────────────
+# 門は2枚だけ(開幕スラム=RW / 終盤の錠E=種まき)。それ以外は今まで習った道具の総ざらい:
+# 爆弾で壁を割る→ファンでデッキへ→圧力爆弾の圏内で種まき→刃ピット→ハンマー→
+# 逆橋→フェリー→リフトに乗ってRWで最上層→大玉レース+砲台→崩れ足場→
+# 格子越しにボタンを撃つ→出口。(大玉はS5の主役なのでS8では使わない)
 build(8, [
     gm(8, S8["limit"]),
     player(0.8, 0.55,
-           targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8,"
-                   "Ball8,GateY8,LockZ8,Tur8",
-           standables="Lift8",
-           arrowStops="F8,WallW8,St8a,St8b,St8c,D8a,Sill8,"
-                      "PitS8F,T8,PitT8F",
-           solids="F8,WallW8,St8a,St8b,St8c,D8a,Sill8,"
-                  "PitS8F,T8,PitT8F,"
-                  "GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8,Tur8",
+           targets="GateA8,Bomb8,Fan8,BombF8,LockE8,SawB8,Ham8,Ham8X,RevB8,Ferry8,"
+                   "Lift8,Tur8,CrA8,CrB8,Button8",
+           standables="RevB8,Ferry8,Lift8,CrA8,CrB8",
+           arrowStops="F8a,WallW8,D8a,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b",
+           solids="F8a,WallW8,D8a,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b,"
+                  "GateA8,LockE8,Fan8,Tur8,LatticeL8",
            rewindShots=S8["rw"]),
     copy.deepcopy(arrow),
-    exit_(116.0, 9.45, "scenes/game_clear.json"), gate(116.0, 9.3),
-    block("F8", 60.0, -0.5, 120.0, 1.0),
+    exit_(117.0, 9.45, "scenes/game_clear.json"), gate(117.0, 9.3),
+
+    # ── P1 地上: スラム門(RW) → 爆弾で壁を割る → ファンでデッキへ ──
+    block("F8a", 12.0, -0.5, 24.0, 1.0),          # [0,24]
     patch("P8a", 4.0, 5.4, 0.5),
     patch("P8b", 8.0, 9.4, 0.5),
     door("GateA8", 12.2, openT=0.0, closeT=S8["slamA"]),
     bomb("Bomb8", 15.2, 0.45, boomT=S8["boomB"], wallTarget="WallW8"),
-    beacon("Bomb8", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
+    beacon("Bomb8", color=(1.0, 0.5, 0.2, 0.9), offset=0.9),
     breakwall("WallW8", 16.2, 1.6, 0.9, 3.2),
-    door("GateC8", 18.6, openT=0.0, closeT=S8["closeC"]),
-    block("St8a", 20.6, 0.55, 0.7, 1.1),
-    block("St8b", 21.3, 1.1, 0.7, 2.2),
-    block("St8c", 22.0, 1.65, 0.7, 3.3),
-    block("D8a", 31.3, 4.15, 17.4, 0.5),          # デッキ[22.6,40]
-    block("Sill8", 30.0, 1.95, 0.9, 3.9),         # デッキ支柱=地上バイパス封鎖
-    door("GateD8", 24.0, openT=0.0, closeT=S8["slamD"], base=4.4),
-    bomb("BombF8", 31.0, 4.85, boomT=S8["boomF"], wallTarget=""),
-    beacon("BombF8", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
-    door("LockE8", 33.5, openT=S8["lockE"], closeT=9999.0, base=4.4),
-    block("PitS8F", 37.8, 3.15, 1.6, 0.5),        # デッキ刃ピット(銀行)
-    pendulum("SawB8", 37.8, 5.7, 1.4, period=4.0, amplitude=1.0, phase=0.0),
+    fan("Fan8", 20.5, 0.0, liftH=2.4, surgeH=6.6),
+    beacon("Fan8", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
+
+    # ── P2 デッキ[22,44]: 圧力爆弾の圏内で終錠に種まき → 刃ピット ──
+    block("D8a", 33.0, 4.15, 22.0, 0.5),          # デッキ(上面4.4)
+    block("Sill8", 24.0, 2.0, 0.9, 4.0),          # 地上バイパス封鎖
+    bomb("BombF8", 29.0, 4.85, boomT=S8["boomF"], wallTarget=""),   # 壁なし=純粋な圧力
+    beacon("BombF8", color=(1.0, 0.5, 0.2, 0.9), offset=0.9),
+    door("LockE8", 33.0, openT=S8["lockE"], closeT=9999.0, base=4.4),
+    block("PitS8F", 38.5, 3.15, 1.6, 0.5),        # 刃の退避ピット
+    pendulum("SawB8", 38.5, 5.7, 1.4, period=4.0, amplitude=1.0, phase=0.0),
+
+    # ── P3 地上[24,56]: ハンマー → 逆橋(RW) → フェリー ──
+    block("F8b", 40.0, -0.5, 32.0, 1.0),          # [24,56]
     patch("P8c", 46.0, 47.4, 0.5),
-    patch("P8d", 52.0, 53.4, 0.5),
     hammer("Ham8", 49.5, 3.5, 1.2, period=3.0, maxAngle=55.0),
-    door("GateG8", 58.0, openT=0.0, closeT=S8["closeG"]),     # スプリント門
-    riseplat("Lift8", 68.0, -0.2, 3.0, 0.5, arriveT=S8["lift"], waitHeight=8.7, riseTime=1.2),
+    patch("P8d", 52.0, 53.4, 0.5),
+    riseplat("RevB8", 58.25, -0.3, 4.5, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S8["rev8"], reverse=True),   # 谷[56,60.5]
+    beacon("RevB8"),
+    block("F8c", 66.25, -0.5, 11.5, 1.0),         # [60.5,72]
+    ferry("Ferry8", 76.0, 0.35, period=S8["ferryP"], amplitude=3.2, phase=0.0),
+    beacon("Ferry8", color=(0.4, 0.8, 1.0, 0.9), offset=0.8),       # 谷[72,80]
+
+    # ── P4 リフトに乗ってRWで最上層へ ──
+    block("F8d", 86.0, -0.5, 12.0, 1.0),          # [80,92] この先は奈落=リフト必須
+    riseplat("Lift8", 86.0, -0.2, 3.0, 0.5, arriveT=S8["lift"], waitHeight=8.75,
+             riseTime=1.2),           # 待機高=最上層と面一(隙間なく乗り移れる)
     beacon("Lift8", color=(0.4, 0.8, 1.0, 0.9), offset=0.8),
-    block("T8", 95.0, 8.55, 50.0, 0.5),           # 最上層[70,120]
-    rollball("Ball8", 76.0, 9.55, 1.5, rollT=S8["ballRoll"], speed=S8["ballSpeed"]),
-    block("PitT8F", 86.6, 7.55, 1.2, 0.5),        # 最上層退避ピット(上面7.8)
-    door("GateY8", 94.0, openT=0.0, closeT=S8["closeY"], base=8.8),
-    turret("Tur8", 108.0, 9.4, period=3.2, shotSpeed=5.5, rng=13.0),
-    door("LockZ8", 110.0, openT=S8["lockZ"], closeT=9999.0, base=8.8),
+
+    # ── P5 最上層[88,120]: 大玉レース+砲台 → 崩れ足場 → 格子越しにボタン ──
+    block("T8a", 95.75, 8.55, 16.5, 0.5),         # [87.5,104](上面8.8)=リフト右端と接する
+    turret("Tur8", 102.0, 9.4, period=3.2, shotSpeed=5.5, rng=13.0),
+    crumble("CrA8", 104.8, 8.575, 1.6, 1.5),      # 谷[104,107.4]
+    crumble("CrB8", 106.6, 8.575, 1.6, 1.5),
+    block("T8b", 113.7, 8.55, 12.6, 0.5),         # [107.4,120]
+    lattice("LatticeL8", 110.0, 10.6),            # 矢は素通り/プレイヤーは通れない
+    button("Button8", 113.0, 9.7, "LatticeL8"),   # 格子の向こう側=撃つしかない
+    beacon("Button8", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
 ], limit=S8["limit"], width=120)
 
 # ── ギミックラボ(stage0: 新ギミック実機検証用。セレクト未登録)─────────

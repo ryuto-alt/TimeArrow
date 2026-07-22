@@ -771,15 +771,15 @@ ALL_OK &= report("S7 時計塔大回廊", S7["limit"], S7["rw"], [
 ], margin=(3.0, 14.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S8「時計職人の卒業試験・大」(幅120, RW5, 3層4フェーズ) — gen_stages.py 座標に一致
-# P8a[4,5.4] P8b[8,9.4] GateA8 x12.2 Bomb8 x15.2/WallW8 x16.2 GateC8 x18.6
-# 階段20.6-22 デッキ[22.6,40] GateD8 x24 BombF8 x31 LockE8 x33.5 SawB8 x37.8
-# P8c[46,47.4] P8d[52,53.4] GateG8 x58 Lift8 x68 最上層[70,120] Ball8 x76
-# PitT8F x86.6 GateY8 x94 LockZ8 x110 出口116
+# S8「時計職人の卒業試験」(幅120, RW4, 3層5フェーズ) — gen_stages.py 座標に一致
+# F8a[0,24] GateA8 x12.2 Bomb8 x15.2/WallW8 x16.2 Fan8 x20.5
+# デッキ[22,44] Sill8 x24 BombF8 x29 LockE8 x33 刃ピットbx38.5
+# F8b[24,56] Ham8 x49.5 谷[56,60.5]=RevB8 F8c[60.5,72] 谷[72,80]=Ferry8
+# F8d[80,92] Lift8 x86 最上層[88,104] Ball8 x90 Tur8 x102
+# 崩れ[104,107.4] T8b[107.4,120] LatticeL8 x110 Button8 x113 出口117
 # ════════════════════════════════════════════════════════════════════
 S8 = K["s8"]
-S8_BALL = dict(bx=76.0, rollT=S8["ballRoll"], speed=S8["ballSpeed"])
-S8_GOAL = 116.0
+S8_SAW = dict(bx=38.5, amp=1.0, period=4.0, phase=0.0, pit0=37.9, pit1=39.1)
 
 
 def s8_route_to_A(r):
@@ -797,85 +797,67 @@ def s8_noarrow(r):
 
 def s8_rwonly(r):
     s8_route_to_A(r)
-    r.rw("GateA8", 10.0, dist=1.5, label="スラムA(#1)")
+    r.rw("GateA8", 4.0, dist=1.5, label="スラムA(#1)", cap=S8["slamA"])
     r.gate_reopen_pass("GateA8", S8["slamA"])
-    r.walk(1.0, "安全圏で待機")
+    r.walk(1.0, "爆風圏の外で待機")
     r.bomb_wait_boom("Bomb8", S8["boomB"], "自然爆発まで待つ(長い)")
-    r.walk(5.4, "瓦礫を抜けC前へ")
-    r.rw("GateC8", 4.0, dist=1.2, label="C(#2)", cap=S8["closeC"])
-    r.gate_reopen_pass("GateC8", S8["closeC"])
-    r.walk(2.0, "階段へ")
-    r.hops(1.4, 3, "階段→デッキ")
-    r.walk(2.0, "GateD前")
-    r.rw("GateD8", 4.0, dist=1.2, label="D(#3)", cap=S8["slamD"])
-    r.gate_reopen_pass("GateD8", S8["slamD"])
-    r.walk(7.8, "LockE8圏内へ")
-    r.lock_wait("LockE8", S8["lockE"], "種まき無しで自然開通待ち")
-    if r.clock("BombF8") >= S8["boomF"]:
-        r.dead = r.dead or "爆弾Fが自然爆発するまで待つ間に爆死"
-    r.walk(6.5, "降りてGateG8前")
-    r.rw("GateG8", 4.0, dist=1.2, label="G(#4)", cap=S8["closeG"])
-    r.gate_reopen_pass("GateG8", S8["closeG"])
-    r.walk(10.0, "リフト前")
-    r.wait(max(0.0, S8["lift"] - r.clock("Lift8")) + 1.0, "リフト自然降下+乗り込み")
-    r.rw("Lift8", 10.0, dist=0.5, label="巻き上げ(#5)")
-    r.wait(0.8, "最上層へ")
-    r.walk(8.0, "GateY8前")
-    r.rw("GateY8", 4.0, dist=1.0, label="Y(#6=予算オーバー)", cap=S8["closeY"])
-    r.gate_reopen_pass("GateY8", S8["closeY"])
+    r.walk(5.3, "瓦礫を抜けてファン(x20.5)の上へ")
+    r.dead = "後戻り矢ではファンはサージしない(吸い込みになるだけ)→デッキ(4.4u)に上がれない"
 
 
 def s8_plan(r):
+    # ── P1 ──
     s8_route_to_A(r)
-    r.rw("GateA8", 10.0, dist=1.5, label="スラムA呼び戻し(#1)")
+    r.rw("GateA8", 10.0, dist=1.5, label="スラムA呼び戻し(#1)", cap=S8["slamA"])
     r.gate_reopen_pass("GateA8", S8["slamA"])
     r.walk(1.0, "安全圏x13.2から")
     r.ff("Bomb8", 10.0, dist=2.0, label="導火線1本目")
-    r.ff("Bomb8", 10.0, dist=2.0, label="2本目")
-    r.ff("Bomb8", 4.0, dist=2.0, label="3本目→起爆")
+    r.ff("Bomb8", 10.0, dist=2.0, label="2本目→起爆")
     r.bomb_wait_boom("Bomb8", S8["boomB"])
-    r.walk(5.4, "瓦礫を抜けてGateC8前へ")
-    r.gate_pass("GateC8", S8["closeC"], "サンドの締切")
-    r.walk(2.0, "階段へ")
-    r.hops(1.4, 3, "階段→デッキ")
-    r.walk(2.0, "GateD8前")
-    r.rw("GateD8", 10.0, dist=1.2, label="D呼び戻し(#2)")
-    r.gate_reopen_pass("GateD8", S8["slamD"])
-    r.walk(7.8, "爆弾Fの圏内x31.8から種まき")
-    r.ff("LockE8", 10.0, dist=1.7, label="◆種まき1: 終錠Eへ")
-    r.ff("LockE8", 10.0, dist=1.7, label="◆種まき2: 爆発前に開けるように")
-    r.walk(1.7, "LockE8前")
-    r.lock_wait("LockE8", S8["lockE"])
+    r.walk(5.3, "瓦礫を抜けてファン(x20.5)の上へ")
+    # ── P2 ──
+    r.fan_ride("Fan8", 6.0, dist=1.4, label="サージでデッキ(4.4u)へ")
+    r.walk(6.5, "デッキを東へ(x28)。圧力爆弾BombF8の圏内に入る")
+    r.ff("LockE8", 10.0, dist=5.2, label="◆種まき1: 圏内に居る間に終錠Eへ")
+    r.ff("LockE8", 10.0, dist=5.2, label="◆種まき2")
     if r.clock("BombF8") >= S8["boomF"]:
-        r.dead = r.dead or "爆弾Fの爆風内に留まってしまった"
-    r.walk(4.3, "刃ピット(銀行,任意)を過ぎて")
+        r.dead = r.dead or "圧力爆弾BombF8の爆風内に留まって爆死"
+    r.walk(4.2, "圏外(x32.2)へ抜けてLockE8前")
+    r.lock_wait("LockE8", S8["lockE"])
+    r.walk(3.3, "刃ピット手前(x36.3)へ")
+    r.pit_cross("SawB8", **S8_SAW, x0=36.3, x1=40.7, label="退避ピットで刃越え")
+    r.walk(3.3, "デッキ端(x44)へ")
     r.wait(0.3, "地上へ降りる")
-    r.walk(8.2, "P8cへ")
+    # ── P3 ──
+    r.walk(2.0, "P8cへ")
     r.hops(1.4, 2, "針山3")
-    r.walk(4.6, "P8dへ")
+    r.walk(2.1, "ハンマー手前へ")
+    r.wait(0.9, "ハンマーの間合い")
+    r.walk(2.5, "P8dへ")
     r.hops(1.4, 2, "針山4")
-    r.walk(4.6, "GateG8前")
-    r.gate_pass("GateG8", S8["closeG"], "スプリント")
-    r.walk(10.0, "Lift8前")
+    r.walk(2.6, "谷の縁(x56)へ")
+    r.rw("RevB8", 10.0, dist=2.5, label="上がりきった逆橋を引き戻す(#2)", cap=S8["rev8"])
+    r.walk(5.0, "橋を渡る(x60.5)")
+    r.walk(11.5, "谷2の縁(x72)へ")
+    r.wait(S8["ferryP"] * 0.25, "フェリーの間合い")
+    r.advance(S8["ferryP"] * 0.5)
+    r.note("フェリーで谷2を渡る")
+    # ── P4 ──
+    r.walk(6.0, "リフト(x86)の射撃位置へ")
     r.ff("Lift8", 10.0, dist=4.5, label="リフトへ1本目")
     r.ff("Lift8", 10.0, dist=4.5, label="リフトへ2本目")
     r.walk(4.5, "乗り込み")
     r.rw("Lift8", 10.0, dist=0.5, label="乗ったまま巻き上げ=最上層へ(#3)")
     r.wait(0.6, "最上層へ移る")
-    r.walk(8.0, "Ball8を横目に先行(x76付近)")
-    r.walk(18.0, "退避ピットを過ぎてGateY8前へ")
-    r.rw("GateY8", 10.0, dist=1.0, label="スラムを呼び戻す(#4)")
-    r.gate_reopen_pass("GateY8", S8["closeY"])
-    r.walk(2.0, "種まき位置(x96)へ")
-    r.ff("LockZ8", 10.0, dist=14.0, label="◆種まき1: 終錠Zへ(二重)")
-    r.ff("LockZ8", 10.0, dist=14.0, label="◆種まき2")
-    r.walk(14.0, "LockZ8前")
-    r.lock_wait("LockZ8", S8["lockZ"])
-    r.goal_alive("Ball8", **S8_BALL, goal_x=S8_GOAL, label="ゴール死守")
-    r.walk(6.0, "ゴール")
+    # ── P5 ──
+    r.walk(4.0, "最上層(x90)へ")
+    r.walk(11.0, "砲台Tur8の弾間を抜けて崩れ足場手前(x103)へ")
+    r.walk(4.4, "崩れ足場2枚を一気に渡る(x107.4)")
+    r.ff("Button8", 2.0, dist=5.6, label="格子越しにボタンを撃つ(矢は格子を素通り)")
+    r.walk(9.6, "開いた格子をくぐってゴール")
 
 
-ALL_OK &= report("S8 時計職人の卒業試験・大", S8["limit"], S8["rw"], [
+ALL_OK &= report("S8 時計職人の卒業試験(総ざらい5フェーズ)", S8["limit"], S8["rw"], [
     ("矢なし", s8_noarrow, False),
     ("FFのみ", s8_noarrow, False),
     ("RWのみ", s8_rwonly, False),
