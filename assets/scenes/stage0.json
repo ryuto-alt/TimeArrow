@@ -562,7 +562,8 @@
      }
     ],
     "scriptPath": "scripts/Fan.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -704,7 +705,7 @@
      {
       "name": "hitHalf",
       "type": "float",
-      "value": 0.55
+      "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
@@ -805,6 +806,13 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
    "name": "LabTurret_p1",
    "transform": {
     "position": [
@@ -820,44 +828,18 @@
     "scale": [
      0.55,
      0.55,
-     1.0
+     0.55
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     0.45,
-     0.25,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 7,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/ball_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    }
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
    "name": "LabTurret_p2",
    "transform": {
     "position": [
@@ -873,44 +855,18 @@
     "scale": [
      0.55,
      0.55,
-     1.0
+     0.55
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     0.45,
-     0.25,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 7,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/ball_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    }
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
    "name": "LabTurret_p3",
    "transform": {
     "position": [
@@ -926,41 +882,8 @@
     "scale": [
      0.55,
      0.55,
-     1.0
+     0.55
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     0.45,
-     0.25,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 7,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/ball_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    }
   },
   {

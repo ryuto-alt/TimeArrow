@@ -107,12 +107,12 @@ def block(name, x, y, sx, sy, sz=3.0):
 def needle(name, x, y, sx, sy):
     return mesh(name, "Needle_Small", x, y, sx, sy, 1.0,
                 lua=script("Wall.lua", [prop("deadly", "bool", True),
-                                        prop("hitScale", "float", 0.75)]))
+                                        prop("hitScale", "float", 0.6)]))
 
 
 def door(name, x, openT, closeT, base=0.0):
     frame = mesh(name + "Frame", "Gate_Frame", x, base + 2.0, 1.1, 4.0, 1.0)
-    grill = mesh(name, "Gate_Grill", x, base + 1.8, 0.75, 3.6, 1.0,
+    grill = mesh(name, "Gate_Grill", x, base + 1.8, 0.75, 3.6, 1.0, shader=TIMEWARP,
                  lua=script("TimedDoor.lua", [
                      prop("openT", "float", float(openT)), prop("closeT", "float", float(closeT)),
                      prop("slideTime", "float", 0.7),
@@ -134,7 +134,7 @@ def pendulum(name, x, y, s, period, amplitude, phase, deadly=True):
                 lua=script("Pendulum.lua", [
                     prop("period", "float", float(period)), prop("amplitude", "float", float(amplitude)),
                     prop("startPhase", "float", float(phase)), prop("deadly", "bool", bool(deadly)),
-                    prop("hitScale", "float", 0.8)]))
+                    prop("hitScale", "float", 0.68)]))
 
 
 def rollball(name, x, y, s, rollT, speed):
@@ -142,7 +142,7 @@ def rollball(name, x, y, s, rollT, speed):
                 lua=script("RollBall.lua", [
                     prop("rollT", "float", float(rollT)), prop("rollSpeed", "float", float(speed)),
                     prop("axisX", "float", 1.0), prop("goalName", "string", "Exit"),
-                    prop("goalHitScale", "float", 1.3), prop("hitScale", "float", 0.8)]))
+                    prop("goalHitScale", "float", 1.3), prop("hitScale", "float", 0.7)]))
 
 
 def bomb(name, x, y, boomT, wallTarget="", blastScale=2.4):
@@ -162,7 +162,8 @@ def breakwall(name, x, y, sx, sy):
 
 
 def target(name, x, y, s=1.3):
-    return mesh(name, "Target_Bull", x, y, s, s, 0.5)
+    return mesh(name, "Target_Bull", x, y, s, s, 0.5, shader=TIMEWARP,
+                lua=script("TargetGlow.lua", []))
 
 
 def vine(name, x, bottomY, height, growT, growDur=1.0):
@@ -194,7 +195,7 @@ def ferry(name, x, y, period, amplitude, phase):
 
 
 def fan(name, x, y, liftH=3.0, surgeH=7.0):
-    base = mesh(name, "Fan_Base", x, y + 0.28, 1.0, 1.0, 1.0,
+    base = mesh(name, "Fan_Base", x, y + 0.28, 1.0, 1.0, 1.0, shader=TIMEWARP,
                 lua=script("Fan.lua", [
                     prop("bladesName", "string", name + "Blades"),
                     prop("liftHeight", "float", float(liftH)),
@@ -215,7 +216,7 @@ def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0):
     return mesh(name, "Hammer_Pendulum", x, pivotY, s, s, 1.0, shader=TIMEWARP,
                 lua=script("HammerSwing.lua", [
                     prop("period", "float", float(period)), prop("maxAngle", "float", float(maxAngle)),
-                    prop("startPhase", "float", float(phase)), prop("hitHalf", "float", 0.55)]))
+                    prop("startPhase", "float", float(phase)), prop("hitHalf", "float", 0.42)]))
 
 
 def turret(name, x, y, period=2.4, shotSpeed=6.0, rng=14.0, phase=0.0):
@@ -223,8 +224,8 @@ def turret(name, x, y, period=2.4, shotSpeed=6.0, rng=14.0, phase=0.0):
              lua=script("Turret.lua", [
                  prop("period", "float", float(period)), prop("shotSpeed", "float", float(shotSpeed)),
                  prop("range", "float", float(rng)), prop("startPhase", "float", float(phase))]))
-    shots = [sprite(f"{name}_p{i}", "textures/ball_rgba.png", 0, -100, 0.55, 0.55,
-                    layer=7, color=(1.0, 0.45, 0.25, 1.0)) for i in (1, 2, 3)]
+    shots = [mesh(f"{name}_p{i}", "Cannonball", 0, -100, 0.55, 0.55, 0.55)
+             for i in (1, 2, 3)]
     return [t] + shots
 
 
@@ -240,7 +241,7 @@ def lattice(name, x, y=1.8):
 
 
 def button(name, x, y, link):
-    return mesh(name, "Button", x, y, 0.9, 0.9, 0.9,
+    return mesh(name, "Button", x, y, 0.9, 0.9, 0.9, shader=TIMEWARP,
                 lua=script("Button.lua", [
                     prop("linkTarget", "string", link), prop("standOn", "bool", False),
                     prop("arrowHit", "bool", True), prop("skipAmount", "float", 0.0)]))
@@ -345,12 +346,10 @@ def build(n, entities, limit, width):
 
 arrow = copy.deepcopy(T["Arrow"])
 
-# 針山パッチ: 段1.2→段1.7の二段ホップで越える(段差<=1.35/隙間<=2.0を厳守)
+# トゲ帯: 平地に置く幅1.6のトゲ。飛び越え必須(跳距離2.9に余裕)=「意味のあるトゲ」
 def patch(pfx, xa, xb, nw=0.9):
     mid = (xa + xb) / 2
-    return [block(f"{pfx}L", xa, 0.6, 1.1, 1.2),
-            needle(f"{pfx}N", mid, 0.2, nw, 0.4),
-            block(f"{pfx}R", xb, 0.85, 1.1, 1.7)]
+    return [needle(f"{pfx}N", mid, 0.3, 1.6, 0.6)]
 
 
 # ══ 大型化レイアウト(2026-07-22 v3)══════════════════════════════════
@@ -388,8 +387,8 @@ build(2, [
     gm(2, S2["limit"]),
     player(0.8, 0.55, targets="GateA,GateB,GateC,GateD,Ham2,Tur2,CrA2,CrB2",
            standables="CrA2,CrB2",
-           arrowStops="F2a,F2b,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR",
-           solids="F2a,F2b,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,GateA,GateB,GateC,GateD",
+           arrowStops="F2a,F2b",
+           solids="F2a,F2b,GateA,GateB,GateC,GateD",
            rewindShots=S2["rw"]),
     copy.deepcopy(arrow),
     exit_(49.5, 0.65, "scenes/stage3.json"), gate(49.5, 0.5),
@@ -413,8 +412,8 @@ build(2, [
 build(3, [
     gm(3, S3["limit"]),
     player(0.8, 0.55, targets="Lock1,GateS1,GateS2,Lock2,GateZ,HG3",
-           arrowStops="F3,StepA3,StepB3,P3aL,P3aR,P3bL,P3bR,P3cL,P3cR",
-           solids="F3,StepA3,StepB3,P3aL,P3aR,P3bL,P3bR,P3cL,P3cR,"
+           arrowStops="F3,StepA3,StepB3",
+           solids="F3,StepA3,StepB3"
                   "Lock1,GateS1,GateS2,Lock2,GateZ", rewindShots=S3["rw"]),
     copy.deepcopy(arrow),
     exit_(54.0, 0.65, "scenes/stage4.json"), gate(54.0, 0.5),
@@ -436,8 +435,8 @@ build(3, [
 build(4, [
     gm(4, S4["limit"]),
     player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4,Ham4,HG4,CW4,GateZ4",
-           arrowStops="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,P4cL,P4cR",
-           solids="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,P4cL,P4cR,"
+           arrowStops="F4a,PitF4,F4b",
+           solids="F4a,PitF4,F4b"
                   "GateA4,Lock4,GateB4,CW4,GateZ4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
     exit_(62.5, 0.65, "scenes/stage5.json"), gate(62.5, 0.5),
@@ -466,7 +465,7 @@ build(5, [
     player(0.8, 0.55, targets="Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5,CrA5,CrB5",
            standables="Lift5,Ferry5,CrA5,CrB5", climbables="Vine5",
            arrowStops="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5",
-           solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,"
+           solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5"
                   "Gate5,LockD5,GateY5,LockZ5", rewindShots=S5["rw"]),
     copy.deepcopy(arrow),
     exit_(85.5, 9.45, "scenes/stage6.json"), gate(85.5, 9.3),
@@ -502,9 +501,9 @@ build(5, [
 build(6, [
     gm(6, S6["limit"]),
     player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Tur6,HG6",
-           arrowStops="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,P6dL,P6dR,WallW6,WallW62,"
+           arrowStops="F6,WallW6,WallW62"
                       "St6a,St6b,St6c,St6d,L6",
-           solids="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,P6dL,P6dR,WallW6,WallW62,"
+           solids="F6,WallW6,WallW62"
                   "St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6",
            rewindShots=S6["rw"]),
     copy.deepcopy(arrow),
@@ -541,9 +540,9 @@ build(7, [
     gm(7, S7["limit"]),
     player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7b,HG7",
            climbables="Vine7",
-           arrowStops="F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
+           arrowStops="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F"
                       "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F",
-           solids="F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
+           solids="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F"
                   "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7",
            rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
@@ -588,13 +587,13 @@ build(7, [
 build(8, [
     gm(8, S8["limit"]),
     player(0.8, 0.55,
-           targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8,"
+           targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8"
                    "Ball8,GateY8,LockZ8,Tur8",
            standables="Lift8",
-           arrowStops="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,Sill8,"
-                      "P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F",
-           solids="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,Sill8,"
-                  "P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F,"
+           arrowStops="F8,WallW8,St8a,St8b,St8c,D8a,Sill8"
+                      "PitS8F,T8,PitT8F",
+           solids="F8,WallW8,St8a,St8b,St8c,D8a,Sill8"
+                  "PitS8F,T8,PitT8F"
                   "GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8",
            rewindShots=S8["rw"]),
     copy.deepcopy(arrow),
@@ -652,11 +651,11 @@ build(0, [
 # ── 検証: JSON再読込 + parent整合 + スラム門の最速到達チェック ─────────
 WALK, HOPJ = 5.0, 0.15
 SLAMS = {
-    2: (14.6, K["s2"]["closeA"], 5, 0.8),
-    4: (13.0, K["s4"]["slamA"], 4, 0.8),
-    6: (13.6, K["s6"]["slamA"], 4, 0.8),
-    7: (11.4, K["s7"]["slamA"], 4, 1.4),
-    8: (12.2, K["s8"]["slamA"], 4, 0.8),
+    2: (14.6, K["s2"]["closeA"], 2, 0.8),
+    4: (13.0, K["s4"]["slamA"], 2, 0.8),
+    6: (13.6, K["s6"]["slamA"], 2, 0.8),
+    7: (11.4, K["s7"]["slamA"], 2, 1.4),
+    8: (12.2, K["s8"]["slamA"], 2, 0.8),
 }
 for n in range(1, 9):
     s = json.load(open(os.path.join(SCENES, f"stage{n}.json"), encoding="utf-8"))

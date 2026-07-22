@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F2a,F2b,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR"
+      "value": "F2a,F2b"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F2a,F2b,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,GateA,GateB,GateC,GateD"
+      "value": "F2a,F2b,GateA,GateB,GateC,GateD"
      },
      {
       "name": "mirrors",
@@ -534,40 +534,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P2aL",
-   "transform": {
-    "position": [
-     5.0,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
     "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
    "name": "P2aN",
    "transform": {
     "position": [
      5.85,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -576,8 +549,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -592,64 +565,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P2aR",
-   "transform": {
-    "position": [
-     6.7,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P2bL",
-   "transform": {
-    "position": [
-     10.0,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
    }
   },
   {
@@ -664,7 +583,7 @@
    "transform": {
     "position": [
      10.85,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -673,8 +592,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -689,37 +608,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P2bR",
-   "transform": {
-    "position": [
-     11.7,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
    }
   },
   {
@@ -800,7 +692,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -849,7 +742,7 @@
      {
       "name": "hitHalf",
       "type": "float",
-      "value": 0.55
+      "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
@@ -934,7 +827,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -991,6 +885,13 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
    "name": "Tur2_p1",
    "transform": {
     "position": [
@@ -1006,44 +907,18 @@
     "scale": [
      0.55,
      0.55,
-     1.0
+     0.55
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     0.45,
-     0.25,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 7,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/ball_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    }
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
    "name": "Tur2_p2",
    "transform": {
     "position": [
@@ -1059,44 +934,18 @@
     "scale": [
      0.55,
      0.55,
-     1.0
+     0.55
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     0.45,
-     0.25,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 7,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/ball_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    }
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
    "name": "Tur2_p3",
    "transform": {
     "position": [
@@ -1112,67 +961,7 @@
     "scale": [
      0.55,
      0.55,
-     1.0
-    ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     0.45,
-     0.25,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 7,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/ball_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P2cL",
-   "transform": {
-    "position": [
-     27.0,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
+     0.55
     ]
    }
   },
@@ -1188,7 +977,7 @@
    "transform": {
     "position": [
      27.85,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -1197,8 +986,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -1213,37 +1002,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P2cR",
-   "transform": {
-    "position": [
-     28.7,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
    }
   },
   {
@@ -1324,7 +1086,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1482,7 +1245,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "PlayerMarker",
@@ -1770,7 +1534,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 36,
+   "parent": 30,
    "transform": {
     "position": [
      0.0,
@@ -1844,7 +1608,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 36,
+   "parent": 30,
    "transform": {
     "position": [
      0.0,
@@ -2050,7 +1814,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 36
+   "parent": 30
   },
   {
    "name": "TimeLeft",
@@ -2142,7 +1906,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 36
+   "parent": 30
   },
   {
    "name": "DrawAmount",
@@ -2234,7 +1998,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 36
+   "parent": 30
   },
   {
    "name": "RewindCount",
@@ -2326,7 +2090,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 36
+   "parent": 30
   }
  ]
 }

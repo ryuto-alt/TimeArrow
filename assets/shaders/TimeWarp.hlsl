@@ -3,8 +3,10 @@
 //   v == 0        : 通常(ただのランバート描画)
 //   0 < v <= 1.5  : 早送り中(強度=v)。シアンの帯が上へ高速スクロール+横ジッタ残像+
 //                   強度0.55超でディザ半透明(実体がない「経由中」の表現)
-//   v >= 2        : 後戻り中(強度=v-2)。紫の帯が下へ逆スクロール+VHS風走査線+色反転パルス
-// 帯のスクロール方向と色(シアン=進む/紫=戻る)で時間の向きを言語化する。
+//   2 <= v < 4    : 後戻り中(強度=v-2)。紫の帯が下へ逆スクロール+VHS風走査線+色反転パルス
+//   4.5<= v <=5.5 : 【的アピール】矢を当てられるオブジェクトの常時ゆらめき(金色のパルス)。
+//                   これが光っていない物は撃っても無反応=判別ルール
+// 帯のスクロール方向と色(シアン=進む/紫=戻る/金=撃てる)で時間の向きを言語化する。
 
 Texture2D    g_albedo  : register(t0);
 SamplerState g_sampler : register(s0);
@@ -65,7 +67,8 @@ PSInput VSMain(VSInput input)
 float4 PSMain(PSInput input) : SV_TARGET
 {
     float ff = (effectValue > 0.0f && effectValue < 1.5f) ? saturate(effectValue) : 0.0f;
-    float rw = (effectValue >= 2.0f) ? saturate(effectValue - 2.0f) : 0.0f;
+    float rw = (effectValue >= 2.0f && effectValue < 4.0f) ? saturate(effectValue - 2.0f) : 0.0f;
+    float tg = (effectValue >= 4.5f && effectValue <= 5.5f) ? 1.0f : 0.0f;
 
     // 早送り: 残像っぽくUVを横に複製ずらしして混ぜる
     float2 uv = input.texCoord;
@@ -113,6 +116,17 @@ float4 PSMain(PSInput input) : SV_TARGET
         // 時折ネガ反転がパルスする(過去へ戻るフラッシュバック)
         float pulse = saturate(sin(time * 5.0f) * 0.5f + 0.5f);
         lit = lerp(lit, float3(1.0f, 1.0f, 1.0f) - lit, 0.18f * rw * pulse);
+    }
+
+    // 【的アピール】撃てるオブジェクトは金色の細い帯がゆっくり上り、全体が淡く脈動する
+    if (tg > 0.0f)
+    {
+        float wy2  = input.worldPos.y;
+        float band = saturate(sin((wy2 * 2.2f - time * 1.6f) * 6.2831853f) * 0.5f + 0.5f);
+        band = pow(band, 8.0f);
+        float pulse = 0.5f + 0.5f * sin(time * 2.6f);
+        lit += float3(1.0f, 0.82f, 0.35f) * band * 0.55f;
+        lit += float3(0.5f, 0.42f, 0.15f) * (0.10f + 0.10f * pulse);
     }
 
     return float4(lit, albedo.a);

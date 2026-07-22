@@ -37,8 +37,6 @@ function OnStart(self)
       FX.spark(self.bx, self.by + 0.5, self.bz, 10, 0.65, 0.4, 1.0)
     end
   end)
-  pcall(function() scene:setColor(scene:findEntity(self.name), 0.30, 0.34, 0.42, 1.0) end)
-  pcall(function() scene:setColor(scene:findEntity(self.bladesName), 0.45, 0.85, 1.0, 1.0) end)
 
 end
 
@@ -54,6 +52,11 @@ function OnUpdate(self, dt)
   local blades = scene:findEntity(self.bladesName)
   if blades and blades:isValid() then
     blades.transform.rotation = Vec3.new(0, self.spin % 360, 0)
+  end
+
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    scene:setMeshEffect(selfE, surging and 1.0 or 5.0)
   end
 
   local h = surging and self.surgeHeight or self.liftHeight

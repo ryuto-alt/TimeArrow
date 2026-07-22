@@ -6,7 +6,7 @@ properties = {
   { name = "period",     type = "float", default = 3.2, min = 0.8, max = 12, label = "振り周期(秒)" },
   { name = "maxAngle",   type = "float", default = 55.0, min = 10, max = 85, label = "最大振り角(度)" },
   { name = "startPhase", type = "float", default = 0.0, min = 0,   max = 20, label = "開始位相(秒)" },
-  { name = "hitHalf",    type = "float", default = 0.55, min = 0.2, max = 2, label = "ヘッドの当たり半径" },
+  { name = "hitHalf",    type = "float", default = 0.42, min = 0.2, max = 2, label = "ヘッドの当たり半径" },
 }
 
 function OnStart(self)
@@ -34,7 +34,6 @@ function OnStart(self)
     FX.spark(self.bx, self.by, self.bz, 10, 0.65, 0.4, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 10, 6, 0.65, 0.4, 1.0)
   end)
-  pcall(function() scene:setColor(scene:findEntity(self.name), 0.55, 0.56, 0.62, 1.0) end)
 
 end
 
@@ -69,7 +68,7 @@ function OnUpdate(self, dt)
 
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 0
+    local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)
@@ -85,7 +84,7 @@ function OnUpdate(self, dt)
   local pl = scene:findEntity("Player")
   if not (pl and pl:isValid()) then return end
   local pp, ps = pl.transform.position, pl.transform.scale
-  if math.abs(pp.x - hx) < (self.hitHalf + 0.4) and math.abs(pp.y - hy) < (self.hitHalf + 0.55) then
+  if math.abs(pp.x - hx) < (self.hitHalf + 0.4) and math.abs(pp.y - hy) < (self.hitHalf + 0.45) then
     events:emit("player_died", {})
   end
 end

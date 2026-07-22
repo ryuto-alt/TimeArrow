@@ -130,7 +130,7 @@ function OnUpdate(self, dt)
   -- 実体化フェード中=残量に応じた弱い早送り風 / 後戻り=2.8 / 通常=0
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 0
+    local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ghostT > 0 then eff = 1.0
     elseif self.materializeT > 0 then eff = 0.5 * dissolveAmount
     elseif self.rwGlow > 0 then eff = 2.8 end

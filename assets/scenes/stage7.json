@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
+      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
+      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
      },
      {
       "name": "mirrors",
@@ -606,7 +606,8 @@
      }
     ],
     "scriptPath": "scripts/Button.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "Beacon_Button1",
@@ -688,40 +689,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P7aL",
-   "transform": {
-    "position": [
-     3.4,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
     "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
    "name": "P7aN",
    "transform": {
     "position": [
      4.2,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -730,8 +704,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -746,64 +720,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P7aR",
-   "transform": {
-    "position": [
-     5.0,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P7bL",
-   "transform": {
-    "position": [
-     7.2,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
    }
   },
   {
@@ -818,7 +738,7 @@
    "transform": {
     "position": [
      8.0,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -827,8 +747,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -843,37 +763,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P7bR",
-   "transform": {
-    "position": [
-     8.8,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
    }
   },
   {
@@ -940,7 +833,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 2.3
+      "value": 2.1
      },
      {
       "name": "slideTime",
@@ -954,7 +847,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1143,7 +1037,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.68
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -1202,7 +1096,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.68
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -1287,7 +1181,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1336,7 +1231,7 @@
      {
       "name": "hitHalf",
       "type": "float",
-      "value": 0.55
+      "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
@@ -1390,7 +1285,7 @@
      {
       "name": "hitHalf",
       "type": "float",
-      "value": 0.55
+      "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
@@ -1847,7 +1742,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.68
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -1932,7 +1827,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "PlayerMarker",
@@ -2220,7 +2116,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 48,
+   "parent": 44,
    "transform": {
     "position": [
      0.0,
@@ -2294,7 +2190,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 48,
+   "parent": 44,
    "transform": {
     "position": [
      0.0,
@@ -2500,7 +2396,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 48
+   "parent": 44
   },
   {
    "name": "TimeLeft",
@@ -2592,7 +2488,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 48
+   "parent": 44
   },
   {
    "name": "DrawAmount",
@@ -2684,7 +2580,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 48
+   "parent": 44
   },
   {
    "name": "RewindCount",
@@ -2776,7 +2672,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 48
+   "parent": 44
   }
  ]
 }

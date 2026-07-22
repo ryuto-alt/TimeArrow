@@ -81,7 +81,7 @@ function OnUpdate(self, dt)
   -- TimeWarpシェーダーへ状態を送る: 早送り=1 / 後戻り=2.8 / 通常=0
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 0
+    local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)

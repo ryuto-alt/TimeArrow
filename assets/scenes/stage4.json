@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,P4cL,P4cR"
+      "value": "F4a,PitF4,F4b"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,P4cL,P4cR,GateA4,Lock4,GateB4,CW4,GateZ4"
+      "value": "F4a,PitF4,F4bGateA4,Lock4,GateB4,CW4,GateZ4"
      },
      {
       "name": "mirrors",
@@ -561,40 +561,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P4aL",
-   "transform": {
-    "position": [
-     4.0,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
     "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
    "name": "P4aN",
    "transform": {
     "position": [
      4.85,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -603,8 +576,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -619,64 +592,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P4aR",
-   "transform": {
-    "position": [
-     5.7,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P4bL",
-   "transform": {
-    "position": [
-     8.8,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
    }
   },
   {
@@ -691,7 +610,7 @@
    "transform": {
     "position": [
      9.600000000000001,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -700,8 +619,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -716,37 +635,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P4bR",
-   "transform": {
-    "position": [
-     10.4,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
    }
   },
   {
@@ -813,7 +705,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 2.6
+      "value": 2.55
      },
      {
       "name": "slideTime",
@@ -827,7 +719,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -907,7 +800,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -961,7 +855,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.68
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -1046,7 +940,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1095,7 +990,7 @@
      {
       "name": "hitHalf",
       "type": "float",
-      "value": 0.55
+      "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
@@ -1221,40 +1116,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P4cL",
-   "transform": {
-    "position": [
-     55.0,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
     "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
    "name": "P4cN",
    "transform": {
     "position": [
      55.85,
-     0.2,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -1263,8 +1131,8 @@
      0.0
     ],
     "scale": [
-     0.7,
-     0.4,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -1279,37 +1147,10 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "P4cR",
-   "transform": {
-    "position": [
-     56.7,
-     0.85,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.7,
-     3.0
-    ]
    }
   },
   {
@@ -1390,7 +1231,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "PlayerMarker",
@@ -1678,7 +1520,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 34,
+   "parent": 28,
    "transform": {
     "position": [
      0.0,
@@ -1752,7 +1594,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 34,
+   "parent": 28,
    "transform": {
     "position": [
      0.0,
@@ -1958,7 +1800,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 28
   },
   {
    "name": "TimeLeft",
@@ -2050,7 +1892,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 28
   },
   {
    "name": "DrawAmount",
@@ -2142,7 +1984,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 28
   },
   {
    "name": "RewindCount",
@@ -2234,7 +2076,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 28
   }
  ]
 }

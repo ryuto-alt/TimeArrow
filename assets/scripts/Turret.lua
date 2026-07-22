@@ -31,7 +31,6 @@ function OnStart(self)
     self.rwGlow = 0.1
     FX.spark(self.bx, self.by, self.bz, 10, 0.65, 0.4, 1.0)
   end)
-  pcall(function() scene:setColor(scene:findEntity(self.name), 0.28, 0.30, 0.38, 1.0) end)
 
 end
 
@@ -77,7 +76,7 @@ function OnUpdate(self, dt)
       if x then
         e.transform.position = Vec3.new(x, y, self.bz)
         if self.ffRemain <= 0 and pp
-           and math.abs(pp.x - x) < 0.62 and math.abs(pp.y - y) < 0.75 then
+           and math.abs(pp.x - x) < 0.48 and math.abs(pp.y - y) < 0.6 then
           events:emit("player_died", {})
         end
       else
@@ -88,7 +87,7 @@ function OnUpdate(self, dt)
 
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 0
+    local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)

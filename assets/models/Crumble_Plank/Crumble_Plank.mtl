@@ -1,22 +1,12 @@
 # Blender 5.2.0 LTS MTL File: 'None'
 # www.blender.org
 
-newmtl crumble
-Ns 22.499992
-Ka 0.050000 0.050000 0.050000
-Kd 0.620000 0.580000 0.500000
+newmtl Crumble_Plank_baked
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
-illum 3
-
-newmtl crumble_dark
-Ns 10.000005
-Ka 0.050000 0.050000 0.050000
-Kd 0.450000 0.420000 0.360000
-Ks 0.500000 0.500000 0.500000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 3
+illum 2
+map_Kd Crumble_Plank.png

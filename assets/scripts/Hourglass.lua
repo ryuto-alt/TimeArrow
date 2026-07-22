@@ -31,7 +31,6 @@ function OnStart(self)
     FX.spark(self.bx, self.by, self.bz, 12, 0.65, 0.4, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 12, 7, 0.65, 0.4, 1.0)
   end)
-  pcall(function() scene:setColor(scene:findEntity(self.name), 0.95, 0.78, 0.42, 1.0) end)
 
 end
 
@@ -60,7 +59,7 @@ function OnUpdate(self, dt)
 
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 0
+    local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)

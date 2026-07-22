@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,Gate5,LockD5,GateY5,LockZ5"
+      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5Gate5,LockD5,GateY5,LockZ5"
      },
      {
       "name": "mirrors",
@@ -670,7 +670,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.75
+      "value": 0.6
      }
     ],
     "scriptPath": "scripts/Wall.lua"
@@ -1002,7 +1002,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1061,7 +1062,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.7
      }
     ],
     "scriptPath": "scripts/RollBall.lua"
@@ -1146,7 +1147,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1466,7 +1468,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1546,7 +1549,8 @@
      }
     ],
     "scriptPath": "scripts/TimedDoor.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "PlayerMarker",

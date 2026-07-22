@@ -114,6 +114,15 @@ function OnUpdate(self, dt)
     end
   end
 
+  -- シェーダー: 撃てる=金色 / FF=シアン / RW=紫
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    local eff = 5.0
+    if self.ffRemain > 0 then eff = 1.0
+    elseif self.rwGlow > 0 then eff = 2.8 end
+    scene:setMeshEffect(selfE, eff)
+  end
+
   -- 早送り=水色 / 後戻り=紫 の残像
   if self.ffRemain > 0 then
     FX.trail(self.bx, y, self.bz, 0.3, 0.9, 1.0)
