@@ -165,6 +165,32 @@ for n in range(1, 9):
     else:
         print(f" stage{n}: OK")
 
-print("\n判定:", "ALL OK — どのステージも地形が意図した経路を強制している"
-      if not FAIL and not SKIP else f"NG: 徒歩抜け道={FAIL} / 上層スキップ={SKIP}")
-sys.exit(1 if (FAIL or SKIP) else 0)
+print("\n=== 監査3: 刃の退避ピットが床板に埋まっていないか ===")
+# 平地の振り子ノコは歩行5では絶対に通過不能なので、刃には必ず「退避ピット」が要る。
+# ピットの上を床板が塞いでいると降りられず、その刃は回避不能の即死装置になる(S8で実際に発生)。
+PIT = []
+for n in range(1, 9):
+    sc = load(n)
+    names = solid_names(sc)
+    bxs = aabbs(sc, names)
+    bad = []
+    for e in sc["entities"]:
+        if "Pit" not in e["name"] or e["name"] not in names:
+            continue
+        p, s = e["transform"]["position"], e["transform"]["scale"]
+        px, ptop = p[0], p[1] + s[1] / 2
+        for x0, x1, ytop, ybot in bxs:
+            if x0 - 0.1 < px < x1 + 0.1 and ybot > ptop + 0.05:
+                bad.append((e["name"], round(ytop, 2)))
+                break
+    if bad:
+        PIT.append(n)
+        for nm, ytop in bad:
+            print(f" stage{n}: ✗ {nm} の上を床板(上面{ytop})が塞いでいる = 刃を回避できない")
+    else:
+        print(f" stage{n}: OK")
+
+print("\n判定:", "ALL OK — 経路は強制され、退避ピットも生きている"
+      if not FAIL and not SKIP and not PIT
+      else f"NG: 徒歩抜け道={FAIL} / 上層スキップ={SKIP} / 埋没ピット={PIT}")
+sys.exit(1 if (FAIL or SKIP or PIT) else 0)

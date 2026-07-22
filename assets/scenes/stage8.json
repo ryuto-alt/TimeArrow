@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F8a,WallW8,D8a,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b"
+      "value": "F8a,WallW8,D8a,D8b,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F8a,WallW8,D8a,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b,GateA8,LockE8,Fan8,Tur8,LatticeL8"
+      "value": "F8a,WallW8,D8a,D8b,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b,GateA8,LockE8,Fan8,Tur8,LatticeL8"
      },
      {
       "name": "mirrors",
@@ -1034,7 +1034,7 @@
    "name": "D8a",
    "transform": {
     "position": [
-     33.0,
+     29.85,
      4.15,
      0.0
     ],
@@ -1044,7 +1044,7 @@
      0.0
     ],
     "scale": [
-     22.0,
+     15.7,
      0.5,
      3.0
     ]
@@ -1303,6 +1303,33 @@
     ],
     "scale": [
      1.6,
+     0.5,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "D8b",
+   "transform": {
+    "position": [
+     41.65,
+     4.15,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     4.7,
      0.5,
      3.0
     ]
@@ -2802,7 +2829,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 55,
+   "parent": 56,
    "transform": {
     "position": [
      0.0,
@@ -2876,7 +2903,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 55,
+   "parent": 56,
    "transform": {
     "position": [
      0.0,
@@ -3088,7 +3115,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 55
+   "parent": 56
   },
   {
    "name": "TimeLeft",
@@ -3180,7 +3207,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 55
+   "parent": 56
   },
   {
    "name": "DrawAmount",
@@ -3272,7 +3299,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 55
+   "parent": 56
   },
   {
    "name": "RewindCount",
@@ -3364,7 +3391,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 55
+   "parent": 56
   }
  ]
 }

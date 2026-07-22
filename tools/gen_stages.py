@@ -623,8 +623,8 @@ build(8, [
            targets="GateA8,Bomb8,Fan8,BombF8,LockE8,SawB8,Ham8,Ham8X,RevB8,Ferry8,"
                    "Lift8,Tur8,CrA8,CrB8,Button8",
            standables="RevB8,Ferry8,Lift8,CrA8,CrB8",
-           arrowStops="F8a,WallW8,D8a,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b",
-           solids="F8a,WallW8,D8a,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b,"
+           arrowStops="F8a,WallW8,D8a,D8b,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b",
+           solids="F8a,WallW8,D8a,D8b,Sill8,PitS8F,F8b,F8c,F8d,T8a,T8b,"
                   "GateA8,LockE8,Fan8,Tur8,LatticeL8",
            rewindShots=S8["rw"]),
     copy.deepcopy(arrow),
@@ -642,12 +642,13 @@ build(8, [
     beacon("Fan8", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
 
     # ── P2 デッキ[22,44]: 圧力爆弾の圏内で終錠に種まき → 刃ピット ──
-    block("D8a", 33.0, 4.15, 22.0, 0.5),          # デッキ(上面4.4)
+    block("D8a", 29.85, 4.15, 15.7, 0.5),         # デッキ[22,37.7](上面4.4)
     block("Sill8", 24.0, 2.0, 0.9, 4.0),          # 地上バイパス封鎖
     bomb("BombF8", 29.0, 4.85, boomT=S8["boomF"], wallTarget=""),   # 壁なし=純粋な圧力
     beacon("BombF8", color=(1.0, 0.5, 0.2, 0.9), offset=0.9),
     door("LockE8", 33.0, openT=S8["lockE"], closeT=9999.0, base=4.4),
-    block("PitS8F", 38.5, 3.15, 1.6, 0.5),        # 刃の退避ピット
+    block("PitS8F", 38.5, 3.15, 1.6, 0.5),        # 刃の退避ピット(上面3.4)
+    block("D8b", 41.65, 4.15, 4.7, 0.5),          # デッキ[39.3,44]
     pendulum("SawB8", 38.5, 5.7, 1.4, period=4.0, amplitude=1.0, phase=0.0),
 
     # ── P3 地上[24,56]: ハンマー → 逆橋(RW) → フェリー ──
