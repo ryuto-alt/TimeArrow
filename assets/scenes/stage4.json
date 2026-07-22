@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F4a,PitF4,F4bGateA4,Lock4,GateB4,CW4,GateZ4"
+      "value": "F4a,PitF4,F4b,GateA4,Lock4,GateB4,CW4,GateZ4"
      },
      {
       "name": "mirrors",

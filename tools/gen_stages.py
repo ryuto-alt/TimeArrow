@@ -413,7 +413,7 @@ build(3, [
     gm(3, S3["limit"]),
     player(0.8, 0.55, targets="Lock1,GateS1,GateS2,Lock2,GateZ",
            arrowStops="F3,StepA3,StepB3",
-           solids="F3,StepA3,StepB3"
+           solids="F3,StepA3,StepB3,"
                   "Lock1,GateS1,GateS2,Lock2,GateZ", rewindShots=S3["rw"]),
     copy.deepcopy(arrow),
     exit_(54.0, 0.65, "scenes/stage4.json"), gate(54.0, 0.5),
@@ -435,7 +435,7 @@ build(4, [
     gm(4, S4["limit"]),
     player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4,Ham4,Ham4X,CW4,GateZ4",
            arrowStops="F4a,PitF4,F4b",
-           solids="F4a,PitF4,F4b"
+           solids="F4a,PitF4,F4b,"
                   "GateA4,Lock4,GateB4,CW4,GateZ4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
     exit_(62.5, 0.65, "scenes/stage5.json"), gate(62.5, 0.5),
@@ -463,7 +463,7 @@ build(5, [
     player(0.8, 0.55, targets="Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5,CrA5,CrB5",
            standables="Lift5,Ferry5,CrA5,CrB5", climbables="Vine5",
            arrowStops="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5",
-           solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5"
+           solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,"
                   "Gate5,LockD5,GateY5,LockZ5", rewindShots=S5["rw"]),
     copy.deepcopy(arrow),
     exit_(85.5, 9.45, "scenes/stage6.json"), gate(85.5, 9.3),
@@ -499,9 +499,9 @@ build(5, [
 build(6, [
     gm(6, S6["limit"]),
     player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Ham6X,Tur6",
-           arrowStops="F6,WallW6,WallW62"
+           arrowStops="F6,WallW6,WallW62,"
                       "St6a,St6b,St6c,St6d,L6",
-           solids="F6,WallW6,WallW62"
+           solids="F6,WallW6,WallW62,"
                   "St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6",
            rewindShots=S6["rw"]),
     copy.deepcopy(arrow),
@@ -537,9 +537,9 @@ build(7, [
     gm(7, S7["limit"]),
     player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX",
            climbables="Vine7",
-           arrowStops="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F"
+           arrowStops="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,"
                       "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F",
-           solids="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F"
+           solids="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,"
                   "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7",
            rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
@@ -583,13 +583,13 @@ build(7, [
 build(8, [
     gm(8, S8["limit"]),
     player(0.8, 0.55,
-           targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8"
+           targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8,"
                    "Ball8,GateY8,LockZ8,Tur8",
            standables="Lift8",
-           arrowStops="F8,WallW8,St8a,St8b,St8c,D8a,Sill8"
+           arrowStops="F8,WallW8,St8a,St8b,St8c,D8a,Sill8,"
                       "PitS8F,T8,PitT8F",
-           solids="F8,WallW8,St8a,St8b,St8c,D8a,Sill8"
-                  "PitS8F,T8,PitT8F"
+           solids="F8,WallW8,St8a,St8b,St8c,D8a,Sill8,"
+                  "PitS8F,T8,PitT8F,"
                   "GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8,Tur8",
            rewindShots=S8["rw"]),
     copy.deepcopy(arrow),
@@ -655,6 +655,12 @@ SLAMS = {
 for n in range(1, 9):
     s = json.load(open(os.path.join(SCENES, f"stage{n}.json"), encoding="utf-8"))
     names = [e["name"] for e in s["entities"]]
+    # Playerの参照リスト(targets/solids等)の全名が実在するか(カンマ欠落・消し忘れ検出)
+    pl = next(e for e in s["entities"] if e["name"] == "Player")
+    plprops = {q["name"]: q["value"] for q in pl["luaScript"]["props"]}
+    for key in ("targets", "standables", "climbables", "arrowStops", "solids"):
+        for nm in filter(None, [x.strip() for x in plprops.get(key, "").split(",")]):
+            assert nm in names, f"stage{n}: {key} に実在しない名前 '{nm}'"
     for e in s["entities"]:
         if "parent" in e:
             assert names[e["parent"]] == "HudCanvas", (n, e["name"])

@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5Gate5,LockD5,GateY5,LockZ5"
+      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,Gate5,LockD5,GateY5,LockZ5"
      },
      {
       "name": "mirrors",

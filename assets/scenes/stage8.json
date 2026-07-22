@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8Ball8,GateY8,LockZ8,Tur8"
+      "value": "GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8,Ball8,GateY8,LockZ8,Tur8"
      },
      {
       "name": "standables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F8,WallW8,St8a,St8b,St8c,D8a,Sill8PitS8F,T8,PitT8F"
+      "value": "F8,WallW8,St8a,St8b,St8c,D8a,Sill8,PitS8F,T8,PitT8F"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F8,WallW8,St8a,St8b,St8c,D8a,Sill8PitS8F,T8,PitT8FGateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8,Tur8"
+      "value": "F8,WallW8,St8a,St8b,St8c,D8a,Sill8,PitS8F,T8,PitT8F,GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8,Tur8"
      },
      {
       "name": "mirrors",

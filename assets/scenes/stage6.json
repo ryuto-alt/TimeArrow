@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F6,WallW6,WallW62St6a,St6b,St6c,St6d,L6"
+      "value": "F6,WallW6,WallW62,St6a,St6b,St6c,St6d,L6"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F6,WallW6,WallW62St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6"
+      "value": "F6,WallW6,WallW62,St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6"
      },
      {
       "name": "mirrors",

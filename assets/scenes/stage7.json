@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
+      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
+      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
      },
      {
       "name": "mirrors",

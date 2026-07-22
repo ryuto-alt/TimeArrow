@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F3,StepA3,StepB3Lock1,GateS1,GateS2,Lock2,GateZ"
+      "value": "F3,StepA3,StepB3,Lock1,GateS1,GateS2,Lock2,GateZ"
      },
      {
       "name": "mirrors",
