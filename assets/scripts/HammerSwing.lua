@@ -79,6 +79,14 @@ function OnUpdate(self, dt)
   if m2 and m2:isValid() and m3 and m3:isValid() then
     local stage = (self.clock < self.decayT * 0.8) and 1 or
                   ((self.clock < self.decayT * 2.0) and 2 or 3)
+    -- 段階が変わった瞬間: 破片が弾けるフラッシュ(劣化/若返りの節目を見せる)
+    if self.lastStage and stage ~= self.lastStage then
+      local hy0 = self.by - 2.35 * self.transform.scale.y
+      FX.shockwave(self.bx, hy0, self.bz, 14, 9, 0.75, 0.5, 0.3)
+      FX.spark(self.bx, hy0, self.bz, 18, 0.6, 0.4, 0.25)
+      fx:pulse(0.15)
+    end
+    self.lastStage = stage
     local ents = { scene:findEntity(self.name), m2, m3 }
     for i, e in ipairs(ents) do
       if e and e:isValid() then
@@ -118,6 +126,22 @@ function OnUpdate(self, dt)
   if self.rwGlow > 0 then
     self.rwGlow = self.rwGlow - dt
     FX.trail(hx, hy, self.bz, 0.65, 0.4, 1.0)
+  end
+
+  -- 劣化した個体は錆粉を撒き、末期はヨレて震える(見た目のみ。判定は本来の角度)
+  if self.lastStage and self.lastStage >= 2 then
+    self.dustT = (self.dustT or 0) + dt
+    if self.dustT > (self.lastStage == 3 and 0.18 or 0.45) then
+      self.dustT = 0
+      FX.trail(hx + (math.random() - 0.5) * 0.6, hy - 0.3, self.bz, 0.55, 0.3, 0.12)
+    end
+    if self.lastStage == 3 then
+      local wob = math.sin(self.phase * math.pi * 11) * 2.2   -- ガタつき
+      local vis = scene:findEntity(self.name .. "_m3")
+      if vis and vis:isValid() then
+        vis.transform.rotation = Vec3.new(0, 0, ang + wob)
+      end
+    end
   end
 
   if self.ffRemain > 0 then return end   -- 早送り中は経由位相で殺さない
