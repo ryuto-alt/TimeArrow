@@ -480,16 +480,17 @@ build(4, [
     block("L4b", 62.3, 5.15, 3.4, 0.5),           # [60.6,64]
 ], limit=S4["limit"], width=64)
 
-# ── STAGE 5「時の昇降機・改」(幅88, 3層) ─────────────────────────────
-# P1リフト昇降 → P2デッキ: 大玉チェイス(ピットからRWで背後へ送る)+錠D種まき
-# → P3地上→ツタ(FF)→最上層: フェリー→閉門Y(サンド)→錠Z→出口
+# ── STAGE 5「時の昇降機」(幅88, 3層) ─────────────────────────────────
+# 門は3枚(スラムG=RW教材 / 錠D・錠Z=種まき教材)。P1リフトをFFで降ろし乗ったまま
+# RWで昇る → P2デッキ: スラムG+大玉チェイス+ハンマー+退避ピット+錠D種まき
+# → P3地上→ツタ(FF)→最上層: フェリー→崩れ足場→錠Z種まき→出口
 build(5, [
     gm(5, S5["limit"]),
-    player(0.8, 0.55, targets="Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5,CrA5,CrB5",
-           standables="Lift5,Ferry5,CrA5,CrB5", climbables="Vine5",
-           arrowStops="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5",
-           solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,"
-                  "Gate5,LockD5,GateY5,LockZ5", rewindShots=S5["rw"]),
+    player(0.8, 0.55, targets="Lift5,Gate5,Ball5,Ham5,Ham5X,LockD5,Vine5,Ferry5,LockZ5,CrA5,CrB5,CrC5,CrD5",
+           standables="Lift5,Ferry5,CrA5,CrB5,CrC5,CrD5", climbables="Vine5",
+           arrowStops="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b1,T5b2,Sill5",
+           solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b1,T5b2,Sill5,"
+                  "Gate5,LockD5,LockZ5", rewindShots=S5["rw"]),
     copy.deepcopy(arrow),
     exit_(85.5, 9.45, "scenes/stage6.json"), gate(85.5, 9.3),
     block("F5a", 27.0, -0.5, 54.0, 1.0),          # [0,54]
@@ -508,13 +509,16 @@ build(5, [
     block("D5c", 46.6, 3.75, 10.8, 0.5),          # [41.2,52]
     door("Gate5", 17.2, openT=0.0, closeT=S5["slamG"], base=4.0),
     rollball("Ball5", 19.5, 4.75, 1.5, rollT=S5["ballRoll"], speed=S5["ballSpeed"]),
+    hammer("Ham5", 24.0, 7.5, 1.2, period=3.2, maxAngle=50.0),   # 大玉に追われながらの間合い取り
     door("LockD5", 46.0, openT=S5["lockD"], closeT=9999.0, base=4.0),
     vine("Vine5", 61.2, bottomY=0.0, height=8.9, growT=S5["vineGrow"], growDur=1.2),
     beacon("Vine5", color=(0.4, 1.0, 0.5, 0.9), offset=0.8),
     block("T5a", 66.0, 8.55, 8.0, 0.5),           # 最上層[62,70]
     ferry("Ferry5", 72.0, 8.55, period=S5["ferryP"], amplitude=2.2, phase=0.0),
-    block("T5b", 81.0, 8.55, 14.0, 0.5),          # [74,88]
-    door("GateY5", 76.5, openT=0.0, closeT=S5["closeY"], base=8.8),
+    block("T5b1", 75.5, 8.55, 3.0, 0.5),          # [74,77]
+    crumble("CrC5", 77.8, 8.575, 1.6, 1.5),       # 最上層の谷[77,80.4]
+    crumble("CrD5", 79.6, 8.575, 1.6, 1.5),
+    block("T5b2", 84.2, 8.55, 7.6, 0.5),          # [80.4,88]
     door("LockZ5", 82.0, openT=S5["lockZ"], closeT=9999.0, base=8.8),
 ], limit=S5["limit"], width=88)
 

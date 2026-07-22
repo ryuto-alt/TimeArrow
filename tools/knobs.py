@@ -26,7 +26,7 @@ K = {
 
     # S5「時の昇降機・改」リフト+大玉チェイス+ツタ+フェリー+最上層
     "s5": dict(limit=66.0, rw=3, lift=14.0, slamG=2.6, ballRoll=4.0, ballSpeed=0.6,
-               lockD=30.0, vineGrow=33.0, ferryP=6.0, closeY=44.0, lockZ=52.0),
+               lockD=30.0, vineGrow=33.0, ferryP=6.0, lockZ=52.0),
 
     # S6「導火線と気流」逆橋(RW)+爆弾2+ファンサージ+錆びた動く壁+終錠
     "s6": dict(limit=70.0, rw=2, rev6=3.0, boom1=20.0, boom2=40.0,

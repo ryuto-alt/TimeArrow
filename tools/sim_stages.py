@@ -499,9 +499,9 @@ ALL_OK &= report("S4 昇降の工房(フェリー+昇降足場+種まき)", S4["
 
 # ════════════════════════════════════════════════════════════════════
 # S5「時の昇降機・改」(幅88, RW4, 3層) — gen_stages.py 座標に一致
-# StepA5 x4.2/N5 x4.9/StepB5 x5.6 Lift5 x12.5 デッキ[16,52] Gate5 x17.2
+# StepA5 x4.2/N5 x4.9/StepB5 x5.6 Lift5 x12.5 デッキ[16,52] Gate5 x17.2 Ham5 x24
 # Ball5 x19.5 PitR1F x28.6 LockD5 x46 Vine5 x61.2 最上層[62,88] Ferry5 x72
-# GateY5 x76.5 LockZ5 x82 出口85.5
+# 最上層の崩れ足場[77,80.4] LockZ5 x82 出口85.5
 # ════════════════════════════════════════════════════════════════════
 S5 = K["s5"]
 S5_BALL = dict(bx=19.5, rollT=S5["ballRoll"], speed=S5["ballSpeed"])
@@ -536,7 +536,9 @@ def s5_rwonly(r):
     r.walk(4.7, "スラム前")
     r.rw("Gate5", 4.0, dist=1.0, label="スラムGを呼び戻す(#2)", cap=S5["slamG"])
     r.gate_reopen_pass("Gate5", S5["slamG"])
-    r.walk(11.4, "退避ピット1へ")
+    r.walk(4.5, "ハンマー手前へ")
+    r.wait(0.9, "ハンマーの間合い")
+    r.walk(6.9, "退避ピット1へ")
     r.wait(0.3, "ピットに降りる")
     r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(#3)")
     r.wait(0.8)
@@ -548,9 +550,8 @@ def s5_rwonly(r):
     r.walk(9.2, "Vine5前")
     r.wait(max(0.0, S5["vineGrow"] - r.clock("Vine5")), "ツタの自然成長待ち(長い)")
     r.wait(2.2, "ツタを登る")
-    r.walk(14.8, "GateY5前(種まき無し)")
-    r.rw("GateY5", 10.0, dist=1.0, label="最後の1発(#4)")
-    r.gate_reopen_pass("GateY5", S5["closeY"])
+    r.walk(9.3, "崩れ足場を渡って(種まき無しで)LockZ5前へ")
+    r.rw("LockZ5", 10.0, dist=1.0, label="最後の1発(#4=予算オーバー)")
 
 
 def s5_plan(r):
@@ -563,13 +564,15 @@ def s5_plan(r):
     r.walk(4.7, "スラム前")
     r.rw("Gate5", 10.0, dist=1.0, label="呼び戻し(時計が若く1発, #2)")
     r.gate_reopen_pass("Gate5", S5["slamG"])
-    r.walk(11.4, "退避ピット1へ")
+    r.walk(4.5, "ハンマー手前へ")
+    r.wait(0.9, "ハンマーの間合い(大玉が迫る)")
+    r.walk(6.9, "退避ピット1へ")
     r.wait(0.3, "ピットに降りる")
     r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(頭上を逆走, #3)")
     r.wait(0.8, "通過待ち")
     r.wait(0.3, "ピットから出る")
     r.walk(3.4, "種まき位置(x32)へ")
-    r.ff("LockD5", 10.0, dist=14.0, label="◆種まき: 終錠へ")
+    r.ff("LockD5", 10.0, dist=14.0, label="◆種まき: 終錠Dへ")
     r.walk(14.0, "デッキを進む(x46)")
     r.lock_wait("LockD5", S5["lockD"])
     r.walk(6.0, "デッキ端52で降りる")
@@ -584,9 +587,9 @@ def s5_plan(r):
     r.walk(4.0, "フェリー乗り場(x70)へ")
     r.wait(S5["ferryP"] / 2, "フェリーの間合い")
     r.walk(2.2, "フェリーで渡る(振れ幅2.2)")
-    r.walk(2.5, "GateY5前")
-    r.gate_pass("GateY5", S5["closeY"], "サンドの締切")
-    r.walk(5.5, "LockZ5前")
+    r.walk(2.5, "最上層の谷の縁(x77)へ")
+    r.walk(3.4, "崩れ足場2枚を一気に渡る")
+    r.walk(2.1, "LockZ5前")
     r.lock_wait("LockZ5", S5["lockZ"])
     r.goal_alive("Ball5", **S5_BALL, goal_x=S5_GOAL, label="レース勝利")
     r.walk(3.5, "ゴール")

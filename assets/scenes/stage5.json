@@ -233,12 +233,12 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5,CrA5,CrB5"
+      "value": "Lift5,Gate5,Ball5,Ham5,Ham5X,LockD5,Vine5,Ferry5,LockZ5,CrA5,CrB5,CrC5,CrD5"
      },
      {
       "name": "standables",
       "type": "string",
-      "value": "Lift5,Ferry5,CrA5,CrB5"
+      "value": "Lift5,Ferry5,CrA5,CrB5,CrC5,CrD5"
      },
      {
       "name": "climbables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5"
+      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b1,T5b2,Sill5"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,Gate5,LockD5,GateY5,LockZ5"
+      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b1,T5b2,Sill5,Gate5,LockD5,LockZ5"
      },
      {
       "name": "mirrors",
@@ -1104,6 +1104,141 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
+   },
+   "name": "Ham5",
+   "transform": {
+    "position": [
+     24.0,
+     7.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 3.2
+     },
+     {
+      "name": "maxAngle",
+      "type": "float",
+      "value": 50.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "decayT",
+      "type": "float",
+      "value": 25.0
+     },
+     {
+      "name": "hitHalf",
+      "type": "float",
+      "value": 0.42
+     }
+    ],
+    "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
+   },
+   "name": "Ham5_m2",
+   "transform": {
+    "position": [
+     24.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
+   },
+   "name": "Ham5_m3",
+   "transform": {
+    "position": [
+     24.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "Ham5X",
+   "transform": {
+    "position": [
+     24.0,
+     5.9399999999999995,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
    "name": "LockD5Frame",
@@ -1400,10 +1535,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "T5b",
+   "name": "T5b1",
    "transform": {
     "position": [
-     81.0,
+     75.5,
      8.55,
      0.0
     ],
@@ -1413,7 +1548,7 @@
      0.0
     ],
     "scale": [
-     14.0,
+     3.0,
      0.5,
      3.0
     ]
@@ -1425,13 +1560,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
    },
-   "name": "GateY5Frame",
+   "name": "CrC5",
    "transform": {
     "position": [
-     76.5,
-     10.8,
+     77.8,
+     8.575,
      0.0
     ],
     "rotation": [
@@ -1440,35 +1575,8 @@
      0.0
     ],
     "scale": [
-     1.1,
-     4.0,
-     1.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
-   },
-   "name": "GateY5",
-   "transform": {
-    "position": [
-     76.5,
-     10.600000000000001,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     0.75,
-     3.6,
+     1.6,
+     0.45,
      1.0
     ]
    },
@@ -1476,29 +1584,80 @@
     "enabled": true,
     "props": [
      {
-      "name": "openT",
+      "name": "crumbleT",
       "type": "float",
-      "value": 0.0
-     },
-     {
-      "name": "closeT",
-      "type": "float",
-      "value": 44.0
-     },
-     {
-      "name": "slideTime",
-      "type": "float",
-      "value": 0.7
-     },
-     {
-      "name": "listenButton",
-      "type": "bool",
-      "value": false
+      "value": 1.5
      }
     ],
-    "scriptPath": "scripts/TimedDoor.lua"
+    "scriptPath": "scripts/CrumblePlatform.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
+   },
+   "name": "CrD5",
+   "transform": {
+    "position": [
+     79.6,
+     8.575,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.45,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "crumbleT",
+      "type": "float",
+      "value": 1.5
+     }
+    ],
+    "scriptPath": "scripts/CrumblePlatform.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "T5b2",
+   "transform": {
+    "position": [
+     84.2,
+     8.55,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     7.6,
+     0.5,
+     3.0
+    ]
+   }
   },
   {
    "material": {
@@ -1867,7 +2026,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 38,
+   "parent": 43,
    "transform": {
     "position": [
      0.0,
@@ -1941,7 +2100,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 38,
+   "parent": 43,
    "transform": {
     "position": [
      0.0,
@@ -2153,7 +2312,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 38
+   "parent": 43
   },
   {
    "name": "TimeLeft",
@@ -2245,7 +2404,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 38
+   "parent": 43
   },
   {
    "name": "DrawAmount",
@@ -2337,7 +2496,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 38
+   "parent": 43
   },
   {
    "name": "RewindCount",
@@ -2429,7 +2588,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 38
+   "parent": 43
   }
  ]
 }
