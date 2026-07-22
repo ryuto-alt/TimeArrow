@@ -1,15 +1,25 @@
--- TargetGlow.lua -- 矢を当てられる静的オブジェクト(的/ボタン等)に金色の的アピールを付ける。
+-- TargetGlow.lua -- 矢を当てられる静的オブジェクト(的/ボタン等)の的アピール+照準ロック表示。
 properties = {}
 
 function OnStart(self)
-  self.applied = false
+  events:on("aim_preview", function(d)
+    if d.target == self.name or d.target == self.name .. "X" then
+      self.aimPv = { m = d.mode, t = 0.12 }
+    end
+  end)
 end
 
 function OnUpdate(self, dt)
-  if self.applied then return end
   local e = scene:findEntity(self.name)
-  if e and e:isValid() then
-    scene:setMeshEffect(e, 5.0)
-    self.applied = true
+  if not (e and e:isValid()) then return end
+  local eff = 5.0
+  if self.aimPv then
+    self.aimPv.t = self.aimPv.t - dt
+    if self.aimPv.t > 0 then
+      eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+    else
+      self.aimPv = nil
+    end
   end
+  scene:setMeshEffect(e, eff)
 end

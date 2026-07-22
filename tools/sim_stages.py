@@ -254,31 +254,36 @@ def s1_noarrow(r):
     r.wait(max(0.0, S1["rise1"] - r.clock("Bridge1")), "橋1自然降下待ち")
     r.walk(6.0, "橋1を渡る")
     r.walk(10.0, "FloorB横断(x30)")
-    r.wait(max(0.0, S1["rise2"] - r.clock("Bridge2")), "橋2自然降下待ち")
-    r.walk(6.0, "橋2を渡る")
-    r.walk(7.0, "ゴールへ")
+    r.dead = "橋2はrise2秒で上がりきって届かない(後戻し矢でしか降ろせない)"
 
 
 def s1_plan(r):
-    # x1で射程18ぎりぎりのTarget1を即射→FloorA奥へ歩く間に降下が進む
+    # x1で射程18ぎりぎりのBridge1を即射→FloorA奥へ歩く間に降下が進む
     r.ff("Bridge1", 10.0, dist=17.2, label="出発点から橋1へフル加速")
     r.walk(13.0, "FloorA奥(x14)へ")
     r.wait(max(0.0, S1["rise1"] - r.clock("Bridge1")), "残りの降下待ち")
     r.walk(6.0, "橋1を渡る")
-    # FloorBに降りた瞬間(x20)Target2は射程14.4で届く→即2本撃って橋2を沈める
-    r.ff("Bridge2", 10.0, dist=14.4, label="橋2へ1本目")
-    r.ff("Bridge2", 10.0, dist=14.4, label="橋2へ2本目(rise2=32は1本では届かない)")
-    r.walk(10.0, "FloorB横断(x30)")
-    r.wait(max(0.0, S1["rise2"] - r.clock("Bridge2")), "残りの降下待ち")
-    r.walk(6.0, "橋2を渡る")
+    r.walk(9.0, "FloorB横断(橋2の縁x29.5へ)")
+    r.rw("Bridge2", 10.0, dist=4.5, label="上がりきった橋2をフルで引き戻す", cap=S1["rise2"])
+    r.walk(6.5, "降りてきた橋2をすぐ渡る(再上昇する前に)")
     r.walk(7.0, "ゴールへ")
 
 
-ALL_OK &= report("S1 遅すぎる橋", S1["limit"], S1["rw"], [
+def s1_ffonly(r):
+    r.ff("Bridge1", 10.0, dist=17.2, label="橋1はFFで降りる")
+    r.walk(13.0)
+    r.wait(max(0.0, S1["rise1"] - r.clock("Bridge1")))
+    r.walk(6.0, "橋1を渡る")
+    r.walk(10.0, "FloorB横断")
+    r.ff("Bridge2", 10.0, dist=4.5, label="FFは橋2を上げるだけ(逆効果)")
+    r.dead = "橋2は先送りでは戻らない(上がりきって時計停止)"
+
+
+ALL_OK &= report("S1 二つの橋(FF橋+RW橋)", S1["limit"], S1["rw"], [
     ("矢なし", s1_noarrow, False),
-    ("RWのみ(橋は上がるだけ)", s1_noarrow, False),
+    ("FFのみ(橋2は上がるだけ)", s1_ffonly, False),
     ("想定解", s1_plan, True),
-], margin=(1.5, 6.0))
+], margin=(1.5, 8.0))
 
 # ════════════════════════════════════════════════════════════════════
 # S2「四枚の閉門回廊」v4(幅52, RW3) — 全門が到達直前に閉まる。
@@ -310,9 +315,9 @@ def s2_plan(r):
     s2_route_to_A(r)
     r.rw("GateA", 6.0, dist=1.5, label="スラムA呼び戻し", cap=S2["closeA"])
     r.gate_reopen_pass("GateA", S2["closeA"])
-    r.walk(3.9, "ハンマー前")
+    r.walk(3.0, "ハンマー前")
     r.wait(0.8, "ハンマーの間合い")
-    r.walk(4.0, "GateBへ走る")
+    r.walk(6.4, "GateBへ走る")
     r.gate_pass("GateB", S2["closeB"], "スプリント成功なら矢いらず")
     r.wait(0.6, "弾幕の谷を待つ")
     r.walk(2.9, "P2cへ")

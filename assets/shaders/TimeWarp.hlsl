@@ -176,6 +176,17 @@ float4 PSMain(PSInput input) : SV_TARGET
         lit += float3(1.0f, 0.82f, 0.35f) * band6 * 0.45f * (1.0f - deg * 0.6f);
     }
 
+    // 【照準ロック】構え中に狙われている対象: モード色で強く点滅(8.x=先送り/9.x=後戻し)
+    if (effectValue >= 8.0f && effectValue < 10.0f)
+    {
+        bool isRw = (effectValue >= 9.0f);
+        float blink = 0.55f + 0.45f * sin(time * 10.0f);
+        float3 mc = isRw ? float3(0.62f, 0.35f, 1.0f) : float3(0.25f, 0.85f, 1.0f);
+        lit = lerp(lit, mc, 0.35f * blink);
+        float edge = saturate(sin((input.worldPos.y * 4.0f + time * 6.0f) * 6.2831853f) * 0.5f + 0.5f);
+        lit += mc * pow(edge, 6.0f) * 0.8f;
+    }
+
     // 【的アピール】撃てるオブジェクトは金色の細い帯がゆっくり上り、全体が淡く脈動する
     if (tg > 0.0f)
     {

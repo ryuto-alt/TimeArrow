@@ -223,7 +223,7 @@
      {
       "name": "aimTurnSpeed",
       "type": "float",
-      "value": 270.0
+      "value": 720.0
      },
      {
       "name": "climbSpeed",
@@ -706,7 +706,7 @@
    "name": "Ham2",
    "transform": {
     "position": [
-     18.5,
+     17.6,
      3.5,
      0.0
     ],
@@ -732,7 +732,7 @@
      {
       "name": "maxAngle",
       "type": "float",
-      "value": 55.0
+      "value": 50.0
      },
      {
       "name": "startPhase",
@@ -765,7 +765,7 @@
    "name": "Ham2_m2",
    "transform": {
     "position": [
-     18.5,
+     17.6,
      -100.0,
      0.0
     ],
@@ -793,7 +793,7 @@
    "name": "Ham2_m3",
    "transform": {
     "position": [
-     18.5,
+     17.6,
      -100.0,
      0.0
     ],
@@ -814,7 +814,7 @@
    "name": "Ham2X",
    "transform": {
     "position": [
-     18.5,
+     17.6,
      1.94,
      0.0
     ],
@@ -841,7 +841,7 @@
    "name": "GateBFrame",
    "transform": {
     "position": [
-     22.5,
+     24.0,
      2.0,
      0.0
     ],
@@ -868,7 +868,7 @@
    "name": "GateB",
    "transform": {
     "position": [
-     22.5,
+     24.0,
      1.8,
      0.0
     ],
@@ -894,7 +894,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 8.0
+      "value": 8.6
      },
      {
       "name": "slideTime",

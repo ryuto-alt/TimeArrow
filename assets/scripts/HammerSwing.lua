@@ -14,6 +14,11 @@ properties = {
 function OnStart(self)
   self.ts = 1.0
   events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+  events:on("aim_preview", function(d)
+    if d.target == self.name or d.target == self.name .. "X" then
+      self.aimPv = { m = d.mode, t = 0.12 }
+    end
+  end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = self.startPhase
@@ -103,6 +108,9 @@ function OnUpdate(self, dt)
             local eff = 6.0 + math.min(0.95, self.clock / (self.decayT * 2.5))
             if self.ffRemain > 0 then eff = 1.0
             elseif self.rwGlow > 0 then eff = 2.8 end
+            if self.aimPv and self.aimPv.t > 0 then
+              eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+            end
             scene:setMeshEffect(e, eff)
           end
         end
@@ -122,6 +130,14 @@ function OnUpdate(self, dt)
     local eff = 6.0 + deg
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
+    if self.aimPv then
+      self.aimPv.t = self.aimPv.t - dt
+      if self.aimPv.t > 0 then
+        eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+      else
+        self.aimPv = nil
+      end
+    end
     scene:setMeshEffect(selfE, eff)
   end
   if self.ffRemain > 0 then FX.trail(hx, hy, self.bz, 0.3, 0.9, 1.0) end
@@ -136,10 +152,12 @@ function OnUpdate(self, dt)
     if math.abs(s) < 0.10 then
       if not self.sparked then
         self.sparked = true
-        local n = (self.lastStage == 3) and 16 or 8
-        FX.spark(hx, hy - 0.4, self.bz, n, 1.0, 0.7, 0.2)
-        FX.spark(hx, hy - 0.4, self.bz, math.floor(n / 2), 1.0, 0.45, 0.1)
-        if self.lastStage == 3 then fx:pulse(0.04) end
+        local n = (self.lastStage == 3) and 40 or 22
+        FX.spark(hx, hy - 0.4, self.bz, n, 1.0, 0.75, 0.2)
+        FX.spark(hx, hy - 0.3, self.bz, n, 1.0, 0.5, 0.1)
+        FX.spark(hx, hy - 0.5, self.bz, math.floor(n / 2), 1.0, 0.9, 0.4)
+        FX.shockwave(hx, hy - 0.4, self.bz, 8, 5, 1.0, 0.6, 0.2)
+        fx:pulse(self.lastStage == 3 and 0.1 or 0.05)
       end
     else
       self.sparked = false
@@ -158,6 +176,12 @@ function OnUpdate(self, dt)
       local vis = scene:findEntity(self.name .. "_m3")
       if vis and vis:isValid() then
         vis.transform.rotation = Vec3.new(0, 0, ang + wob)
+      end
+      -- 常時火の粉シャワー(ヘッドから尾を引く)
+      self.embT = (self.embT or 0) + dt
+      if self.embT > 0.06 then
+        self.embT = 0
+        FX.spark(hx + (math.random() - 0.5) * 0.5, hy, self.bz, 3, 1.0, 0.55, 0.15)
       end
     end
   end

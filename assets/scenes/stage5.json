@@ -223,7 +223,7 @@
      {
       "name": "aimTurnSpeed",
       "type": "float",
-      "value": 270.0
+      "value": 720.0
      },
      {
       "name": "climbSpeed",
@@ -754,6 +754,11 @@
      },
      {
       "name": "listenButton",
+      "type": "bool",
+      "value": false
+     },
+     {
+      "name": "reverse",
       "type": "bool",
       "value": false
      }

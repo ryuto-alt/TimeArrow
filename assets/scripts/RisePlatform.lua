@@ -9,11 +9,17 @@ properties = {
   { name = "waitHeight",  type = "float",  default = 5.5,  min = 1,   max = 20, label = "待機する高さ(着地点からの上空オフセット)" },
   { name = "triggerName", type = "string", default = "",                       label = "矢が当たる的の名前(空なら自分の名前)" },
   { name = "listenButton",type = "bool",   default = false,                    label = "ボタン連動リフト(押すたびに上下をトグル)" },
+  { name = "reverse",     type = "bool",   default = false,                    label = "逆モード: 設置位置から上空へ上がっていく(後戻しで引き戻す)" },
 }
 
 function OnStart(self)
   self.ts = 1.0
   events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+  events:on("aim_preview", function(d)
+    if d.target == self.name or d.target == self.name .. "X" then
+      self.aimPv = { m = d.mode, t = 0.12 }
+    end
+  end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.waitY = self.by + self.waitHeight
@@ -22,7 +28,7 @@ function OnStart(self)
   self.curFrac = 0
   self.prevFrac = 0
   self.ffRemain = 0
-  self.transform.position = Vec3.new(self.bx, self.waitY, self.bz)
+  self.transform.position = Vec3.new(self.bx, self.reverse and self.by or self.waitY, self.bz)
 
   local listenName = self.triggerName ~= "" and self.triggerName or self.name
   events:on("time_skip", function(data)
@@ -85,12 +91,15 @@ function OnUpdate(self, dt)
         events:emit("time_refund", { amount = step })
       end
     end
+    -- 完了後は時計停止(扉と同じ「終わった機構は時計が止まる」ルール)=いつでも後戻しが効く
+    local doneT = self.arriveT + self.riseTime
+    if self.clock > doneT then self.clock = doneT end
     frac = clamp((self.clock - self.arriveT) / self.riseTime, 0, 1)
   end
 
   -- 等速で降下する。riseTimeを制限時間より長く(例:12秒)すれば「ずっとゆっくり落ちてきていて、
   -- 放っておくと10秒では間に合わない橋」になる=矢の先送りで降下を進めるのが本筋になる
-  local y = lerp(self.waitY, self.by, frac)
+  local y = self.reverse and lerp(self.by, self.waitY, frac) or lerp(self.waitY, self.by, frac)
   self.transform.position = Vec3.new(self.bx, y, self.bz)
 
   -- 着地の瞬間だけ衝撃波(降下は静かに、到着で一拍)
@@ -107,6 +116,14 @@ function OnUpdate(self, dt)
     local eff = 0  -- 橋は普段は光らせない(FF=シアン/RW=紫のときだけ)
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
+    if self.aimPv then
+      self.aimPv.t = self.aimPv.t - dt
+      if self.aimPv.t > 0 then
+        eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+      else
+        self.aimPv = nil
+      end
+    end
     scene:setMeshEffect(selfE, eff)
   end
 

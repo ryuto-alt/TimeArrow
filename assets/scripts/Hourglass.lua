@@ -9,6 +9,11 @@ properties = {
 function OnStart(self)
   self.ts = 1.0
   events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+  events:on("aim_preview", function(d)
+    if d.target == self.name or d.target == self.name .. "X" then
+      self.aimPv = { m = d.mode, t = 0.12 }
+    end
+  end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
@@ -62,6 +67,14 @@ function OnUpdate(self, dt)
     local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
+    if self.aimPv then
+      self.aimPv.t = self.aimPv.t - dt
+      if self.aimPv.t > 0 then
+        eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+      else
+        self.aimPv = nil
+      end
+    end
     scene:setMeshEffect(selfE, eff)
   end
   if self.rwGlow > 0 then

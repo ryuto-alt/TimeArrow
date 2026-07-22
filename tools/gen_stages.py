@@ -78,7 +78,7 @@ def player(x, y, targets="", standables="", climbables="", arrowStops="", solids
         prop("arrowSpeed", "float", 15.0), prop("arrowRange", "float", 18.0),
         prop("arrowHalf", "float", 0.1), prop("minSkip", "float", 2.0),
         prop("maxSkip", "float", 10.0), prop("maxDrawTime", "float", 3.0),
-        prop("aimTurnSpeed", "float", 270.0), prop("climbSpeed", "float", 4.0),
+        prop("aimTurnSpeed", "float", 720.0), prop("climbSpeed", "float", 4.0),
         prop("targets", "string", targets), prop("standables", "string", standables),
         prop("climbables", "string", climbables), prop("arrowStops", "string", arrowStops),
         prop("solids", "string", solids), prop("mirrors", "string", ""),
@@ -120,12 +120,13 @@ def door(name, x, openT, closeT, base=0.0):
     return [frame, grill]
 
 
-def riseplat(name, x, y, sx, sy, arriveT, waitHeight, riseTime, trigger=""):
+def riseplat(name, x, y, sx, sy, arriveT, waitHeight, riseTime, trigger="", reverse=False):
     return mesh(name, "Bridge_Plank", x, y, sx, sy, 1.0, shader=TIMEWARP,
                 lua=script("RisePlatform.lua", [
                     prop("arriveT", "float", float(arriveT)), prop("riseTime", "float", float(riseTime)),
                     prop("waitHeight", "float", float(waitHeight)), prop("triggerName", "string", trigger),
-                    prop("listenButton", "bool", False)]))
+                    prop("listenButton", "bool", False),
+                    prop("reverse", "bool", bool(reverse))]))
 
 
 def pendulum(name, x, y, s, period, amplitude, phase, deadly=True):
@@ -379,7 +380,7 @@ build(1, [
     beacon("Bridge1"),
     block("FloorB", 25.0, -0.5, 10.0, 1.0),       # [20,30]
     riseplat("Bridge2", 33.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
-             riseTime=S1["rise2"]),
+             riseTime=S1["rise2"], reverse=True),   # 上がって消えていく橋: Qで引き戻す
     beacon("Bridge2"),
     block("FloorC", 40.5, -0.5, 9.0, 1.0),        # [36,45]
 ], limit=S1["limit"], width=45)
@@ -401,8 +402,8 @@ build(2, [
     patch("P2a", 5.0, 6.7, 0.7),
     patch("P2b", 10.0, 11.7, 0.7),
     door("GateA", 14.6, openT=0.0, closeT=S2["closeA"]),      # スラム(RW)
-    hammer("Ham2", 18.5, 3.5, 1.2, period=3.0, maxAngle=55.0),
-    door("GateB", 22.5, openT=0.0, closeT=S2["closeB"]),      # 走れば間に合う
+    hammer("Ham2", 17.6, 3.5, 1.2, period=3.0, maxAngle=50.0),
+    door("GateB", 24.0, openT=0.0, closeT=S2["closeB"]),      # 走れば間に合う
     turret("Tur2", 33.0, 1.0, period=2.6, shotSpeed=6.0, rng=11.0),
     patch("P2c", 27.0, 28.7, 0.7),
     door("GateC", 35.5, openT=0.0, closeT=S2["closeC"]),

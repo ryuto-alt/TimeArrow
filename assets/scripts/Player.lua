@@ -474,6 +474,64 @@ local function updateDraw(self, dt)
       FX.beam(p.x, p.y + 0.2, p.z, p.x + ax * len, p.y + 0.2 + ay * len, p.z,
               0.4 + 0.4 * frac, 0.75 + 0.2 * frac, 1.0, 0.1, "energy", 3 + frac * 3)
     end
+
+    -- 軌道予測: 矢の到達点を点線で示し、当たる対象をモード色で点滅させ(aim_preview)、
+    -- 対象の脇に「効果量ゲージ」(引き絞りに応じて伸びる縦ビーム)を立てる
+    self.scanT = (self.scanT or 0) + dt
+    if self.scanT > 0.05 then
+      self.scanT = 0
+      local rx, ry = p.x + ax * 0.7, p.y + 0.2 + ay * 0.3
+      local hitT, hitX, hitY, hitH = nil, nil, nil, 1.0
+      local d = 0.5
+      while d < self.arrowRange do
+        local sx2, sy2 = rx + ax * d, ry + ay * d
+        for _, name in ipairs(self.targetList) do
+          local tE = scene:findEntity(name)
+          if tE and tE:isValid() then
+            local tp, ts2 = tE.transform.position, tE.transform.scale
+            if tp.y > -50 and overlapAABB(sx2, sy2, 0.05, 0.05, tp.x, tp.y,
+                                          math.max(ts2.x * 0.5, 0.8), math.max(ts2.y * 0.5, 0.8)) then
+              hitT, hitX, hitY = name, tp.x, tp.y
+              hitH = math.max(ts2.y, 1.2)
+              break
+            end
+          end
+        end
+        if hitT then break end
+        local blocked = false
+        for _, name in ipairs(self.stopList) do
+          local tE = scene:findEntity(name)
+          if tE and tE:isValid() then
+            local tp, ts2 = tE.transform.position, tE.transform.scale
+            if tp.y > -50 and overlapAABB(sx2, sy2, 0.05, 0.05, tp.x, tp.y,
+                                          ts2.x * 0.5, ts2.y * 0.5) then
+              blocked = true
+              break
+            end
+          end
+        end
+        if blocked then break end
+        if math.floor(d / 0.5) % 2 == 0 then
+          if self.drawMode == "rewind" then
+            FX.trail(sx2, sy2, p.z, 0.5, 0.32, 0.85)
+          else
+            FX.trail(sx2, sy2, p.z, 0.25, 0.6, 0.85)
+          end
+        end
+        d = d + 0.5
+      end
+      if hitT then
+        events:emit("aim_preview", { target = hitT, mode = self.drawMode })
+        local gh = 0.4 + 2.2 * clamp((amount - self.minSkip) / (self.maxSkip - self.minSkip), 0, 1)
+        local gx = hitX - 1.3
+        local gy = hitY - hitH * 0.5
+        if self.drawMode == "rewind" then
+          FX.beam(gx, gy, p.z, gx, gy + gh, p.z, 0.62, 0.35, 1.0, 0.14, "energy", 5)
+        else
+          FX.beam(gx, gy, p.z, gx, gy + gh, p.z, 0.3, 0.85, 1.0, 0.14, "energy", 5)
+        end
+      end
+    end
   elseif self.drawing then
     self.drawing = false
     fireArrow(self)

@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 33.5
+      "value": 16.0
      },
      {
       "name": "scenePath",
@@ -223,7 +223,7 @@
      {
       "name": "aimTurnSpeed",
       "type": "float",
-      "value": 270.0
+      "value": 720.0
      },
      {
       "name": "climbSpeed",
@@ -554,6 +554,11 @@
       "name": "listenButton",
       "type": "bool",
       "value": false
+     },
+     {
+      "name": "reverse",
+      "type": "bool",
+      "value": false
      }
     ],
     "scriptPath": "scripts/RisePlatform.lua"
@@ -698,7 +703,7 @@
      {
       "name": "riseTime",
       "type": "float",
-      "value": 32.0
+      "value": 9.0
      },
      {
       "name": "waitHeight",
@@ -714,6 +719,11 @@
       "name": "listenButton",
       "type": "bool",
       "value": false
+     },
+     {
+      "name": "reverse",
+      "type": "bool",
+      "value": true
      }
     ],
     "scriptPath": "scripts/RisePlatform.lua"
@@ -897,7 +907,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 33.5
+      "value": 16.0
      },
      {
       "name": "collapseAt",
@@ -1166,7 +1176,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 33.5,
+    "maxValue": 16.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1383,7 +1393,7 @@
      2.0,
      2.0
     ],
-    "text": "33秒以内にゴールしろ！",
+    "text": "16秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
@@ -1475,7 +1485,7 @@
      2.0,
      2.0
     ],
-    "text": "33.5",
+    "text": "16.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
