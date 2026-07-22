@@ -1,12 +1,15 @@
 -- Turret.lua -- period ごとに左(-X)へ弾を撃つ砲台(Turretモデル)。弾に触れると死。
 -- 弾はプール制: gen が "<自名>_p1".."_p3" のスプライトを用意しておく(このLuaが動かす)。
--- 先送り矢: 発射位相をスキップ(弾幕の谷を手繰り寄せる)。後戻り矢: 位相戻し+返金。
+-- 【弾数有限】: ammo発を撃ち切ると沈黙する=待つのも一つの答え。
+--   先送り矢: 未来へ飛ばして弾切れにさせる(無力化の正解)
+--   後戻し矢: 時計が巻き戻り、撃った弾が銃口へ逆再生で吸い込まれ装弾も復活(+返金)
 -- 引き絞り中は世界スローで弾もゆっくり=狙って抜ける快感を作る。
 properties = {
   { name = "period",    type = "float", default = 2.4, min = 0.6, max = 10, label = "発射間隔(秒)" },
   { name = "shotSpeed", type = "float", default = 6.0, min = 1,   max = 20, label = "弾速" },
   { name = "range",     type = "float", default = 14.0, min = 3,  max = 40, label = "射程(これで消える)" },
   { name = "startPhase",type = "float", default = 0.0, min = 0,   max = 10, label = "開始位相(秒)" },
+  { name = "ammo",      type = "int",   default = 10,  min = 1,   max = 99, label = "装弾数(撃ち切ると沈黙)" },
 }
 
 function OnStart(self)
@@ -23,11 +26,12 @@ function OnStart(self)
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx - 0.8, self.by, self.bz, 8, 0.3, 0.75, 1.0)
   end)
-  -- 後戻り矢=【時間停止】: 砲の時計ごと止まる=飛んでいる砲弾も空中で凍る(返金なし)
-  self.freeze = 0
+  self.rwGlow = 0
   events:on("time_rewind", function(data)
     if data.target ~= self.name and data.target ~= self.name .. "X" then return end
-    self.freeze = self.freeze + (data.amount or 0)
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
     FX.spark(self.bx - 0.8, self.by, self.bz, 14, 0.65, 0.4, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 12, 8, 0.65, 0.4, 1.0)
   end)
@@ -38,7 +42,7 @@ end
 local function shotState(self, idx)
   -- idx番スロットの直近発射時刻
   local n = math.floor(self.clock / self.period) - idx
-  if n < 0 then return nil end
+  if n < 0 or n >= self.ammo then return nil end   -- 弾数有限: 撃ち切ったスロットは出ない
   local t0 = n * self.period
   local flight = self.clock - t0
   local dist = flight * self.shotSpeed
@@ -48,15 +52,21 @@ end
 
 function OnUpdate(self, dt)
   dt = dt * (self.ts or 1)
-  local frozen = self.freeze and self.freeze > 0
-  if frozen then
-    self.freeze = self.freeze - dt      -- 時間停止: 弾も含めて時計ごと止まる
-  else
-    self.clock = self.clock + dt
-    if self.ffRemain > 0 then
-      local step = math.min(self.ffRemain, self.ffSpeed * dt)
-      self.clock = self.clock + step
-      self.ffRemain = self.ffRemain - step
+  self.clock = self.clock + dt
+  if self.ffRemain > 0 then
+    local step = math.min(self.ffRemain, self.ffSpeed * dt)
+    self.clock = self.clock + step
+    self.ffRemain = self.ffRemain - step
+  end
+  if self.rwRemain and self.rwRemain > 0 then
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
     end
   end
 
@@ -83,10 +93,11 @@ function OnUpdate(self, dt)
   if selfE and selfE:isValid() then
     local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
-    elseif frozen then eff = 2.8 end
+    elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)
   end
-  if frozen then
+  if self.rwGlow > 0 then
+    self.rwGlow = self.rwGlow - dt
     FX.trail(self.bx - 0.9, self.by, self.bz, 0.65, 0.4, 1.0)
   end
 end
