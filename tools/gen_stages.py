@@ -518,41 +518,44 @@ build(5, [
     door("LockZ5", 82.0, openT=S5["lockZ"], closeT=9999.0, base=8.8),
 ], limit=S5["limit"], width=88)
 
-# ── STAGE 6「二本の導火線」(幅96, 2層) ───────────────────────────────
-# P1地上の爆弾1 → P2レッジの爆弾2(レッジ上からしか撃てない=順序)+スラムE
-# → P3地上へ降りて種まき錠Z→出口
+# ── STAGE 6「導火線と気流」(幅96, 2層) ───────────────────────────
+# 門は終錠1枚だけ。RW教材は【逆橋】(上がって消える橋をQで引き戻す)、
+# 高所へは【ファンのサージ】、レッジ上の詰みは【錆びついた動く壁】(FFで一瞬だけ実体が薄れる)。
+# 支柱Sill6でレッジ下の地上バイパスを封鎖=レッジ経由が必須。
 build(6, [
     gm(6, S6["limit"]),
-    player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Ham6X,Tur6",
-           arrowStops="F6,WallW6,WallW62,"
-                      "St6a,St6b,St6c,St6d,L6",
-           solids="F6,WallW6,WallW62,"
-                  "St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6",
+    player(0.8, 0.55, targets="RevB6,Bomb6,Fan6,Bomb62,CW6,LockZ6,Ham6,Ham6X,Tur6",
+           standables="RevB6",
+           arrowStops="F6a,F6b,WallW6,WallW62,L6,Sill6",
+           solids="F6a,F6b,WallW6,WallW62,L6,Sill6,Fan6,CW6,LockZ6,Tur6",
            rewindShots=S6["rw"]),
     copy.deepcopy(arrow),
     exit_(92.0, 0.65, "scenes/stage7.json"), gate(92.0, 0.5),
-    block("F6", 48.0, -0.5, 96.0, 1.0),
+    block("F6a", 8.0, -0.5, 16.0, 1.0),           # [0,16]
     patch("P6a", 4.4, 6.1, 0.7),
     patch("P6b", 9.4, 11.0, 0.7),
-    door("GateA6", 13.6, openT=0.0, closeT=S6["slamA"]),
-    bomb("Bomb6", 17.6, 0.45, boomT=S6["boom1"], wallTarget="WallW6"),
-    beacon("Bomb6", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
-    breakwall("WallW6", 18.6, 1.7, 0.9, 3.4),
-    door("GateC6", 21.6, openT=0.0, closeT=S6["closeC"]),
-    block("St6a", 25.4, 0.55, 0.7, 1.1),
-    block("St6b", 26.1, 1.1, 0.7, 2.2),
-    block("St6c", 26.8, 1.65, 0.7, 3.3),
-    block("St6d", 27.5, 2.2, 0.7, 4.4),
-    block("L6", 46.25, 4.15, 35.5, 0.5),          # レッジ[28.5,64]
+    patch("P6x", 13.0, 14.6, 0.7),
+    riseplat("RevB6", 18.25, -0.3, 4.5, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S6["rev6"], reverse=True),   # 谷[16,20.5]: 着く頃には上がりきっている
+    beacon("RevB6"),
+    block("F6b", 58.25, -0.5, 75.5, 1.0),         # [20.5,96]
+    bomb("Bomb6", 24.0, 0.45, boomT=S6["boom1"], wallTarget="WallW6"),
+    beacon("Bomb6", color=(1.0, 0.5, 0.2, 0.9), offset=0.9),
+    breakwall("WallW6", 25.0, 1.7, 0.9, 3.4),     # 爆破しないとファンに近づけない
+    fan("Fan6", 29.0, 0.0, liftH=2.4, surgeH=6.6),
+    beacon("Fan6", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
+    block("L6", 47.25, 4.15, 33.5, 0.5),          # レッジ[30.5,64](上面4.4)
+    block("Sill6", 32.5, 2.0, 0.9, 4.0),          # レッジ下の地上バイパスを封鎖
     bomb("Bomb62", 44.0, 4.85, boomT=S6["boom2"], wallTarget="WallW62"),
-    beacon("Bomb62", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),
-    breakwall("WallW62", 45.4, 6.0, 0.9, 3.2),    # レッジ上の壁
-    door("GateE6", 52.0, openT=0.0, closeT=S6["closeE"], base=4.4),
-    hammer("Ham6", 70.5, 3.5, 1.2, period=3.2, maxAngle=55.0),
+    beacon("Bomb62", color=(1.0, 0.5, 0.2, 0.9), offset=0.9),
+    breakwall("WallW62", 45.4, 6.0, 0.9, 3.2),    # レッジ上=登ってからしか撃てない
+    crushwall("CW6", 52.0, 5.9, 1.0, 3.0, startT=S6["cwStart"], axisX=1.0,
+              speed=1.0, travel=0.0, ghostTime=1.6),   # 錆びて止まった壁=FFの一瞬だけ抜ける
     patch("P6c", 68.0, 69.7, 0.7),
+    hammer("Ham6", 70.5, 3.5, 1.2, period=3.2, maxAngle=55.0),
     patch("P6d", 73.0, 74.7, 0.7),
-    turret("Tur6", 86.5, 1.0, period=2.8, shotSpeed=6.0, rng=12.0),
     door("LockZ6", 80.0, openT=S6["lockZ"], closeT=9999.0),   # 降りてからx66-70で種まき
+    turret("Tur6", 86.5, 1.0, period=2.8, shotSpeed=6.0, rng=12.0),
 ], limit=S6["limit"], width=96)
 
 # ── STAGE 7「時計塔大回廊」(幅104, 3層) ──────────────────────────────
@@ -560,23 +563,27 @@ build(6, [
 # →格子L1が開く→地上東進→ツタ(FF)→最上層東進(刃3)→錠Z種まき→出口
 build(7, [
     gm(7, S7["limit"]),
-    player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX",
-           climbables="Vine7",
-           arrowStops="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,"
+    player(1.4, 0.55, targets="RevB7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX",
+           climbables="Vine7", standables="RevB7",
+           arrowStops="F7,F7a,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,"
                       "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F",
-           solids="F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,"
-                  "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7",
+           solids="F7,F7a,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,"
+                  "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,LockD7,LatticeL1,LockZ7",
            rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
     exit_(101.5, 9.45, "scenes/stage8.json"), gate(101.5, 9.3),
-    block("F7", 52.0, -0.5, 104.0, 1.0),
+    block("F7a", 6.0, -0.5, 12.0, 1.0),           # [0,12]
+    riseplat("RevB7", 14.25, -0.3, 4.5, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S7["rev7"], reverse=True),   # 谷[12,16.5]: 開幕のRW教材(門ではない)
+    beacon("RevB7"),
+    block("F7", 60.25, -0.5, 87.5, 1.0),          # [16.5,104]
     block("Tower1", 17.0, 3.5, 0.8, 3.0),   # 宙浮き[2,5]: 下を歩いてくぐれる
     block("Baffle7", 15.5, 3.95, 0.6, 1.9),  # 地上からの45°ズル射撃を遮る浮き石
     button("Button1", 17.0, 5.45, "LatticeL1"),
     beacon("Button1", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
     patch("P7a", 3.4, 5.0, 0.7),
     patch("P7b", 7.2, 8.8, 0.7),
-    door("GateA7", 11.4, openT=0.0, closeT=S7["slamA"]),
+    patch("P7c", 10.0, 11.6, 0.7),
     block("D7a", 27.75, 4.15, 20.5, 0.5),         # デッキ[17.5,38]
     block("Pit1F", 38.8, 3.15, 1.6, 0.5),         # 刃ピット1
     block("D7b", 44.8, 4.15, 10.4, 0.5),          # [39.6,50]
@@ -673,8 +680,6 @@ WALK, HOPJ = 5.0, 0.15
 SLAMS = {
     2: (14.6, K["s2"]["closeA"], 2, 0.8),
     4: (13.0, K["s4"]["slamA"], 2, 0.8),
-    6: (13.6, K["s6"]["slamA"], 2, 0.8),
-    7: (11.4, K["s7"]["slamA"], 2, 1.4),
     8: (12.2, K["s8"]["slamA"], 2, 0.8),
 }
 for n in range(1, 9):

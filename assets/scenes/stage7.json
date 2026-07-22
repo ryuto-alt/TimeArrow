@@ -233,12 +233,12 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX"
+      "value": "RevB7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX"
      },
      {
       "name": "standables",
       "type": "string",
-      "value": ""
+      "value": "RevB7"
      },
      {
       "name": "climbables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
+      "value": "F7,F7a,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
+      "value": "F7,F7a,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,LockD7,LatticeL1,LockZ7"
      },
      {
       "name": "mirrors",
@@ -506,10 +506,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "F7",
+   "name": "F7a",
    "transform": {
     "position": [
-     52.0,
+     6.0,
      -0.5,
      0.0
     ],
@@ -519,7 +519,172 @@
      0.0
     ],
     "scale": [
-     104.0,
+     12.0,
+     1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Bridge_Plank/Bridge_Plank.obj"
+   },
+   "name": "RevB7",
+   "transform": {
+    "position": [
+     14.25,
+     -0.3,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     4.5,
+     0.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "arriveT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "riseTime",
+      "type": "float",
+      "value": 2.6
+     },
+     {
+      "name": "waitHeight",
+      "type": "float",
+      "value": 6.0
+     },
+     {
+      "name": "triggerName",
+      "type": "string",
+      "value": ""
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     },
+     {
+      "name": "reverse",
+      "type": "bool",
+      "value": true
+     }
+    ],
+    "scriptPath": "scripts/RisePlatform.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "Beacon_RevB7",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.55,
+     0.28,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.8,
+     0.2,
+     0.9
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "targetName",
+      "type": "string",
+      "value": "RevB7"
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.2
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.15
+     }
+    ],
+    "scriptPath": "scripts/Beacon.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "F7",
+   "transform": {
+    "position": [
+     60.25,
+     -0.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     87.5,
      1.0,
      3.0
     ]
@@ -799,13 +964,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
-   "name": "GateA7Frame",
+   "name": "P7cN",
    "transform": {
     "position": [
-     11.4,
-     2.0,
+     10.8,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -814,35 +979,8 @@
      0.0
     ],
     "scale": [
-     1.1,
-     4.0,
-     1.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
-   },
-   "name": "GateA7",
-   "transform": {
-    "position": [
-     11.4,
-     1.8,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     0.75,
-     3.6,
+     1.6,
+     0.6,
      1.0
     ]
    },
@@ -850,29 +988,18 @@
     "enabled": true,
     "props": [
      {
-      "name": "openT",
-      "type": "float",
-      "value": 0.0
-     },
-     {
-      "name": "closeT",
-      "type": "float",
-      "value": 2.1
-     },
-     {
-      "name": "slideTime",
-      "type": "float",
-      "value": 0.7
-     },
-     {
-      "name": "listenButton",
+      "name": "deadly",
       "type": "bool",
-      "value": false
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.6
      }
     ],
-    "scriptPath": "scripts/TimedDoor.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
+    "scriptPath": "scripts/Wall.lua"
+   }
   },
   {
    "material": {
@@ -2263,7 +2390,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 49,
+   "parent": 51,
    "transform": {
     "position": [
      0.0,
@@ -2337,7 +2464,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 49,
+   "parent": 51,
    "transform": {
     "position": [
      0.0,
@@ -2549,7 +2676,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 49
+   "parent": 51
   },
   {
    "name": "TimeLeft",
@@ -2641,7 +2768,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 49
+   "parent": 51
   },
   {
    "name": "DrawAmount",
@@ -2733,7 +2860,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 49
+   "parent": 51
   },
   {
    "name": "RewindCount",
@@ -2825,7 +2952,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 49
+   "parent": 51
   }
  ]
 }

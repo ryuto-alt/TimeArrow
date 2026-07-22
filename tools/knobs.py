@@ -28,12 +28,12 @@ K = {
     "s5": dict(limit=66.0, rw=3, lift=14.0, slamG=2.6, ballRoll=4.0, ballSpeed=0.6,
                lockD=30.0, vineGrow=33.0, ferryP=6.0, closeY=44.0, lockZ=52.0),
 
-    # S6「二本の導火線」地上とレッジの爆弾×2
-    "s6": dict(limit=74.0, rw=3, slamA=2.65, boom1=24.0, closeC=12.0,
-               boom2=40.0, closeE=20.0, lockZ=55.0),
+    # S6「導火線と気流」逆橋(RW)+爆弾2+ファンサージ+錆びた動く壁+終錠
+    "s6": dict(limit=70.0, rw=2, rev6=3.0, boom1=20.0, boom2=40.0,
+               cwStart=6.0, lockZ=42.0),
 
     # S7「時計塔大回廊」ボタン+2リズムの刃+ツタ+最上層
-    "s7": dict(limit=100.0, rw=4, slamA=2.1, lockD=30.0, sawP1=4.0, sawP2=3.0,
+    "s7": dict(limit=100.0, rw=4, rev7=2.6, lockD=30.0, sawP1=4.0, sawP2=3.0,
                vineGrow=40.0, sawP3=5.0, lockZ=68.0),
 
     # S8「時計職人の卒業試験・大」4フェーズ総合

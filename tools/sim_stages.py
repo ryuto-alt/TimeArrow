@@ -600,64 +600,68 @@ ALL_OK &= report("S5 時の昇降機・改", S5["limit"], S5["rw"], [
 ], margin=(2.0, 12.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S6「二本の導火線」(幅96, RW3, 2層) — gen_stages.py 座標に一致
-# P6a[4.4,6.1] P6b[9.4,11.0] GateA6 x13.6 Bomb6 x17.6/WallW6 x18.6
-# GateC6 x21.6 階段25.4-27.5 レッジ[28.5,64] Bomb62 x44/WallW62 x45.4
-# GateE6 x52 P6c[68,69.7] P6d[73,74.7] LockZ6 x80 出口92
+# S6「導火線と気流」(幅96, RW2, 2層) — gen_stages.py 座標に一致
+# F6a[0,16] 針山3つ 谷[16,20.5]=RevB6(逆橋) F6b[20.5,96] Bomb6 x24/WallW6 x25
+# Fan6 x29 レッジ[30.5,64] Sill6 x32.5(バイパス封鎖) Bomb62 x44/WallW62 x45.4
+# CW6 x52(錆びた動く壁) Ham6 x70.5 LockZ6 x80 Tur6 x86.5 出口92
 # ════════════════════════════════════════════════════════════════════
 S6 = K["s6"]
 
 
-def s6_route_to_A(r):
+def s6_to_valley(r):
     r.walk(3.6, "P6aへ")
     r.hops(1.7, 2, "針山1")
     r.walk(3.3, "P6bへ")
     r.hops(1.6, 2, "針山2")
-    r.walk(2.6, "GateA6前")
+    r.walk(2.0, "P6xへ")
+    r.hops(1.6, 2, "針山3")
+    r.walk(1.4, "谷の縁(x16)へ")
+    assert r.real > S6["rev6"], f"逆橋: 到着{r.real:.2f}s <= 上昇完了{S6['rev6']}s(早乗りできてしまう)"
+
+
+def s6_after_bridge(r):
+    """逆橋を渡った後: 爆弾1で壁を割ってファンの足元まで"""
+    r.walk(5.0, "橋を渡り切る(x20.5)")
+    r.walk(1.0, "爆風圏の外(x21.5)で構える")
 
 
 def s6_noarrow(r):
-    s6_route_to_A(r)
-    r.gate_pass("GateA6", S6["slamA"])
+    s6_to_valley(r)
+    r.dead = f"逆橋は{S6['rev6']}秒で上がりきり、そのまま時計が止まる=矢なしでは谷を渡れない"
+
+
+def s6_ffonly(r):
+    s6_to_valley(r)
+    r.ff("RevB6", 10.0, dist=2.5, label="FFは上がりきった橋をさらに未来へ送るだけ")
+    r.dead = "先送りでは逆橋は戻らない(上がりきって時計停止)"
 
 
 def s6_rwonly(r):
-    s6_route_to_A(r)
-    r.rw("GateA6", 10.0, dist=1.5, label="スラムA(#1)")
-    r.gate_reopen_pass("GateA6", S6["slamA"])
-    r.walk(2.2, "爆弾の安全圏x15.8")
+    s6_to_valley(r)
+    r.rw("RevB6", 10.0, dist=2.5, label="逆橋を引き戻す(#1)", cap=S6["rev6"])
+    s6_after_bridge(r)
     r.bomb_wait_boom("Bomb6", S6["boom1"], "自然爆発まで待つ(長い)")
-    r.walk(5.8, "瓦礫を抜けC前へ")
-    r.rw("GateC6", 10.0, dist=1.2, label="サンド(#2)")
-    r.rw("GateC6", 10.0, dist=1.2, label="サンド(#3, もう予算がない)")
-    r.gate_reopen_pass("GateC6", S6["closeC"])
-    r.walk(6.9, "階段でレッジへ")
-    r.walk(13.5, "レッジを進む")
-    r.bomb_wait_boom("Bomb62", S6["boom2"], "自然爆発まで待つ(長い)")
-    r.walk(10.0, "瓦礫を抜けE前へ")
-    r.rw("GateE6", 10.0, dist=1.2, label="スラム(#4, 予算オーバー)")
-    r.gate_reopen_pass("GateE6", S6["closeE"])
+    r.walk(7.5, "瓦礫を抜けてファン(x29)の上へ")
+    r.dead = "後戻り矢ではファンはサージしない(吸い込みになるだけ)→レッジ(4.4u)に上がれない"
 
 
 def s6_plan(r):
-    s6_route_to_A(r)
-    r.rw("GateA6", 10.0, dist=1.5, label="スラムA呼び戻し(#1)")
-    r.gate_reopen_pass("GateA6", S6["slamA"])
-    r.walk(2.2, "安全圏x15.8から狙う")
-    r.ff("Bomb6", 10.0, dist=1.9, label="導火線1本目")
-    r.ff("Bomb6", 10.0, dist=1.9, label="2本目→ほぼ即起爆")
+    s6_to_valley(r)
+    r.rw("RevB6", 10.0, dist=2.5, label="上がりきった逆橋を引き戻す(#1)", cap=S6["rev6"])
+    s6_after_bridge(r)
+    r.ff("Bomb6", 10.0, dist=2.6, label="導火線1本目(安全圏から)")
+    r.ff("Bomb6", 10.0, dist=2.6, label="2本目")
     r.bomb_wait_boom("Bomb6", S6["boom1"])
-    r.walk(5.8, "瓦礫を抜けてGateC6前へ")
-    r.gate_pass("GateC6", S6["closeC"], "まだ開いている")
-    r.walk(6.9, "階段でレッジへ")
-    r.walk(13.5, "レッジを進む(x42へ)")
-    r.ff("Bomb62", 10.0, dist=2.0, label="導火線2の1本目(爆風外から)")
-    r.ff("Bomb62", 10.0, dist=2.0, label="2本目→起爆")
+    r.walk(7.5, "瓦礫を抜けてファン(x29)の上へ")
+    r.fan_ride("Fan6", 6.0, dist=1.4, label="サージでレッジ(4.4u)へ")
+    r.walk(11.5, "レッジを東へ(x42)")
+    r.ff("Bomb62", 10.0, dist=2.2, label="導火線2の1本目(レッジ上からしか撃てない)")
+    r.ff("Bomb62", 10.0, dist=2.2, label="2本目→起爆")
     r.bomb_wait_boom("Bomb62", S6["boom2"])
-    r.walk(10.0, "瓦礫を抜けてGateE6前へ")
-    r.rw("GateE6", 10.0, dist=1.2, label="スラムを呼び戻す(#2)")
-    r.gate_reopen_pass("GateE6", S6["closeE"])
-    r.walk(12.0, "レッジ端64へ")
+    r.walk(6.6, "瓦礫を抜けてCW6前(x51)へ")
+    r.ff("CW6", 2.0, dist=1.5, label="錆びた壁をゴースト化(最小引きで足りる)")
+    r.wait(0.4, "実体が薄れている間にすり抜ける")
+    r.walk(12.0, "レッジ端(x64)へ")
     r.wait(0.3, "地上へ降りる")
     r.walk(2.0, "種まき位置(x66)へ")
     r.ff("LockZ6", 10.0, dist=14.0, label="◆種まき: 終錠へ(水平)")
@@ -670,12 +674,12 @@ def s6_plan(r):
     r.walk(12.0, "ゴール")
 
 
-ALL_OK &= report("S6 二本の導火線", S6["limit"], S6["rw"], [
+ALL_OK &= report("S6 導火線と気流(逆橋+爆弾2+ファン+錆びた壁)", S6["limit"], S6["rw"], [
     ("矢なし", s6_noarrow, False),
-    ("FFのみ", s6_noarrow, False),
+    ("FFのみ", s6_ffonly, False),
     ("RWのみ", s6_rwonly, False),
     ("想定解", s6_plan, True),
-], margin=(1.5, 8.0))
+], margin=(2.0, 10.0))
 
 # ════════════════════════════════════════════════════════════════════
 # S7「時計塔大回廊」(幅104, RW4, 3層) — gen_stages.py 座標に一致
@@ -694,19 +698,22 @@ def s7_route_to_A(r):
     r.hops(1.6, 2, "針山1")
     r.walk(2.2, "P7bへ")
     r.hops(1.6, 2, "針山2")
-    r.walk(2.6, "GateA7前")
+    r.walk(1.2, "P7cへ")
+    r.hops(1.6, 2, "針山3")
+    r.walk(0.4, "谷の縁(x12)へ")
+    assert r.real > S7["rev7"], f"逆橋: 到着{r.real:.2f}s <= 上昇完了{S7['rev7']}s(早乗りできてしまう)"
 
 
 def s7_noarrow(r):
     s7_route_to_A(r)
-    r.gate_pass("GateA7", S7["slamA"])
+    r.dead = "逆橋は上空へ去っていく=矢なしでは谷[12,16.5]を渡れない"
 
 
 def s7_rwonly(r):
     s7_route_to_A(r)
-    r.rw("GateA7", 10.0, dist=1.5, label="スラムA")
-    r.gate_reopen_pass("GateA7", S7["slamA"])
-    r.walk(53.0, "地上を東へ(階段まで)")
+    r.rw("RevB7", 10.0, dist=2.5, label="逆橋を引き戻す", cap=S7["rev7"])
+    r.walk(5.0, "橋を渡る(x16.5)")
+    r.walk(46.0, "地上を東へ(階段まで)")
     r.hops(2.1, 4, "階段でデッキへ")
     r.walk(11.6, "デッキを西へ(刃ピット2手前)")
     r.pit_cross("Saw7b", **S7_SAW2, period=S7["sawP2"], x0=52.8, x1=48.6)
@@ -720,9 +727,9 @@ def s7_rwonly(r):
 
 def s7_plan(r):
     s7_route_to_A(r)
-    r.rw("GateA7", 10.0, dist=1.5, label="スラムA呼び戻し")
-    r.gate_reopen_pass("GateA7", S7["slamA"])
-    r.walk(53.0, "地上を東へ(階段まで)")
+    r.rw("RevB7", 10.0, dist=2.5, label="上がりきった逆橋を引き戻す", cap=S7["rev7"])
+    r.walk(5.0, "橋を渡る(x16.5)")
+    r.walk(46.0, "地上を東へ(階段まで)")
     r.hops(2.1, 4, "階段でデッキへ")
     r.walk(11.6, "デッキを西へ(刃ピット2手前)")
     r.pit_cross("Saw7b", **S7_SAW2, period=S7["sawP2"], x0=52.8, x1=48.6, label="(西向き)")
@@ -758,7 +765,7 @@ def s7_plan(r):
 
 ALL_OK &= report("S7 時計塔大回廊", S7["limit"], S7["rw"], [
     ("矢なし", s7_noarrow, False),
-    ("FFのみ", s7_noarrow, False),
+    ("FFのみ", s7_noarrow, False),   # FFは逆橋をさらに上へ送るだけ
     ("RWのみ", s7_rwonly, False),
     ("想定解", s7_plan, True),
 ], margin=(3.0, 14.0))
