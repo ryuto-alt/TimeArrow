@@ -538,7 +538,7 @@
      {
       "name": "amplitude",
       "type": "float",
-      "value": 2.2
+      "value": 1.5
      },
      {
       "name": "startPhase",
