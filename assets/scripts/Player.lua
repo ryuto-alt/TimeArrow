@@ -32,6 +32,22 @@ properties = {
   { name = "maxBounces",    type = "int",    default = 4,   min = 1,  max = 10, label = "矢が反射できる最大回数" },
 }
 
+-- プレイヤーの表示状態を、補助スプライトの名前で一元管理する。
+local PLAYER_SPRITE_NAMES = {
+  idle = "PlayerIdleSprite",
+  run = "PlayerRunSprite",
+  jump = "PlayerJumpSprite",
+  bow = "PlayerBowSprite",
+}
+
+-- 状態ごとのスプライトアニメーション設定を一つにまとめる。
+local PLAYER_ANIMATION_SETTINGS = {
+  idle = { frames = 0, fps = 0, cols = 0, row = 0 },
+  run = { frames = 6, fps = 10, cols = 6, row = 0 },
+  jump = { frames = 7, fps = 8, cols = 7, row = 0 },
+  bow = { frames = 0, fps = 0, cols = 0, row = 0 },
+}
+
 local function trimSplit(csv)
   local out = {}
   for w in string.gmatch(csv or "", "[^,]+") do
@@ -67,6 +83,21 @@ function OnStart(self)
   self.aimX, self.aimY = 1, 0
   self.pendingAmount = self.minSkip
 
+  -- 各状態の表示用エンティティを取得し、初期状態を待機にする。
+  self.playerSprites = {}
+  for state, name in pairs(PLAYER_SPRITE_NAMES) do
+    local sprite = scene:findEntity(name)
+    if sprite and sprite:isValid() then self.playerSprites[state] = sprite end
+  end
+  -- Sprite2D APIへ渡すPlayer本体のEntity userdataを取得する。
+  self.playerEntity = scene:findEntity("Player")
+  -- 元のPlayerスプライトは補助スプライトと重ならないよう非表示にする。
+  if self.playerEntity and self.playerEntity:isValid() then
+    scene:setSpriteAlpha(self.playerEntity, 0.0)
+  end
+  self.playerVisualState = nil
+  self.bowTimer = 0
+
   self.targetList = trimSplit(self.targets)
   self.standList  = trimSplit(self.standables)
   self.climbList  = trimSplit(self.climbables)
@@ -95,6 +126,52 @@ function OnStart(self)
   if arrowE and arrowE:isValid() then
     arrowE.transform.position = Vec3.new(0, -100, 0)
   end
+end
+
+-- 表示用スプライトをPlayer本体と同じ位置・向き・大きさへ同期する。
+local function syncPlayerSpriteTransform(self)
+  local transform = self.transform
+  for _, sprite in pairs(self.playerSprites or {}) do
+    if sprite and sprite:isValid() then
+      sprite.transform.position = Vec3.new(transform.position.x, transform.position.y, transform.position.z)
+      sprite.transform.rotation = Vec3.new(transform.rotation.x, transform.rotation.y, transform.rotation.z)
+      sprite.transform.scale = Vec3.new(transform.scale.x, transform.scale.y, transform.scale.z)
+    end
+  end
+end
+
+-- 待機・走行・ジャンプ・弓の表示を切り替え、状態変更時だけ再生位置をリセットする。
+local function setPlayerVisualState(self, state)
+  if self.playerVisualState == state then
+    syncPlayerSpriteTransform(self)
+    return
+  end
+
+  self.playerVisualState = state
+  local setting = PLAYER_ANIMATION_SETTINGS[state]
+  for name, sprite in pairs(self.playerSprites or {}) do
+    if sprite and sprite:isValid() then
+      scene:setSpriteAlpha(sprite, name == state and 1.0 or 0.0)
+      if name == state and setting then
+        scene:setSpriteAnim(sprite, setting.frames, setting.fps, setting.cols, setting.row)
+        scene:setSpriteAnimMode(sprite, 0)
+      end
+    end
+  end
+  syncPlayerSpriteTransform(self)
+end
+
+-- 物理状態と弓操作状態から、現在表示すべきプレイヤー状態を決める。
+local function updatePlayerVisual(self)
+  local state = "idle"
+  if self.drawing or self.bowTimer > 0 then
+    state = "bow"
+  elseif not self.grounded or self.climbing then
+    state = "jump"
+  elseif math.abs(self.vx or 0) > 0.01 then
+    state = "run"
+  end
+  setPlayerVisualState(self, state)
 end
 
 -- 乗れる足場(standables)を毎フレーム探し、水平範囲内かつ足元がだいたい上面以上なら
@@ -282,6 +359,8 @@ local function fireArrow(self)
   self.pendingAmount = amount
   self.bounces = 0
   self.drawT = 0
+  -- 発射直後も弓を短時間表示して、引き絞りから発射までの動きを途切れさせない。
+  self.bowTimer = 0.2
 end
 
 -- 飛翔中の矢が鏡(mirrors)に重なっていれば反射する(消費せず飛び続ける)。
@@ -431,6 +510,8 @@ local function updateArrow(self, dt)
 end
 
 function OnUpdate(self, dt)
+  -- 弓の発射表示時間を減らし、0未満にはしない。
+  self.bowTimer = math.max(0, (self.bowTimer or 0) - dt)
   for name, t in pairs(self.ghostSolids) do
     self.ghostSolids[name] = t - dt
   end
@@ -438,6 +519,7 @@ function OnUpdate(self, dt)
   updateMovement(self, dt)
   updateDraw(self, dt)
   updateArrow(self, dt)
+  updatePlayerVisual(self)
 
   if keyPressed("ESC") or padPressed("START") then goToScene("scenes/title.json", 0.5) end
 end

@@ -205,6 +205,26 @@
    }
   },
   {
+   "name": "PlayerIdleSprite",
+   "sprite2d": {"billboard": false, "color": [1.0, 1.0, 1.0, 0.0], "effectValue": 0.0, "layer": 6, "shaderAlphaBlend": false, "shaderParams": [0.0, 0.0, 0.0, 0.0], "shaderPath": "", "size": [1.0, 1.0], "texturePath": "textures/player_rgba.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true},
+   "transform": {"position": [0.0, 0.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [0.8, 1.1, 1.0]}
+  },
+  {
+   "name": "PlayerRunSprite",
+   "sprite2d": {"billboard": false, "color": [1.0, 1.0, 1.0, 0.0], "effectValue": 0.0, "layer": 6, "shaderAlphaBlend": false, "shaderParams": [0.0, 0.0, 0.0, 0.0], "shaderPath": "", "size": [1.0, 1.0], "texturePath": "textures/player_run.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true},
+   "transform": {"position": [0.0, 0.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [0.8, 1.1, 1.0]}
+  },
+  {
+   "name": "PlayerJumpSprite",
+   "sprite2d": {"billboard": false, "color": [1.0, 1.0, 1.0, 0.0], "effectValue": 0.0, "layer": 6, "shaderAlphaBlend": false, "shaderParams": [0.0, 0.0, 0.0, 0.0], "shaderPath": "", "size": [1.0, 1.0], "texturePath": "textures/player_jump.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true},
+   "transform": {"position": [0.0, 0.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [0.8, 1.1, 1.0]}
+  },
+  {
+   "name": "PlayerBowSprite",
+   "sprite2d": {"billboard": false, "color": [1.0, 1.0, 1.0, 0.0], "effectValue": 0.0, "layer": 6, "shaderAlphaBlend": false, "shaderParams": [0.0, 0.0, 0.0, 0.0], "shaderPath": "", "size": [1.0, 1.0], "texturePath": "textures/player_bow.png", "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": true},
+   "transform": {"position": [0.0, 0.0, 0.0], "rotation": [0.0, 0.0, 0.0], "scale": [0.8, 1.1, 1.0]}
+  },
+  {
    "name": "Arrow",
    "sprite2d": {
     "billboard": false,
