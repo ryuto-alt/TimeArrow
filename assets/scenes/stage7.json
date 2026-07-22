@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 24.0
+      "value": 15.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Blade7a,Blade7b,LockGate7"
+      "value": "Blade7a,Blade7b,LockGate7,ReturnGate7"
      },
      {
       "name": "standables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor7,Stair7A,Stair7B,Deck7"
+      "value": "Floor7,Stair7A,Stair7B,Stair7C,Deck7"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor7,Stair7A,Stair7B,Deck7,LockGate7"
+      "value": "Floor7,Stair7A,Stair7B,Stair7C,Deck7,LockGate7,ReturnGate7"
      },
      {
       "name": "mirrors",
@@ -507,12 +507,92 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "ReturnGate7Frame",
+   "transform": {
+    "position": [
+     8.0,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "ReturnGate7",
+   "transform": {
+    "position": [
+     8.0,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 12.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
    "name": "Stair7A",
    "transform": {
     "position": [
-     13.4,
+     12.2,
      0.6,
      0.0
     ],
@@ -539,7 +619,7 @@
    "name": "Stair7B",
    "transform": {
     "position": [
-     14.6,
+     13.4,
      1.2,
      0.0
     ],
@@ -563,11 +643,38 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
+   "name": "Stair7C",
+   "transform": {
+    "position": [
+     14.6,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     3.6,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
    "name": "Deck7",
    "transform": {
     "position": [
      8.0,
-     2.6,
+     4.4,
      0.0
     ],
     "rotation": [
@@ -593,8 +700,8 @@
    "name": "Blade7a",
    "transform": {
     "position": [
-     11.0,
-     4.0,
+     10.5,
+     5.85,
      0.0
     ],
     "rotation": [
@@ -652,8 +759,8 @@
    "name": "Blade7b",
    "transform": {
     "position": [
-     7.0,
-     4.0,
+     6.5,
+     5.85,
      0.0
     ],
     "rotation": [
@@ -712,7 +819,7 @@
    "transform": {
     "position": [
      4.5,
-     4.85,
+     6.65,
      0.0
     ],
     "rotation": [
@@ -739,7 +846,7 @@
    "transform": {
     "position": [
      4.5,
-     4.65,
+     6.45,
      0.0
     ],
     "rotation": [
@@ -759,7 +866,7 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 20.0
+      "value": 16.0
      },
      {
       "name": "closeT",
@@ -787,7 +894,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 24.0
+      "value": 15.0
      },
      {
       "name": "collapseAt",
@@ -946,7 +1053,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 17,
+   "parent": 20,
    "transform": {
     "position": [
      0.0,
@@ -1005,7 +1112,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 24.0,
+    "maxValue": 15.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1020,7 +1127,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 17,
+   "parent": 20,
    "transform": {
     "position": [
      0.0,
@@ -1222,11 +1329,11 @@
      2.0,
      2.0
     ],
-    "text": "24秒以内にゴールしろ！",
+    "text": "15秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 20
   },
   {
    "name": "TimeLeft",
@@ -1314,11 +1421,11 @@
      2.0,
      2.0
     ],
-    "text": "24.0",
+    "text": "15.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 20
   },
   {
    "name": "DrawAmount",
@@ -1410,7 +1517,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 20
   },
   {
    "name": "RewindCount",
@@ -1502,7 +1609,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 20
   }
  ]
 }

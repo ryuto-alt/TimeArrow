@@ -197,16 +197,15 @@ def build(n, entities, limit=10.0):
 
 arrow = copy.deepcopy(T["Arrow"])
 
-# ══ 時間経済版レベルデザイン(8ステージ・所要時間シミュレーション済み) ══════════
-# 移動5/s・ジャンプ横2.9・針山ホップ区間≈3s・タップ矢+2(0.15s)・フル矢+10(実3s=ゲーム内0.75s)
-# 制限時間 = 最適ルート所要 + 約2秒。ペースゲート(開錠待ち)が下限、閉門/大玉が上限を作る。
-# 「銀行」テク: 周期Pの振り子に-P×n の後戻り矢 = 位相を変えずタイマーだけ返金(待ち時間を無料化)。
+# ══ 時間経済版レベルデザイン(8ステージ) ═══════════════════════════════════
+# ★数値は tools/sim_stages.py で機械検証済み: 全ステージ「矢なしクリア不能」+想定プランのマージン正常。
+# 経済: 先送り=タイマー+量*0.5 / 後戻り=実効量*0.5返金(回数制)。ギミック時計は実時間で進む。
+# 弓矢必須の3構造: ①開錠>制限(FF必須) ②閉門<最速到達(RW必須) ③錠前→実時間締切のサンド(FF必須)
 
-# ── STAGE 1「時は金なり」(制限16秒/まき戻し1) ──────────────────────────
-# 橋は10秒かけて自然落下。待つ→着橋10.0/ゴール13.5(余裕2.5)。
-# 矢ルート→フル+10で即着橋、ただしタイマーも+10=どちらも同じ頃にゴール(先送り=時間の前借りを体感)。
+# ── STAGE 1「時は金なり」(制限12/戻し1) 橋の自然落下14秒>制限 → FF必須 ──────
+# 矢なし: 着橋14→タイマー15.8で死。FF+12(代償6): 実8でゴール、タイマー10.2(マージン1.8)
 build(1, [
-    gm(1, 16),
+    gm(1, 12),
     player(1.0, 0.55, targets="Target1", standables="Bridge1",
            arrowStops="FloorL,FloorR", solids="FloorL,FloorR", rewindShots=1),
     copy.deepcopy(arrow),
@@ -214,15 +213,14 @@ build(1, [
     block("FloorL", 3.5, -0.5, 7.0, 1.0),
     block("FloorR", 14.0, -0.5, 4.0, 1.0),
     riseplat("Bridge1", 9.5, -0.3, 5.0, 0.6, arriveT=0.0, trigger="Target1",
-             waitHeight=6.0, riseTime=10.0),
+             waitHeight=6.0, riseTime=14.0),
     target("Target1", 6.0, 4.5, 1.1),
-], limit=16)
+], limit=12)
 
-# ── STAGE 2「二枚の閉門」(制限13秒/まき戻し3) ─────────────────────────
-# 門A=6秒/門B=9秒で閉まる。全力(針山3s)ならA5.8→B8.5→ゴール10.2(生身クリア可・余裕2.8)。
-# 遅れたら後戻り矢で門の時計を戻す(実際に戻せた分だけタイマー返金)。
+# ── STAGE 2「二枚の閉門」(制限9/戻し3) 閉1.5/3.0 < 最速到達1.8/4.1 → RW必須 ──
+# 開始直後に目の前でガシャン→「もう閉まった!?」→紫の矢で呼び戻す、を2回。
 build(2, [
-    gm(2, 13),
+    gm(2, 9),
     player(1.0, 0.55, targets="GateA,GateB",
            arrowStops="Floor2,StepA,StepB",
            solids="Floor2,StepA,StepB,GateA,GateB", rewindShots=3),
@@ -232,37 +230,38 @@ build(2, [
     needle("Needle2", 4.8, 0.2, 3.6, 0.4),
     block("StepA", 3.7, 0.6, 1.1, 1.2),
     block("StepB", 5.4, 0.85, 1.1, 1.7),
-    door("GateA", 8.0, openT=0.0, closeT=6.0),
-    door("GateB", 12.0, openT=0.0, closeT=9.0),
-], limit=13)
+    door("GateA", 8.0, openT=0.0, closeT=1.5),
+    door("GateB", 12.0, openT=0.0, closeT=3.0),
+], limit=9)
 
-# ── STAGE 3「振り子銀行」(制限19秒/まき戻し2) ─────────────────────────
-# 刃(周期4)2.5s→リフト(到着時は頂上=+3で最下段を呼ぶ)→2階デッキ→刃→降りて時限錠17秒。
-# 素直ルート: 錠前到着≈11→開錠17→ゴール17.4(余裕1.6でギリ)。
-# 銀行ルート: 錠前待ちの間に刃へ-8(2周期=位相不変)→タイマー8秒返金で余裕9.6。
+# ── STAGE 3「錠前と締切のサンド」(制限13/戻し2) 錠開10→閉門閉9 → FF必須 ──────
+# 待つと錠前通過が実10>閉門9で構造的に手遅れ。錠前へFF+8.6で実1.4に開け、
+# 刃(周期4)を捌いて実5.5に閉門を通過。余った後戻りは刃に-8の銀行(位相不変で返金4)。
 build(3, [
-    gm(3, 19),
-    player(0.8, 0.55, targets="Blade3,Lift3,Blade3b,LockGate3", standables="Lift3",
-           arrowStops="Floor3,Deck3", solids="Floor3,Deck3,LockGate3", rewindShots=2),
+    gm(3, 13),
+    player(0.8, 0.55, targets="LockGate3,Blade3,ClosingGate3",
+           arrowStops="Floor3,StepA3,StepB3,StepE3",
+           solids="Floor3,StepA3,StepB3,StepE3,LockGate3,ClosingGate3", rewindShots=2),
     copy.deepcopy(arrow),
     exit_(15.4, 0.65, "scenes/stage4.json"), gate(15.4, 0.5),
     block("Floor3", 8.0, -0.5, 16.0, 1.0),
-    pendulum("Blade3", 4.0, 1.3, 1.4, period=4.0, amplitude=2.2, phase=0.0),
-    moveplat("Lift3", 7.5, 2.45, 2.2, 0.5, period=6.0, amplitude=1.95, phase=4.5),
-    block("Deck3", 10.75, 4.4, 4.5, 0.5),
-    pendulum("Blade3b", 10.75, 5.75, 1.4, period=4.0, amplitude=1.8, phase=1.0),
-    door("LockGate3", 14.0, openT=17.0, closeT=9999.0),
-], limit=19)
+    needle("Needle3", 3.75, 0.2, 2.5, 0.4),
+    block("StepA3", 3.2, 0.6, 1.1, 1.2),
+    block("StepB3", 4.4, 0.85, 1.1, 1.7),
+    door("LockGate3", 6.0, openT=10.0, closeT=9999.0),
+    pendulum("Blade3", 8.5, 1.3, 1.4, period=4.0, amplitude=2.2, phase=0.0),
+    door("ClosingGate3", 10.5, openT=0.0, closeT=9.0),
+    block("StepE3", 12.3, 0.6, 1.1, 1.2),
+], limit=13)
 
-# ── STAGE 4「大玉レース」(制限15秒/まき戻し3) ─────────────────────────
-# 大玉がt=2から1.2/sで追走、12.5秒にゴール破壊。針山2区間の全力走で所要9.5(余裕3)。
-# 転んだら: 後戻り矢-6で破壊を18.5秒へ(返金付き)。先送り+10で玉をゴールの向こうへ捨てるのは
-# タイマー+10=制限15秒ではほぼ自殺(=やりすぎのデメリットを体で学ぶ)。
+# ── STAGE 4「大玉と錠前」(制限11/戻し2) 玉が実10に破壊 vs 錠開11 → 玉RW必須 ──
+# 錠前がゴールを塞ぐ(開11)のに大玉は実10にゴールへ届く=どう走っても間に合わない。
+# 錠前前(実7.5,玉の時計7.5)で玉に-6(実効6)→破壊は実16へ。待って通ってゴール。
 build(4, [
-    gm(4, 15),
-    player(0.8, 2.35, targets="Boulder4",
+    gm(4, 11),
+    player(0.8, 2.35, targets="Boulder4,LockGate4",
            arrowStops="Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4",
-           solids="Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4", rewindShots=3),
+           solids="Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4,LockGate4", rewindShots=2),
     copy.deepcopy(arrow),
     exit_(15.2, 0.65, "scenes/stage5.json"), gate(15.2, 0.5),
     block("StartLedge", 1.2, 0.9, 2.4, 1.8),
@@ -273,14 +272,13 @@ build(4, [
     needle("NeedleB4", 10.4, 0.2, 2.6, 0.4),
     block("StepC4", 9.8, 0.6, 1.1, 1.2),
     block("StepD4", 11.2, 0.85, 1.1, 1.7),
-    rollball("Boulder4", 2.6, 0.8, 1.6, rollT=2.0, speed=1.2),
-], limit=15)
+    rollball("Boulder4", 2.2, 0.8, 1.6, rollT=0.0, speed=1.3),
+    door("LockGate4", 13.5, openT=11.0, closeT=9999.0),
+], limit=11)
 
-# ── STAGE 5「時計職人」(制限19秒/まき戻し2) 2階建て ────────────────────
-# 刃2.5s→階段→2階の閉門(8秒。急げば5.5で通過/遅れたら-Xで呼び戻し)→短周期刃(3秒)→
-# 降りて時限錠15秒→ゴール16.8(余裕2.2)。閉門を呼び戻した場合は返金があるので実は楽になる。
+# ── STAGE 5「時計職人」(制限14/戻し2) 2階の閉門3.0 < 最速3.6 → RW必須 ────────
 build(5, [
-    gm(5, 19),
+    gm(5, 14),
     player(0.8, 0.55, targets="Blade5a,GateU,Blade5b,LockGate5",
            arrowStops="Floor5,StairA,StairB,Deck5",
            solids="Floor5,StairA,StairB,Deck5,GateU,LockGate5", rewindShots=2),
@@ -291,17 +289,14 @@ build(5, [
     block("StairA", 5.9, 0.6, 1.2, 1.2),
     block("StairB", 7.1, 1.2, 1.2, 2.4),
     block("Deck5", 10.2, 2.6, 6.0, 0.5),
-    door("GateU", 10.0, openT=0.0, closeT=8.0, base=2.85),
+    door("GateU", 10.0, openT=0.0, closeT=3.0, base=2.85),
     pendulum("Blade5b", 12.0, 4.0, 1.2, period=3.0, amplitude=1.2, phase=1.5),
-    door("LockGate5", 14.0, openT=15.0, closeT=9999.0),
-], limit=19)
+    door("LockGate5", 14.0, openT=12.0, closeT=9999.0),
+], limit=14)
 
-# ── STAGE 6「三重の締切」(制限18秒/まき戻し3) ─────────────────────────
-# 締切サンド: 閉門7秒(急げ)×大玉11.5秒にゴール破壊(遅らせろ)×時限錠14秒(待て)。
-# 大玉は先送りで捨てると+8でタイマー即死(=後戻り-6で延命が唯一の正解筋)。
-# 想定: 針山を6.3秒で抜け閉門通過→玉に-6(破壊17.5へ+返金)→錠前14→ゴール15.7(余裕2.3)。
+# ── STAGE 6「三重の締切」(制限13/戻し3) 閉門4.0×玉11.5×錠14 → RW2発必須 ──────
 build(6, [
-    gm(6, 18),
+    gm(6, 13),
     player(0.8, 2.35, targets="Boulder6,ClosingGate6,LockGate6",
            arrowStops="Floor6,StartLedge6,StepA6,StepB6",
            solids="Floor6,StartLedge6,StepA6,StepB6,ClosingGate6,LockGate6", rewindShots=3),
@@ -312,37 +307,37 @@ build(6, [
     needle("Needle6", 5.0, 0.2, 3.6, 0.4),
     block("StepA6", 3.9, 0.6, 1.1, 1.2),
     block("StepB6", 5.6, 0.85, 1.1, 1.7),
-    door("ClosingGate6", 9.6, openT=0.0, closeT=7.0),
+    door("ClosingGate6", 9.6, openT=0.0, closeT=4.0),
     rollball("Boulder6", 8.0, 0.8, 1.6, rollT=4.0, speed=1.0),
     door("LockGate6", 13.2, openT=14.0, closeT=9999.0),
-], limit=18)
+], limit=13)
 
-# ── STAGE 7「二階の銀行」(制限24秒/まき戻し3) 蛇行ルート ─────────────────
-# 地上を右へ→右端の階段で2階へ→デッキを左へ逆走(刃2枚・位相2秒ずれ)→左端の時限錠20秒→
-# 飛び降りてデッキの下を右へ全力→ゴール。素直: 23.2(余裕0.8のカミソリ)。
-# 錠前待ち中に刃2枚へ-8×2の銀行=タイマー16秒返金で快適(まき戻し3発の使いどころ)。
+# ── STAGE 7「二階の銀行」(制限15/戻し3) 蛇行+帰路の閉門12(帰着17.5) → RW必須 ──
+# 往路: 地上を右へ(閉門x8はまだ開)→右の3段階段→高deck(y4.4)を左へ逆走(刃2枚)→
+# 左端の錠前(開16)→飛び降り→帰路のx8はもう閉(12)→呼び戻して潜る。
+# 錠前待ち中に刃へ-8の銀行を作らないとタイマーが持たない設計。
 build(7, [
-    gm(7, 24),
-    player(0.8, 0.55, targets="Blade7a,Blade7b,LockGate7",
-           arrowStops="Floor7,Stair7A,Stair7B,Deck7",
-           solids="Floor7,Stair7A,Stair7B,Deck7,LockGate7", rewindShots=3),
+    gm(7, 15),
+    player(0.8, 0.55, targets="Blade7a,Blade7b,LockGate7,ReturnGate7",
+           arrowStops="Floor7,Stair7A,Stair7B,Stair7C,Deck7",
+           solids="Floor7,Stair7A,Stair7B,Stair7C,Deck7,LockGate7,ReturnGate7", rewindShots=3),
     copy.deepcopy(arrow),
     exit_(15.5, 0.65, "scenes/stage8.json"), gate(15.5, 0.5),
     block("Floor7", 8.0, -0.5, 16.0, 1.0),
-    block("Stair7A", 13.4, 0.6, 1.2, 1.2),
-    block("Stair7B", 14.6, 1.2, 1.2, 2.4),
-    block("Deck7", 8.0, 2.6, 10.0, 0.5),
-    pendulum("Blade7a", 11.0, 4.0, 1.4, period=4.0, amplitude=2.0, phase=0.0),
-    pendulum("Blade7b", 7.0, 4.0, 1.4, period=4.0, amplitude=2.0, phase=2.0),
-    door("LockGate7", 4.5, openT=20.0, closeT=9999.0, base=2.85),
-], limit=24)
+    door("ReturnGate7", 8.0, openT=0.0, closeT=12.0),
+    block("Stair7A", 12.2, 0.6, 1.2, 1.2),
+    block("Stair7B", 13.4, 1.2, 1.2, 2.4),
+    block("Stair7C", 14.6, 1.8, 1.2, 3.6),
+    block("Deck7", 8.0, 4.4, 10.0, 0.5),
+    pendulum("Blade7a", 10.5, 5.85, 1.4, period=4.0, amplitude=2.0, phase=0.0),
+    pendulum("Blade7b", 6.5, 5.85, 1.4, period=4.0, amplitude=2.0, phase=2.0),
+    door("LockGate7", 4.5, openT=16.0, closeT=9999.0, base=4.65),
+], limit=15)
 
-# ── STAGE 8「卒業試験」(制限25秒/まき戻し3) 全要素 ───────────────────────
-# 刃(周期4)→階段→2階の閉門10秒→短周期刃(周期3)→降りて時限錠22秒→ゴール23.3(余裕1.7)。
-# 合格筋: どこかで最低1回の銀行(-6〜-8)を作らないと事故1回で終わる。
-# 逆に先送りの浪費(+10癖)はそのまま敗因になる。時間の家計簿の卒業試験。
+# ── STAGE 8「卒業試験」(制限18/戻し3) 閉門5.0(RW必須)+錠開26>制限(FF必須) ─────
+# 両方の矢を正しい量で使い、さらに刃への銀行(-9=3周期)まで決めて合格。
 build(8, [
-    gm(8, 25),
+    gm(8, 18),
     player(0.8, 0.55, targets="Blade8a,GateU8,Blade8b,LockGate8",
            arrowStops="Floor8,Stair8A,Stair8B,Deck8",
            solids="Floor8,Stair8A,Stair8B,Deck8,GateU8,LockGate8", rewindShots=3),
@@ -353,10 +348,10 @@ build(8, [
     block("Stair8A", 5.3, 0.6, 1.2, 1.2),
     block("Stair8B", 6.5, 1.2, 1.2, 2.4),
     block("Deck8", 9.9, 2.6, 6.0, 0.5),
-    door("GateU8", 8.6, openT=0.0, closeT=10.0, base=2.85),
+    door("GateU8", 8.6, openT=0.0, closeT=5.0, base=2.85),
     pendulum("Blade8b", 10.9, 4.0, 1.2, period=3.0, amplitude=1.2, phase=1.5),
-    door("LockGate8", 14.0, openT=22.0, closeT=9999.0),
-], limit=25)
+    door("LockGate8", 14.0, openT=26.0, closeT=9999.0),
+], limit=18)
 
 # 検証: 生成したJSONが読み戻せるか + parent参照がHudCanvasを指すか
 for n in range(1, 9):

@@ -37,18 +37,21 @@ function OnStart(self)
 
   -- 時間経済: 先送り矢=刺した量だけ制限時間も消費 / 後戻り矢=刺した量だけ返金。
   -- シークバーが跳ねる/戻るので、コストと利得が目に見える
+  -- 先送りの代償は半額。等額だと「先送り=その場で待つ」と数学的に等価になり、
+  -- 矢の存在意義が消える(実時間の締切だけを出し抜ける、割引された時間の前借り)
   events:on("time_skip", function(data)
     if self.state ~= "play" then return end
-    self.t = self.t + (data.amount or 0)
+    self.t = self.t + (data.amount or 0) * 0.5
   end)
   events:on("time_rewind", function(data)
     if self.state ~= "play" then return end
     self.rewindGlow = 0.25
   end)
   -- 返金は「対象が実際に巻き戻せた量」だけ(ギミック側が消化しながら発行する)
+  -- 返金も半額(先送り→後戻りの往復で収支トントン=時間の錬金術を防ぐ)
   events:on("time_refund", function(data)
     if self.state ~= "play" then return end
-    self.t = math.max(0, self.t - (data.amount or 0))
+    self.t = math.max(0, self.t - (data.amount or 0) * 0.5)
   end)
 
   events:on("player_died", function()

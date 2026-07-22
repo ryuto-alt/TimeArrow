@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 15.0
+      "value": 11.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Boulder4"
+      "value": "Boulder4,LockGate4"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4"
+      "value": "Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4,LockGate4"
      },
      {
       "name": "mirrors",
@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 3
+      "value": 2
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -733,7 +733,7 @@
    "name": "Boulder4",
    "transform": {
     "position": [
-     2.6,
+     2.2,
      0.8,
      0.0
     ],
@@ -754,12 +754,12 @@
      {
       "name": "rollT",
       "type": "float",
-      "value": 2.0
+      "value": 0.0
      },
      {
       "name": "rollSpeed",
       "type": "float",
-      "value": 1.2
+      "value": 1.3
      },
      {
       "name": "axisX",
@@ -787,13 +787,93 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "LockGate4Frame",
+   "transform": {
+    "position": [
+     13.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "LockGate4",
+   "transform": {
+    "position": [
+     13.5,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 11.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 9999.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
    "luaScript": {
     "enabled": true,
     "props": [
      {
       "name": "T",
       "type": "float",
-      "value": 15.0
+      "value": 11.0
      },
      {
       "name": "collapseAt",
@@ -952,7 +1032,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 18,
+   "parent": 20,
    "transform": {
     "position": [
      0.0,
@@ -1011,7 +1091,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 15.0,
+    "maxValue": 11.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1026,7 +1106,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 18,
+   "parent": 20,
    "transform": {
     "position": [
      0.0,
@@ -1228,11 +1308,11 @@
      2.0,
      2.0
     ],
-    "text": "15秒以内にゴールしろ！",
+    "text": "11秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 18
+   "parent": 20
   },
   {
    "name": "TimeLeft",
@@ -1320,11 +1400,11 @@
      2.0,
      2.0
     ],
-    "text": "15.0",
+    "text": "11.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 18
+   "parent": 20
   },
   {
    "name": "DrawAmount",
@@ -1416,7 +1496,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 18
+   "parent": 20
   },
   {
    "name": "RewindCount",
@@ -1508,7 +1588,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 18
+   "parent": 20
   }
  ]
 }

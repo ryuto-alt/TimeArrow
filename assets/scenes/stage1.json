@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 16.0
+      "value": 12.0
      },
      {
       "name": "scenePath",
@@ -565,7 +565,7 @@
      {
       "name": "riseTime",
       "type": "float",
-      "value": 10.0
+      "value": 14.0
      },
      {
       "name": "waitHeight",
@@ -621,7 +621,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 16.0
+      "value": 12.0
      },
      {
       "name": "collapseAt",
@@ -839,7 +839,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 16.0,
+    "maxValue": 12.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1056,7 +1056,7 @@
      2.0,
      2.0
     ],
-    "text": "16秒以内にゴールしろ！",
+    "text": "12秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
@@ -1148,7 +1148,7 @@
      2.0,
      2.0
     ],
-    "text": "16.0",
+    "text": "12.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },

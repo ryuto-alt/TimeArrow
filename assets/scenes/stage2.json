@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 13.0
+      "value": 9.0
      },
      {
       "name": "scenePath",
@@ -662,7 +662,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 6.0
+      "value": 1.5
      },
      {
       "name": "slideTime",
@@ -742,7 +742,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 9.0
+      "value": 3.0
      },
      {
       "name": "slideTime",
@@ -765,7 +765,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 13.0
+      "value": 9.0
      },
      {
       "name": "collapseAt",
@@ -983,7 +983,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 13.0,
+    "maxValue": 9.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1200,7 +1200,7 @@
      2.0,
      2.0
     ],
-    "text": "13秒以内にゴールしろ！",
+    "text": "9秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
@@ -1292,7 +1292,7 @@
      2.0,
      2.0
     ],
-    "text": "13.0",
+    "text": "9.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
