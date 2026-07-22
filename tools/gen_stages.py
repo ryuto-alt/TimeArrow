@@ -1,48 +1,75 @@
 # -*- coding: utf-8 -*-
-# TimeArrow ステージ1-5再設計ジェネレータ。
-# 共通部(Backdrop/Sun/Camera/Grid/HUD/postProcess)は既存stage2.jsonから流用し、
-# ステージ固有エンティティだけを組み立てる。設計値は物理シミュ済:
-#   ジャンプ高1.68 / 滞空0.58s / 移動5/s / 矢15/s / 先送り2-10(引き0-3s) / 後戻り予算5s
-import json, copy, os
+# TimeArrow ステージ1-8 全面再設計ジェネレータ(2026-07-22)。
+# 設計値は tools/sim_stages.py で機械検証済み(矢なし/FFのみ/RWのみ不成立+マージン帯)。
+# 共通部(Backdrop/Sun/Camera/Grid/HUD)は既存 stage2.json から流用。
+# カメラは tools/sim/camera_fit.py の実装で全体が収まるよう逆算する。
+#
+# 物理: ジャンプ高1.68/滞空0.58s/移動5/矢速15/引き0.15-3s(+2〜+10)/構え中世界0.25倍
+# 経済: FF=タイマー+量*0.5 / RW=実効量*0.5返金(回数制)
+# 刃 : 平地の振り子ノコは絶対に通過不能(数値検証済) → 必ず退避ピット構造で使う
+import json, copy, os, sys
 
 SCENES = r"C:\Users\ryuto\game\TimeArrow\assets\scenes"
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sim"))
+from camera_fit import content_box, fit  # noqa: E402
+
 tpl = json.load(open(os.path.join(SCENES, "stage2.json"), encoding="utf-8"))
 T = {e["name"]: e for e in tpl["entities"]}
 
+TIMEWARP = "shaders/TimeWarp.hlsl"
+FONT = "fonts/DotGothic16-400.ttf"
+
+
 def prop(name, ptype, value):
     return {"name": name, "type": ptype, "value": value}
+
 
 def transform(x, y, sx, sy, sz=1.0, z=0.0, rot=(0.0, 0.0, 0.0)):
     return {"position": [float(x), float(y), float(z)],
             "rotation": [float(rot[0]), float(rot[1]), float(rot[2])],
             "scale": [float(sx), float(sy), float(sz)]}
 
-def mesh(name, model, x, y, sx, sy, sz=1.0, lua=None, rough=0.6, shader=None, rot=(0.0, 0.0, 0.0)):
+
+def script(path, props):
+    return {"enabled": True, "props": props, "scriptPath": f"scripts/{path}"}
+
+
+def mesh(name, model, x, y, sx, sy, sz=1.0, lua=None, rough=0.6, shader=None, rot=(0.0, 0.0, 0.0), z=0.0):
     e = {"material": {"metallic": 0.05, "roughness": rough},
          "meshRenderer": {"modelPath": f"models/{model}/{model}.obj"},
-         "name": name, "transform": transform(x, y, sx, sy, sz, rot=rot)}
+         "name": name, "transform": transform(x, y, sx, sy, sz, z=z, rot=rot)}
     if lua:
         e["luaScript"] = lua
     if shader:
         e["shader"] = shader
     return e
 
-TIMEWARP = "shaders/TimeWarp.hlsl"
 
-def script(path, props):
-    return {"enabled": True, "props": props, "scriptPath": f"scripts/{path}"}
+def sprite(name, tex, x, y, sx, sy, layer=5, lua=None, color=(1, 1, 1, 1), rot_z=0.0):
+    return {"name": name,
+            "transform": transform(x, y, sx, sy, rot=(0.0, 0.0, float(rot_z))),
+            "sprite2d": {"billboard": False, "color": list(map(float, color)),
+                         "effectValue": 0.0, "layer": layer, "shaderAlphaBlend": False,
+                         "shaderParams": [0.0, 0.0, 0.0, 0.0], "shaderPath": "",
+                         "size": [1.0, 1.0], "texturePath": tex,
+                         "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "worldSpace": True},
+            **({"luaScript": lua} if lua else {})}
+
 
 def gm(n, limit):
     e = copy.deepcopy(T["GameManager"])
     e["luaScript"]["props"] = [prop("T", "float", float(limit)),
-                               prop("scenePath", "string", f"scenes/stage{n}.json"),
-                               prop("title", "string", f"STAGE {n}"),
-                               prop("markers", "string", "")]
+                              prop("scenePath", "string", f"scenes/stage{n}.json"),
+                              prop("title", "string", f"STAGE {n}"),
+                              prop("markers", "string", "")]
     return e
 
-def player(x, y, targets="", standables="", climbables="", arrowStops="", solids="", mirrors="", rewindShots=3):
+
+def player(x, y, targets="", standables="", climbables="", arrowStops="", solids="", rewindShots=3):
     e = copy.deepcopy(T["Player"])
     e["transform"]["position"] = [float(x), float(y), 0.0]
+    # 視認性: 見た目だけ1割強拡大(当たり判定 halfW/halfHeight は据え置き=寛容側)
+    e["transform"]["scale"] = [0.9, 1.2, 1.0]
     e["luaScript"]["props"] = [
         prop("speed", "float", 5.0), prop("jumpSpeed", "float", 11.6),
         prop("gravity", "float", 40.0), prop("killY", "float", -4.0),
@@ -53,10 +80,11 @@ def player(x, y, targets="", standables="", climbables="", arrowStops="", solids
         prop("aimTurnSpeed", "float", 270.0), prop("climbSpeed", "float", 4.0),
         prop("targets", "string", targets), prop("standables", "string", standables),
         prop("climbables", "string", climbables), prop("arrowStops", "string", arrowStops),
-        prop("solids", "string", solids), prop("mirrors", "string", mirrors),
+        prop("solids", "string", solids), prop("mirrors", "string", ""),
         prop("maxBounces", "int", 4), prop("rewindShots", "int", int(rewindShots)),
     ]
     return e
+
 
 def exit_(x, y, nxt):
     e = copy.deepcopy(T["Exit"])
@@ -64,22 +92,24 @@ def exit_(x, y, nxt):
     e["luaScript"]["props"] = [prop("radius", "float", 1.2), prop("next", "string", nxt)]
     return e
 
+
 def gate(x, y):
     e = copy.deepcopy(T["GoalGate"])
     e["transform"]["position"] = [float(x), float(y), 0.8]
     return e
 
+
 def block(name, x, y, sx, sy, sz=3.0):
     return mesh(name, "Block", x, y, sx, sy, sz)
+
 
 def needle(name, x, y, sx, sy):
     return mesh(name, "Needle_Small", x, y, sx, sy, 1.0,
                 lua=script("Wall.lua", [prop("deadly", "bool", True),
                                         prop("hitScale", "float", 0.75)]))
 
+
 def door(name, x, openT, closeT, base=0.0):
-    # 落とし格子門: 石フレーム(飾り) + 可動格子(実体・矢の的)。格子が物理的にスライドして開閉する。
-    # base=設置面の高さ(2階の床上にも置ける)
     frame = mesh(name + "Frame", "Gate_Frame", x, base + 2.0, 1.1, 4.0, 1.0)
     grill = mesh(name, "Gate_Grill", x, base + 1.8, 0.75, 3.6, 1.0,
                  lua=script("TimedDoor.lua", [
@@ -88,26 +118,23 @@ def door(name, x, openT, closeT, base=0.0):
                      prop("listenButton", "bool", False)]))
     return [frame, grill]
 
-def riseplat(name, x, y, sx, sy, arriveT, trigger="", waitHeight=5.5, riseTime=0.9):
+
+def riseplat(name, x, y, sx, sy, arriveT, waitHeight, riseTime, trigger=""):
     return mesh(name, "Bridge_Plank", x, y, sx, sy, 1.0, shader=TIMEWARP,
                 lua=script("RisePlatform.lua", [
                     prop("arriveT", "float", float(arriveT)), prop("riseTime", "float", float(riseTime)),
                     prop("waitHeight", "float", float(waitHeight)), prop("triggerName", "string", trigger),
                     prop("listenButton", "bool", False)]))
 
-def moveplat(name, x, y, sx, sy, period, amplitude, phase):
-    return mesh(name, "Move_Block", x, y, sx, sy, 1.0, shader=TIMEWARP,
-                lua=script("MovingPlatform.lua", [
-                    prop("period", "float", float(period)), prop("amplitude", "float", float(amplitude)),
-                    prop("startPhase", "float", float(phase))]))
 
-def pendulum(name, x, y, s, period, amplitude, phase):
-    # Saw_Bladeモデルは水平置きなのでX軸90°回転で縦刃にする(当たり判定はscaleのAABBで不変)
+def pendulum(name, x, y, s, period, amplitude, phase, deadly=True):
+    # Saw_Bladeは水平モデルなのでX軸90°回転で縦刃にする
     return mesh(name, "Saw_Blade", x, y, s, s, 0.5, shader=TIMEWARP, rot=(90.0, 0.0, 0.0),
                 lua=script("Pendulum.lua", [
                     prop("period", "float", float(period)), prop("amplitude", "float", float(amplitude)),
-                    prop("startPhase", "float", float(phase)), prop("deadly", "bool", True),
+                    prop("startPhase", "float", float(phase)), prop("deadly", "bool", bool(deadly)),
                     prop("hitScale", "float", 0.8)]))
+
 
 def rollball(name, x, y, s, rollT, speed):
     return mesh(name, "Roll_Ball", x, y, s, s, s, shader=TIMEWARP,
@@ -116,60 +143,85 @@ def rollball(name, x, y, s, rollT, speed):
                     prop("axisX", "float", 1.0), prop("goalName", "string", "Exit"),
                     prop("goalHitScale", "float", 1.3), prop("hitScale", "float", 0.8)]))
 
-def target(name, x, y, s):
-    return mesh(name, "Target_Bull", x, y, s, s, 0.5)
 
-FONT = "fonts/DotGothic16-400.ttf"
+def bomb(name, x, y, boomT, wallTarget="", blastScale=2.4):
+    return sprite(name, "textures/bomb_rgba.png", x, y, 0.9, 0.9, layer=5,
+                  lua=script("Bomb.lua", [
+                      prop("boomT", "float", float(boomT)),
+                      prop("blastScale", "float", float(blastScale)),
+                      prop("wallTarget", "string", wallTarget)]))
 
-def ui_text(name, text, size, color, outline, rect):
-    return {
-        "name": name,
-        "transform": transform(0, 0, 1, 1),
-        "uiRect": {
-            "anchorMax": rect["aMax"], "anchorMin": rect["aMin"],
-            "clipChildren": False,
-            "offsetMax": rect["oMax"], "offsetMin": rect["oMin"],
-            "order": 2, "pivot": rect.get("pivot", [0.5, 0.5]),
-            "rotation": 0.0, "skewX": 0.0, "visible": True},
-        "uiText": {
-            "alignH": 1, "alignV": 1, "charAnim": 0,
-            "charAnimAmount": 4.0, "charAnimSpeed": 2.0,
-            "color": color, "fontPath": FONT, "fontSize": float(size),
-            "gradientColor2": [1.0, 1.0, 1.0, 1.0], "gradientDir": 0,
-            "letterSpacing": 2.0,
-            "outlineColor": outline, "outlineWidth": 2.0,
-            "rich": False,
-            "shadowColor": [0.0, 0.0, 0.0, 0.6], "shadowOffset": [2.0, 2.0],
-            "text": text, "typewriterSpeed": 0.0, "wrap": False}}
 
-def rewind_bar():
-    e = copy.deepcopy(T["SeekBar"])
-    e["name"] = "RewindBar"
-    e["uiRect"]["offsetMin"] = [0.0, -26.0]
-    e["uiRect"]["offsetMax"] = [0.0, -18.0]
-    e["uiSlider"].update({
-        "maxValue": 5.0, "value": 5.0,
-        "fillColor": [0.55, 0.35, 1.0, 1.0],
-        "knobColor": [0.75, 0.55, 1.0, 1.0],
-        "trackColor": [1.0, 1.0, 1.0, 0.18]})
+def breakwall(name, x, y, sx, sy):
+    e = mesh(name, "Block", x, y, sx, sy, 3.0, rough=0.9,
+             lua=script("Wall.lua", [prop("deadly", "bool", False),
+                                     prop("hitScale", "float", 0.8)]))
+    e["material"]["metallic"] = 0.0
     return e
 
-def build(n, entities, limit=10.0):
+
+def lattice(name, x, y=1.8):
+    return mesh(name, "Gate_Grill", x, y, 0.75, 3.6, 1.0,
+                lua=script("Lattice.lua", [prop("listenButton", "bool", True),
+                                           prop("hideY", "float", -100.0)]))
+
+
+def button(name, x, y, link):
+    return mesh(name, "Button", x, y, 0.9, 0.9, 0.9,
+                lua=script("Button.lua", [
+                    prop("linkTarget", "string", link), prop("standOn", "bool", False),
+                    prop("arrowHit", "bool", True), prop("skipAmount", "float", 0.0)]))
+
+
+def marker():
+    return sprite("PlayerMarker", "textures/arrow_rgba.png", 1.5, 2.0, 0.6, 0.3, layer=8,
+                  lua=script("PlayerMarker.lua", [prop("offsetY", "float", 1.35),
+                                                 prop("bob", "float", 0.12)]),
+                  color=(1.0, 0.85, 0.25, 0.9), rot_z=-90.0)
+
+
+def ui_text(name, text, size, color, outline, rect):
+    return {"name": name, "transform": transform(0, 0, 1, 1),
+            "uiRect": {"anchorMax": rect["aMax"], "anchorMin": rect["aMin"],
+                       "clipChildren": False, "offsetMax": rect["oMax"], "offsetMin": rect["oMin"],
+                       "order": 2, "pivot": rect.get("pivot", [0.5, 0.5]),
+                       "rotation": 0.0, "skewX": 0.0, "visible": True},
+            "uiText": {"alignH": 1, "alignV": 1, "charAnim": 0, "charAnimAmount": 4.0,
+                       "charAnimSpeed": 2.0, "color": color, "fontPath": FONT,
+                       "fontSize": float(size), "gradientColor2": [1.0, 1.0, 1.0, 1.0],
+                       "gradientDir": 0, "letterSpacing": 2.0, "outlineColor": outline,
+                       "outlineWidth": 2.0, "rich": False, "shadowColor": [0.0, 0.0, 0.0, 0.6],
+                       "shadowOffset": [2.0, 2.0], "text": text, "typewriterSpeed": 0.0,
+                       "wrap": False}}
+
+
+def build(n, entities, limit, width):
     flat = []
     for e in entities:
         (flat.extend if isinstance(e, list) else flat.append)(e)
-    entities = flat
+    entities = flat + [marker()]
+
     backdrop = copy.deepcopy(T["Backdrop"])
     for pr in backdrop["luaScript"]["props"]:
         if pr["name"] == "T":
             pr["value"] = float(limit)
-    ents = entities + [backdrop, copy.deepcopy(T["Sun"]),
-                       copy.deepcopy(T["GameCamera"]), copy.deepcopy(T["Grid"]),
+    backdrop["transform"]["position"][0] = width / 2.0
+    backdrop["transform"]["scale"][0] = width * 2.32
+
+    cam = copy.deepcopy(T["GameCamera"])
+    x0, x1, y0, y1 = content_box(entities)
+    cx, cy, cz, _ = fit(x0 - 0.5, x1 + 0.5, y0, y1 + 0.4, 14.0)
+    cam["transform"]["position"] = [cx, cy, cz]
+    cam["transform"]["rotation"] = [14.0, 0.0, 0.0]
+
+    sun = copy.deepcopy(T["Sun"])
+    sun["transform"]["position"][0] = width / 2.0
+
+    ents = entities + [backdrop, sun, cam, copy.deepcopy(T["Grid"]),
                        copy.deepcopy(T["HudCanvas"])]
     hud_i = len(ents) - 1
     seek = copy.deepcopy(T["SeekBar"])
     seek["uiSlider"]["maxValue"] = float(limit)
-    # UIはY軸下向き(anchor y=0が上端)。バナーは上部センター、残り時間は右上
     banner = ui_text("TimeBanner", f"{int(limit)}秒以内にゴールしろ！", 44,
                      [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
                      {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
@@ -182,7 +234,7 @@ def build(n, entities, limit=10.0):
                        [0.4, 0.9, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
                        {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
                         "oMin": [0.0, 140.0], "oMax": [0.0, 200.0], "pivot": [0.5, 0.0]})
-    rw_cnt = ui_text("RewindCount", "まき戻し ×3", 26,
+    rw_cnt = ui_text("RewindCount", "まき戻し ×0", 26,
                      [0.75, 0.55, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
                      {"aMin": [0.0, 0.0], "aMax": [0.0, 0.0],
                       "oMin": [16.0, 26.0], "oMax": [300.0, 78.0], "pivot": [0.0, 0.0]})
@@ -193,172 +245,194 @@ def build(n, entities, limit=10.0):
     scene["entities"] = ents
     path = os.path.join(SCENES, f"stage{n}.json")
     json.dump(scene, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
-    print(f"stage{n}: {len(ents)} entities -> {path}")
+    print(f"stage{n}: {len(ents)} entities, cam=({cx:.1f},{cy:.1f},{cz:.1f})")
+
 
 arrow = copy.deepcopy(T["Arrow"])
 
-# ══ 時間経済版レベルデザイン(8ステージ) ═══════════════════════════════════
-# ★数値は tools/sim_stages.py で機械検証済み: 全ステージ「矢なしクリア不能」+想定プランのマージン正常。
-# 経済: 先送り=タイマー+量*0.5 / 後戻り=実効量*0.5返金(回数制)。ギミック時計は実時間で進む。
-# 弓矢必須の3構造: ①開錠>制限(FF必須) ②閉門<最速到達(RW必須) ③錠前→実時間締切のサンド(FF必須)
+# 針山パッチ: 段1.2→段1.7の二段ホップで越える(段差<=1.35/隙間<=2.0を厳守)
+def patch(pfx, xa, xb, nw=0.9):
+    mid = (xa + xb) / 2
+    return [block(f"{pfx}L", xa, 0.6, 1.1, 1.2),
+            needle(f"{pfx}N", mid, 0.2, nw, 0.4),
+            block(f"{pfx}R", xb, 0.85, 1.1, 1.7)]
 
-# ── STAGE 1「時は金なり」(制限12/戻し1) 橋の自然落下14秒>制限 → FF必須 ──────
-# 矢なし: 着橋14→タイマー15.8で死。FF+12(代償6): 実8でゴール、タイマー10.2(マージン1.8)
+
+# ══ STAGE 1「遅すぎる橋」 15s / RW1 ══════════════════════════════════
 build(1, [
-    gm(1, 12),
-    player(1.0, 0.55, targets="Target1", standables="Bridge1",
+    gm(1, 15),
+    player(1.0, 0.55, targets="Bridge1", standables="Bridge1",
            arrowStops="FloorL,FloorR", solids="FloorL,FloorR", rewindShots=1),
     copy.deepcopy(arrow),
-    exit_(15.0, 0.65, "scenes/stage2.json"), gate(15.0, 0.5),
-    block("FloorL", 3.5, -0.5, 7.0, 1.0),
-    block("FloorR", 14.0, -0.5, 4.0, 1.0),
-    riseplat("Bridge1", 9.5, -0.3, 5.0, 0.6, arriveT=0.0, trigger="Target1",
-             waitHeight=6.0, riseTime=14.0),
-    target("Target1", 6.0, 4.5, 1.1),
-], limit=12)
+    exit_(15.2, 0.65, "scenes/stage2.json"), gate(15.2, 0.5),
+    block("FloorL", 5.0, -0.5, 10.0, 1.0),
+    block("FloorR", 15.25, -0.5, 2.5, 1.0),
+    riseplat("Bridge1", 12.0, -0.3, 4.0, 0.6, arriveT=0.0, waitHeight=6.0, riseTime=16.0),
+], limit=15, width=16.5)
 
-# ── STAGE 2「二枚の閉門」(制限9/戻し3) 閉1.5/3.0 < 最速到達1.8/4.1 → RW必須 ──
-# 開始直後に目の前でガシャン→「もう閉まった!?」→紫の矢で呼び戻す、を2回。
+# ══ STAGE 2「二枚の閉門」 16s / RW2 ══════════════════════════════════
 build(2, [
-    gm(2, 9),
-    player(1.0, 0.55, targets="GateA,GateB",
-           arrowStops="Floor2,StepA,StepB",
-           solids="Floor2,StepA,StepB,GateA,GateB", rewindShots=3),
+    gm(2, 16),
+    player(0.8, 0.55, targets="GateA,GateB",
+           arrowStops="F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR",
+           solids="F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,GateA,GateB", rewindShots=2),
     copy.deepcopy(arrow),
-    exit_(15.0, 0.65, "scenes/stage3.json"), gate(15.0, 0.5),
-    block("Floor2", 8.0, -0.5, 16.0, 1.0),
-    needle("Needle2", 4.8, 0.2, 3.6, 0.4),
-    block("StepA", 3.7, 0.6, 1.1, 1.2),
-    block("StepB", 5.4, 0.85, 1.1, 1.7),
-    door("GateA", 8.0, openT=0.0, closeT=1.5),
-    door("GateB", 12.0, openT=0.0, closeT=3.0),
-], limit=9)
+    exit_(15.4, 0.65, "scenes/stage3.json"), gate(15.4, 0.5),
+    block("F2", 8.25, -0.5, 16.5, 1.0),
+    patch("P2a", 2.6, 4.3, 0.7),
+    patch("P2b", 5.8, 7.4, 1.0),
+    door("GateA", 8.6, openT=0.0, closeT=2.0),
+    patch("P2c", 10.4, 12.0, 1.0),
+    door("GateB", 13.6, openT=0.0, closeT=4.5),
+], limit=16, width=16.5)
 
-# ── STAGE 3「錠前と締切のサンド」(制限13/戻し2) 錠開10→閉門閉9 → FF必須 ──────
-# 待つと錠前通過が実10>閉門9で構造的に手遅れ。錠前へFF+8.6で実1.4に開け、
-# 刃(周期4)を捌いて実5.5に閉門を通過。余った後戻りは刃に-8の銀行(位相不変で返金4)。
+# ══ STAGE 3「錠と門」 20s / RW1 ══════════════════════════════════════
 build(3, [
-    gm(3, 13),
-    player(0.8, 0.55, targets="LockGate3,Blade3,ClosingGate3",
-           arrowStops="Floor3,StepA3,StepB3,StepE3",
-           solids="Floor3,StepA3,StepB3,StepE3,LockGate3,ClosingGate3", rewindShots=2),
+    gm(3, 20),
+    player(0.8, 0.55, targets="Lock3,Gate3",
+           arrowStops="F3,StepA3,StepB3,P3aL,P3aR",
+           solids="F3,StepA3,StepB3,P3aL,P3aR,Lock3,Gate3", rewindShots=1),
     copy.deepcopy(arrow),
-    exit_(15.4, 0.65, "scenes/stage4.json"), gate(15.4, 0.5),
-    block("Floor3", 8.0, -0.5, 16.0, 1.0),
-    needle("Needle3", 3.75, 0.2, 2.5, 0.4),
-    block("StepA3", 3.2, 0.6, 1.1, 1.2),
-    block("StepB3", 4.4, 0.85, 1.1, 1.7),
-    door("LockGate3", 6.0, openT=10.0, closeT=9999.0),
-    pendulum("Blade3", 8.5, 1.3, 1.4, period=4.0, amplitude=2.2, phase=0.0),
-    door("ClosingGate3", 10.5, openT=0.0, closeT=9.0),
-    block("StepE3", 12.3, 0.6, 1.1, 1.2),
-], limit=13)
+    exit_(14.6, 0.65, "scenes/stage4.json"), gate(14.6, 0.5),
+    block("F3", 8.0, -0.5, 16.0, 1.0),
+    block("StepA3", 3.0, 0.6, 1.1, 1.2),
+    block("StepB3", 4.2, 0.85, 1.1, 1.7),
+    door("Lock3", 7.0, openT=22.0, closeT=9999.0),
+    patch("P3a", 8.6, 10.2, 1.0),
+    door("Gate3", 11.8, openT=0.0, closeT=1.5),
+], limit=20, width=16)
 
-# ── STAGE 4「大玉と錠前」(制限11/戻し2) 玉が実10に破壊 vs 錠開11 → 玉RW必須 ──
-# 錠前がゴールを塞ぐ(開11)のに大玉は実10にゴールへ届く=どう走っても間に合わない。
-# 錠前前(実7.5,玉の時計7.5)で玉に-6(実効6)→破壊は実16へ。待って通ってゴール。
+# ══ STAGE 4「動かせない締切」 23s / RW2 — 退避ピット初出 ═════════════
 build(4, [
-    gm(4, 11),
-    player(0.8, 2.35, targets="Boulder4,LockGate4",
-           arrowStops="Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4",
-           solids="Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4,LockGate4", rewindShots=2),
+    gm(4, 23),
+    player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4",
+           arrowStops="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR",
+           solids="F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,GateA4,Lock4,GateB4", rewindShots=2),
     copy.deepcopy(arrow),
-    exit_(15.2, 0.65, "scenes/stage5.json"), gate(15.2, 0.5),
-    block("StartLedge", 1.2, 0.9, 2.4, 1.8),
-    block("Floor4", 8.0, -0.5, 16.0, 1.0),
-    needle("NeedleA4", 5.0, 0.2, 3.6, 0.4),
-    block("StepA4", 3.9, 0.6, 1.1, 1.2),
-    block("StepB4", 5.6, 0.85, 1.1, 1.7),
-    needle("NeedleB4", 10.4, 0.2, 2.6, 0.4),
-    block("StepC4", 9.8, 0.6, 1.1, 1.2),
-    block("StepD4", 11.2, 0.85, 1.1, 1.7),
-    rollball("Boulder4", 2.2, 0.8, 1.6, rollT=0.0, speed=1.3),
-    door("LockGate4", 13.5, openT=11.0, closeT=9999.0),
-], limit=11)
+    exit_(17.2, 0.65, "scenes/stage5.json"), gate(17.2, 0.5),
+    block("F4a", 6.0, -0.5, 12.0, 1.0),          # [0,12] ピットまで
+    block("PitF4", 12.6, -1.5, 1.2, 1.0),        # 退避ピット床(上面-1.0)
+    block("F4b", 15.6, -0.5, 4.8, 1.0),          # [13.2,18]
+    patch("P4a", 2.3, 3.9, 0.9),
+    patch("P4b", 5.3, 6.9, 0.9),
+    door("GateA4", 7.9, openT=0.0, closeT=1.8),
+    door("Lock4", 9.2, openT=25.0, closeT=9999.0),
+    pendulum("Saw4", 12.6, 1.3, 1.4, period=4.0, amplitude=1.0, phase=0.0),
+    door("GateB4", 15.6, openT=0.0, closeT=13.0),
+], limit=23, width=18)
 
-# ── STAGE 5「時計職人」(制限14/戻し2) 2階の閉門3.0 < 最速3.6 → RW必須 ────────
+# ══ STAGE 5「時の昇降機」 26s / RW3 — 2階+橋エレベーター+大玉レース ══
 build(5, [
-    gm(5, 14),
-    player(0.8, 0.55, targets="Blade5a,GateU,Blade5b,LockGate5",
-           arrowStops="Floor5,StairA,StairB,Deck5",
-           solids="Floor5,StairA,StairB,Deck5,GateU,LockGate5", rewindShots=2),
+    gm(5, 26),
+    player(0.8, 0.55, targets="Lift5,Gate5,Ball5,Lock5",
+           standables="Lift5",
+           arrowStops="F5,StepA5,StepB5,D5a,D5b,PitF5",
+           solids="F5,StepA5,StepB5,D5a,D5b,PitF5,Gate5,Lock5", rewindShots=3),
     copy.deepcopy(arrow),
-    exit_(15.5, 0.65, "scenes/stage6.json"), gate(15.5, 0.5),
-    block("Floor5", 8.0, -0.5, 16.0, 1.0),
-    pendulum("Blade5a", 4.0, 1.3, 1.4, period=4.0, amplitude=2.2, phase=0.0),
-    block("StairA", 5.9, 0.6, 1.2, 1.2),
-    block("StairB", 7.1, 1.2, 1.2, 2.4),
-    block("Deck5", 10.2, 2.6, 6.0, 0.5),
-    door("GateU", 10.0, openT=0.0, closeT=3.0, base=2.85),
-    pendulum("Blade5b", 12.0, 4.0, 1.2, period=3.0, amplitude=1.2, phase=1.5),
-    door("LockGate5", 14.0, openT=12.0, closeT=9999.0),
-], limit=14)
+    exit_(17.7, 4.65, "scenes/stage6.json"), gate(17.7, 4.5),
+    block("F5", 9.25, -0.5, 18.5, 1.0),
+    block("StepA5", 2.4, 0.6, 1.1, 1.2),
+    needle("N5", 3.0, 0.2, 0.5, 0.4),
+    block("StepB5", 3.6, 0.85, 1.1, 1.7),
+    riseplat("Lift5", 7.0, -0.3, 3.0, 0.5, arriveT=14.0, waitHeight=4.3, riseTime=1.0),
+    block("D5a", 10.8, 3.75, 3.6, 0.5),           # デッキ[9,12.6]
+    block("PitF5", 13.2, 2.55, 1.2, 0.5),         # 退避ピット床(上面2.8)
+    block("D5b", 16.15, 3.75, 4.7, 0.5),          # デッキ[13.8,18.5]
+    door("Gate5", 9.5, openT=0.0, closeT=2.0, base=4.0),
+    rollball("Ball5", 11.0, 4.75, 1.5, rollT=0.0, speed=0.5),
+    door("Lock5", 16.2, openT=30.0, closeT=9999.0, base=4.0),
+], limit=26, width=18.5)
 
-# ── STAGE 6「三重の締切」(制限13/戻し3) 閉門4.0×玉11.5×錠14 → RW2発必須 ──────
+# ══ STAGE 6「導火線」 30s / RW2 — 爆弾の遠隔起爆 ═════════════════════
 build(6, [
-    gm(6, 13),
-    player(0.8, 2.35, targets="Boulder6,ClosingGate6,LockGate6",
-           arrowStops="Floor6,StartLedge6,StepA6,StepB6",
-           solids="Floor6,StartLedge6,StepA6,StepB6,ClosingGate6,LockGate6", rewindShots=3),
+    gm(6, 30),
+    player(0.8, 0.55, targets="GateA6,Bomb6,GateC6,Lock6",
+           arrowStops="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,WallW6",
+           solids="F6,P6aL,P6aR,P6bL,P6bR,P6cL,P6cR,WallW6,GateA6,GateC6,Lock6",
+           rewindShots=2),
     copy.deepcopy(arrow),
-    exit_(15.5, 0.65, "scenes/stage7.json"), gate(15.5, 0.5),
-    block("StartLedge6", 1.2, 0.9, 2.4, 1.8),
-    block("Floor6", 8.0, -0.5, 16.0, 1.0),
-    needle("Needle6", 5.0, 0.2, 3.6, 0.4),
-    block("StepA6", 3.9, 0.6, 1.1, 1.2),
-    block("StepB6", 5.6, 0.85, 1.1, 1.7),
-    door("ClosingGate6", 9.6, openT=0.0, closeT=4.0),
-    rollball("Boulder6", 8.0, 0.8, 1.6, rollT=4.0, speed=1.0),
-    door("LockGate6", 13.2, openT=14.0, closeT=9999.0),
-], limit=13)
+    exit_(17.3, 0.65, "scenes/stage7.json"), gate(17.3, 0.5),
+    block("F6", 9.0, -0.5, 18.0, 1.0),
+    patch("P6a", 2.4, 4.0, 0.9),
+    patch("P6b", 5.3, 6.5, 0.5),
+    door("GateA6", 7.4, openT=0.0, closeT=1.7),
+    bomb("Bomb6", 10.0, 0.45, boomT=26.0, wallTarget="WallW6"),
+    breakwall("WallW6", 10.9, 1.7, 0.9, 3.4),
+    door("GateC6", 12.6, openT=0.0, closeT=12.0),
+    patch("P6c", 13.6, 14.8, 0.5),
+    door("Lock6", 15.8, openT=22.0, closeT=9999.0),
+], limit=30, width=18)
 
-# ── STAGE 7「二階の銀行」(制限15/戻し3) 蛇行+帰路の閉門12(帰着17.5) → RW必須 ──
-# 往路: 地上を右へ(閉門x8はまだ開)→右の3段階段→高deck(y4.4)を左へ逆走(刃2枚)→
-# 左端の錠前(開16)→飛び降り→帰路のx8はもう閉(12)→呼び戻して潜る。
-# 錠前待ち中に刃へ-8の銀行を作らないとタイマーが持たない設計。
+# ══ STAGE 7「時計塔の往復」 36s / RW3 — 2階往復+矢専用ボタン ═════════
 build(7, [
-    gm(7, 15),
-    player(0.8, 0.55, targets="Blade7a,Blade7b,LockGate7,ReturnGate7",
-           arrowStops="Floor7,Stair7A,Stair7B,Stair7C,Deck7",
-           solids="Floor7,Stair7A,Stair7B,Stair7C,Deck7,LockGate7,ReturnGate7", rewindShots=3),
+    gm(7, 36),
+    player(1.4, 0.55, targets="GateA7,LockD7,ButtonB7,Saw7",
+           arrowStops="F7,Tower7,P7aL,P7aR,P7bL,P7bR,WallE7,D7a,D7b,PitF7,St7a,St7b,St7c,St7d",
+           solids="F7,Tower7,P7aL,P7aR,P7bL,P7bR,WallE7,D7a,D7b,PitF7,St7a,St7b,St7c,St7d,"
+                  "GateA7,LockD7,LatticeL7", rewindShots=3),
     copy.deepcopy(arrow),
-    exit_(15.5, 0.65, "scenes/stage8.json"), gate(15.5, 0.5),
-    block("Floor7", 8.0, -0.5, 16.0, 1.0),
-    door("ReturnGate7", 8.0, openT=0.0, closeT=12.0),
-    block("Stair7A", 12.2, 0.6, 1.2, 1.2),
-    block("Stair7B", 13.4, 1.2, 1.2, 2.4),
-    block("Stair7C", 14.6, 1.8, 1.2, 3.6),
-    block("Deck7", 8.0, 4.4, 10.0, 0.5),
-    pendulum("Blade7a", 10.5, 5.85, 1.4, period=4.0, amplitude=2.0, phase=0.0),
-    pendulum("Blade7b", 6.5, 5.85, 1.4, period=4.0, amplitude=2.0, phase=2.0),
-    door("LockGate7", 4.5, openT=16.0, closeT=9999.0, base=4.65),
-], limit=15)
+    exit_(9.6, 0.65, "scenes/stage8.json"), gate(9.6, 0.5),
+    block("F7", 9.0, -0.5, 18.0, 1.0),
+    block("Tower7", 0.5, 3.1, 0.8, 6.2),
+    button("ButtonB7", 0.5, 6.65, "LatticeL7"),
+    patch("P7a", 2.7, 4.1, 0.8),
+    patch("P7b", 5.3, 6.7, 0.8),
+    door("GateA7", 7.7, openT=0.0, closeT=1.6),
+    lattice("LatticeL7", 8.9),
+    block("WallE7", 10.3, 1.95, 0.8, 3.9),
+    block("St7a", 15.5, 0.55, 0.7, 1.1),
+    block("St7b", 16.2, 1.1, 0.7, 2.2),
+    block("St7c", 16.9, 1.65, 0.7, 3.3),
+    block("St7d", 17.6, 2.2, 0.7, 4.4),
+    block("D7a", 6.15, 4.15, 7.1, 0.5),           # デッキ[2.6,9.7]
+    block("PitF7", 10.5, 3.15, 1.6, 0.5),         # デッキピット床(上面3.4)
+    block("D7b", 13.45, 4.15, 4.3, 0.5),          # デッキ[11.3,15.6]
+    pendulum("Saw7", 10.5, 5.7, 1.4, period=4.0, amplitude=1.2, phase=0.0),
+    door("LockD7", 4.4, openT=26.0, closeT=9999.0, base=4.4),
+], limit=36, width=18)
 
-# ── STAGE 8「卒業試験」(制限18/戻し3) 閉門5.0(RW必須)+錠開26>制限(FF必須) ─────
-# 両方の矢を正しい量で使い、さらに刃への銀行(-9=3周期)まで決めて合格。
+# ══ STAGE 8「時計職人の卒業試験」 38s / RW4 ══════════════════════════
 build(8, [
-    gm(8, 18),
-    player(0.8, 0.55, targets="Blade8a,GateU8,Blade8b,LockGate8",
-           arrowStops="Floor8,Stair8A,Stair8B,Deck8",
-           solids="Floor8,Stair8A,Stair8B,Deck8,GateU8,LockGate8", rewindShots=3),
+    gm(8, 38),
+    player(0.8, 0.55, targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,BankSaw8",
+           arrowStops="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8",
+           solids="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8,"
+                  "GateA8,GateC8,GateD8,LockE8", rewindShots=4),
     copy.deepcopy(arrow),
-    exit_(15.5, 0.65, "scenes/game_clear.json"), gate(15.5, 0.5),
-    block("Floor8", 8.0, -0.5, 16.0, 1.0),
-    pendulum("Blade8a", 3.5, 1.3, 1.4, period=4.0, amplitude=2.2, phase=0.0),
-    block("Stair8A", 5.3, 0.6, 1.2, 1.2),
-    block("Stair8B", 6.5, 1.2, 1.2, 2.4),
-    block("Deck8", 9.9, 2.6, 6.0, 0.5),
-    door("GateU8", 8.6, openT=0.0, closeT=5.0, base=2.85),
-    pendulum("Blade8b", 10.9, 4.0, 1.2, period=3.0, amplitude=1.2, phase=1.5),
-    door("LockGate8", 14.0, openT=26.0, closeT=9999.0),
-], limit=18)
+    exit_(19.6, 5.05, "scenes/game_clear.json"), gate(19.6, 4.9),
+    block("F8", 10.0, -0.5, 20.0, 1.0),
+    patch("P8a", 2.2, 3.4, 0.5),
+    patch("P8b", 4.6, 5.8, 0.5),
+    door("GateA8", 7.0, openT=0.0, closeT=1.6),
+    bomb("Bomb8", 9.6, 0.45, boomT=26.0, wallTarget="WallW8"),
+    breakwall("WallW8", 10.5, 1.6, 0.9, 3.2),
+    door("GateC8", 12.2, openT=0.0, closeT=13.0),
+    block("St8a", 13.2, 0.55, 0.7, 1.1),
+    block("St8b", 13.9, 1.1, 0.7, 2.2),
+    block("St8c", 14.6, 1.65, 0.7, 3.3),
+    block("D8", 17.35, 4.15, 5.3, 0.5),           # デッキ[14.7,20]
+    door("GateD8", 15.9, openT=0.0, closeT=8.5, base=4.4),
+    bomb("BombF8", 17.6, 4.85, boomT=20.0, wallTarget=""),
+    door("LockE8", 19.0, openT=36.0, closeT=9999.0, base=4.4),
+    pendulum("BankSaw8", 12.0, 6.6, 1.8, period=4.0, amplitude=0.0, phase=0.0, deadly=False),
+], limit=38, width=20)
 
-# 検証: 生成したJSONが読み戻せるか + parent参照がHudCanvasを指すか
+# ── 検証: JSON再読込 + parent整合 + 閉門の最速到達チェック ─────────────
+WALK, HOPJ = 5.0, 0.15
+SLAMS = {  # stage: (gate x, closeT, 経路上のホップ数, スタートx)
+    2: (8.6, 2.0, 5, 0.8), 4: (7.9, 1.8, 4, 0.8), 6: (7.4, 1.7, 4, 0.8),
+    7: (7.7, 1.6, 4, 1.4), 8: (7.0, 1.6, 4, 0.8),
+}
 for n in range(1, 9):
     s = json.load(open(os.path.join(SCENES, f"stage{n}.json"), encoding="utf-8"))
     names = [e["name"] for e in s["entities"]]
     for e in s["entities"]:
         if "parent" in e:
             assert names[e["parent"]] == "HudCanvas", (n, e["name"])
-    assert "DrawAmount" in names and "RewindCount" in names
+    assert "PlayerMarker" in names and "RewindCount" in names
+    if n in SLAMS:
+        gx, ct, hops, sx = SLAMS[n]
+        fastest = (gx - sx) / WALK + hops * HOPJ
+        assert fastest > ct + 0.15, f"stage{n}: スラム最速到達{fastest:.2f} <= 閉{ct}(+0.15)"
+        print(f"  stage{n} スラム検証: 最速{fastest:.2f}s > 閉{ct}s ✓")
 print("all 8 scenes valid")

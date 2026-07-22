@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 11.0
+      "value": 23.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Boulder4,LockGate4"
+      "value": "GateA4,Lock4,GateB4,Saw4"
      },
      {
       "name": "standables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4"
+      "value": "F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor4,StartLedge,StepA4,StepB4,StepC4,StepD4,LockGate4"
+      "value": "F4a,PitF4,F4b,P4aL,P4aR,P4bL,P4bR,GateA4,Lock4,GateB4"
      },
      {
       "name": "mirrors",
@@ -310,7 +310,7 @@
    "transform": {
     "position": [
      0.8,
-     2.35,
+     0.55,
      0.0
     ],
     "rotation": [
@@ -319,8 +319,8 @@
      0.0
     ],
     "scale": [
-     0.800000011920929,
-     1.100000023841858,
+     0.9,
+     1.2,
      1.0
     ]
    }
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.2,
+     17.2,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.2,
+     17.2,
      0.5,
      0.8
     ],
@@ -482,37 +482,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "StartLedge",
+   "name": "F4a",
    "transform": {
     "position": [
-     1.2,
-     0.9,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     2.4,
-     1.8,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "Floor4",
-   "transform": {
-    "position": [
-     8.0,
+     6.0,
      -0.5,
      0.0
     ],
@@ -522,7 +495,7 @@
      0.0
     ],
     "scale": [
-     16.0,
+     12.0,
      1.0,
      3.0
     ]
@@ -534,12 +507,93 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Needle_Small/Needle_Small.obj"
+    "modelPath": "models/Block/Block.obj"
    },
-   "name": "NeedleA4",
+   "name": "PitF4",
    "transform": {
     "position": [
-     5.0,
+     12.6,
+     -1.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "F4b",
+   "transform": {
+    "position": [
+     15.6,
+     -0.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     4.8,
+     1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P4aL",
+   "transform": {
+    "position": [
+     2.3,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P4aN",
+   "transform": {
+    "position": [
+     3.0999999999999996,
      0.2,
      0.0
     ],
@@ -549,7 +603,7 @@
      0.0
     ],
     "scale": [
-     3.6,
+     0.9,
      0.4,
      1.0
     ]
@@ -579,37 +633,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "StepA4",
+   "name": "P4aR",
    "transform": {
     "position": [
      3.9,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "StepB4",
-   "transform": {
-    "position": [
-     5.6,
      0.85,
      0.0
     ],
@@ -631,12 +658,39 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Needle_Small/Needle_Small.obj"
+    "modelPath": "models/Block/Block.obj"
    },
-   "name": "NeedleB4",
+   "name": "P4bL",
    "transform": {
     "position": [
-     10.4,
+     5.3,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P4bN",
+   "transform": {
+    "position": [
+     6.1,
      0.2,
      0.0
     ],
@@ -646,7 +700,7 @@
      0.0
     ],
     "scale": [
-     2.6,
+     0.9,
      0.4,
      1.0
     ]
@@ -676,37 +730,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "StepC4",
+   "name": "P4bR",
    "transform": {
     "position": [
-     9.8,
-     0.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.1,
-     1.2,
-     3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
-   },
-   "name": "StepD4",
-   "transform": {
-    "position": [
-     11.2,
+     6.9,
      0.85,
      0.0
     ],
@@ -721,70 +748,6 @@
      3.0
     ]
    }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Roll_Ball/Roll_Ball.obj"
-   },
-   "name": "Boulder4",
-   "transform": {
-    "position": [
-     2.2,
-     0.8,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.6,
-     1.6,
-     1.6
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "rollT",
-      "type": "float",
-      "value": 0.0
-     },
-     {
-      "name": "rollSpeed",
-      "type": "float",
-      "value": 1.3
-     },
-     {
-      "name": "axisX",
-      "type": "float",
-      "value": 1.0
-     },
-     {
-      "name": "goalName",
-      "type": "string",
-      "value": "Exit"
-     },
-     {
-      "name": "goalHitScale",
-      "type": "float",
-      "value": 1.3
-     },
-     {
-      "name": "hitScale",
-      "type": "float",
-      "value": 0.8
-     }
-    ],
-    "scriptPath": "scripts/RollBall.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -794,10 +757,10 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
-   "name": "LockGate4Frame",
+   "name": "GateA4Frame",
    "transform": {
     "position": [
-     13.5,
+     7.9,
      2.0,
      0.0
     ],
@@ -821,10 +784,10 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Grill/Gate_Grill.obj"
    },
-   "name": "LockGate4",
+   "name": "GateA4",
    "transform": {
     "position": [
-     13.5,
+     7.9,
      1.8,
      0.0
     ],
@@ -845,7 +808,87 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 11.0
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 1.8
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "Lock4Frame",
+   "transform": {
+    "position": [
+     9.2,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "Lock4",
+   "transform": {
+    "position": [
+     9.2,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 25.0
      },
      {
       "name": "closeT",
@@ -867,13 +910,221 @@
    }
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+   },
+   "name": "Saw4",
+   "transform": {
+    "position": [
+     12.6,
+     1.3,
+     0.0
+    ],
+    "rotation": [
+     90.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.4,
+     1.4,
+     0.5
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 4.0
+     },
+     {
+      "name": "amplitude",
+      "type": "float",
+      "value": 1.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.8
+     }
+    ],
+    "scriptPath": "scripts/Pendulum.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateB4Frame",
+   "transform": {
+    "position": [
+     15.6,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateB4",
+   "transform": {
+    "position": [
+     15.6,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 13.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "name": "PlayerMarker",
+   "transform": {
+    "position": [
+     1.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.6,
+     0.3,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.85,
+     0.25,
+     0.9
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.35
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.12
+     }
+    ],
+    "scriptPath": "scripts/PlayerMarker.lua"
+   }
+  },
+  {
    "luaScript": {
     "enabled": true,
     "props": [
      {
       "name": "T",
       "type": "float",
-      "value": 11.0
+      "value": 23.0
      },
      {
       "name": "collapseAt",
@@ -901,7 +1152,7 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
+     9.0,
      1.62,
      7.0
     ],
@@ -911,7 +1162,7 @@
      0.0
     ],
     "scale": [
-     37.12,
+     41.76,
      19.28,
      1.0
     ]
@@ -935,7 +1186,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     8.0,
+     9.0,
      10.0,
      0.0
     ],
@@ -963,9 +1214,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     9.0,
+     7.251101495966005,
+     -12.412076657413621
     ],
     "rotation": [
      14.0,
@@ -1032,7 +1283,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 20,
+   "parent": 26,
    "transform": {
     "position": [
      0.0,
@@ -1091,7 +1342,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 11.0,
+    "maxValue": 23.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1106,7 +1357,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 20,
+   "parent": 26,
    "transform": {
     "position": [
      0.0,
@@ -1308,11 +1559,11 @@
      2.0,
      2.0
     ],
-    "text": "11秒以内にゴールしろ！",
+    "text": "23秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 26
   },
   {
    "name": "TimeLeft",
@@ -1400,11 +1651,11 @@
      2.0,
      2.0
     ],
-    "text": "11.0",
+    "text": "23.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 26
   },
   {
    "name": "DrawAmount",
@@ -1496,7 +1747,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 26
   },
   {
    "name": "RewindCount",
@@ -1584,11 +1835,11 @@
      2.0,
      2.0
     ],
-    "text": "まき戻し ×3",
+    "text": "まき戻し ×0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 26
   }
  ]
 }

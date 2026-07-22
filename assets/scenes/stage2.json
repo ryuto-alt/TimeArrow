@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 9.0
+      "value": 16.0
      },
      {
       "name": "scenePath",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor2,StepA,StepB"
+      "value": "F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor2,StepA,StepB,GateA,GateB"
+      "value": "F2,P2aL,P2aR,P2bL,P2bR,P2cL,P2cR,GateA,GateB"
      },
      {
       "name": "mirrors",
@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 3
+      "value": 2
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -309,7 +309,7 @@
    },
    "transform": {
     "position": [
-     1.0,
+     0.8,
      0.55,
      0.0
     ],
@@ -319,8 +319,8 @@
      0.0
     ],
     "scale": [
-     0.800000011920929,
-     1.100000023841858,
+     0.9,
+     1.2,
      1.0
     ]
    }
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.0,
+     15.4,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.0,
+     15.4,
      0.5,
      0.8
     ],
@@ -482,10 +482,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "Floor2",
+   "name": "F2",
    "transform": {
     "position": [
-     8.0,
+     8.25,
      -0.5,
      0.0
     ],
@@ -495,8 +495,35 @@
      0.0
     ],
     "scale": [
-     16.0,
+     16.5,
      1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2aL",
+   "transform": {
+    "position": [
+     2.6,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
      3.0
     ]
    }
@@ -509,10 +536,10 @@
    "meshRenderer": {
     "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
-   "name": "Needle2",
+   "name": "P2aN",
    "transform": {
     "position": [
-     4.8,
+     3.45,
      0.2,
      0.0
     ],
@@ -522,7 +549,7 @@
      0.0
     ],
     "scale": [
-     3.6,
+     0.7,
      0.4,
      1.0
     ]
@@ -552,10 +579,37 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "StepA",
+   "name": "P2aR",
    "transform": {
     "position": [
-     3.7,
+     4.3,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2bL",
+   "transform": {
+    "position": [
+     5.8,
      0.6,
      0.0
     ],
@@ -577,12 +631,55 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Block/Block.obj"
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
-   "name": "StepB",
+   "name": "P2bN",
    "transform": {
     "position": [
-     5.4,
+     6.6,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     0.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2bR",
+   "transform": {
+    "position": [
+     7.4,
      0.85,
      0.0
     ],
@@ -609,7 +706,7 @@
    "name": "GateAFrame",
    "transform": {
     "position": [
-     8.0,
+     8.6,
      2.0,
      0.0
     ],
@@ -636,7 +733,7 @@
    "name": "GateA",
    "transform": {
     "position": [
-     8.0,
+     8.6,
      1.8,
      0.0
     ],
@@ -662,7 +759,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 1.5
+      "value": 2.0
      },
      {
       "name": "slideTime",
@@ -684,12 +781,109 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2cL",
+   "transform": {
+    "position": [
+     10.4,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P2cN",
+   "transform": {
+    "position": [
+     11.2,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     0.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "P2cR",
+   "transform": {
+    "position": [
+     12.0,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
    "name": "GateBFrame",
    "transform": {
     "position": [
-     12.0,
+     13.6,
      2.0,
      0.0
     ],
@@ -716,7 +910,7 @@
    "name": "GateB",
    "transform": {
     "position": [
-     12.0,
+     13.6,
      1.8,
      0.0
     ],
@@ -742,7 +936,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 3.0
+      "value": 4.5
      },
      {
       "name": "slideTime",
@@ -759,13 +953,82 @@
    }
   },
   {
+   "name": "PlayerMarker",
+   "transform": {
+    "position": [
+     1.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.6,
+     0.3,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.85,
+     0.25,
+     0.9
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.35
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.12
+     }
+    ],
+    "scriptPath": "scripts/PlayerMarker.lua"
+   }
+  },
+  {
    "luaScript": {
     "enabled": true,
     "props": [
      {
       "name": "T",
       "type": "float",
-      "value": 9.0
+      "value": 16.0
      },
      {
       "name": "collapseAt",
@@ -793,7 +1056,7 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
+     8.25,
      1.62,
      7.0
     ],
@@ -803,7 +1066,7 @@
      0.0
     ],
     "scale": [
-     37.12,
+     38.279999999999994,
      19.28,
      1.0
     ]
@@ -827,7 +1090,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     8.0,
+     8.25,
      10.0,
      0.0
     ],
@@ -855,9 +1118,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     8.25,
+     7.457593483126583,
+     -11.43217586867044
     ],
     "rotation": [
      14.0,
@@ -924,7 +1187,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 17,
+   "parent": 24,
    "transform": {
     "position": [
      0.0,
@@ -983,7 +1246,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 9.0,
+    "maxValue": 16.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -998,7 +1261,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 17,
+   "parent": 24,
    "transform": {
     "position": [
      0.0,
@@ -1200,11 +1463,11 @@
      2.0,
      2.0
     ],
-    "text": "9秒以内にゴールしろ！",
+    "text": "16秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 24
   },
   {
    "name": "TimeLeft",
@@ -1292,11 +1555,11 @@
      2.0,
      2.0
     ],
-    "text": "9.0",
+    "text": "16.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 24
   },
   {
    "name": "DrawAmount",
@@ -1388,7 +1651,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 24
   },
   {
    "name": "RewindCount",
@@ -1476,11 +1739,11 @@
      2.0,
      2.0
     ],
-    "text": "まき戻し ×3",
+    "text": "まき戻し ×0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 17
+   "parent": 24
   }
  ]
 }

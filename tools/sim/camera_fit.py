@@ -109,6 +109,8 @@ def content_box(stage_or_entities):
             elif sp == "CrushWall.lua":          # 走り抜ける範囲まで
                 t = pr.get("travel", 0) * pr.get("axisX", -1)
                 ax0, ax1 = min(ax0, ax0 + t), max(ax1, ax1 + t)
+            elif sp == "RisePlatform.lua":       # 上空で待機している間も見せる
+                ay1 += pr.get("waitHeight", 0)
             elif sp == "TimedDoor.lua":          # 沈む先は見えなくてよい
                 pass
         x0, x1 = min(x0, ax0), max(x1, ax1)

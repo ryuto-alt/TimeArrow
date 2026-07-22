@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 14.0
+      "value": 26.0
      },
      {
       "name": "scenePath",
@@ -233,12 +233,12 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Blade5a,GateU,Blade5b,LockGate5"
+      "value": "Lift5,Gate5,Ball5,Lock5"
      },
      {
       "name": "standables",
       "type": "string",
-      "value": ""
+      "value": "Lift5"
      },
      {
       "name": "climbables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor5,StairA,StairB,Deck5"
+      "value": "F5,StepA5,StepB5,D5a,D5b,PitF5"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor5,StairA,StairB,Deck5,GateU,LockGate5"
+      "value": "F5,StepA5,StepB5,D5a,D5b,PitF5,Gate5,Lock5"
      },
      {
       "name": "mirrors",
@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 2
+      "value": 3
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -319,8 +319,8 @@
      0.0
     ],
     "scale": [
-     0.800000011920929,
-     1.100000023841858,
+     0.9,
+     1.2,
      1.0
     ]
    }
@@ -431,8 +431,8 @@
    },
    "transform": {
     "position": [
-     15.5,
-     0.65,
+     17.7,
+     4.65,
      0.0
     ],
     "rotation": [
@@ -458,8 +458,8 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.5,
-     0.5,
+     17.7,
+     4.5,
      0.8
     ],
     "rotation": [
@@ -482,10 +482,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "Floor5",
+   "name": "F5",
    "transform": {
     "position": [
-     8.0,
+     9.25,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     16.0,
+     18.5,
      1.0,
      3.0
     ]
@@ -507,13 +507,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
+    "modelPath": "models/Block/Block.obj"
    },
-   "name": "Blade5a",
+   "name": "StepA5",
    "transform": {
     "position": [
-     4.0,
-     1.3,
+     2.4,
+     0.6,
      0.0
     ],
     "rotation": [
@@ -522,29 +522,41 @@
      0.0
     ],
     "scale": [
-     1.4,
-     1.4,
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "N5",
+   "transform": {
+    "position": [
+     3.0,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.5,
+     0.4,
      1.0
     ]
    },
    "luaScript": {
     "enabled": true,
     "props": [
-     {
-      "name": "period",
-      "type": "float",
-      "value": 4.0
-     },
-     {
-      "name": "amplitude",
-      "type": "float",
-      "value": 1.5
-     },
-     {
-      "name": "startPhase",
-      "type": "float",
-      "value": 0.0
-     },
      {
       "name": "deadly",
       "type": "bool",
@@ -553,10 +565,95 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.55
+      "value": 0.75
      }
     ],
-    "scriptPath": "scripts/Pendulum.lua"
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepB5",
+   "transform": {
+    "position": [
+     3.6,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Bridge_Plank/Bridge_Plank.obj"
+   },
+   "name": "Lift5",
+   "transform": {
+    "position": [
+     7.0,
+     -0.3,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     3.0,
+     0.5,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "arriveT",
+      "type": "float",
+      "value": 14.0
+     },
+     {
+      "name": "riseTime",
+      "type": "float",
+      "value": 1.0
+     },
+     {
+      "name": "waitHeight",
+      "type": "float",
+      "value": 4.3
+     },
+     {
+      "name": "triggerName",
+      "type": "string",
+      "value": ""
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/RisePlatform.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -568,11 +665,11 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "StairA",
+   "name": "D5a",
    "transform": {
     "position": [
-     5.9,
-     0.6,
+     10.8,
+     3.75,
      0.0
     ],
     "rotation": [
@@ -581,8 +678,8 @@
      0.0
     ],
     "scale": [
-     1.2,
-     1.2,
+     3.6,
+     0.5,
      3.0
     ]
    }
@@ -595,11 +692,11 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "StairB",
+   "name": "PitF5",
    "transform": {
     "position": [
-     7.1,
-     1.2,
+     13.2,
+     2.55,
      0.0
     ],
     "rotation": [
@@ -609,7 +706,7 @@
     ],
     "scale": [
      1.2,
-     2.4,
+     0.5,
      3.0
     ]
    }
@@ -622,11 +719,11 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "Deck5",
+   "name": "D5b",
    "transform": {
     "position": [
-     10.2,
-     2.6,
+     16.15,
+     3.75,
      0.0
     ],
     "rotation": [
@@ -635,7 +732,7 @@
      0.0
     ],
     "scale": [
-     6.0,
+     4.7,
      0.5,
      3.0
     ]
@@ -649,11 +746,11 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
-   "name": "GateUFrame",
+   "name": "Gate5Frame",
    "transform": {
     "position": [
-     10.0,
-     4.85,
+     9.5,
+     6.0,
      0.0
     ],
     "rotation": [
@@ -676,11 +773,11 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Grill/Gate_Grill.obj"
    },
-   "name": "GateU",
+   "name": "Gate5",
    "transform": {
     "position": [
-     10.0,
-     4.65,
+     9.5,
+     5.8,
      0.0
     ],
     "rotation": [
@@ -705,7 +802,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 3.0
+      "value": 2.0
      },
      {
       "name": "slideTime",
@@ -727,13 +824,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
+    "modelPath": "models/Roll_Ball/Roll_Ball.obj"
    },
-   "name": "Blade5b",
+   "name": "Ball5",
    "transform": {
     "position": [
-     12.0,
-     4.0,
+     11.0,
+     4.75,
      0.0
     ],
     "rotation": [
@@ -742,41 +839,46 @@
      0.0
     ],
     "scale": [
-     1.2,
-     1.2,
-     1.0
+     1.5,
+     1.5,
+     1.5
     ]
    },
    "luaScript": {
     "enabled": true,
     "props": [
      {
-      "name": "period",
+      "name": "rollT",
       "type": "float",
-      "value": 3.0
+      "value": 0.0
      },
      {
-      "name": "amplitude",
+      "name": "rollSpeed",
+      "type": "float",
+      "value": 0.5
+     },
+     {
+      "name": "axisX",
       "type": "float",
       "value": 1.0
      },
      {
-      "name": "startPhase",
-      "type": "float",
-      "value": 1.5
+      "name": "goalName",
+      "type": "string",
+      "value": "Exit"
      },
      {
-      "name": "deadly",
-      "type": "bool",
-      "value": true
+      "name": "goalHitScale",
+      "type": "float",
+      "value": 1.3
      },
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.55
+      "value": 0.8
      }
     ],
-    "scriptPath": "scripts/Pendulum.lua"
+    "scriptPath": "scripts/RollBall.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -788,11 +890,11 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
-   "name": "LockGate5Frame",
+   "name": "Lock5Frame",
    "transform": {
     "position": [
-     14.0,
-     2.0,
+     16.2,
+     6.0,
      0.0
     ],
     "rotation": [
@@ -815,11 +917,11 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Grill/Gate_Grill.obj"
    },
-   "name": "LockGate5",
+   "name": "Lock5",
    "transform": {
     "position": [
-     14.0,
-     1.8,
+     16.2,
+     5.8,
      0.0
     ],
     "rotation": [
@@ -839,7 +941,7 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 12.0
+      "value": 30.0
      },
      {
       "name": "closeT",
@@ -861,13 +963,82 @@
    }
   },
   {
+   "name": "PlayerMarker",
+   "transform": {
+    "position": [
+     1.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.6,
+     0.3,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.85,
+     0.25,
+     0.9
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.35
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.12
+     }
+    ],
+    "scriptPath": "scripts/PlayerMarker.lua"
+   }
+  },
+  {
    "luaScript": {
     "enabled": true,
     "props": [
      {
       "name": "T",
       "type": "float",
-      "value": 14.0
+      "value": 26.0
      },
      {
       "name": "collapseAt",
@@ -895,7 +1066,7 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
+     9.25,
      1.62,
      7.0
     ],
@@ -905,7 +1076,7 @@
      0.0
     ],
     "scale": [
-     37.12,
+     42.919999999999995,
      19.28,
      1.0
     ]
@@ -929,7 +1100,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     8.0,
+     9.25,
      10.0,
      0.0
     ],
@@ -957,9 +1128,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     9.25,
+     8.515604166912478,
+     -12.738710253661345
     ],
     "rotation": [
      14.0,
@@ -1026,7 +1197,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 19,
+   "parent": 23,
    "transform": {
     "position": [
      0.0,
@@ -1085,7 +1256,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 14.0,
+    "maxValue": 26.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1100,7 +1271,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 19,
+   "parent": 23,
    "transform": {
     "position": [
      0.0,
@@ -1302,11 +1473,11 @@
      2.0,
      2.0
     ],
-    "text": "14秒以内にゴールしろ！",
+    "text": "26秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 23
   },
   {
    "name": "TimeLeft",
@@ -1394,11 +1565,11 @@
      2.0,
      2.0
     ],
-    "text": "14.0",
+    "text": "26.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 23
   },
   {
    "name": "DrawAmount",
@@ -1490,7 +1661,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 23
   },
   {
    "name": "RewindCount",
@@ -1578,11 +1749,11 @@
      2.0,
      2.0
     ],
-    "text": "まき戻し ×3",
+    "text": "まき戻し ×0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 23
   }
  ]
 }

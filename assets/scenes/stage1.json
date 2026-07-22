@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 12.0
+      "value": 15.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Target1"
+      "value": "Bridge1"
      },
      {
       "name": "standables",
@@ -319,8 +319,8 @@
      0.0
     ],
     "scale": [
-     0.800000011920929,
-     1.100000023841858,
+     0.9,
+     1.2,
      1.0
     ]
    }
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.0,
+     15.2,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.0,
+     15.2,
      0.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "FloorL",
    "transform": {
     "position": [
-     3.5,
+     5.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     7.0,
+     10.0,
      1.0,
      3.0
     ]
@@ -512,7 +512,7 @@
    "name": "FloorR",
    "transform": {
     "position": [
-     14.0,
+     15.25,
      -0.5,
      0.0
     ],
@@ -522,7 +522,7 @@
      0.0
     ],
     "scale": [
-     4.0,
+     2.5,
      1.0,
      3.0
     ]
@@ -539,7 +539,7 @@
    "name": "Bridge1",
    "transform": {
     "position": [
-     9.5,
+     12.0,
      -0.3,
      0.0
     ],
@@ -549,7 +549,7 @@
      0.0
     ],
     "scale": [
-     5.0,
+     4.0,
      0.6,
      1.0
     ]
@@ -565,7 +565,7 @@
      {
       "name": "riseTime",
       "type": "float",
-      "value": 14.0
+      "value": 16.0
      },
      {
       "name": "waitHeight",
@@ -575,7 +575,7 @@
      {
       "name": "triggerName",
       "type": "string",
-      "value": "Target1"
+      "value": ""
      },
      {
       "name": "listenButton",
@@ -588,30 +588,72 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Target_Bull/Target_Bull.obj"
-   },
-   "name": "Target1",
+   "name": "PlayerMarker",
    "transform": {
     "position": [
-     6.0,
-     4.5,
+     1.5,
+     2.0,
      0.0
     ],
     "rotation": [
      0.0,
      0.0,
-     0.0
+     -90.0
     ],
     "scale": [
-     1.1,
-     1.1,
-     0.5
+     0.6,
+     0.3,
+     1.0
     ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.85,
+     0.25,
+     0.9
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.35
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.12
+     }
+    ],
+    "scriptPath": "scripts/PlayerMarker.lua"
    }
   },
   {
@@ -621,7 +663,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 12.0
+      "value": 15.0
      },
      {
       "name": "collapseAt",
@@ -649,7 +691,7 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
+     8.25,
      1.62,
      7.0
     ],
@@ -659,7 +701,7 @@
      0.0
     ],
     "scale": [
-     37.12,
+     38.279999999999994,
      19.28,
      1.0
     ]
@@ -683,7 +725,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     8.0,
+     8.25,
      10.0,
      0.0
     ],
@@ -711,9 +753,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     8.25,
+     7.457593483126583,
+     -11.43217586867044
     ],
     "rotation": [
      14.0,
@@ -839,7 +881,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 12.0,
+    "maxValue": 15.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1056,7 +1098,7 @@
      2.0,
      2.0
     ],
-    "text": "12秒以内にゴールしろ！",
+    "text": "15秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
@@ -1148,7 +1190,7 @@
      2.0,
      2.0
     ],
-    "text": "12.0",
+    "text": "15.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
@@ -1332,7 +1374,7 @@
      2.0,
      2.0
     ],
-    "text": "まき戻し ×3",
+    "text": "まき戻し ×0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
