@@ -147,8 +147,9 @@ def rollball(name, x, y, s, rollT, speed):
 
 
 def bomb(name, x, y, boomT, wallTarget="", blastScale=2.4):
-    return sprite(name, "textures/bomb_rgba.png", x, y, 0.9, 0.9, layer=5,
-                  lua=script("Bomb.lua", [
+    # Bomb_Orb: 底面y=-0.45/天面y=+0.81(導火線)なので y=床上+0.45 で置く
+    return mesh(name, "Bomb_Orb", x, y, 1.0, 1.0, 1.0, shader=TIMEWARP,
+                lua=script("Bomb.lua", [
                       prop("boomT", "float", float(boomT)),
                       prop("blastScale", "float", float(blastScale)),
                       prop("wallTarget", "string", wallTarget)]))
@@ -193,6 +194,15 @@ def ferry(name, x, y, period, amplitude, phase):
                     prop("period", "float", float(period)), prop("amplitude", "float", float(amplitude)),
                     prop("startPhase", "float", float(phase)), prop("deadly", "bool", False),
                     prop("hitScale", "float", 0.8)]))
+
+
+def moveplat(name, x, y, period, amplitude, phase=0.0, sx=2.4):
+    # 縦に往復する昇降足場(MovingPlatform.lua)。FFで位相を手繰り寄せて乗る
+    return mesh(name, "Move_Block", x, y, sx, 0.5, 1.0, shader=TIMEWARP,
+                lua=script("MovingPlatform.lua", [
+                    prop("period", "float", float(period)),
+                    prop("amplitude", "float", float(amplitude)),
+                    prop("startPhase", "float", float(phase))]))
 
 
 def fan(name, x, y, liftH=3.0, surgeH=7.0):
@@ -407,52 +417,67 @@ build(2, [
     door("GateD", 45.0, openT=0.0, closeT=S2["closeD"]),
 ], limit=S2["limit"], width=52)
 
-# ── STAGE 3「三つの錠の取引」(幅58) ──────────────────────────────────
-# 錠1(待つか払うか)→二重スラム→錠2は歩きながら種まき→サンド閉門Z
+# ── STAGE 3「風の谷」(幅58) ──────────────────────────────────
+# 門は1枚だけ。主役は【橋(FF)】と【上昇気流ファン(FFサージ)】と【崩れ足場】。
+# 谷1は自然には架からない橋 → FF。谷2は地上ルート皆無 → ファンでしか棚に上がれない。
+# 棚の途中は崩れ足場(渡り切るか、RWで復活させるか)。最後の閉門はRWでしか開かない。
 build(3, [
     gm(3, S3["limit"]),
-    player(0.8, 0.55, targets="Lock1,GateS1,GateS2,Lock2,GateZ",
-           arrowStops="F3,StepA3,StepB3",
-           solids="F3,StepA3,StepB3,"
-                  "Lock1,GateS1,GateS2,Lock2,GateZ", rewindShots=S3["rw"]),
+    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,GateZ3",
+           standables="Bridge3,CrA3,CrB3",
+           arrowStops="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c",
+           solids="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c,Fan3,GateZ3",
+           rewindShots=S3["rw"]),
     copy.deepcopy(arrow),
     exit_(54.0, 0.65, "scenes/stage4.json"), gate(54.0, 0.5),
-    block("F3", 29.0, -0.5, 58.0, 1.0),
-    block("StepA3", 6.6, 0.6, 1.1, 1.2),
+    block("F3a", 10.5, -0.5, 21.0, 1.0),          # [0,21]
+    patch("P3a", 3.0, 4.6),
+    block("StepA3", 6.6, 0.6, 1.1, 1.2),          # 射撃台(橋を早撃ちする高台)
     block("StepB3", 7.8, 0.85, 1.1, 1.7),
-    door("Lock1", 10.6, openT=S3["lock1"], closeT=9999.0),
-    patch("P3a", 16.0, 17.7, 0.7),
-    door("GateS1", 20.5, openT=0.0, closeT=S3["slam1"]),
-    patch("P3b", 23.5, 25.2, 0.7),
-    door("GateS2", 28.5, openT=0.0, closeT=S3["slam2"]),
-    door("Lock2", 38.0, openT=S3["lock2"], closeT=9999.0),    # x22-28から種まき(射程18)
-    patch("P3c", 41.5, 43.2, 0.7),
-    door("GateZ", 46.5, openT=0.0, closeT=S3["closeZ"]),      # サンド
+    riseplat("Bridge3", 24.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S3["rise3"]),                # 谷1[21,27]: 自然降下は間に合わない
+    beacon("Bridge3"),
+    block("F3b", 32.0, -0.5, 10.0, 1.0),          # [27,37]
+    fan("Fan3", 30.0, 0.0, liftH=2.6, surgeH=7.6),  # 谷2は地上ルート無し=サージ必須
+    beacon("Fan3", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
+    block("L3a", 34.5, 5.15, 6.0, 0.5),           # 棚[31.5,37.5](上面5.4)
+    crumble("CrA3", 38.6, 5.175, 1.6, 1.5),       # 谷2[37,44]の上の崩れ足場
+    crumble("CrB3", 40.4, 5.175, 1.6, 1.5),
+    block("L3b", 44.4, 5.15, 6.0, 0.5),           # 棚[41.4,47.4]
+    block("F3c", 51.0, -0.5, 14.0, 1.0),          # [44,58]
+    door("GateZ3", 50.0, openT=0.0, closeT=S3["closeZ"]),     # 到着時には必ず閉じている
 ], limit=S3["limit"], width=58)
 
-# ── STAGE 4「動かせない締切+動く壁」(幅64) ──────────────────────────
+# ── STAGE 4「昇降の工房」(幅64) ────────────────────────────────
+# 門は2枚だけ(スラムA=RW教材 / 錠Z=種まき教材)。主役は【乗り物】:
+# 横に振れるフェリー(位相合わせ)と縦に往復する昇降足場(FFで手繰り寄せて乗る)。
+# 途中に刃ピット/ハンマー(平地で唯一渡れる刃)/崩れ足場。
 build(4, [
     gm(4, S4["limit"]),
-    player(0.8, 0.55, targets="GateA4,Lock4,GateB4,Saw4,Ham4,Ham4X,CW4,GateZ4",
-           arrowStops="F4a,PitF4,F4b",
-           solids="F4a,PitF4,F4b,"
-                  "GateA4,Lock4,GateB4,CW4,GateZ4", rewindShots=S4["rw"]),
+    player(0.8, 0.55, targets="GateA4,Saw4,Ham4,Ham4X,Ferry4,Elev4,Lock4,CrA4,CrB4",
+           standables="Ferry4,Elev4,CrA4,CrB4",
+           arrowStops="F4a,PitF4,F4b,F4c,L4a,L4b",
+           solids="F4a,PitF4,F4b,F4c,L4a,L4b,GateA4,Lock4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
-    exit_(62.5, 0.65, "scenes/stage5.json"), gate(62.5, 0.5),
+    exit_(62.5, 5.55, "scenes/stage5.json"), gate(62.5, 5.4),
     block("F4a", 9.4, -0.5, 18.8, 1.0),           # [0,18.8]
-    block("PitF4", 19.4, -1.5, 1.2, 1.0),
-    block("F4b", 42.0, -0.5, 44.0, 1.0),          # [20,64]
+    block("PitF4", 19.4, -1.5, 1.2, 1.0),         # 刃の退避ピット
+    block("F4b", 25.5, -0.5, 11.0, 1.0),          # [20,31]
     patch("P4a", 4.0, 5.7, 0.7),
     patch("P4b", 8.8, 10.4, 0.7),
     door("GateA4", 13.0, openT=0.0, closeT=S4["slamA"]),
-    door("Lock4", 15.4, openT=S4["lockOpen"], closeT=9999.0),
     pendulum("Saw4", 19.4, 1.3, 1.4, period=4.0, amplitude=1.0, phase=0.0),
-    door("GateB4", 24.4, openT=0.0, closeT=S4["closeB"]),
-    hammer("Ham4", 30.0, 3.5, 1.2, period=3.4, maxAngle=55.0),
-    crushwall("CW4", 37.0, 1.7, 1.0, 3.4, startT=S4["cwStart"], axisX=1.0,
-              speed=S4["cwSpeed"], travel=S4["cwTravel"], ghostTime=1.4),
-    patch("P4c", 55.0, 56.7, 0.7),
-    door("GateZ4", 59.5, openT=0.0, closeT=S4["closeZ"]),
+    hammer("Ham4", 27.0, 3.5, 1.2, period=3.4, maxAngle=55.0),
+    ferry("Ferry4", 35.0, 0.35, period=S4["ferryP"], amplitude=3.2, phase=0.0),
+    beacon("Ferry4", color=(0.4, 0.8, 1.0, 0.9), offset=0.8),   # 谷[31,39]を渡す
+    block("F4c", 44.5, -0.5, 11.0, 1.0),          # [39,50]
+    door("Lock4", 49.0, openT=S4["lockZ"], closeT=9999.0),      # x39から水平に種まき
+    moveplat("Elev4", 51.5, 2.85, period=S4["elevP"], amplitude=2.3, phase=S4["elevPh"], sx=2.0),
+    beacon("Elev4", color=(0.4, 0.8, 1.0, 0.9), offset=0.7),    # 谷[50,64]の唯一の足がかり
+    block("L4a", 55.2, 5.15, 4.0, 0.5),           # レッジ[53.2,57.2](上面5.4)
+    crumble("CrA4", 58.0, 5.175, 1.6, 1.5),       # 谷の上の崩れ足場(S3の再演)
+    crumble("CrB4", 59.8, 5.175, 1.6, 1.5),
+    block("L4b", 62.3, 5.15, 3.4, 0.5),           # [60.6,64]
 ], limit=S4["limit"], width=64)
 
 # ── STAGE 5「時の昇降機・改」(幅88, 3層) ─────────────────────────────

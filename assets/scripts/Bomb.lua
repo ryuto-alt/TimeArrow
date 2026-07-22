@@ -14,6 +14,9 @@ end
 function OnStart(self)
   self.ts = 1.0
   events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+  events:on("aim_preview", function(d)
+    if d.target == self.name then self.aimPv = { m = d.mode, t = 0.12 } end
+  end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
@@ -63,11 +66,32 @@ function OnUpdate(self, dt)
       events:emit("time_refund", { amount = step })
     end
   end
+
+  -- 見た目: 金色=撃てる / FF中=シアン / RW中=紫 / 照準ロック=帯8-9。
+  -- 導火線が短くなるほど点滅が速くなる(残り3秒で危険を伝える)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    local eff = 5.0
+    local left = self.boomT - self.clock
+    if left < 3.0 then
+      eff = 6.0 + math.sin(self.clock * (18.0 - left * 4.0)) * 0.9  -- 経年帯で焦げていく
+    end
+    if self.ffRemain > 0 then eff = 1.0
+    elseif (self.rwGlow or 0) > 0 then eff = 2.8 end
+    if self.aimPv then
+      self.aimPv.t = self.aimPv.t - dt
+      if self.aimPv.t > 0 then eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+      else self.aimPv = nil end
+    end
+    scene:setMeshEffect(selfE, eff)
+  end
+
   if self.clock < self.boomT then return end
 
   self.exploded = true
   FX.explosion(self.bx, self.by, self.bz, 1.3, 1.0, 0.5, 0.15)
   fx:pulse(0.5)
+  self.transform.position = Vec3.new(self.bx, -100.0, self.bz)  -- 爆散して消える
 
   if self.wallTarget ~= "" then
     events:emit("wall_destroyed", { target = self.wallTarget })

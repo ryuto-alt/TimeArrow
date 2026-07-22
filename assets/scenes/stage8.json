@@ -275,6 +275,12 @@
    },
    "name": "Player",
    "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "billboard": false,
     "color": [
      1.0,
@@ -284,6 +290,8 @@
     ],
     "effectValue": 0.0,
     "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
     "shaderAlphaBlend": false,
     "shaderParams": [
      0.0,
@@ -328,6 +336,12 @@
   {
    "name": "Arrow",
    "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "billboard": false,
     "color": [
      1.0,
@@ -337,6 +351,8 @@
     ],
     "effectValue": 0.0,
     "layer": 7,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
     "shaderAlphaBlend": false,
     "shaderParams": [
      0.0,
@@ -397,6 +413,12 @@
    },
    "name": "Exit",
    "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "billboard": false,
     "color": [
      1.0,
@@ -406,6 +428,8 @@
     ],
     "effectValue": 0.0,
     "layer": 5,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
     "shaderAlphaBlend": false,
     "shaderParams": [
      0.0,
@@ -449,7 +473,7 @@
   },
   {
    "material": {
-    "metallic": 0.05,
+    "metallic": 0.05000000074505806,
     "roughness": 0.5
    },
    "meshRenderer": {
@@ -468,9 +492,9 @@
      0.0
     ],
     "scale": [
-     1.1,
-     1.1,
-     1.1
+     1.100000023841858,
+     1.100000023841858,
+     1.100000023841858
     ]
    }
   },
@@ -669,6 +693,13 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Bomb_Orb/Bomb_Orb.obj"
+   },
    "name": "Bomb8",
    "transform": {
     "position": [
@@ -682,43 +713,10 @@
      0.0
     ],
     "scale": [
-     0.9,
-     0.9,
+     1.0,
+     1.0,
      1.0
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     1.0,
-     1.0,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 5,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/bomb_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    },
    "luaScript": {
     "enabled": true,
@@ -740,7 +738,8 @@
      }
     ],
     "scriptPath": "scripts/Bomb.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "Beacon_Bomb8",
@@ -1157,6 +1156,13 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Bomb_Orb/Bomb_Orb.obj"
+   },
    "name": "BombF8",
    "transform": {
     "position": [
@@ -1170,43 +1176,10 @@
      0.0
     ],
     "scale": [
-     0.9,
-     0.9,
+     1.0,
+     1.0,
      1.0
     ]
-   },
-   "sprite2d": {
-    "billboard": false,
-    "color": [
-     1.0,
-     1.0,
-     1.0,
-     1.0
-    ],
-    "effectValue": 0.0,
-    "layer": 5,
-    "shaderAlphaBlend": false,
-    "shaderParams": [
-     0.0,
-     0.0,
-     0.0,
-     0.0
-    ],
-    "shaderPath": "",
-    "size": [
-     1.0,
-     1.0
-    ],
-    "texturePath": "textures/bomb_rgba.png",
-    "uvMax": [
-     1.0,
-     1.0
-    ],
-    "uvMin": [
-     0.0,
-     0.0
-    ],
-    "worldSpace": true
    },
    "luaScript": {
     "enabled": true,
@@ -1228,7 +1201,8 @@
      }
     ],
     "scriptPath": "scripts/Bomb.lua"
-   }
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "name": "Beacon_BombF8",
@@ -2489,24 +2463,6 @@
     "orthoSize": 6.0,
     "projection": 0
    },
-   "name": "GameCamera",
-   "transform": {
-    "position": [
-     11.1,
-     5.85,
-     -13.0
-    ],
-    "rotation": [
-     14.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.0,
-     1.0,
-     1.0
-    ]
-   },
    "luaScript": {
     "enabled": true,
     "props": [
@@ -2557,6 +2513,24 @@
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
+   },
+   "name": "GameCamera",
+   "transform": {
+    "position": [
+     11.1,
+     5.85,
+     -13.0
+    ],
+    "rotation": [
+     14.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
    }
   },
   {
@@ -2705,6 +2679,12 @@
     ]
    },
    "uiImage": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "color": [
      1.0,
      1.0,

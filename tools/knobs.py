@@ -17,12 +17,12 @@ K = {
     # S2「四枚の閉門回廊」スラム(RW)とスプリント(急げば間に合う)の混合
     "s2": dict(limit=18.0, rw=3, closeA=2.8, closeB=8.6, closeC=12.5, closeD=15.5),
 
-    # S3「三つの錠の取引」種まきFF+二重スラム+サンド
-    "s3": dict(limit=38.0, rw=2, lock1=18.0, slam1=3.5, slam2=8.5, lock2=30.0, closeZ=26.0),
+    # S3「風の谷」橋(FF)+ファンサージ(FF)+崩れ足場+閉門1枚(RW)
+    "s3": dict(limit=33.0, rw=2, rise3=24.0, closeZ=14.0),
 
-    # S4「動かせない締切」サンド+刃ピット+動く壁(FFゴースト)
-    "s4": dict(limit=43.0, rw=2, slamA=2.55, lockOpen=25.0, closeB=17.5,
-               cwStart=5.0, cwSpeed=1.0, cwTravel=15.0, closeZ=32.0),
+    # S4「昇降の工房」スラム(RW)+刃ピット+ハンマー+フェリー+昇降足場+錠(種まき)
+    "s4": dict(limit=44.0, rw=2, slamA=2.55, ferryP=7.0,
+               elevP=6.0, elevPh=0.0, lockZ=40.0),
 
     # S5「時の昇降機・改」リフト+大玉チェイス+ツタ+フェリー+最上層
     "s5": dict(limit=66.0, rw=3, lift=14.0, slamG=2.6, ballRoll=4.0, ballSpeed=0.6,

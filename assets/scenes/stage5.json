@@ -275,6 +275,12 @@
    },
    "name": "Player",
    "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "billboard": false,
     "color": [
      1.0,
@@ -284,6 +290,8 @@
     ],
     "effectValue": 0.0,
     "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
     "shaderAlphaBlend": false,
     "shaderParams": [
      0.0,
@@ -328,6 +336,12 @@
   {
    "name": "Arrow",
    "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "billboard": false,
     "color": [
      1.0,
@@ -337,6 +351,8 @@
     ],
     "effectValue": 0.0,
     "layer": 7,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
     "shaderAlphaBlend": false,
     "shaderParams": [
      0.0,
@@ -397,6 +413,12 @@
    },
    "name": "Exit",
    "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "billboard": false,
     "color": [
      1.0,
@@ -406,6 +428,8 @@
     ],
     "effectValue": 0.0,
     "layer": 5,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
     "shaderAlphaBlend": false,
     "shaderParams": [
      0.0,
@@ -449,7 +473,7 @@
   },
   {
    "material": {
-    "metallic": 0.05,
+    "metallic": 0.05000000074505806,
     "roughness": 0.5
    },
    "meshRenderer": {
@@ -468,9 +492,9 @@
      0.0
     ],
     "scale": [
-     1.1,
-     1.1,
-     1.1
+     1.100000023841858,
+     1.100000023841858,
+     1.100000023841858
     ]
    }
   },
@@ -1720,24 +1744,6 @@
     "orthoSize": 6.0,
     "projection": 0
    },
-   "name": "GameCamera",
-   "transform": {
-    "position": [
-     11.1,
-     5.85,
-     -13.0
-    ],
-    "rotation": [
-     14.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.0,
-     1.0,
-     1.0
-    ]
-   },
    "luaScript": {
     "enabled": true,
     "props": [
@@ -1788,6 +1794,24 @@
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
+   },
+   "name": "GameCamera",
+   "transform": {
+    "position": [
+     11.1,
+     5.85,
+     -13.0
+    ],
+    "rotation": [
+     14.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
    }
   },
   {
@@ -1936,6 +1960,12 @@
     ]
    },
    "uiImage": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
     "color": [
      1.0,
      1.0,
