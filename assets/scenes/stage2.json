@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.4,
+     25.8,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.4,
+     25.8,
      0.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "F2",
    "transform": {
     "position": [
-     8.25,
+     14.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     16.5,
+     28.0,
      1.0,
      3.0
     ]
@@ -512,7 +512,7 @@
    "name": "P2aL",
    "transform": {
     "position": [
-     2.6,
+     4.6,
      0.6,
      0.0
     ],
@@ -539,7 +539,7 @@
    "name": "P2aN",
    "transform": {
     "position": [
-     3.45,
+     5.449999999999999,
      0.2,
      0.0
     ],
@@ -582,7 +582,7 @@
    "name": "P2aR",
    "transform": {
     "position": [
-     4.3,
+     6.3,
      0.85,
      0.0
     ],
@@ -609,7 +609,7 @@
    "name": "P2bL",
    "transform": {
     "position": [
-     5.8,
+     9.0,
      0.6,
      0.0
     ],
@@ -636,7 +636,7 @@
    "name": "P2bN",
    "transform": {
     "position": [
-     6.6,
+     9.85,
      0.2,
      0.0
     ],
@@ -646,7 +646,7 @@
      0.0
     ],
     "scale": [
-     1.0,
+     0.7,
      0.4,
      1.0
     ]
@@ -679,7 +679,7 @@
    "name": "P2bR",
    "transform": {
     "position": [
-     7.4,
+     10.7,
      0.85,
      0.0
     ],
@@ -706,7 +706,7 @@
    "name": "GateAFrame",
    "transform": {
     "position": [
-     8.6,
+     13.0,
      2.0,
      0.0
     ],
@@ -733,7 +733,7 @@
    "name": "GateA",
    "transform": {
     "position": [
-     8.6,
+     13.0,
      1.8,
      0.0
     ],
@@ -759,7 +759,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 2.0
+      "value": 2.8
      },
      {
       "name": "slideTime",
@@ -786,7 +786,7 @@
    "name": "P2cL",
    "transform": {
     "position": [
-     10.4,
+     16.4,
      0.6,
      0.0
     ],
@@ -813,7 +813,7 @@
    "name": "P2cN",
    "transform": {
     "position": [
-     11.2,
+     17.25,
      0.2,
      0.0
     ],
@@ -823,7 +823,7 @@
      0.0
     ],
     "scale": [
-     1.0,
+     0.7,
      0.4,
      1.0
     ]
@@ -856,7 +856,7 @@
    "name": "P2cR",
    "transform": {
     "position": [
-     12.0,
+     18.1,
      0.85,
      0.0
     ],
@@ -883,7 +883,7 @@
    "name": "GateBFrame",
    "transform": {
     "position": [
-     13.6,
+     21.5,
      2.0,
      0.0
     ],
@@ -910,7 +910,7 @@
    "name": "GateB",
    "transform": {
     "position": [
-     13.6,
+     21.5,
      1.8,
      0.0
     ],
@@ -936,7 +936,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 4.5
+      "value": 6.0
      },
      {
       "name": "slideTime",
@@ -1056,8 +1056,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.25,
-     1.62,
+     14.0,
+     2.8000000000000003,
      7.0
     ],
     "rotation": [
@@ -1066,8 +1066,8 @@
      0.0
     ],
     "scale": [
-     38.279999999999994,
-     19.28,
+     64.96,
+     33.879999999999995,
      1.0
     ]
    }
@@ -1090,7 +1090,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     8.25,
+     14.0,
      10.0,
      0.0
     ],
@@ -1118,9 +1118,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.25,
-     7.457593483126583,
-     -11.43217586867044
+     14.0,
+     13.54115491489548,
+     -18.94474858236816
     ],
     "rotation": [
      14.0,

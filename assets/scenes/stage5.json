@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     17.7,
+     32.6,
      4.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     17.7,
+     32.6,
      4.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "F5",
    "transform": {
     "position": [
-     9.25,
+     17.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     18.5,
+     34.0,
      1.0,
      3.0
     ]
@@ -512,7 +512,7 @@
    "name": "StepA5",
    "transform": {
     "position": [
-     2.4,
+     4.2,
      0.6,
      0.0
     ],
@@ -539,7 +539,7 @@
    "name": "N5",
    "transform": {
     "position": [
-     3.0,
+     4.9,
      0.2,
      0.0
     ],
@@ -549,7 +549,7 @@
      0.0
     ],
     "scale": [
-     0.5,
+     0.6,
      0.4,
      1.0
     ]
@@ -582,7 +582,7 @@
    "name": "StepB5",
    "transform": {
     "position": [
-     3.6,
+     5.6,
      0.85,
      0.0
     ],
@@ -609,7 +609,7 @@
    "name": "Lift5",
    "transform": {
     "position": [
-     7.0,
+     12.5,
      -0.3,
      0.0
     ],
@@ -668,7 +668,7 @@
    "name": "D5a",
    "transform": {
     "position": [
-     10.8,
+     20.0,
      3.75,
      0.0
     ],
@@ -678,7 +678,7 @@
      0.0
     ],
     "scale": [
-     3.6,
+     8.0,
      0.5,
      3.0
     ]
@@ -695,7 +695,7 @@
    "name": "PitF5",
    "transform": {
     "position": [
-     13.2,
+     24.6,
      2.55,
      0.0
     ],
@@ -722,7 +722,7 @@
    "name": "D5b",
    "transform": {
     "position": [
-     16.15,
+     29.6,
      3.75,
      0.0
     ],
@@ -732,7 +732,7 @@
      0.0
     ],
     "scale": [
-     4.7,
+     8.8,
      0.5,
      3.0
     ]
@@ -749,7 +749,7 @@
    "name": "Gate5Frame",
    "transform": {
     "position": [
-     9.5,
+     17.2,
      6.0,
      0.0
     ],
@@ -776,7 +776,7 @@
    "name": "Gate5",
    "transform": {
     "position": [
-     9.5,
+     17.2,
      5.8,
      0.0
     ],
@@ -802,7 +802,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 2.0
+      "value": 2.6
      },
      {
       "name": "slideTime",
@@ -829,7 +829,7 @@
    "name": "Ball5",
    "transform": {
     "position": [
-     11.0,
+     20.5,
      4.75,
      0.0
     ],
@@ -855,7 +855,7 @@
      {
       "name": "rollSpeed",
       "type": "float",
-      "value": 0.5
+      "value": 0.55
      },
      {
       "name": "axisX",
@@ -893,7 +893,7 @@
    "name": "Lock5Frame",
    "transform": {
     "position": [
-     16.2,
+     30.4,
      6.0,
      0.0
     ],
@@ -920,7 +920,7 @@
    "name": "Lock5",
    "transform": {
     "position": [
-     16.2,
+     30.4,
      5.8,
      0.0
     ],
@@ -1066,8 +1066,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     9.25,
-     1.62,
+     17.0,
+     3.4000000000000004,
      7.0
     ],
     "rotation": [
@@ -1076,8 +1076,8 @@
      0.0
     ],
     "scale": [
-     42.919999999999995,
-     19.28,
+     78.88,
+     41.14,
      1.0
     ]
    }
@@ -1100,7 +1100,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     9.25,
+     17.0,
      10.0,
      0.0
     ],
@@ -1128,9 +1128,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     9.25,
-     8.515604166912478,
-     -12.738710253661345
+     17.0,
+     16.715186966253167,
+     -22.86435173734088
     ],
     "rotation": [
      14.0,

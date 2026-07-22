@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     14.6,
+     26.8,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     14.6,
+     26.8,
      0.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "F3",
    "transform": {
     "position": [
-     8.0,
+     15.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     16.0,
+     30.0,
      1.0,
      3.0
     ]
@@ -512,7 +512,7 @@
    "name": "StepA3",
    "transform": {
     "position": [
-     3.0,
+     7.4,
      0.6,
      0.0
     ],
@@ -539,7 +539,7 @@
    "name": "StepB3",
    "transform": {
     "position": [
-     4.2,
+     8.6,
      0.85,
      0.0
     ],
@@ -566,7 +566,7 @@
    "name": "Lock3Frame",
    "transform": {
     "position": [
-     7.0,
+     11.4,
      2.0,
      0.0
     ],
@@ -593,7 +593,7 @@
    "name": "Lock3",
    "transform": {
     "position": [
-     7.0,
+     11.4,
      1.8,
      0.0
     ],
@@ -646,7 +646,7 @@
    "name": "P3aL",
    "transform": {
     "position": [
-     8.6,
+     15.4,
      0.6,
      0.0
     ],
@@ -673,7 +673,7 @@
    "name": "P3aN",
    "transform": {
     "position": [
-     9.399999999999999,
+     16.2,
      0.2,
      0.0
     ],
@@ -683,7 +683,7 @@
      0.0
     ],
     "scale": [
-     1.0,
+     0.7,
      0.4,
      1.0
     ]
@@ -716,7 +716,7 @@
    "name": "P3aR",
    "transform": {
     "position": [
-     10.2,
+     17.0,
      0.85,
      0.0
     ],
@@ -743,7 +743,7 @@
    "name": "Gate3Frame",
    "transform": {
     "position": [
-     11.8,
+     21.4,
      2.0,
      0.0
     ],
@@ -770,7 +770,7 @@
    "name": "Gate3",
    "transform": {
     "position": [
-     11.8,
+     21.4,
      1.8,
      0.0
     ],
@@ -916,8 +916,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
-     1.62,
+     15.0,
+     3.0,
      7.0
     ],
     "rotation": [
@@ -926,8 +926,8 @@
      0.0
     ],
     "scale": [
-     37.12,
-     19.28,
+     69.6,
+     36.3,
      1.0
     ]
    }
@@ -950,7 +950,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     8.0,
+     15.0,
      10.0,
      0.0
     ],
@@ -978,9 +978,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.193090812180111,
-     -11.105542272422715
+     15.0,
+     14.599165598681376,
+     -20.251282967359064
     ],
     "rotation": [
      14.0,
