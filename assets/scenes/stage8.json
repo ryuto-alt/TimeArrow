@@ -1539,9 +1539,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     18.0,
-     17.773197650039062,
-     -24.17088612233179
+     8.1,
+     4.9,
+     -9.5
     ],
     "rotation": [
      14.0,
@@ -1553,6 +1553,42 @@
      1.0,
      1.0
     ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "dist",
+      "type": "float",
+      "value": 9.5
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 4.35
+     },
+     {
+      "name": "minX",
+      "type": "float",
+      "value": 8.1
+     },
+     {
+      "name": "maxX",
+      "type": "float",
+      "value": 27.9
+     },
+     {
+      "name": "minY",
+      "type": "float",
+      "value": 4.9
+     },
+     {
+      "name": "smooth",
+      "type": "float",
+      "value": 6.0
+     }
+    ],
+    "scriptPath": "scripts/CameraFollow.lua"
    }
   },
   {

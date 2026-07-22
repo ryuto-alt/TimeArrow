@@ -160,6 +160,10 @@ def breakwall(name, x, y, sx, sy):
     return e
 
 
+def target(name, x, y, s=1.3):
+    return mesh(name, "Target_Bull", x, y, s, s, 0.5)
+
+
 def lattice(name, x, y=1.8):
     return mesh(name, "Gate_Grill", x, y, 0.75, 3.6, 1.0,
                 lua=script("Lattice.lua", [prop("listenButton", "bool", True),
@@ -210,11 +214,19 @@ def build(n, entities, limit, width):
     backdrop["transform"]["scale"][0] = width * 2.32
     backdrop["transform"]["scale"][1] = width * 1.21
 
+    # プレイヤー追従カメラ(dist9.5で視界約16u幅=旧16幅ステージと同じプレイヤーサイズ)
     cam = copy.deepcopy(T["GameCamera"])
     x0, x1, y0, y1 = content_box(entities)
-    cx, cy, cz, _ = fit(x0 - 0.5, x1 + 0.5, y0, y1 + 0.4, 14.0)
-    cam["transform"]["position"] = [cx, cy, cz]
+    VIEW_HW = 8.1
+    min_x, max_x = x0 + VIEW_HW, max(x0 + VIEW_HW, x1 - VIEW_HW)
+    pl = next(e for e in entities if e["name"] == "Player")
+    px, py = pl["transform"]["position"][0], pl["transform"]["position"][1]
+    cam["transform"]["position"] = [min(max(px, min_x), max_x), max(4.9, py + 4.35), -9.5]
     cam["transform"]["rotation"] = [14.0, 0.0, 0.0]
+    cam["luaScript"] = script("CameraFollow.lua", [
+        prop("dist", "float", 9.5), prop("offsetY", "float", 4.35),
+        prop("minX", "float", round(min_x, 2)), prop("maxX", "float", round(max_x, 2)),
+        prop("minY", "float", 4.9), prop("smooth", "float", 6.0)])
 
     sun = copy.deepcopy(T["Sun"])
     sun["transform"]["position"][0] = width / 2.0
@@ -247,7 +259,8 @@ def build(n, entities, limit, width):
     scene["entities"] = ents
     path = os.path.join(SCENES, f"stage{n}.json")
     json.dump(scene, open(path, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
-    print(f"stage{n}: {len(ents)} entities, cam=({cx:.1f},{cy:.1f},{cz:.1f})")
+    cp = cam["transform"]["position"]
+    print(f"stage{n}: {len(ents)} entities, followCam clamp=[{min_x:.1f},{max_x:.1f}] start=({cp[0]:.1f},{cp[1]:.1f})")
 
 
 arrow = copy.deepcopy(T["Arrow"])
@@ -263,13 +276,15 @@ def patch(pfx, xa, xb, nw=0.9):
 # ══ STAGE 1「遅すぎる橋」 15s / RW1 (幅33) ═══════════════════════════
 build(1, [
     gm(1, 15),
-    player(1.0, 0.55, targets="Bridge1", standables="Bridge1",
+    player(1.0, 0.55, targets="Target1", standables="Bridge1",
            arrowStops="FloorL,FloorR", solids="FloorL,FloorR", rewindShots=1),
     copy.deepcopy(arrow),
     exit_(31.0, 0.65, "scenes/stage2.json"), gate(31.0, 0.5),
     block("FloorL", 10.0, -0.5, 20.0, 1.0),
     block("FloorR", 30.5, -0.5, 5.0, 1.0),
-    riseplat("Bridge1", 24.0, -0.3, 8.0, 0.6, arriveT=0.0, waitHeight=6.0, riseTime=15.0),
+    riseplat("Bridge1", 24.0, -0.3, 8.0, 0.6, arriveT=0.0, waitHeight=6.0, riseTime=15.0,
+             trigger="Target1"),
+    target("Target1", 24.0, 6.8, 1.3),   # 撃つ的: x16-18から45°射線上。当てると橋の時計が進む
 ], limit=15, width=33)
 
 # ══ STAGE 2「二枚の閉門」 16s / RW2 (幅28) ═══════════════════════════

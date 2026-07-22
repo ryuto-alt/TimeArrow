@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Bridge1"
+      "value": "Target1"
      },
      {
       "name": "standables",
@@ -575,7 +575,7 @@
      {
       "name": "triggerName",
       "type": "string",
-      "value": ""
+      "value": "Target1"
      },
      {
       "name": "listenButton",
@@ -586,6 +586,33 @@
     "scriptPath": "scripts/RisePlatform.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Target_Bull/Target_Bull.obj"
+   },
+   "name": "Target1",
+   "transform": {
+    "position": [
+     24.0,
+     6.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.3,
+     1.3,
+     0.5
+    ]
+   }
   },
   {
    "name": "PlayerMarker",
@@ -753,9 +780,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     16.5,
-     16.186181624360223,
-     -22.21108454484543
+     8.1,
+     4.9,
+     -9.5
     ],
     "rotation": [
      14.0,
@@ -767,6 +794,42 @@
      1.0,
      1.0
     ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "dist",
+      "type": "float",
+      "value": 9.5
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 4.35
+     },
+     {
+      "name": "minX",
+      "type": "float",
+      "value": 8.1
+     },
+     {
+      "name": "maxX",
+      "type": "float",
+      "value": 24.9
+     },
+     {
+      "name": "minY",
+      "type": "float",
+      "value": 4.9
+     },
+     {
+      "name": "smooth",
+      "type": "float",
+      "value": 6.0
+     }
+    ],
+    "scriptPath": "scripts/CameraFollow.lua"
    }
   },
   {
@@ -822,7 +885,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 13,
+   "parent": 14,
    "transform": {
     "position": [
      0.0,
@@ -896,7 +959,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 13,
+   "parent": 14,
    "transform": {
     "position": [
      0.0,
@@ -1102,7 +1165,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 13
+   "parent": 14
   },
   {
    "name": "TimeLeft",
@@ -1194,7 +1257,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 13
+   "parent": 14
   },
   {
    "name": "DrawAmount",
@@ -1286,7 +1349,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 13
+   "parent": 14
   },
   {
    "name": "RewindCount",
@@ -1378,7 +1441,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 13
+   "parent": 14
   }
  ]
 }
