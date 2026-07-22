@@ -597,7 +597,7 @@ build(7, [
     pendulum("Saw7b", 50.8, 5.7, 1.4, period=S7["sawP2"], amplitude=1.0, phase=0.0),
     door("LockD7", 22.0, openT=S7["lockD"], closeT=9999.0, base=4.4),
     hammer("Ham7a", 30.0, 3.9, 1.2, period=3.4, maxAngle=50.0),
-    hammer("Ham7b", 44.0, 3.9, 1.2, period=2.6, maxAngle=50.0, phase=1.1),
+    hammer("Ham7b", 52.0, 3.9, 1.2, period=2.6, maxAngle=50.0, phase=1.1),   # 地上東進の空白を割る
     block("St7a", 62.3, 0.55, 0.7, 1.1),
     block("St7b", 63.0, 1.1, 0.7, 2.2),
     block("St7c", 63.7, 1.65, 0.7, 3.3),

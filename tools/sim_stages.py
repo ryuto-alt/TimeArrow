@@ -37,12 +37,24 @@ class Run:
         self.arrow_ready = 0.0
         self.log = []
         self.dead = None
+        # 「単調さ」の計測: 何の判断も要らない移動だけが続いた最長の秒数。
+        # レベルデザイン規範では純移動8秒以上は禁止(scratchpad/leveldesign_research.md)
+        self.last_beat = 0.0
+        self.max_idle = 0.0
+        self.idle_at = ""
 
     def clock(self, name):
         return max(0.0, self.real + self.off.get(name, 0.0))
 
     def note(self, msg):
         self.log.append(f"  t={self.timer:5.1f}/実{self.real:5.1f}  {msg}")
+
+    def beat(self, what=""):
+        """判断や操作が起きた瞬間。ここまでの「移動だけの時間」を確定する。"""
+        gap = self.real - self.last_beat
+        if gap > self.max_idle:
+            self.max_idle, self.idle_at = gap, what
+        self.last_beat = self.real
 
     def advance(self, dt, scale=1.0):
         self.real += dt
@@ -62,6 +74,7 @@ class Run:
             self.note(f"wait {dt:.1f}s {label}")
 
     def shot(self, mode, target, amount, dist=5.0, label="", cap=None):
+        self.beat(f"{mode.upper()}→{target} の直前")
         if self.real < self.arrow_ready:
             w = self.arrow_ready - self.real
             self.advance(w)
@@ -98,12 +111,36 @@ class Run:
     def fan_ride(self, name, amount, dist=1.2, climb=1.3, label=""):
         """上昇気流ファン: FFサージ(量×0.8秒)を焚いて気流に乗り、棚まで浮上する。
         RW矢は吸い込み(引き寄せ)にしかならず高所へは運ばない=FF専用の高度獲得手段。"""
+        self.beat(f"ファン{name} の直前")
         self.ff(name, amount, dist, label=f"サージ点火 {label}")
         assert amount * 0.8 >= climb, f"{name}: サージ{amount * 0.8:.1f}s < 上昇{climb}s"
         self.advance(climb)
         self.note(f"ファン{name} の気流で浮上 {climb:.1f}s {label}")
 
+    def ferry_ride(self, name, period, span, wait_frac=0.25, label=""):
+        """横行フェリー: 寄ってくるのを待って乗り、対岸で降りる。乗り遅れは奈落=判断の拍。"""
+        self.beat(f"フェリー{name} の直前")
+        self.wait(period * wait_frac, f"フェリー{name}の間合い")
+        self.advance(period * 0.5)
+        self.note(f"フェリー{name}で {span:.1f}u 渡る ({period * 0.5:.1f}s) {label}")
+
+    def crumble_run(self, names, span, crumbleT=1.5, label=""):
+        """崩れ足場: 踏んだら崩れ始めるので止まれない。渡り切れるかが判断の拍。"""
+        self.beat(f"崩れ足場{names[0]} の直前")
+        dur = span / WALK
+        assert dur < crumbleT * len(names),             f"崩れ足場{names}: 横断{dur:.2f}s >= 崩壊{crumbleT * len(names):.2f}s"
+        self.advance(dur)
+        self.note(f"崩れ足場{'/'.join(names)}を一気に渡る ({span:.1f}u, {dur:.1f}s) {label}")
+
+    def hammer_pass(self, name, period, label=""):
+        """振り子ハンマー: 平地で唯一タイミングで渡れる刃。間合いを計るのが判断の拍。"""
+        self.beat(f"ハンマー{name} の直前")
+        self.wait(period * 0.28, f"ハンマー{name}の間合い")
+        self.advance(0.5)
+        self.note(f"ハンマー{name}の下を抜ける {label}")
+
     def lock_wait(self, name, openT, label=""):
+        self.beat(f"錠{name} の直前")
         c = self.clock(name)
         if c < openT:
             self.advance(openT - c)
@@ -112,6 +149,7 @@ class Run:
         self.note(f"錠{name} を通過")
 
     def gate_pass(self, name, closeT, label=""):
+        self.beat(f"閉門{name} の直前")
         c = self.clock(name)
         if c >= closeT:
             self.dead = self.dead or f"閉門{name}済み(時計{c:.1f} >= 閉{closeT}) {label}"
@@ -120,6 +158,7 @@ class Run:
         self.advance(0.2)
 
     def gate_reopen_pass(self, name, closeT, label=""):
+        self.beat(f"閉門{name} の直前")
         c = self.clock(name)
         if c >= closeT:
             self.dead = self.dead or f"閉門{name} RW不足(時計{c:.1f} >= {closeT}) {label}"
@@ -133,6 +172,7 @@ class Run:
 
     def pit_cross(self, name, bx, amp, period, phase, pit0, pit1, x0, x1, label=""):
         """退避ピット式の刃越え: 縁→ピットに入る→頭上通過を待つ→反対側へ出る"""
+        self.beat(f"刃{name} の直前")
         base = self.clock(name)
 
         def saw(t):
@@ -211,6 +251,7 @@ class Run:
         self.advance(0.3)
 
     def finish(self):
+        self.beat("ゴールまで")
         if self.dead:
             return f"✗ 失敗: {self.dead}"
         if self.timer >= self.limit:
@@ -231,8 +272,13 @@ def report(name, limit, shots, plans, margin=(1.5, 6.0), quiet=False):
             good = passed and margin[0] <= m <= margin[1]
             if not good:
                 ok = False
+            idle_ok = r.max_idle <= 8.0
+            if not idle_ok:
+                ok = False
             print(f" {'✓' if good else '✗✗'} {label}: {v}"
                   + ("" if good else f"  ← マージン帯{margin}外"))
+            print(f"    判断の間隔: 最長 {r.max_idle:.1f}s の純移動 ({r.idle_at})"
+                  + ("" if idle_ok else "  ← ✗✗ 8秒超=単調"))
             if not quiet or not good:
                 for l in r.log:
                     print(l)
@@ -372,7 +418,7 @@ def s3_cross_valley1(r):
 
 def s3_ledge_to_gate(r):
     r.walk(4.5, "棚L3aを東へ(x36)")
-    r.walk(5.5, "崩れ足場2枚を一気に渡る(x41.5)")
+    r.crumble_run(["CrA3", "CrB3"], 5.5, label="(谷2の上)")
     r.walk(4.0, "棚L3bの東端(x45.5)へ")
     r.wait(0.4, "地上へ飛び降りる")
     r.walk(3.3, "GateZ3前(x48.8)へ")
@@ -443,11 +489,9 @@ def s4_mid(r, ferry_wait):
     r.walk(3.6, "刃ピット手前(x16.6)へ")
     r.pit_cross("Saw4", **S4_SAW, x0=16.6, x1=22.1, label="退避ピットで刃越え")
     r.walk(3.4, "ハンマー手前(x25.5)へ")
-    r.wait(0.9, "ハンマーの間合い")
+    r.hammer_pass("Ham4", 3.4)
     r.walk(5.5, "谷の縁(x31)へ")
-    r.wait(ferry_wait, "フェリーが寄ってくるのを待つ")
-    r.advance(S4["ferryP"] * 0.5)
-    r.note(f"フェリーで谷を渡る ({S4['ferryP'] * 0.5:.1f}s)")
+    r.ferry_ride("Ferry4", S4["ferryP"], 8.0, wait_frac=ferry_wait)
 
 
 def s4_noarrow(r):
@@ -459,7 +503,7 @@ def s4_rwonly(r):
     s4_route_to_A(r)
     r.rw("GateA4", 4.0, dist=1.5, label="スラムA(#1)", cap=S4["slamA"])
     r.gate_reopen_pass("GateA4", S4["slamA"])
-    s4_mid(r, ferry_wait=S4["ferryP"] * 0.5)     # 位相を手繰れないので最悪待ち
+    s4_mid(r, ferry_wait=0.5)     # 位相を手繰れないので最悪待ち
     r.walk(9.6, "Lock4前(x48.6)")
     r.lock_wait("Lock4", S4["lockZ"], "種まき無し=自然開通まで丸ごと待つ")
     r.walk(1.4, "谷の縁(x50)へ")
@@ -467,7 +511,7 @@ def s4_rwonly(r):
     r.advance(1.6)
     r.note("昇降足場でレッジへ")
     r.walk(3.0, "レッジを東へ")
-    r.walk(4.4, "崩れ足場を渡る")
+    r.crumble_run(["CrA4", "CrB4"], 4.4)
     r.walk(1.9, "ゴール")
 
 
@@ -475,7 +519,7 @@ def s4_plan(r):
     s4_route_to_A(r)
     r.rw("GateA4", 10.0, dist=1.5, label="スラムA呼び戻し(#1)", cap=S4["slamA"])
     r.gate_reopen_pass("GateA4", S4["slamA"])
-    s4_mid(r, ferry_wait=S4["ferryP"] * 0.25)
+    s4_mid(r, ferry_wait=0.25)
     r.ff("Lock4", 10.0, dist=10.5, label="◆種まき1: 対岸に着いた瞬間に終錠へ(水平射)")
     r.ff("Lock4", 10.0, dist=10.5, label="◆種まき2")
     r.walk(9.6, "Lock4前(x48.6)")
@@ -486,7 +530,7 @@ def s4_plan(r):
     r.advance(1.6)
     r.note("昇降足場でレッジ(5.4u)へ")
     r.walk(3.0, "レッジを東へ")
-    r.walk(4.4, "崩れ足場を一気に渡る")
+    r.crumble_run(["CrA4", "CrB4"], 4.4)
     r.walk(1.9, "ゴール")
 
 
@@ -537,7 +581,7 @@ def s5_rwonly(r):
     r.rw("Gate5", 4.0, dist=1.0, label="スラムGを呼び戻す(#2)", cap=S5["slamG"])
     r.gate_reopen_pass("Gate5", S5["slamG"])
     r.walk(4.5, "ハンマー手前へ")
-    r.wait(0.9, "ハンマーの間合い")
+    r.hammer_pass("Ham5", 3.2)
     r.walk(6.9, "退避ピット1へ")
     r.wait(0.3, "ピットに降りる")
     r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(#3)")
@@ -550,7 +594,8 @@ def s5_rwonly(r):
     r.walk(9.2, "Vine5前")
     r.wait(max(0.0, S5["vineGrow"] - r.clock("Vine5")), "ツタの自然成長待ち(長い)")
     r.wait(2.2, "ツタを登る")
-    r.walk(9.3, "崩れ足場を渡って(種まき無しで)LockZ5前へ")
+    r.crumble_run(["CrC5", "CrD5"], 3.4, label="(最上層)")
+    r.walk(5.9, "LockZ5前へ")
     r.rw("LockZ5", 10.0, dist=1.0, label="最後の1発(#4=予算オーバー)")
 
 
@@ -565,7 +610,7 @@ def s5_plan(r):
     r.rw("Gate5", 10.0, dist=1.0, label="呼び戻し(時計が若く1発, #2)")
     r.gate_reopen_pass("Gate5", S5["slamG"])
     r.walk(4.5, "ハンマー手前へ")
-    r.wait(0.9, "ハンマーの間合い(大玉が迫る)")
+    r.hammer_pass("Ham5", 3.2, "(大玉が迫る)")
     r.walk(6.9, "退避ピット1へ")
     r.wait(0.3, "ピットに降りる")
     r.rw("Ball5", 10.0, dist=2.5, label="大玉を呼び戻す(頭上を逆走, #3)")
@@ -585,10 +630,9 @@ def s5_plan(r):
     r.walk(4.8, "種まき位置(x66)へ")
     r.ff("LockZ5", 10.0, dist=16.0, label="◆種まき: 終錠Zへ(フェリー手前)")
     r.walk(4.0, "フェリー乗り場(x70)へ")
-    r.wait(S5["ferryP"] / 2, "フェリーの間合い")
-    r.walk(2.2, "フェリーで渡る(振れ幅2.2)")
+    r.ferry_ride("Ferry5", S5["ferryP"], 4.4)
     r.walk(2.5, "最上層の谷の縁(x77)へ")
-    r.walk(3.4, "崩れ足場2枚を一気に渡る")
+    r.crumble_run(["CrC5", "CrD5"], 3.4, label="(最上層)")
     r.walk(2.1, "LockZ5前")
     r.lock_wait("LockZ5", S5["lockZ"])
     r.goal_alive("Ball5", **S5_BALL, goal_x=S5_GOAL, label="レース勝利")
@@ -670,6 +714,7 @@ def s6_plan(r):
     r.ff("LockZ6", 10.0, dist=14.0, label="◆種まき: 終錠へ(水平)")
     r.walk(2.0, "P6cへ")
     r.hops(1.7, 2, "針山3")
+    r.hammer_pass("Ham6", 3.2)
     r.walk(3.3, "P6dへ")
     r.hops(1.7, 2, "針山4")
     r.walk(5.3, "LockZ6前")
@@ -716,7 +761,11 @@ def s7_rwonly(r):
     s7_route_to_A(r)
     r.rw("RevB7", 10.0, dist=2.5, label="逆橋を引き戻す", cap=S7["rev7"])
     r.walk(5.0, "橋を渡る(x16.5)")
-    r.walk(46.0, "地上を東へ(階段まで)")
+    r.walk(12.5, "地上を東へ(ハンマーa手前 x29)")
+    r.hammer_pass("Ham7a", 3.4)
+    r.walk(22.0, "ハンマーb手前(x51)へ")
+    r.hammer_pass("Ham7b", 2.6)
+    r.walk(10.0, "階段(x62)へ")
     r.hops(2.1, 4, "階段でデッキへ")
     r.walk(11.6, "デッキを西へ(刃ピット2手前)")
     r.pit_cross("Saw7b", **S7_SAW2, period=S7["sawP2"], x0=52.8, x1=48.6)
@@ -732,7 +781,11 @@ def s7_plan(r):
     s7_route_to_A(r)
     r.rw("RevB7", 10.0, dist=2.5, label="上がりきった逆橋を引き戻す", cap=S7["rev7"])
     r.walk(5.0, "橋を渡る(x16.5)")
-    r.walk(46.0, "地上を東へ(階段まで)")
+    r.walk(12.5, "地上を東へ(ハンマーa手前 x29)")
+    r.hammer_pass("Ham7a", 3.4)
+    r.walk(22.0, "ハンマーb手前(x51)へ")
+    r.hammer_pass("Ham7b", 2.6)
+    r.walk(10.0, "階段(x62)へ")
     r.hops(2.1, 4, "階段でデッキへ")
     r.walk(11.6, "デッキを西へ(刃ピット2手前)")
     r.pit_cross("Saw7b", **S7_SAW2, period=S7["sawP2"], x0=52.8, x1=48.6, label="(西向き)")
@@ -835,16 +888,14 @@ def s8_plan(r):
     r.walk(2.0, "P8cへ")
     r.hops(1.4, 2, "針山3")
     r.walk(2.1, "ハンマー手前へ")
-    r.wait(0.9, "ハンマーの間合い")
+    r.hammer_pass("Ham5", 3.2)
     r.walk(2.5, "P8dへ")
     r.hops(1.4, 2, "針山4")
     r.walk(2.6, "谷の縁(x56)へ")
     r.rw("RevB8", 10.0, dist=2.5, label="上がりきった逆橋を引き戻す(#2)", cap=S8["rev8"])
     r.walk(5.0, "橋を渡る(x60.5)")
     r.walk(11.5, "谷2の縁(x72)へ")
-    r.wait(S8["ferryP"] * 0.25, "フェリーの間合い")
-    r.advance(S8["ferryP"] * 0.5)
-    r.note("フェリーで谷2を渡る")
+    r.ferry_ride("Ferry8", S8["ferryP"], 8.0, label="(谷2)")
     # ── P4 ──
     r.walk(6.0, "リフト(x86)の射撃位置へ")
     r.ff("Lift8", 10.0, dist=4.5, label="リフトへ1本目")
@@ -855,7 +906,7 @@ def s8_plan(r):
     # ── P5 ──
     r.walk(4.0, "最上層(x90)へ")
     r.walk(11.0, "砲台Tur8の弾間を抜けて崩れ足場手前(x103)へ")
-    r.walk(4.4, "崩れ足場2枚を一気に渡る(x107.4)")
+    r.crumble_run(["CrA8", "CrB8"], 4.4, label="(最上層)")
     r.ff("Button8", 2.0, dist=5.6, label="格子越しにボタンを撃つ(矢は格子を素通り)")
     r.walk(9.6, "開いた格子をくぐってゴール")
 
