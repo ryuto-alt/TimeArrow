@@ -22,7 +22,12 @@ function OnUpdate(self, dt)
   local pl = scene:findEntity("Player")
   if not (pl and pl:isValid()) then return end
   local tx, ty, tz
-  if keyDown("TAB") or padDown("Y") then
+  local padX = false
+  do
+    local ok, v = pcall(padDown, "X")
+    padX = ok and v
+  end
+  if keyDown("TAB") or padX then
     -- 全景俯瞰(ステージを読む用)
     tx, ty, tz = self.fullX, self.fullY, self.fullZ
   else

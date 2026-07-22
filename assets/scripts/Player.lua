@@ -415,8 +415,13 @@ end
 
 -- 引き絞り(E長押し): 移動ロック・矢印キー/WASDで8方向照準・離すと発射
 local function updateDraw(self, dt)
-  local skipHeld = keyDown("E") or padDown("X")
-  local rwHeld = keyDown("Q") or padDown("LB")
+  -- パッド: R1(RB)/R2(RT)=先送り, L1(LB)/L2(LT)=後戻り(トリガー未対応環境でも安全に)
+  local function padHeld(n)
+    local ok, v = pcall(padDown, n)
+    return ok and v
+  end
+  local skipHeld = keyDown("E") or padHeld("RB") or padHeld("RT")
+  local rwHeld = keyDown("Q") or padHeld("LB") or padHeld("LT")
   local canDraw = self.hasArrow and not self.arrowFlying and not self.arrowStuck
 
   -- 後戻り矢は残数制(切れたら引けない)

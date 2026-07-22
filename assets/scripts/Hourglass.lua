@@ -29,12 +29,20 @@ function OnStart(self)
 
   self.rwGlow = 0
   events:on("time_rewind", function(data)
-    if data.target ~= self.name then return end
+    if data.target ~= self.name and data.target ~= self.name .. "X" then return end
     self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
     self.rwSpeed = self.rwRemain / 0.5
     self.rwGlow = 0.15
-    FX.spark(self.bx, self.by, self.bz, 12, 0.65, 0.4, 1.0)
-    FX.shockwave(self.bx, self.by, self.bz, 12, 7, 0.65, 0.4, 1.0)
+    -- 【返金演出】貯めた時間が金色の奔流になってプレイヤーへ飛ぶ+画面を揺らす
+    local pl = scene:findEntity("Player")
+    if pl and pl:isValid() then
+      local pp = pl.transform.position
+      FX.beam(self.bx, self.by + 0.6, self.bz, pp.x, pp.y + 0.4, pp.z,
+              1.0, 0.85, 0.3, 0.25, "energy", 8)
+    end
+    FX.spark(self.bx, self.by + 0.6, self.bz, 30, 1.0, 0.85, 0.3)
+    FX.shockwave(self.bx, self.by + 0.5, self.bz, 16, 10, 1.0, 0.8, 0.3)
+    fx:pulse(0.25)
   end)
 
 end
@@ -81,10 +89,21 @@ function OnUpdate(self, dt)
     self.rwGlow = self.rwGlow - dt
     FX.trail(self.bx, self.by + 0.4, self.bz, 0.65, 0.4, 1.0)
   end
-  -- 砂が積もっているほど金色に光る(残量が見える)
+  -- 【貯金残高の可視化】貯まった時間に応じて金色オーラが育つ:
+  --   粒の量と輪の大きさ=残高。Qで返金すると縮む(=いくら入っているかが見える)
+  local stock = math.min(self.clock, 60)
   self.fxT = (self.fxT or 0) + dt
-  if self.fxT > math.max(0.15, 1.2 - self.clock * 0.02) then
+  if self.fxT > math.max(0.06, 0.5 - stock * 0.007) then
     self.fxT = 0
-    FX.trail(self.bx, self.by + 0.2, self.bz, 1.0, 0.8, 0.3)
+    local ang = math.random() * 6.283
+    local rr = 0.4 + stock * 0.015
+    FX.trail(self.bx + math.cos(ang) * rr, self.by + 0.4 + math.random() * 1.0,
+             self.bz, 1.0, 0.8, 0.3)
+  end
+  self.ringT = (self.ringT or 0) + dt
+  if self.ringT > 1.4 then
+    self.ringT = 0
+    FX.shockwave(self.bx, self.by + 0.5, self.bz, 6 + stock * 0.15, 3 + stock * 0.06,
+                 1.0, 0.82, 0.35)
   end
 end
