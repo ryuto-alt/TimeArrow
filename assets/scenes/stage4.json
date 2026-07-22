@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 3
+      "value": 2
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -949,7 +949,7 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
    },
    "name": "Ham4",
    "transform": {
@@ -988,12 +988,73 @@
       "value": 0.0
      },
      {
+      "name": "decayT",
+      "type": "float",
+      "value": 25.0
+     },
+     {
       "name": "hitHalf",
       "type": "float",
       "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
+   },
+   "name": "Ham4_m2",
+   "transform": {
+    "position": [
+     30.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
+   },
+   "name": "Ham4_m3",
+   "transform": {
+    "position": [
+     30.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -1540,7 +1601,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 29,
+   "parent": 31,
    "transform": {
     "position": [
      0.0,
@@ -1614,7 +1675,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 29,
+   "parent": 31,
    "transform": {
     "position": [
      0.0,
@@ -1820,7 +1881,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 29
+   "parent": 31
   },
   {
    "name": "TimeLeft",
@@ -1912,7 +1973,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 29
+   "parent": 31
   },
   {
    "name": "DrawAmount",
@@ -2004,7 +2065,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 29
+   "parent": 31
   },
   {
    "name": "RewindCount",
@@ -2096,7 +2157,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 29
+   "parent": 31
   }
  ]
 }

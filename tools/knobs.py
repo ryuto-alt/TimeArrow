@@ -18,14 +18,14 @@ K = {
     "s2": dict(limit=18.0, rw=3, closeA=2.8, closeB=8.0, closeC=12.5, closeD=15.5),
 
     # S3「三つの錠の取引」種まきFF+二重スラム+サンド
-    "s3": dict(limit=38.0, rw=3, lock1=18.0, slam1=3.5, slam2=8.5, lock2=30.0, closeZ=26.0),
+    "s3": dict(limit=38.0, rw=2, lock1=18.0, slam1=3.5, slam2=8.5, lock2=30.0, closeZ=26.0),
 
     # S4「動かせない締切」サンド+刃ピット+動く壁(FFゴースト)
-    "s4": dict(limit=43.0, rw=3, slamA=2.55, lockOpen=25.0, closeB=17.5,
+    "s4": dict(limit=43.0, rw=2, slamA=2.55, lockOpen=25.0, closeB=17.5,
                cwStart=5.0, cwSpeed=1.0, cwTravel=15.0, closeZ=32.0),
 
     # S5「時の昇降機・改」リフト+大玉チェイス+ツタ+フェリー+最上層
-    "s5": dict(limit=66.0, rw=4, lift=14.0, slamG=2.6, ballRoll=4.0, ballSpeed=0.6,
+    "s5": dict(limit=66.0, rw=3, lift=14.0, slamG=2.6, ballRoll=4.0, ballSpeed=0.6,
                lockD=30.0, vineGrow=33.0, ferryP=6.0, closeY=44.0, lockZ=52.0),
 
     # S6「二本の導火線」地上とレッジの爆弾×2

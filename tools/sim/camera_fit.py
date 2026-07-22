@@ -88,6 +88,8 @@ def content_box(stage_or_entities):
         if any(k.startswith("ui") for k in e) or "parent" in e:
             continue
         p = e["transform"]["position"]
+        if p[1] < -50:                       # 隠しプール(ビーコン/砲弾等)は範囲に含めない
+            continue
         sc = e["transform"]["scale"]
         hw, hh = abs(sc[0]) / 2, abs(sc[1]) / 2
         ax0, ax1 = p[0] - hw, p[0] + hw

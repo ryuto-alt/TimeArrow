@@ -61,7 +61,7 @@ class Run:
             self.advance(dt)
             self.note(f"wait {dt:.1f}s {label}")
 
-    def shot(self, mode, target, amount, dist=5.0, label=""):
+    def shot(self, mode, target, amount, dist=5.0, label="", cap=None):
         if self.real < self.arrow_ready:
             w = self.arrow_ready - self.real
             self.advance(w)
@@ -79,8 +79,10 @@ class Run:
                 self.dead = self.dead or f"RW残数切れ: {label}"
                 return 0.0
             self.shots -= 1
-            actual = min(amount, self.clock(target))
-            self.off[target] = self.off.get(target, 0.0) - actual
+            # cap=閉門型の時計頭打ち(閉まったら時間が止まる仕様)
+            cur = self.clock(target) if cap is None else min(self.clock(target), cap)
+            actual = min(amount, cur)
+            self.off[target] = (cur - actual) - self.real
             self.timer = max(0.0, self.timer - actual * 0.5)
             self.note(f"RW-{amount:g}(実効{actual:g}, 返金{actual * 0.5:g})→{target} {label}")
         self.arrow_ready = self.real + STUCK_RETURN
@@ -89,8 +91,8 @@ class Run:
     def ff(self, target, amount, dist=5.0, label=""):
         return self.shot("ff", target, amount, dist, label)
 
-    def rw(self, target, amount, dist=5.0, label=""):
-        return self.shot("rw", target, amount, dist, label)
+    def rw(self, target, amount, dist=5.0, label="", cap=None):
+        return self.shot("rw", target, amount, dist, label, cap=cap)
 
     # ── ギミック ─────────────────────────────────────────
     def lock_wait(self, name, openT, label=""):
@@ -306,7 +308,7 @@ def s2_ffonly(r):
 
 def s2_plan(r):
     s2_route_to_A(r)
-    r.rw("GateA", 6.0, dist=1.5, label="スラムA呼び戻し")
+    r.rw("GateA", 6.0, dist=1.5, label="スラムA呼び戻し", cap=S2["closeA"])
     r.gate_reopen_pass("GateA", S2["closeA"])
     r.walk(3.9, "ハンマー前")
     r.wait(0.8, "ハンマーの間合い")
@@ -316,12 +318,12 @@ def s2_plan(r):
     r.walk(2.9, "P2cへ")
     r.hops(1.6, 2, "針山3")
     r.walk(5.2, "GateC前")
-    r.rw("GateC", 8.0, dist=1.5, label="間に合わなければ呼び戻す")
+    r.rw("GateC", 8.0, dist=1.5, label="間に合わなければ呼び戻す", cap=S2["closeC"])
     r.gate_reopen_pass("GateC", S2["closeC"])
     r.walk(3.3, "崩れ橋へ")
     r.walk(3.2, "崩れ橋を渡り切る(1.6秒以内)")
     r.walk(1.4, "GateD前")
-    r.rw("GateD", 8.0, dist=1.5, label="呼び戻し(3発目)")
+    r.rw("GateD", 8.0, dist=1.5, label="呼び戻し(3発目)", cap=S2["closeD"])
     r.gate_reopen_pass("GateD", S2["closeD"])
     r.walk(4.4, "ゴール")
 
@@ -380,17 +382,17 @@ def s3_rwonly(r):
     s3_route_to_shot(r)
     r.lock_wait("Lock1", S3["lock1"])
     s3_route_S1(r)
-    r.rw("GateS1", 10.0, dist=1.5, label="スラム1(#1)")
+    r.rw("GateS1", 4.0, dist=1.5, label="スラム1(#1)", cap=S3["slam1"])
     r.gate_reopen_pass("GateS1", S3["slam1"])
     s3_route_S2(r)
-    r.rw("GateS2", 10.0, dist=1.5, label="スラム2(#2)")
+    r.rw("GateS2", 4.0, dist=1.5, label="スラム2(#2)", cap=S3["slam2"])
     r.gate_reopen_pass("GateS2", S3["slam2"])
     r.walk(9.5, "Lock2前")
     r.lock_wait("Lock2", S3["lock2"], "種まき無しなので自然開通まで待つ")
     r.walk(3.5, "P3cへ")
     r.hops(1.7, 2, "針山3")
     r.walk(3.3, "GateZ前")
-    r.rw("GateZ", 10.0, dist=1.2, label="サンド(#3, 1発目)")
+    r.rw("GateZ", 4.0, dist=1.2, label="サンド(#3=予算オーバー)", cap=S3["closeZ"])
     r.gate_reopen_pass("GateZ", S3["closeZ"])
     r.rw("GateZ", 10.0, dist=1.2, label="サンド(#4, 予算オーバー)")
     r.gate_reopen_pass("GateZ", S3["closeZ"])
@@ -409,7 +411,7 @@ def s3_plan(r):
     r.ff("Lock2", 10.0, dist=14.0, label="◆種まき2: 自然開通を待たず済むように")
     r.hops(1.7, 2, "針山2")
     r.walk(3.3, "GateS2前")
-    r.rw("GateS2", 10.0, dist=1.5, label="スラム2を呼び戻す")
+    r.rw("GateS2", 10.0, dist=1.5, label="スラム2を呼び戻す", cap=S3["slam2"])
     r.gate_reopen_pass("GateS2", S3["slam2"])
     r.walk(9.5, "Lock2前")
     r.lock_wait("Lock2", S3["lock2"], "種まき済みなのでほぼ待たずに開く")
@@ -451,19 +453,24 @@ def s4_noarrow(r):
 
 def s4_rwonly(r):
     s4_route_to_A(r)
-    r.rw("GateA4", 10.0, dist=1.5, label="スラムA")
+    r.rw("GateA4", 4.0, dist=1.5, label="スラムA", cap=S4["slamA"])
     r.gate_reopen_pass("GateA4", S4["slamA"])
     r.walk(2.4, "Lock4前")
     r.lock_wait("Lock4", S4["lockOpen"])
     r.pit_cross("Saw4", **S4_SAW, x0=16.6, x1=22.1)
     r.walk(2.3, "GateB4前")
-    r.rw("GateB4", 10.0, dist=1.2, label="残1発(上限10で届かない)")
+    r.rw("GateB4", 4.0, dist=1.2, label="B(#2, 閉門は止まるので1発で開く)", cap=S4["closeB"])
     r.gate_reopen_pass("GateB4", S4["closeB"])
+    r.walk(12.0, "動く壁が止まるのを待ちつつ東へ")
+    r.wait(4.0, "壁の通過待ち(自然)")
+    r.walk(10.0, "GateZ4前")
+    r.rw("GateZ4", 4.0, dist=1.2, label="Z(#3=予算オーバー)", cap=S4["closeZ"])
+    r.gate_reopen_pass("GateZ4", S4["closeZ"])
 
 
 def s4_plan(r):
     s4_route_to_A(r)
-    r.rw("GateA4", 10.0, dist=1.5, label="スラムA呼び戻し")
+    r.rw("GateA4", 4.0, dist=1.5, label="スラムA呼び戻し", cap=S4["slamA"])
     r.gate_reopen_pass("GateA4", S4["slamA"])
     r.walk(2.4, "射撃位置")
     r.ff("Lock4", 10.0, dist=1.5, label="錠へ1本目")
@@ -526,7 +533,7 @@ def s5_rwonly(r):
     r.rw("Lift5", 10.0, dist=0.5, label="巻き上げ(#1)")
     r.wait(0.6)
     r.walk(4.7, "スラム前")
-    r.rw("Gate5", 10.0, dist=1.0, label="スラムGを呼び戻す(#2)")
+    r.rw("Gate5", 4.0, dist=1.0, label="スラムGを呼び戻す(#2)", cap=S5["slamG"])
     r.gate_reopen_pass("Gate5", S5["slamG"])
     r.walk(11.4, "退避ピット1へ")
     r.wait(0.3, "ピットに降りる")
@@ -787,20 +794,26 @@ def s8_rwonly(r):
     r.walk(1.0, "安全圏で待機")
     r.bomb_wait_boom("Bomb8", S8["boomB"], "自然爆発まで待つ(長い)")
     r.walk(5.4, "瓦礫を抜けC前へ")
-    r.rw("GateC8", 10.0, dist=1.2, label="C(#2)")
-    r.rw("GateC8", 10.0, dist=1.2, label="C(#3, 予算が減る)")
+    r.rw("GateC8", 4.0, dist=1.2, label="C(#2)", cap=S8["closeC"])
     r.gate_reopen_pass("GateC8", S8["closeC"])
     r.walk(2.0, "階段へ")
     r.hops(1.4, 3, "階段→デッキ")
     r.walk(2.0, "GateD前")
-    r.rw("GateD8", 10.0, dist=1.2, label="D(#4, 残り1発)")
+    r.rw("GateD8", 4.0, dist=1.2, label="D(#3)", cap=S8["slamD"])
     r.gate_reopen_pass("GateD8", S8["slamD"])
     r.walk(7.8, "LockE8圏内へ")
     r.lock_wait("LockE8", S8["lockE"], "種まき無しで自然開通待ち")
     if r.clock("BombF8") >= S8["boomF"]:
         r.dead = r.dead or "爆弾Fが自然爆発するまで待つ間に爆死"
-    r.walk(30.0, "GateY8前へ(残りRWなし)")
-    r.rw("GateY8", 10.0, dist=1.0, label="Y(#5, 予算オーバー)")
+    r.walk(6.5, "降りてGateG8前")
+    r.rw("GateG8", 4.0, dist=1.2, label="G(#4)", cap=S8["closeG"])
+    r.gate_reopen_pass("GateG8", S8["closeG"])
+    r.walk(10.0, "リフト前")
+    r.wait(max(0.0, S8["lift"] - r.clock("Lift8")) + 1.0, "リフト自然降下+乗り込み")
+    r.rw("Lift8", 10.0, dist=0.5, label="巻き上げ(#5)")
+    r.wait(0.8, "最上層へ")
+    r.walk(8.0, "GateY8前")
+    r.rw("GateY8", 4.0, dist=1.0, label="Y(#6=予算オーバー)", cap=S8["closeY"])
     r.gate_reopen_pass("GateY8", S8["closeY"])
 
 

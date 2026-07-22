@@ -1563,7 +1563,7 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
    },
    "name": "Ham8",
    "transform": {
@@ -1602,12 +1602,73 @@
       "value": 0.0
      },
      {
+      "name": "decayT",
+      "type": "float",
+      "value": 25.0
+     },
+     {
       "name": "hitHalf",
       "type": "float",
       "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
+   },
+   "name": "Ham8_m2",
+   "transform": {
+    "position": [
+     49.5,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
+   },
+   "name": "Ham8_m3",
+   "transform": {
+    "position": [
+     49.5,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -2426,7 +2487,7 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     10.825,
+     11.1,
      5.85,
      -13.0
     ],
@@ -2457,7 +2518,7 @@
      {
       "name": "minX",
       "type": "float",
-      "value": 10.82
+      "value": 11.1
      },
      {
       "name": "maxX",
@@ -2477,17 +2538,17 @@
      {
       "name": "fullX",
       "type": "float",
-      "value": 59.86
+      "value": 60.0
      },
      {
       "name": "fullY",
       "type": "float",
-      "value": -8.92
+      "value": 62.21
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -113.8
+      "value": -79.05
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -2546,7 +2607,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 52,
+   "parent": 54,
    "transform": {
     "position": [
      0.0,
@@ -2620,7 +2681,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 52,
+   "parent": 54,
    "transform": {
     "position": [
      0.0,
@@ -2826,7 +2887,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 52
+   "parent": 54
   },
   {
    "name": "TimeLeft",
@@ -2918,7 +2979,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 52
+   "parent": 54
   },
   {
    "name": "DrawAmount",
@@ -3010,7 +3071,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 52
+   "parent": 54
   },
   {
    "name": "RewindCount",
@@ -3102,7 +3163,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 52
+   "parent": 54
   }
  ]
 }

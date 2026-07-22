@@ -212,14 +212,17 @@ def crumble(name, x, y, sx=1.6, crumbleT=1.6):
                 lua=script("CrumblePlatform.lua", [prop("crumbleT", "float", float(crumbleT))]))
 
 
-def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0):
-    body = mesh(name, "Hammer_Pendulum", x, pivotY, s, s, 1.0, shader=TIMEWARP,
+def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0, decayT=25.0):
+    # 経年劣化3段階(新品/摩耗/錆)。HammerSwingが年齢でモデルを切り替える
+    body = mesh(name, "Hammer_Age1", x, pivotY, s, s, 1.0, shader=TIMEWARP,
                 lua=script("HammerSwing.lua", [
                     prop("period", "float", float(period)), prop("maxAngle", "float", float(maxAngle)),
-                    prop("startPhase", "float", float(phase)), prop("hitHalf", "float", 0.42)]))
-    # 透明の当たりプロキシ(振り子の可動域全体)。HammerSwingが "<名前>X" のイベントも受ける
+                    prop("startPhase", "float", float(phase)), prop("decayT", "float", float(decayT)),
+                    prop("hitHalf", "float", 0.42)]))
+    mid = mesh(name + "_m2", "Hammer_Age2", x, -100.0, s, s, 1.0, shader=TIMEWARP)
+    old = mesh(name + "_m3", "Hammer_Age3", x, -100.0, s, s, 1.0, shader=TIMEWARP)
     proxy = {"name": name + "X", "transform": transform(x, pivotY - 1.3 * s, 2.2 * s, 2.9 * s)}
-    return [body, proxy]
+    return [body, mid, old, proxy]
 
 
 def turret(name, x, y, period=2.4, shotSpeed=6.0, rng=14.0, phase=0.0):

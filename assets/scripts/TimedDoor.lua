@@ -63,6 +63,11 @@ function OnUpdate(self, dt)
     target = self.buttonOpen and self.riseHeight or 0
   else
     self.clock = self.clock + dt
+    -- 閉門型: 閉まりきったら時計を止める(時間超過でRWが効かなくなる理不尽を防ぐ)。
+    -- 以後は後戻し量=そのまま再開時間になる(RW-4なら4秒だけ開く)
+    if self.closeT < 9000 and self.clock > self.closeT then
+      self.clock = self.closeT
+    end
     if self.ffRemain > 0 then
       local step = math.min(self.ffRemain, self.ffSpeed * dt)
       self.clock = self.clock + step

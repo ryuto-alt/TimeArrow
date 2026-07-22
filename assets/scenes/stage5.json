@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 4
+      "value": 3
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -1718,7 +1718,7 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     10.825,
+     11.1,
      5.85,
      -13.0
     ],
@@ -1749,7 +1749,7 @@
      {
       "name": "minX",
       "type": "float",
-      "value": 10.82
+      "value": 11.1
      },
      {
       "name": "maxX",
@@ -1769,17 +1769,17 @@
      {
       "name": "fullX",
       "type": "float",
-      "value": 43.86
+      "value": 44.0
      },
      {
       "name": "fullY",
       "type": "float",
-      "value": -8.89
+      "value": 45.28
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -113.67
+      "value": -58.14
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"

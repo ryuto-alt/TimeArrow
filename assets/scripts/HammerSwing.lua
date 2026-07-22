@@ -72,6 +72,36 @@ function OnUpdate(self, dt)
   local ang = self.maxAngle * math.sin(self.phase * math.pi * 2)
   self.transform.rotation = Vec3.new(0, 0, ang)
 
+  -- 経年劣化の見た目: 新品(〜0.8×decayT) / 摩耗(〜2×decayT) / 錆(それ以上)。
+  -- FF/RWで年齢が動くとモデルも入れ替わる=時間操作が見た目で分かる
+  local m2 = scene:findEntity(self.name .. "_m2")
+  local m3 = scene:findEntity(self.name .. "_m3")
+  if m2 and m2:isValid() and m3 and m3:isValid() then
+    local stage = (self.clock < self.decayT * 0.8) and 1 or
+                  ((self.clock < self.decayT * 2.0) and 2 or 3)
+    local ents = { scene:findEntity(self.name), m2, m3 }
+    for i, e in ipairs(ents) do
+      if e and e:isValid() then
+        if i == 1 then
+          -- 本体(判定/イベント持ち)は常に支点に置く。新品段階以外は見た目だけ隠す…はできないので
+          -- 本体=新品モデル。段階2/3では本体を奥へ僅かに引っ込め、該当モデルを支点へ出す
+          local show = (stage == 1)
+          e.transform.position = Vec3.new(self.bx, show and self.by or -100, self.bz)
+        else
+          local show = (stage == i)
+          e.transform.position = Vec3.new(self.bx, show and self.by or -100, self.bz)
+          e.transform.rotation = Vec3.new(0, 0, ang)
+          if show then
+            local eff = 5.0
+            if self.ffRemain > 0 then eff = 1.0
+            elseif self.rwGlow > 0 then eff = 2.8 end
+            scene:setMeshEffect(e, eff)
+          end
+        end
+      end
+    end
+  end
+
   local R = 2.35 * self.transform.scale.y
   local rad = math.rad(ang)
   local hx = self.bx + math.sin(rad) * R

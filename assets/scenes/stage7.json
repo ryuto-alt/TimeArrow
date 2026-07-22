@@ -1190,7 +1190,7 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
    },
    "name": "Ham7a",
    "transform": {
@@ -1229,12 +1229,73 @@
       "value": 0.0
      },
      {
+      "name": "decayT",
+      "type": "float",
+      "value": 25.0
+     },
+     {
       "name": "hitHalf",
       "type": "float",
       "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
+   },
+   "name": "Ham7a_m2",
+   "transform": {
+    "position": [
+     30.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
+   },
+   "name": "Ham7a_m3",
+   "transform": {
+    "position": [
+     30.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -1264,7 +1325,7 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
    },
    "name": "Ham7b",
    "transform": {
@@ -1303,12 +1364,73 @@
       "value": 1.1
      },
      {
+      "name": "decayT",
+      "type": "float",
+      "value": 25.0
+     },
+     {
       "name": "hitHalf",
       "type": "float",
       "value": 0.42
      }
     ],
     "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
+   },
+   "name": "Ham7b_m2",
+   "transform": {
+    "position": [
+     44.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
+   },
+   "name": "Ham7b_m3",
+   "transform": {
+    "position": [
+     44.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
    },
    "shader": "shaders/TimeWarp.hlsl"
   },
@@ -2036,7 +2158,7 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     10.825,
+     11.1,
      5.85,
      -13.0
     ],
@@ -2067,7 +2189,7 @@
      {
       "name": "minX",
       "type": "float",
-      "value": 10.82
+      "value": 11.1
      },
      {
       "name": "maxX",
@@ -2087,17 +2209,17 @@
      {
       "name": "fullX",
       "type": "float",
-      "value": 51.86
+      "value": 52.0
      },
      {
       "name": "fullY",
       "type": "float",
-      "value": -8.89
+      "value": 53.75
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -113.67
+      "value": -68.59
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -2156,7 +2278,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 46,
+   "parent": 50,
    "transform": {
     "position": [
      0.0,
@@ -2230,7 +2352,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 46,
+   "parent": 50,
    "transform": {
     "position": [
      0.0,
@@ -2436,7 +2558,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 46
+   "parent": 50
   },
   {
    "name": "TimeLeft",
@@ -2528,7 +2650,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 46
+   "parent": 50
   },
   {
    "name": "DrawAmount",
@@ -2620,7 +2742,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 46
+   "parent": 50
   },
   {
    "name": "RewindCount",
@@ -2712,7 +2834,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 46
+   "parent": 50
   }
  ]
 }

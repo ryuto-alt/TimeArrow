@@ -987,7 +987,7 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     10.825,
+     11.1,
      5.85,
      -13.0
     ],
@@ -1018,7 +1018,7 @@
      {
       "name": "minX",
       "type": "float",
-      "value": 10.82
+      "value": 11.1
      },
      {
       "name": "maxX",
@@ -1038,17 +1038,17 @@
      {
       "name": "fullX",
       "type": "float",
-      "value": 22.36
+      "value": 22.5
      },
      {
       "name": "fullY",
       "type": "float",
-      "value": -14.38
+      "value": 22.53
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -106.89
+      "value": -30.05
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
