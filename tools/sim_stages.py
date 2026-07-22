@@ -13,6 +13,7 @@
 """
 
 import math
+import sys
 from knobs import K
 
 WALK = 5.0
@@ -920,3 +921,4 @@ ALL_OK &= report("S8 時計職人の卒業試験(総ざらい5フェーズ)", S8
 
 print("\n" + "═" * 68)
 print("判定:", "ALL OK" if ALL_OK else "NG あり — 数値を調整せよ")
+sys.exit(0 if ALL_OK else 1)
