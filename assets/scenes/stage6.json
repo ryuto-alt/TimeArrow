@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 13.0
+      "value": 14.0
      },
      {
       "name": "scenePath",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor6,StartLedge6,StepA6,StepB6"
+      "value": "Floor6,StartLedge6,StepA6,StepB6,StepC6,StepD6"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor6,StartLedge6,StepA6,StepB6,ClosingGate6,LockGate6"
+      "value": "Floor6,StartLedge6,StepA6,StepB6,StepC6,StepD6,ClosingGate6,LockGate6"
      },
      {
       "name": "mirrors",
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.5,
+     23.2,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.5,
+     23.2,
      0.5,
      0.8
     ],
@@ -512,7 +512,7 @@
    "name": "Floor6",
    "transform": {
     "position": [
-     8.0,
+     12.0,
      -0.5,
      0.0
     ],
@@ -522,7 +522,7 @@
      0.0
     ],
     "scale": [
-     16.0,
+     24.0,
      1.0,
      3.0
     ]
@@ -536,10 +536,10 @@
    "meshRenderer": {
     "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
-   "name": "Needle6",
+   "name": "NeedleA6",
    "transform": {
     "position": [
-     5.0,
+     5.2,
      0.2,
      0.0
     ],
@@ -582,7 +582,7 @@
    "name": "StepA6",
    "transform": {
     "position": [
-     3.9,
+     4.1,
      0.6,
      0.0
     ],
@@ -609,7 +609,7 @@
    "name": "StepB6",
    "transform": {
     "position": [
-     5.6,
+     5.8,
      0.85,
      0.0
     ],
@@ -636,7 +636,7 @@
    "name": "ClosingGate6Frame",
    "transform": {
     "position": [
-     9.6,
+     10.0,
      2.0,
      0.0
     ],
@@ -663,7 +663,7 @@
    "name": "ClosingGate6",
    "transform": {
     "position": [
-     9.6,
+     10.0,
      1.8,
      0.0
     ],
@@ -689,7 +689,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 4.0
+      "value": 2.2
      },
      {
       "name": "slideTime",
@@ -716,7 +716,7 @@
    "name": "Boulder6",
    "transform": {
     "position": [
-     8.0,
+     11.0,
      0.8,
      0.0
     ],
@@ -737,12 +737,12 @@
      {
       "name": "rollT",
       "type": "float",
-      "value": 4.0
+      "value": 3.0
      },
      {
       "name": "rollSpeed",
       "type": "float",
-      "value": 1.0
+      "value": 1.2
      },
      {
       "name": "axisX",
@@ -775,12 +775,109 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "NeedleB6",
+   "transform": {
+    "position": [
+     13.3,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.6,
+     0.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepC6",
+   "transform": {
+    "position": [
+     12.5,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepD6",
+   "transform": {
+    "position": [
+     13.9,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
    "name": "LockGate6Frame",
    "transform": {
     "position": [
-     13.2,
+     20.0,
      2.0,
      0.0
     ],
@@ -807,7 +904,7 @@
    "name": "LockGate6",
    "transform": {
     "position": [
-     13.2,
+     20.0,
      1.8,
      0.0
     ],
@@ -828,7 +925,7 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 14.0
+      "value": 16.0
      },
      {
       "name": "closeT",
@@ -856,7 +953,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 13.0
+      "value": 14.0
      },
      {
       "name": "collapseAt",
@@ -884,8 +981,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
-     1.62,
+     12.0,
+     3.4,
      7.0
     ],
     "rotation": [
@@ -894,8 +991,8 @@
      0.0
     ],
     "scale": [
-     37.12,
-     19.28,
+     55.7,
+     28.9,
      1.0
     ]
    }
@@ -946,9 +1043,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     12.0,
+     8.4,
+     -16.8
     ],
     "rotation": [
      14.0,
@@ -1015,7 +1112,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 19,
+   "parent": 22,
    "transform": {
     "position": [
      0.0,
@@ -1074,7 +1171,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 13.0,
+    "maxValue": 14.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1089,7 +1186,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 19,
+   "parent": 22,
    "transform": {
     "position": [
      0.0,
@@ -1291,11 +1388,11 @@
      2.0,
      2.0
     ],
-    "text": "13秒以内にゴールしろ！",
+    "text": "14秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 22
   },
   {
    "name": "TimeLeft",
@@ -1383,11 +1480,11 @@
      2.0,
      2.0
     ],
-    "text": "13.0",
+    "text": "14.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 22
   },
   {
    "name": "DrawAmount",
@@ -1479,7 +1576,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 22
   },
   {
    "name": "RewindCount",
@@ -1571,7 +1668,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 22
   }
  ]
 }

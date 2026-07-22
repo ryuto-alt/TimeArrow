@@ -67,6 +67,8 @@ function OnUpdate(self, dt)
   local ang = math.sin((self.clock / self.period) * math.pi * 2)
   local nx = self.bx + ang * self.amplitude
   self.transform.position = Vec3.new(nx, self.by, self.bz)
+  -- 丸ノコの回転(スローモーション中はゆっくり回る=時間の速度が見える)
+  self.transform.rotation = Vec3.new(0, 0, -(self.clock * 420) % 360)
 
   -- TimeWarpシェーダーへ状態を送る: 早送り=1 / 後戻り=2.8 / 通常=0
   local selfE = scene:findEntity(self.name)

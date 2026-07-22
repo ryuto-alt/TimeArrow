@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 15.0
+      "value": 16.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Blade7a,Blade7b,LockGate7,ReturnGate7"
+      "value": "Blade7a,Blade7b,Blade7c,LockGate7,ReturnGate7"
      },
      {
       "name": "standables",
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.5,
+     19.4,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.5,
+     19.4,
      0.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "Floor7",
    "transform": {
     "position": [
-     8.0,
+     12.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     16.0,
+     24.0,
      1.0,
      3.0
     ]
@@ -512,7 +512,7 @@
    "name": "ReturnGate7Frame",
    "transform": {
     "position": [
-     8.0,
+     12.0,
      2.0,
      0.0
     ],
@@ -539,7 +539,7 @@
    "name": "ReturnGate7",
    "transform": {
     "position": [
-     8.0,
+     12.0,
      1.8,
      0.0
     ],
@@ -565,7 +565,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 12.0
+      "value": 14.0
      },
      {
       "name": "slideTime",
@@ -592,7 +592,7 @@
    "name": "Stair7A",
    "transform": {
     "position": [
-     12.2,
+     20.6,
      0.6,
      0.0
     ],
@@ -619,7 +619,7 @@
    "name": "Stair7B",
    "transform": {
     "position": [
-     13.4,
+     21.8,
      1.2,
      0.0
     ],
@@ -646,7 +646,7 @@
    "name": "Stair7C",
    "transform": {
     "position": [
-     14.6,
+     23.0,
      1.8,
      0.0
     ],
@@ -673,7 +673,7 @@
    "name": "Deck7",
    "transform": {
     "position": [
-     8.0,
+     12.0,
      4.4,
      0.0
     ],
@@ -683,7 +683,7 @@
      0.0
     ],
     "scale": [
-     10.0,
+     16.0,
      0.5,
      3.0
     ]
@@ -695,24 +695,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
    },
    "name": "Blade7a",
    "transform": {
     "position": [
-     10.5,
+     17.0,
      5.85,
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
      1.4,
      1.4,
-     0.5
+     1.0
     ]
    },
    "luaScript": {
@@ -741,7 +741,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.55
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -754,24 +754,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
    },
    "name": "Blade7b",
    "transform": {
     "position": [
-     6.5,
+     12.0,
      5.85,
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
      1.4,
      1.4,
-     0.5
+     1.0
     ]
    },
    "luaScript": {
@@ -790,7 +790,7 @@
      {
       "name": "startPhase",
       "type": "float",
-      "value": 2.0
+      "value": 1.5
      },
      {
       "name": "deadly",
@@ -800,7 +800,66 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.55
+     }
+    ],
+    "scriptPath": "scripts/Pendulum.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
+   },
+   "name": "Blade7c",
+   "transform": {
+    "position": [
+     7.0,
+     5.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.4,
+     1.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 4.0
+     },
+     {
+      "name": "amplitude",
+      "type": "float",
+      "value": 2.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 3.0
+     },
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.55
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -818,7 +877,7 @@
    "name": "LockGate7Frame",
    "transform": {
     "position": [
-     4.5,
+     5.5,
      6.65,
      0.0
     ],
@@ -845,7 +904,7 @@
    "name": "LockGate7",
    "transform": {
     "position": [
-     4.5,
+     5.5,
      6.45,
      0.0
     ],
@@ -866,7 +925,7 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 16.0
+      "value": 18.0
      },
      {
       "name": "closeT",
@@ -894,7 +953,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 15.0
+      "value": 16.0
      },
      {
       "name": "collapseAt",
@@ -922,8 +981,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
-     1.62,
+     12.0,
+     3.4,
      7.0
     ],
     "rotation": [
@@ -932,8 +991,8 @@
      0.0
     ],
     "scale": [
-     37.12,
-     19.28,
+     55.7,
+     28.9,
      1.0
     ]
    }
@@ -984,9 +1043,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     12.0,
+     8.4,
+     -16.8
     ],
     "rotation": [
      14.0,
@@ -1053,7 +1112,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 20,
+   "parent": 21,
    "transform": {
     "position": [
      0.0,
@@ -1112,7 +1171,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 15.0,
+    "maxValue": 16.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1127,7 +1186,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 20,
+   "parent": 21,
    "transform": {
     "position": [
      0.0,
@@ -1329,11 +1388,11 @@
      2.0,
      2.0
     ],
-    "text": "15秒以内にゴールしろ！",
+    "text": "16秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 21
   },
   {
    "name": "TimeLeft",
@@ -1421,11 +1480,11 @@
      2.0,
      2.0
     ],
-    "text": "15.0",
+    "text": "16.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 21
   },
   {
    "name": "DrawAmount",
@@ -1517,7 +1576,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 21
   },
   {
    "name": "RewindCount",
@@ -1609,7 +1668,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 20
+   "parent": 21
   }
  ]
 }

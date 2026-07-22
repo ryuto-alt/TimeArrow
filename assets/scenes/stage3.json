@@ -684,7 +684,7 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
    },
    "name": "Blade3",
    "transform": {
@@ -694,14 +694,14 @@
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
      1.4,
      1.4,
-     0.5
+     1.0
     ]
    },
    "luaScript": {
@@ -730,7 +730,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.55
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"

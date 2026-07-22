@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 18.0
+      "value": 17.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Blade8a,GateU8,Blade8b,LockGate8"
+      "value": "Blade8a,GateU8,Blade8b,LockGate8,ClosingGate8b"
      },
      {
       "name": "standables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor8,Stair8A,Stair8B,Deck8"
+      "value": "Floor8,Stair8A,Stair8B,Deck8,StepA8,StepB8"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor8,Stair8A,Stair8B,Deck8,GateU8,LockGate8"
+      "value": "Floor8,Stair8A,Stair8B,Deck8,StepA8,StepB8,GateU8,LockGate8,ClosingGate8b"
      },
      {
       "name": "mirrors",
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.5,
+     23.2,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.5,
+     23.2,
      0.5,
      0.8
     ],
@@ -485,7 +485,7 @@
    "name": "Floor8",
    "transform": {
     "position": [
-     8.0,
+     12.0,
      -0.5,
      0.0
     ],
@@ -495,7 +495,7 @@
      0.0
     ],
     "scale": [
-     16.0,
+     24.0,
      1.0,
      3.0
     ]
@@ -507,24 +507,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
    },
    "name": "Blade8a",
    "transform": {
     "position": [
-     3.5,
+     4.0,
      1.3,
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
      1.4,
      1.4,
-     0.5
+     1.0
     ]
    },
    "luaScript": {
@@ -553,7 +553,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.55
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -571,7 +571,7 @@
    "name": "Stair8A",
    "transform": {
     "position": [
-     5.3,
+     6.2,
      0.6,
      0.0
     ],
@@ -598,7 +598,7 @@
    "name": "Stair8B",
    "transform": {
     "position": [
-     6.5,
+     7.4,
      1.2,
      0.0
     ],
@@ -625,7 +625,7 @@
    "name": "Deck8",
    "transform": {
     "position": [
-     9.9,
+     10.7,
      2.6,
      0.0
     ],
@@ -635,7 +635,7 @@
      0.0
     ],
     "scale": [
-     6.0,
+     6.6,
      0.5,
      3.0
     ]
@@ -652,7 +652,7 @@
    "name": "GateU8Frame",
    "transform": {
     "position": [
-     8.6,
+     9.5,
      4.85,
      0.0
     ],
@@ -679,7 +679,7 @@
    "name": "GateU8",
    "transform": {
     "position": [
-     8.6,
+     9.5,
      4.65,
      0.0
     ],
@@ -705,7 +705,7 @@
      {
       "name": "closeT",
       "type": "float",
-      "value": 5.0
+      "value": 2.0
      },
      {
       "name": "slideTime",
@@ -727,24 +727,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Saw_Disc/Saw_Disc.obj"
    },
    "name": "Blade8b",
    "transform": {
     "position": [
-     10.9,
+     12.0,
      4.0,
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
      1.2,
      1.2,
-     0.5
+     1.0
     ]
    },
    "luaScript": {
@@ -773,7 +773,7 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.55
      }
     ],
     "scriptPath": "scripts/Pendulum.lua"
@@ -791,7 +791,7 @@
    "name": "LockGate8Frame",
    "transform": {
     "position": [
-     14.0,
+     15.5,
      2.0,
      0.0
     ],
@@ -818,7 +818,7 @@
    "name": "LockGate8",
    "transform": {
     "position": [
-     14.0,
+     15.5,
      1.8,
      0.0
     ],
@@ -839,12 +839,189 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 26.0
+      "value": 20.0
      },
      {
       "name": "closeT",
       "type": "float",
       "value": 9999.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "Needle8",
+   "transform": {
+    "position": [
+     18.3,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.6,
+     0.4,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/Wall.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepA8",
+   "transform": {
+    "position": [
+     17.5,
+     0.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.2,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepB8",
+   "transform": {
+    "position": [
+     18.9,
+     0.85,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.7,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "ClosingGate8bFrame",
+   "transform": {
+    "position": [
+     21.0,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "ClosingGate8b",
+   "transform": {
+    "position": [
+     21.0,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 14.5
      },
      {
       "name": "slideTime",
@@ -867,7 +1044,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 18.0
+      "value": 17.0
      },
      {
       "name": "collapseAt",
@@ -895,8 +1072,8 @@
    "shader": "shaders/BackdropCollapse.hlsl",
    "transform": {
     "position": [
-     8.0,
-     1.62,
+     12.0,
+     3.4,
      7.0
     ],
     "rotation": [
@@ -905,8 +1082,8 @@
      0.0
     ],
     "scale": [
-     37.12,
-     19.28,
+     55.7,
+     28.9,
      1.0
     ]
    }
@@ -957,9 +1134,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.0,
-     7.19,
-     -11.11
+     12.0,
+     8.4,
+     -16.8
     ],
     "rotation": [
      14.0,
@@ -1026,7 +1203,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 19,
+   "parent": 24,
    "transform": {
     "position": [
      0.0,
@@ -1085,7 +1262,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 18.0,
+    "maxValue": 17.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1100,7 +1277,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 19,
+   "parent": 24,
    "transform": {
     "position": [
      0.0,
@@ -1302,11 +1479,11 @@
      2.0,
      2.0
     ],
-    "text": "18秒以内にゴールしろ！",
+    "text": "17秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 24
   },
   {
    "name": "TimeLeft",
@@ -1394,11 +1571,11 @@
      2.0,
      2.0
     ],
-    "text": "18.0",
+    "text": "17.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 24
   },
   {
    "name": "DrawAmount",
@@ -1490,7 +1667,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 24
   },
   {
    "name": "RewindCount",
@@ -1582,7 +1759,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 24
   }
  ]
 }
