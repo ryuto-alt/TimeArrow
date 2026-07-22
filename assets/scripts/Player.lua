@@ -93,6 +93,12 @@ function OnStart(self)
   self.ridePrevX = 0
   self.ridePrevY = 0
 
+  -- ファンの上昇気流(Fan.luaが毎フレーム送ってくる外力。適用したら消費)
+  self.extAY = 0
+  events:on("fan_force", function(data)
+    self.extAY = data.ay or 0
+  end)
+
   -- 早送り中で実体のない solid(CrushWall等)。名前→残り秒。期間中は物理ブロックしない
   self.ghostSolids = {}
   events:on("solid_ghost", function(data)
@@ -283,7 +289,13 @@ local function updateMovement(self, dt)
   updateClimb(self, dt)  -- 登り中なら vx/vy をここで上書き
   if not self.climbing then
     self.vy = self.vy - self.gravity * dt
+    if self.extAY ~= 0 then
+      -- 上昇気流: 重力に逆らって押し上げ(上昇速度は控えめに頭打ち=ふわっと浮く)
+      self.vy = math.min(self.vy + self.extAY * dt, 7.5)
+      self.grounded = false
+    end
   end
+  self.extAY = 0
 
   local p = self.transform.position
   local nx = resolveX(self, p.y, p.x + self.vx * dt)

@@ -279,19 +279,18 @@ ALL_OK &= report("S1 遅すぎる橋", S1["limit"], S1["rw"], [
 ], margin=(1.5, 6.0))
 
 # ════════════════════════════════════════════════════════════════════
-# S2「四枚の閉門回廊」(幅52, RW3) — gen_stages.py 座標に一致
-# F2[0,52] P2a[5,6.7] P2b[10,11.7] GateA x14.6 P2c[17.5,19.2] GateB x22.5
-# P2d[25.5,27.2] P2e[30.5,32.2] GateC x35.5 GateD x43.0 出口49.5
+# S2「四枚の閉門回廊」v4(幅52, RW3) — 全門が到達直前に閉まる。
+# RW3では4枚に足りない→最低1枚はスプリントで間に合わせる。道中にハンマー/弾幕/崩れ橋。
 # ════════════════════════════════════════════════════════════════════
 S2 = K["s2"]
 
 
 def s2_route_to_A(r):
-    r.walk(4.2, "P2aへ")
-    r.hops(1.7, 3, "針山1")
-    r.walk(3.3, "P2bへ")
-    r.hops(1.7, 2, "針山2")
-    r.walk(2.9, "GateA前")
+    r.walk(3.0, "P2aへ")
+    r.hops(1.6, 2, "針山1")
+    r.walk(2.6, "P2bへ")
+    r.hops(1.6, 2, "針山2")
+    r.walk(2.4, "GateA前")
 
 
 def s2_noarrow(r):
@@ -307,22 +306,24 @@ def s2_ffonly(r):
 
 def s2_plan(r):
     s2_route_to_A(r)
-    r.rw("GateA", 10.0, dist=1.5, label="スラムAを呼び戻す")
+    r.rw("GateA", 6.0, dist=1.5, label="スラムA呼び戻し")
     r.gate_reopen_pass("GateA", S2["closeA"])
+    r.walk(3.9, "ハンマー前")
+    r.wait(0.8, "ハンマーの間合い")
+    r.walk(4.0, "GateBへ走る")
+    r.gate_pass("GateB", S2["closeB"], "スプリント成功なら矢いらず")
+    r.wait(0.6, "弾幕の谷を待つ")
     r.walk(2.9, "P2cへ")
-    r.hops(1.7, 2, "針山3")
-    r.walk(3.3, "GateB前")
-    r.gate_pass("GateB", S2["closeB"], "スプリントで間に合う")
-    r.walk(3.0, "P2dへ")
-    r.hops(1.7, 2, "針山4")
-    r.walk(3.3, "P2eへ")
-    r.hops(1.7, 2, "針山5")
-    r.walk(3.3, "GateC前")
-    r.rw("GateC", 10.0, dist=1.5, label="スラム2を呼び戻す")
+    r.hops(1.6, 2, "針山3")
+    r.walk(5.2, "GateC前")
+    r.rw("GateC", 8.0, dist=1.5, label="間に合わなければ呼び戻す")
     r.gate_reopen_pass("GateC", S2["closeC"])
-    r.walk(7.5, "GateD前")
-    r.gate_pass("GateD", S2["closeD"], "スプリント2")
-    r.walk(6.5, "ゴール")
+    r.walk(3.3, "崩れ橋へ")
+    r.walk(3.2, "崩れ橋を渡り切る(1.6秒以内)")
+    r.walk(1.4, "GateD前")
+    r.rw("GateD", 8.0, dist=1.5, label="呼び戻し(3発目)")
+    r.gate_reopen_pass("GateD", S2["closeD"])
+    r.walk(4.4, "ゴール")
 
 
 ALL_OK &= report("S2 四枚の閉門回廊", S2["limit"], S2["rw"], [
@@ -424,7 +425,7 @@ ALL_OK &= report("S3 三つの錠の取引", S3["limit"], S3["rw"], [
     ("FFのみ", s3_ffonly, False),
     ("RWのみ", s3_rwonly, False),
     ("想定解", s3_plan, True),
-], margin=(2.0, 8.0))
+], margin=(2.0, 10.0))
 
 # ════════════════════════════════════════════════════════════════════
 # S4「動かせない締切+動く壁」(幅64, RW3) — gen_stages.py 座標に一致
@@ -486,7 +487,7 @@ ALL_OK &= report("S4 動かせない締切+動く壁", S4["limit"], S4["rw"], [
     ("FFのみ", s4_noarrow, False),
     ("RWのみ", s4_rwonly, False),
     ("想定解", s4_plan, True),
-], margin=(2.0, 8.0))
+], margin=(2.0, 10.0))
 
 # ════════════════════════════════════════════════════════════════════
 # S5「時の昇降機・改」(幅88, RW4, 3層) — gen_stages.py 座標に一致

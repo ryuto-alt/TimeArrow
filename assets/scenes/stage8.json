@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 91.5
+      "value": 96.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,GateG8,Lift8,Ball8,GateY8,LockZ8"
+      "value": "GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,Ham8,GateG8,Lift8,Ball8,GateY8,LockZ8,Tur8"
      },
      {
       "name": "standables",
@@ -1775,6 +1775,60 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+   },
+   "name": "Ham8",
+   "transform": {
+    "position": [
+     49.5,
+     3.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 3.0
+     },
+     {
+      "name": "maxAngle",
+      "type": "float",
+      "value": 55.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "hitHalf",
+      "type": "float",
+      "value": 0.55
+     }
+    ],
+    "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
    "name": "GateG8Frame",
@@ -2186,6 +2240,219 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Turret/Turret.obj"
+   },
+   "name": "Tur8",
+   "transform": {
+    "position": [
+     108.0,
+     9.4,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 3.2
+     },
+     {
+      "name": "shotSpeed",
+      "type": "float",
+      "value": 5.5
+     },
+     {
+      "name": "range",
+      "type": "float",
+      "value": 13.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     }
+    ],
+    "scriptPath": "scripts/Turret.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "Tur8_p1",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.55,
+     0.55,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.45,
+     0.25,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 7,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/ball_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   }
+  },
+  {
+   "name": "Tur8_p2",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.55,
+     0.55,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.45,
+     0.25,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 7,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/ball_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   }
+  },
+  {
+   "name": "Tur8_p3",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.55,
+     0.55,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.45,
+     0.25,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 7,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/ball_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
    "name": "LockZ8Frame",
@@ -2336,7 +2603,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 91.5
+      "value": 96.0
      },
      {
       "name": "collapseAt",
@@ -2482,12 +2749,12 @@
      {
       "name": "fullY",
       "type": "float",
-      "value": -8.89
+      "value": -8.92
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -113.67
+      "value": -113.8
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -2546,7 +2813,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 54,
+   "parent": 59,
    "transform": {
     "position": [
      0.0,
@@ -2605,7 +2872,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 91.5,
+    "maxValue": 96.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -2620,7 +2887,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 54,
+   "parent": 59,
    "transform": {
     "position": [
      0.0,
@@ -2822,11 +3089,11 @@
      2.0,
      2.0
     ],
-    "text": "91秒以内にゴールしろ！",
+    "text": "96秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 54
+   "parent": 59
   },
   {
    "name": "TimeLeft",
@@ -2914,11 +3181,11 @@
      2.0,
      2.0
     ],
-    "text": "91.5",
+    "text": "96.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 54
+   "parent": 59
   },
   {
    "name": "DrawAmount",
@@ -3010,7 +3277,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 54
+   "parent": 59
   },
   {
    "name": "RewindCount",
@@ -3102,7 +3369,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 54
+   "parent": 59
   }
  ]
 }

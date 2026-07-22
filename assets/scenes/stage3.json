@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Lock1,GateS1,GateS2,Lock2,GateZ,Vine1"
+      "value": "Lock1,GateS1,GateS2,Lock2,GateZ,HG3"
      },
      {
       "name": "standables",
@@ -243,7 +243,7 @@
      {
       "name": "climbables",
       "type": "string",
-      "value": "Vine1"
+      "value": ""
      },
      {
       "name": "arrowStops",
@@ -641,13 +641,13 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Vine/Vine.obj"
+    "modelPath": "models/Hourglass/Hourglass.obj"
    },
-   "name": "Vine1",
+   "name": "HG3",
    "transform": {
     "position": [
-     13.5,
-     2.25,
+     13.8,
+     0.75,
      0.0
     ],
     "rotation": [
@@ -656,37 +656,23 @@
      0.0
     ],
     "scale": [
-     1.0,
-     4.5,
-     1.0
+     1.1,
+     1.1,
+     1.1
     ]
    },
    "luaScript": {
     "enabled": true,
     "props": [
      {
-      "name": "growT",
+      "name": "spinSpeed",
       "type": "float",
-      "value": 0.0
-     },
-     {
-      "name": "growDuration",
-      "type": "float",
-      "value": 0.5
-     },
-     {
-      "name": "bottomY",
-      "type": "float",
-      "value": 0.0
-     },
-     {
-      "name": "unitHeight",
-      "type": "float",
-      "value": 1.0
+      "value": 20.0
      }
     ],
-    "scriptPath": "scripts/GrowVine.lua"
-   }
+    "scriptPath": "scripts/Hourglass.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {

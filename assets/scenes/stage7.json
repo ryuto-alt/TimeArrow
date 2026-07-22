@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 95.0
+      "value": 100.0
      },
      {
       "name": "scenePath",
@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7"
+      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7b,HG7"
      },
      {
       "name": "standables",
@@ -1295,6 +1295,153 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+   },
+   "name": "Ham7a",
+   "transform": {
+    "position": [
+     30.0,
+     3.9,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 3.4
+     },
+     {
+      "name": "maxAngle",
+      "type": "float",
+      "value": 50.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "hitHalf",
+      "type": "float",
+      "value": 0.55
+     }
+    ],
+    "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Pendulum/Hammer_Pendulum.obj"
+   },
+   "name": "Ham7b",
+   "transform": {
+    "position": [
+     44.0,
+     3.9,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 2.6
+     },
+     {
+      "name": "maxAngle",
+      "type": "float",
+      "value": 50.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 1.1
+     },
+     {
+      "name": "hitHalf",
+      "type": "float",
+      "value": 0.55
+     }
+    ],
+    "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hourglass/Hourglass.obj"
+   },
+   "name": "HG7",
+   "transform": {
+    "position": [
+     54.0,
+     0.75,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     1.1,
+     1.1
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinSpeed",
+      "type": "float",
+      "value": 20.0
+     }
+    ],
+    "scriptPath": "scripts/Hourglass.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
    "name": "St7a",
@@ -1863,7 +2010,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 95.0
+      "value": 100.0
      },
      {
       "name": "collapseAt",
@@ -2073,7 +2220,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 45,
+   "parent": 48,
    "transform": {
     "position": [
      0.0,
@@ -2132,7 +2279,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 95.0,
+    "maxValue": 100.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -2147,7 +2294,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 45,
+   "parent": 48,
    "transform": {
     "position": [
      0.0,
@@ -2349,11 +2496,11 @@
      2.0,
      2.0
     ],
-    "text": "95秒以内にゴールしろ！",
+    "text": "100秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 45
+   "parent": 48
   },
   {
    "name": "TimeLeft",
@@ -2441,11 +2588,11 @@
      2.0,
      2.0
     ],
-    "text": "95.0",
+    "text": "100.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 45
+   "parent": 48
   },
   {
    "name": "DrawAmount",
@@ -2537,7 +2684,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 45
+   "parent": 48
   },
   {
    "name": "RewindCount",
@@ -2629,7 +2776,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 45
+   "parent": 48
   }
  ]
 }

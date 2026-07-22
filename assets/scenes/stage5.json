@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 64.0
+      "value": 66.0
      },
      {
       "name": "scenePath",
@@ -233,12 +233,12 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5"
+      "value": "Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5,CrA5,CrB5"
      },
      {
       "name": "standables",
       "type": "string",
-      "value": "Lift5,Ferry5"
+      "value": "Lift5,Ferry5,CrA5,CrB5"
      },
      {
       "name": "climbables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5"
+      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,Gate5,LockD5,GateY5,LockZ5"
+      "value": "F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,Gate5,LockD5,GateY5,LockZ5"
      },
      {
       "name": "mirrors",
@@ -482,10 +482,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "F5",
+   "name": "F5a",
    "transform": {
     "position": [
-     44.0,
+     27.0,
      -0.5,
      0.0
     ],
@@ -495,11 +495,116 @@
      0.0
     ],
     "scale": [
-     88.0,
+     54.0,
      1.0,
      3.0
     ]
    }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "F5b",
+   "transform": {
+    "position": [
+     73.5,
+     -0.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     29.0,
+     1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
+   },
+   "name": "CrA5",
+   "transform": {
+    "position": [
+     55.2,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.45,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "crumbleT",
+      "type": "float",
+      "value": 1.6
+     }
+    ],
+    "scriptPath": "scripts/CrumblePlatform.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
+   },
+   "name": "CrB5",
+   "transform": {
+    "position": [
+     57.2,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.45,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "crumbleT",
+      "type": "float",
+      "value": 1.6
+     }
+    ],
+    "scriptPath": "scripts/CrumblePlatform.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
   },
   {
    "material": {
@@ -1519,7 +1624,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 64.0
+      "value": 66.0
      },
      {
       "name": "collapseAt",
@@ -1729,7 +1834,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 35,
+   "parent": 38,
    "transform": {
     "position": [
      0.0,
@@ -1788,7 +1893,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 64.0,
+    "maxValue": 66.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1803,7 +1908,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 35,
+   "parent": 38,
    "transform": {
     "position": [
      0.0,
@@ -2005,11 +2110,11 @@
      2.0,
      2.0
     ],
-    "text": "64秒以内にゴールしろ！",
+    "text": "66秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 35
+   "parent": 38
   },
   {
    "name": "TimeLeft",
@@ -2097,11 +2202,11 @@
      2.0,
      2.0
     ],
-    "text": "64.0",
+    "text": "66.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 35
+   "parent": 38
   },
   {
    "name": "DrawAmount",
@@ -2193,7 +2298,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 35
+   "parent": 38
   },
   {
    "name": "RewindCount",
@@ -2285,7 +2390,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 35
+   "parent": 38
   }
  ]
 }
