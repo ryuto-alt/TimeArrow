@@ -16,6 +16,8 @@ local function applyGrowth(self, frac)
 end
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
   local p = self.transform.position
   self.bx, self.bz = p.x, p.z
   local s = self.transform.scale
@@ -31,14 +33,40 @@ function OnStart(self)
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.transform.position.x, self.transform.position.y, self.bz, 10, 0.6, 0.9, 0.4)
   end)
+
+  -- 後戻り(グローバル): 育った蔦も時間と一緒に縮む
+  self.rwGlow = 0
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
+  end)
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   self.clock = self.clock + dt
   if self.ffRemain > 0 then
     local step = math.min(self.ffRemain, self.ffSpeed * dt)
     self.clock = self.clock + step
     self.ffRemain = self.ffRemain - step
+  end
+  if self.rwRemain and self.rwRemain > 0 then
+    -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
+    end
   end
   local frac = clamp((self.clock - self.growT) / self.growDuration, 0, 1)
   applyGrowth(self, frac)
@@ -47,5 +75,15 @@ function OnUpdate(self, dt)
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
     scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  end
+
+  -- 早送り=水色 / 後戻り=紫 の残像(先端に出す)
+  local tip = self.transform.position
+  if self.ffRemain > 0 then
+    FX.trail(tip.x, tip.y, self.bz, 0.3, 0.9, 1.0)
+  end
+  if self.rwGlow > 0 then
+    self.rwGlow = self.rwGlow - dt
+    FX.trail(tip.x, tip.y, self.bz, 0.65, 0.4, 1.0)
   end
 end

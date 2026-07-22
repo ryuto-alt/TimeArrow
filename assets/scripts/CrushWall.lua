@@ -23,6 +23,8 @@ local function posAt(self, clockValue)
 end
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
@@ -60,9 +62,23 @@ function OnStart(self)
     if data.target ~= self.name or not self.listenButton then return end
     self.buttonActive = not self.buttonActive
   end)
+
+  -- 後戻り(グローバル): 進んだ壁が滑って戻る
+  self.rwGlow = 0
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
+  end)
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   if not self.listenButton or self.buttonActive then
     self.clock = self.clock + dt
   end
@@ -70,6 +86,18 @@ function OnUpdate(self, dt)
     local step = math.min(self.ffRemain, self.ffSpeed * dt)
     self.clock = self.clock + step
     self.ffRemain = self.ffRemain - step
+  end
+  if self.rwRemain and self.rwRemain > 0 then
+    -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
+    end
   end
 
   local wasGhosting = self.ghostT > 0
@@ -98,9 +126,20 @@ function OnUpdate(self, dt)
     dissolveAmount = clamp(self.materializeT / self.materializeTime, 0, 1)
   end
 
+  -- TimeWarpシェーダーへ状態を送る: ゴースト中=1(市松抜き+シアン) /
+  -- 実体化フェード中=残量に応じた弱い早送り風 / 後戻り=2.8 / 通常=0
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    scene:setSpriteEffect(selfE, dissolveAmount)
-    scene:setSpriteAlpha(selfE, alpha)
+    local eff = 0
+    if self.ghostT > 0 then eff = 1.0
+    elseif self.materializeT > 0 then eff = 0.5 * dissolveAmount
+    elseif self.rwGlow > 0 then eff = 2.8 end
+    scene:setMeshEffect(selfE, eff)
+  end
+
+  -- 後戻り中=紫の残像(早送りのビーム/水色と対になる色)
+  if self.rwGlow > 0 then
+    self.rwGlow = self.rwGlow - dt
+    FX.trail(nx, self.by, self.bz, 0.65, 0.4, 1.0)
   end
 end

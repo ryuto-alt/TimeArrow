@@ -117,17 +117,17 @@
      {
       "name": "T",
       "type": "float",
-      "value": 19.0
+      "value": 18.0
      },
      {
       "name": "scenePath",
       "type": "string",
-      "value": "scenes/stage3.json"
+      "value": "scenes/stage6.json"
      },
      {
       "name": "title",
       "type": "string",
-      "value": "STAGE 3"
+      "value": "STAGE 6"
      },
      {
       "name": "markers",
@@ -233,12 +233,12 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Blade3,Lift3,Blade3b,LockGate3"
+      "value": "Boulder6,ClosingGate6,LockGate6"
      },
      {
       "name": "standables",
       "type": "string",
-      "value": "Lift3"
+      "value": ""
      },
      {
       "name": "climbables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "Floor3,Deck3"
+      "value": "Floor6,StartLedge6,StepA6,StepB6"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "Floor3,Deck3,LockGate3"
+      "value": "Floor6,StartLedge6,StepA6,StepB6,ClosingGate6,LockGate6"
      },
      {
       "name": "mirrors",
@@ -268,7 +268,7 @@
      {
       "name": "rewindShots",
       "type": "int",
-      "value": 2
+      "value": 3
      }
     ],
     "scriptPath": "scripts/Player.lua"
@@ -310,7 +310,7 @@
    "transform": {
     "position": [
      0.8,
-     0.55,
+     2.35,
      0.0
     ],
     "rotation": [
@@ -390,7 +390,7 @@
      {
       "name": "next",
       "type": "string",
-      "value": "scenes/stage4.json"
+      "value": "scenes/stage7.json"
      }
     ],
     "scriptPath": "scripts/Exit.lua"
@@ -431,7 +431,7 @@
    },
    "transform": {
     "position": [
-     15.4,
+     15.5,
      0.65,
      0.0
     ],
@@ -458,7 +458,7 @@
    "name": "GoalGate",
    "transform": {
     "position": [
-     15.4,
+     15.5,
      0.5,
      0.8
     ],
@@ -482,7 +482,34 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "Floor3",
+   "name": "StartLedge6",
+   "transform": {
+    "position": [
+     1.2,
+     0.9,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.4,
+     1.8,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "Floor6",
    "transform": {
     "position": [
      8.0,
@@ -507,44 +534,29 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
    },
-   "name": "Blade3",
+   "name": "Needle6",
    "transform": {
     "position": [
-     4.0,
-     1.3,
+     5.0,
+     0.2,
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
-     1.4,
-     1.4,
-     0.5
+     3.6,
+     0.4,
+     1.0
     ]
    },
    "luaScript": {
     "enabled": true,
     "props": [
-     {
-      "name": "period",
-      "type": "float",
-      "value": 4.0
-     },
-     {
-      "name": "amplitude",
-      "type": "float",
-      "value": 2.2
-     },
-     {
-      "name": "startPhase",
-      "type": "float",
-      "value": 0.0
-     },
      {
       "name": "deadly",
       "type": "bool",
@@ -553,61 +565,11 @@
      {
       "name": "hitScale",
       "type": "float",
-      "value": 0.8
+      "value": 0.75
      }
     ],
-    "scriptPath": "scripts/Pendulum.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Move_Block/Move_Block.obj"
-   },
-   "name": "Lift3",
-   "transform": {
-    "position": [
-     7.5,
-     2.45,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     2.2,
-     0.5,
-     1.0
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "period",
-      "type": "float",
-      "value": 6.0
-     },
-     {
-      "name": "amplitude",
-      "type": "float",
-      "value": 1.95
-     },
-     {
-      "name": "startPhase",
-      "type": "float",
-      "value": 4.5
-     }
-    ],
-    "scriptPath": "scripts/MovingPlatform.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
+    "scriptPath": "scripts/Wall.lua"
+   }
   },
   {
    "material": {
@@ -617,11 +579,11 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "Deck3",
+   "name": "StepA6",
    "transform": {
     "position": [
-     10.75,
-     4.4,
+     3.9,
+     0.6,
      0.0
     ],
     "rotation": [
@@ -630,8 +592,8 @@
      0.0
     ],
     "scale": [
-     4.5,
-     0.5,
+     1.1,
+     1.2,
      3.0
     ]
    }
@@ -642,58 +604,26 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Saw_Blade/Saw_Blade.obj"
+    "modelPath": "models/Block/Block.obj"
    },
-   "name": "Blade3b",
+   "name": "StepB6",
    "transform": {
     "position": [
-     10.75,
-     5.75,
+     5.6,
+     0.85,
      0.0
     ],
     "rotation": [
-     90.0,
+     0.0,
      0.0,
      0.0
     ],
     "scale": [
-     1.4,
-     1.4,
-     0.5
+     1.1,
+     1.7,
+     3.0
     ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "period",
-      "type": "float",
-      "value": 4.0
-     },
-     {
-      "name": "amplitude",
-      "type": "float",
-      "value": 1.8
-     },
-     {
-      "name": "startPhase",
-      "type": "float",
-      "value": 1.0
-     },
-     {
-      "name": "deadly",
-      "type": "bool",
-      "value": true
-     },
-     {
-      "name": "hitScale",
-      "type": "float",
-      "value": 0.8
-     }
-    ],
-    "scriptPath": "scripts/Pendulum.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
+   }
   },
   {
    "material": {
@@ -703,10 +633,10 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
-   "name": "LockGate3Frame",
+   "name": "ClosingGate6Frame",
    "transform": {
     "position": [
-     14.0,
+     9.6,
      2.0,
      0.0
     ],
@@ -730,10 +660,10 @@
    "meshRenderer": {
     "modelPath": "models/Gate_Grill/Gate_Grill.obj"
    },
-   "name": "LockGate3",
+   "name": "ClosingGate6",
    "transform": {
     "position": [
-     14.0,
+     9.6,
      1.8,
      0.0
     ],
@@ -754,7 +684,151 @@
      {
       "name": "openT",
       "type": "float",
-      "value": 17.0
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 7.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Roll_Ball/Roll_Ball.obj"
+   },
+   "name": "Boulder6",
+   "transform": {
+    "position": [
+     8.0,
+     0.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     1.6,
+     1.6
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "rollT",
+      "type": "float",
+      "value": 4.0
+     },
+     {
+      "name": "rollSpeed",
+      "type": "float",
+      "value": 1.0
+     },
+     {
+      "name": "axisX",
+      "type": "float",
+      "value": 1.0
+     },
+     {
+      "name": "goalName",
+      "type": "string",
+      "value": "Exit"
+     },
+     {
+      "name": "goalHitScale",
+      "type": "float",
+      "value": 1.3
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.8
+     }
+    ],
+    "scriptPath": "scripts/RollBall.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "LockGate6Frame",
+   "transform": {
+    "position": [
+     13.2,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "LockGate6",
+   "transform": {
+    "position": [
+     13.2,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 14.0
      },
      {
       "name": "closeT",
@@ -782,7 +856,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 19.0
+      "value": 18.0
      },
      {
       "name": "collapseAt",
@@ -941,7 +1015,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 16,
+   "parent": 19,
    "transform": {
     "position": [
      0.0,
@@ -1000,7 +1074,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 19.0,
+    "maxValue": 18.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -1015,7 +1089,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 16,
+   "parent": 19,
    "transform": {
     "position": [
      0.0,
@@ -1217,11 +1291,11 @@
      2.0,
      2.0
     ],
-    "text": "19秒以内にゴールしろ！",
+    "text": "18秒以内にゴールしろ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 16
+   "parent": 19
   },
   {
    "name": "TimeLeft",
@@ -1309,11 +1383,11 @@
      2.0,
      2.0
     ],
-    "text": "19.0",
+    "text": "18.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 16
+   "parent": 19
   },
   {
    "name": "DrawAmount",
@@ -1405,7 +1479,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 16
+   "parent": 19
   },
   {
    "name": "RewindCount",
@@ -1497,7 +1571,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 16
+   "parent": 19
   }
  ]
 }

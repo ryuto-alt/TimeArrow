@@ -1,8 +1,10 @@
 -- Player.lua -- 「時を先送りさせる矢」プレイヤー本体。
 -- 横視点プラットフォーマー(独自の重力/移動を手書き。Joltは使わない)。カメラは固定(GameCamera側で
 -- 静止設定済み、Playerは一切動かさない)。
--- 弓矢: 1本のみ所持。Eを引き絞る(移動ロック・矢印キー/WASDで8方向照準・引いた秒数でスキップ量が変化)→
---        離すと発射。刺さったオブジェクトに触れる(=矢が刺さった"その場"に触れる)ことで回収できる。
+-- 弓矢: 1本のみ所持。E(先送り/シアン) または Q(後戻り/紫) を引き絞る(移動ロック・
+--        矢印キー/WASDで8方向照準・引いた秒数で量が変化)→離すと発射。パッドはX=先送り/LB=後戻り。
+--        命中後0.4秒刺さって見せたあと、自動でホーミングして手元へ帰ってくる(回収操作は不要)。
+--        先送り矢=対象の時間を進める(time_skip) / 後戻り矢=対象の時間を巻き戻す(time_rewind)。
 -- 死亡(落下)は自分では巻き戻さず、events:emit("player_died") で GameManager に委ねる(シーン再読込で全リセット)。
 --
 -- 当たり判定の統一ルール: 全てのスプライトエンティティは sprite2d.size=(1,1) 固定・
@@ -30,6 +32,7 @@ properties = {
   { name = "solids",        type = "string", default = "",                      label = "全面ソリッド地形(床/壁/ブロック。上下左右すべてブロック。矢は貫通、カンマ区切り)" },
   { name = "mirrors",       type = "string", default = "",                      label = "矢を反射する鏡(カンマ区切り。rotation.zで向き=0:'/' 90:'\\')" },
   { name = "maxBounces",    type = "int",    default = 4,   min = 1,  max = 10, label = "矢が反射できる最大回数" },
+  { name = "rewindShots",   type = "int",    default = 3,   min = 0,  max = 9,  label = "後戻り矢の使用可能回数(タイマー返金は強いので有限)" },
 }
 
 local function trimSplit(csv)
@@ -58,14 +61,25 @@ function OnStart(self)
   self.hasArrow = true
   self.arrowFlying = false
   self.arrowStuck = false
+  self.arrowReturning = false
+  self.stuckT = 0
   self.arrowVX, self.arrowVY = 0, 0
   self.stuckX, self.stuckY = 0, 0
   self.stuckTarget = nil
 
   self.drawing = false
+  self.drawMode = "skip"   -- "skip"(E/先送り) or "rewind"(Q/後戻り)
   self.drawT = 0
   self.aimX, self.aimY = 1, 0
   self.pendingAmount = self.minSkip
+  self.pendingMode = "skip"
+  self.shotsLeft = self.rewindShots
+  self.lastTs = 1.0
+  self.drawAmountUi = scene:findEntity("DrawAmount")
+  self.rewindCountUi = scene:findEntity("RewindCount")
+  if self.rewindCountUi and self.rewindCountUi:isValid() then
+    scene:setUiText(self.rewindCountUi, "まき戻し ×" .. self.shotsLeft)
+  end
 
   self.targetList = trimSplit(self.targets)
   self.standList  = trimSplit(self.standables)
@@ -321,15 +335,27 @@ local function fireArrow(self)
   local sx, sy, sz = p.x + ax * 0.7, p.y + 0.2 + ay * 0.3, p.z
   arrowE.transform.position = Vec3.new(sx, sy, sz)
   arrowE.transform.rotation = Vec3.new(0, 0, math.deg(math.atan(ay, ax)))
-  FX.spark(sx, sy, sz, 10, 0.3, 0.75, 1.0)
+  if self.drawMode == "rewind" then
+    FX.spark(sx, sy, sz, 10, 0.65, 0.4, 1.0)
+  else
+    FX.spark(sx, sy, sz, 10, 0.3, 0.75, 1.0)
+  end
 
   self.hasArrow = false
   self.arrowFlying = true
   self.arrowVX, self.arrowVY = ax * self.arrowSpeed, ay * self.arrowSpeed
   self.shotFromX, self.shotFromY = p.x, p.y
   self.pendingAmount = amount
+  self.pendingMode = self.drawMode
   self.bounces = 0
   self.drawT = 0
+
+  if self.drawMode == "rewind" then
+    self.shotsLeft = self.shotsLeft - 1
+    if self.rewindCountUi and self.rewindCountUi:isValid() then
+      scene:setUiText(self.rewindCountUi, "まき戻し ×" .. self.shotsLeft)
+    end
+  end
 end
 
 -- 飛翔中の矢が鏡(mirrors)に重なっていれば反射する(消費せず飛び続ける)。
@@ -366,12 +392,27 @@ end
 
 -- 引き絞り(E長押し): 移動ロック・矢印キー/WASDで8方向照準・離すと発射
 local function updateDraw(self, dt)
-  local drawHeld = keyDown("E") or padDown("X")
+  local skipHeld = keyDown("E") or padDown("X")
+  local rwHeld = keyDown("Q") or padDown("LB")
   local canDraw = self.hasArrow and not self.arrowFlying and not self.arrowStuck
+
+  -- 後戻り矢は残数制(切れたら引けない)
+  if rwHeld and not self.drawing and self.shotsLeft <= 0 then
+    rwHeld = false
+  end
+
+  -- 引き始めたモードを保持(引いてる最中にもう片方を押しても切り替わらない)
+  local drawHeld
+  if self.drawing then
+    drawHeld = (self.drawMode == "rewind") and rwHeld or skipHeld
+  else
+    drawHeld = skipHeld or rwHeld
+  end
 
   if drawHeld and canDraw then
     if not self.drawing then
       self.drawing = true
+      self.drawMode = skipHeld and "skip" or "rewind"
       self.drawT = 0
       self.aimAngle = math.deg(math.atan(self.aimY or 0, self.aimX or self.facing))
     end
@@ -387,14 +428,35 @@ local function updateDraw(self, dt)
     local ax, ay = math.cos(rad), math.sin(rad)
     self.aimX, self.aimY = ax, ay
 
+    local amount = lerp(self.minSkip, self.maxSkip, clamp(self.drawT / self.maxDrawTime, 0, 1))
+    if self.drawAmountUi and self.drawAmountUi:isValid() then
+      if self.drawMode == "rewind" then
+        scene:setUiText(self.drawAmountUi, string.format("-%.1f秒 もどす", amount))
+        pcall(function() scene:setUiColor(self.drawAmountUi, 0.75, 0.55, 1.0, 1.0) end)
+      else
+        scene:setUiText(self.drawAmountUi, string.format("+%.1f秒 すすめる", amount))
+        pcall(function() scene:setUiColor(self.drawAmountUi, 0.4, 0.9, 1.0, 1.0) end)
+      end
+    end
+
     local p = self.transform.position
     local frac = self.drawT / self.maxDrawTime
     local len = 1.1 + 2.3 * frac
-    FX.beam(p.x, p.y + 0.2, p.z, p.x + ax * len, p.y + 0.2 + ay * len, p.z,
-            0.4 + 0.4 * frac, 0.75 + 0.2 * frac, 1.0, 0.1, "energy", 3 + frac * 3)
+    if self.drawMode == "rewind" then
+      -- 後戻り矢: 紫のビーム
+      FX.beam(p.x, p.y + 0.2, p.z, p.x + ax * len, p.y + 0.2 + ay * len, p.z,
+              0.6 + 0.15 * frac, 0.35 + 0.15 * frac, 1.0, 0.1, "energy", 3 + frac * 3)
+    else
+      -- 先送り矢: シアンのビーム
+      FX.beam(p.x, p.y + 0.2, p.z, p.x + ax * len, p.y + 0.2 + ay * len, p.z,
+              0.4 + 0.4 * frac, 0.75 + 0.2 * frac, 1.0, 0.1, "energy", 3 + frac * 3)
+    end
   elseif self.drawing then
     self.drawing = false
     fireArrow(self)
+    if self.drawAmountUi and self.drawAmountUi:isValid() then
+      scene:setUiText(self.drawAmountUi, "")
+    end
   end
 end
 
@@ -402,11 +464,17 @@ local function stickArrow(self, arrowE, hitTargetName)
   local ap = arrowE.transform.position
   self.arrowFlying = false
   self.arrowStuck = true
+  self.stuckT = 0
   self.stuckX, self.stuckY = ap.x, ap.y
   self.stuckTarget = hitTargetName
   if hitTargetName then
-    events:emit("time_skip", { target = hitTargetName, amount = self.pendingAmount })
-    FX.shockwave(ap.x, ap.y, ap.z, 12, 7, 0.3, 0.75, 1.0)
+    if self.pendingMode == "rewind" then
+      events:emit("time_rewind", { target = hitTargetName, amount = self.pendingAmount })
+      FX.shockwave(ap.x, ap.y, ap.z, 12, 7, 0.65, 0.4, 1.0)
+    else
+      events:emit("time_skip", { target = hitTargetName, amount = self.pendingAmount })
+      FX.shockwave(ap.x, ap.y, ap.z, 12, 7, 0.3, 0.75, 1.0)
+    end
     fx:pulse(0.18)
     padVibrate(0.5, 0.3, 0.12)
   end
@@ -420,7 +488,11 @@ local function updateArrow(self, dt)
     local ap = arrowE.transform.position
     local nx, ny = ap.x + self.arrowVX * dt, ap.y + self.arrowVY * dt
     arrowE.transform.position = Vec3.new(nx, ny, ap.z)
-    FX.trail(nx, ny, ap.z, 0.3, 0.75, 1.0)
+    if self.pendingMode == "rewind" then
+      FX.trail(nx, ny, ap.z, 0.65, 0.4, 1.0)
+    else
+      FX.trail(nx, ny, ap.z, 0.3, 0.75, 1.0)
+    end
 
     if tryReflect(self, arrowE, nx, ny) then return end
 
@@ -458,11 +530,9 @@ local function updateArrow(self, dt)
       arrowE.transform.position = Vec3.new(nx - self.arrowVX * dt * 0.5, ny - self.arrowVY * dt * 0.5, ap.z)
       stickArrow(self, arrowE, nil)
     elseif ny < self.killY then
-      -- 奈落へ落ちた矢は回収不能(Rでリトライ)。画面外に留める
+      -- 奈落へ落ちた矢もそのまま手元へ帰ってくる(ロストなし)
       self.arrowFlying = false
-      self.arrowStuck = true
-      self.stuckX, self.stuckY = nx, ny
-      self.stuckTarget = nil
+      self.arrowReturning = true
     elseif travelled > self.arrowRange * self.arrowRange then
       stickArrow(self, arrowE, nil)
     end
@@ -470,30 +540,43 @@ local function updateArrow(self, dt)
   end
 
   if self.arrowStuck then
-    local p = self.transform.position
-    local recovered = false
+    -- 刺さった演出(0.4秒)だけ見せてから自動で帰還を始める。的が動けば矢も追従表示
+    self.stuckT = self.stuckT + dt
     if self.stuckTarget then
-      -- 刺さった的自身に触れる(的が動いていれば矢もそれに追従して表示する)
       local t = scene:findEntity(self.stuckTarget)
       if t and t:isValid() then
-        local tp, ts = t.transform.position, t.transform.scale
+        local tp = t.transform.position
         arrowE.transform.position = Vec3.new(tp.x, tp.y, tp.z - 0.05)
-        if overlapAABB(p.x, p.y, self.halfW, self.halfHeight, tp.x, tp.y, ts.x * 0.5, ts.y * 0.5) then
-          recovered = true
-        end
-      else
-        recovered = true  -- 的が消滅済みなら回収不能を回避し矢を返す
-      end
-    else
-      if overlapAABB(p.x, p.y, self.halfW, self.halfHeight, self.stuckX, self.stuckY, self.arrowHalf, self.arrowHalf) then
-        recovered = true
       end
     end
-    if recovered then
+    if self.stuckT > 0.4 then
       self.arrowStuck = false
-      self.hasArrow = true
+      self.arrowReturning = true
       self.stuckTarget = nil
+    end
+    return
+  end
+
+  if self.arrowReturning then
+    -- ホーミングで手元へ飛んで帰ってくる(仕様書「矢は0.5秒で帰ってくる」)
+    local p = self.transform.position
+    local ap = arrowE.transform.position
+    local dx, dy = p.x - ap.x, (p.y + 0.2) - ap.y
+    local dist = math.sqrt(dx * dx + dy * dy)
+    if dist < 0.6 then
+      self.arrowReturning = false
+      self.hasArrow = true
       arrowE.transform.position = Vec3.new(0, -100, 0)
+      FX.spark(p.x, p.y + 0.2, p.z, 6, 0.9, 0.9, 1.0)
+    else
+      local step = 30 * dt / dist
+      arrowE.transform.position = Vec3.new(ap.x + dx * step, ap.y + dy * step, ap.z)
+      arrowE.transform.rotation = Vec3.new(0, 0, math.deg(math.atan(dy, dx)))
+      if self.pendingMode == "rewind" then
+        FX.trail(ap.x, ap.y, ap.z, 0.65, 0.4, 1.0)
+      else
+        FX.trail(ap.x, ap.y, ap.z, 0.3, 0.75, 1.0)
+      end
     end
   end
 end
@@ -507,6 +590,14 @@ function OnUpdate(self, dt)
   updateMovement(self, dt)
   updateDraw(self, dt)
   updateArrow(self, dt)
+
+  -- 弓を構えている間、世界は0.25倍速。スクリプト環境は分離されているので
+  -- グローバル変数ではなくイベントで全ギミック+GameManagerへ配る(変化時のみ発行)
+  local ts = self.drawing and 0.25 or 1.0
+  if ts ~= self.lastTs then
+    self.lastTs = ts
+    events:emit("time_scale", { scale = ts })
+  end
 
   if keyPressed("ESC") or padPressed("START") then goToScene("scenes/title.json", 0.5) end
 end

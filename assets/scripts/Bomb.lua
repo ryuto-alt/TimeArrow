@@ -12,6 +12,8 @@ local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
 end
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
@@ -25,15 +27,41 @@ function OnStart(self)
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 10, 1.0, 0.7, 0.3)
   end)
+
+  -- 後戻り(グローバル): 導火線が伸び直す。爆発済みは戻せない(破壊は不可逆)
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    if self.exploded then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
+  end)
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   if self.exploded then return end
   self.clock = self.clock + dt
   if self.ffRemain > 0 then
     local step = math.min(self.ffRemain, self.ffSpeed * dt)
     self.clock = self.clock + step
     self.ffRemain = self.ffRemain - step
+  end
+  if self.rwRemain and self.rwRemain > 0 then
+    -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
+    end
   end
   if self.clock < self.boomT then return end
 

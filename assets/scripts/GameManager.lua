@@ -2,9 +2,8 @@
 -- 世界時計 t を毎フレーム進め、t >= T(動画の長さ)で TIME UP。プレイヤーの死亡(player_died)も
 -- ここで受けて、短い演出の後にシーン再読込(=このステージの動画を最初から再生し直す)。
 -- ゴール到達は Exit.lua から "stage_cleared" イベントで受け取り、遷移前に一拍おく。
--- HUDは「YouTube風シークバー(UISlider、操作不可の表示専用。トラック+赤の塗り+丸つまみを
--- エンジンが自前描画)」+「画面フラッシュ」のみ。文字は一切出さない
--- (矢を撃った時/失敗した時に画面がごちゃつくのを避けるため)。
+-- HUD: シークバー + 画面フラッシュ + テキスト2種(DotGothic16フォント):
+--   TimeBanner「◯秒以内にゴールしろ！」(開始2.4秒で消える) / TimeLeft 残り秒数(3秒切ると赤)。
 properties = {
   { name = "T",         type = "float",  default = 10.0,                     label = "動画の長さ(秒。仕様書により全ステージ共通10.0秒)" },
   { name = "scenePath",  type = "string", default = "scenes/stage1.json",     label = "このシーン自身のパス(リトライ用)" },
@@ -12,7 +11,7 @@ properties = {
   { name = "markers",    type = "string", default = "",                      label = "シークバーの目印(現状未使用)" },
 }
 
-local seekBar, screenFlash
+local seekBar, screenFlash, timeBanner, timeLeft
 
 local function flash(r, g, b, a, fadeDur)
   if not (screenFlash and screenFlash:isValid()) then return end
@@ -25,9 +24,32 @@ function OnStart(self)
   self.state = "play"   -- play / dead / over / cleared / reloading
   self.waitT = 0
   self.nextScene = nil
+  self.rewindGlow = 0
 
   seekBar     = scene:findEntity("SeekBar")
   screenFlash = scene:findEntity("ScreenFlash")
+  timeBanner  = scene:findEntity("TimeBanner")
+  timeLeft    = scene:findEntity("TimeLeft")
+  self.bannerT = 2.4
+  self.lastShown = -1
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+
+  -- 時間経済: 先送り矢=刺した量だけ制限時間も消費 / 後戻り矢=刺した量だけ返金。
+  -- シークバーが跳ねる/戻るので、コストと利得が目に見える
+  events:on("time_skip", function(data)
+    if self.state ~= "play" then return end
+    self.t = self.t + (data.amount or 0)
+  end)
+  events:on("time_rewind", function(data)
+    if self.state ~= "play" then return end
+    self.rewindGlow = 0.25
+  end)
+  -- 返金は「対象が実際に巻き戻せた量」だけ(ギミック側が消化しながら発行する)
+  events:on("time_refund", function(data)
+    if self.state ~= "play" then return end
+    self.t = math.max(0, self.t - (data.amount or 0))
+  end)
 
   events:on("player_died", function()
     if self.state == "play" then
@@ -56,9 +78,43 @@ function OnStart(self)
 end
 
 function OnUpdate(self, dt)
+  -- 後戻り中は画面全体を薄い紫に(時間が逆流している合図)。止めた瞬間フェードアウト
+  if self.rewindGlow > 0 then
+    self.rewindGlow = self.rewindGlow - dt
+    if screenFlash and screenFlash:isValid() then
+      if self.rewindGlow > 0 then
+        scene:setUiColor(screenFlash, 0.5, 0.35, 1.0, 0.12)
+      else
+        scene:tweenUi(screenFlash, { alpha = 0.0, duration = 0.25, easing = "out" })
+      end
+    end
+  end
+
+  -- 開始バナーは少し見せたらフェードアウト
+  if self.bannerT > 0 then
+    self.bannerT = self.bannerT - dt
+    if self.bannerT <= 0 and timeBanner and timeBanner:isValid() then
+      scene:tweenUi(timeBanner, { alpha = 0.0, duration = 0.4, easing = "out" })
+    end
+  end
+
   if self.state == "play" then
-    self.t = self.t + dt
+    self.t = self.t + dt * self.ts
     if seekBar and seekBar:isValid() then scene:setUiSlider(seekBar, self.t) end
+
+    -- 残り秒数(0.1秒刻みで更新。ラスト3秒は赤に切り替え)
+    if timeLeft and timeLeft:isValid() then
+      local remain = math.max(0, self.T - self.t)
+      local shown = math.floor(remain * 10)
+      if shown ~= self.lastShown then
+        self.lastShown = shown
+        scene:setUiText(timeLeft, string.format("%.1f", remain))
+        if remain < 3 and not self.redOn then
+          self.redOn = true
+          pcall(function() scene:setUiColor(timeLeft, 1.0, 0.25, 0.2, 1.0) end)
+        end
+      end
+    end
     if self.t >= self.T then
       self.state = "over"
       self.waitT = 0.7

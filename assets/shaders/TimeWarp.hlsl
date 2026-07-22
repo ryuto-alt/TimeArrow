@@ -1,0 +1,119 @@
+// TimeWarp.hlsl -- 時間操作されているオブジェクト用の共通メッシュシェーダー。
+// Lua側から scene:setMeshEffect(entity, v) で状態を受け取る:
+//   v == 0        : 通常(ただのランバート描画)
+//   0 < v <= 1.5  : 早送り中(強度=v)。シアンの帯が上へ高速スクロール+横ジッタ残像+
+//                   強度0.55超でディザ半透明(実体がない「経由中」の表現)
+//   v >= 2        : 後戻り中(強度=v-2)。紫の帯が下へ逆スクロール+VHS風走査線+色反転パルス
+// 帯のスクロール方向と色(シアン=進む/紫=戻る)で時間の向きを言語化する。
+
+Texture2D    g_albedo  : register(t0);
+SamplerState g_sampler : register(s0);
+
+cbuffer PerObjectConstants : register(b0)
+{
+    float4x4 mvp;
+    float4x4 model;
+    float    effectValue;
+};
+
+cbuffer PerFrameConstants : register(b1)
+{
+    float4x4 view;
+    float4x4 proj;
+    float3   lightDir;   float time;
+    float3   lightColor; float ambientStrength;
+};
+
+struct VSInput
+{
+    float3 position    : POSITION;
+    float3 normal      : NORMAL;
+    float4 color       : COLOR;
+    float2 texCoord    : TEXCOORD0;
+    float4 tangent     : TANGENT;
+    uint4  boneIndices : BLENDINDICES;
+    float4 boneWeights : BLENDWEIGHT;
+};
+
+struct PSInput
+{
+    float4 positionSV  : SV_POSITION;
+    float3 worldNormal : NORMAL;
+    float4 color       : COLOR;
+    float2 texCoord    : TEXCOORD0;
+    float3 worldPos    : TEXCOORD1;
+};
+
+PSInput VSMain(VSInput input)
+{
+    PSInput output;
+    float3 pos = input.position;
+
+    // 早送り中は小刻みな横揺れ(コマ落ちしたような震え)を頂点にかける
+    float ff = (effectValue > 0.0f && effectValue < 1.5f) ? saturate(effectValue) : 0.0f;
+    if (ff > 0.0f)
+        pos.x += sin(time * 47.0f + pos.y * 6.0f) * 0.03f * ff;
+
+    output.positionSV  = mul(float4(pos, 1.0f), mvp);
+    output.worldNormal = normalize(mul(input.normal, (float3x3)model));
+    output.color       = input.color;
+    output.texCoord    = input.texCoord;
+    output.worldPos    = mul(float4(input.position, 1.0f), model).xyz;
+    return output;
+}
+
+float4 PSMain(PSInput input) : SV_TARGET
+{
+    float ff = (effectValue > 0.0f && effectValue < 1.5f) ? saturate(effectValue) : 0.0f;
+    float rw = (effectValue >= 2.0f) ? saturate(effectValue - 2.0f) : 0.0f;
+
+    // 早送り: 残像っぽくUVを横に複製ずらしして混ぜる
+    float2 uv = input.texCoord;
+    float4 albedo = g_albedo.Sample(g_sampler, uv);
+    if (ff > 0.0f)
+    {
+        float4 ghost = g_albedo.Sample(g_sampler, uv + float2(sin(time * 31.0f) * 0.04f * ff, 0));
+        albedo = lerp(albedo, ghost, 0.45f);
+    }
+    albedo *= input.color;
+
+    float3 N = normalize(input.worldNormal);
+    float3 L = normalize(-lightDir);
+    float  ndotl = max(dot(N, L), 0.0f);
+    float3 lit = albedo.rgb * (lightColor * ndotl + ambientStrength);
+
+    // ワールドYベースの帯: 早送り=上へ高速 / 後戻り=下へ(向きの言語化)。UVに依存しない
+    float wy = input.worldPos.y;
+    if (ff > 0.0f)
+    {
+        float band = saturate(sin((wy * 3.0f - time * 9.0f) * 6.2831853f) * 0.5f + 0.5f);
+        band = pow(band, 5.0f);
+        lit += float3(0.25f, 0.85f, 1.0f) * band * (0.8f + 0.8f * ff);
+        lit += float3(0.1f, 0.4f, 0.55f) * ff * 0.5f;   // 全体をシアンに寄せる
+
+        // 強い早送り=実体がない: 市松ディザで抜いて半透明に見せる
+        if (ff > 0.55f)
+        {
+            uint2 p = uint2(input.positionSV.xy);
+            if (((p.x + p.y) & 1) == 0)
+                discard;
+        }
+    }
+    if (rw > 0.0f)
+    {
+        float band = saturate(sin((wy * 3.0f + time * 4.5f) * 6.2831853f) * 0.5f + 0.5f);
+        band = pow(band, 5.0f);
+        lit += float3(0.62f, 0.35f, 1.0f) * band * (0.7f + 0.7f * rw);
+
+        // VHS巻き戻し風の細い走査線(スクリーン空間)
+        float scan = frac(input.positionSV.y * 0.14f + time * 3.0f);
+        if (scan < 0.12f)
+            lit += float3(0.5f, 0.3f, 0.9f) * 0.6f * rw;
+
+        // 時折ネガ反転がパルスする(過去へ戻るフラッシュバック)
+        float pulse = saturate(sin(time * 5.0f) * 0.5f + 0.5f);
+        lit = lerp(lit, float3(1.0f, 1.0f, 1.0f) - lit, 0.18f * rw * pulse);
+    }
+
+    return float4(lit, albedo.a);
+}

@@ -1,47 +1,66 @@
--- TimedDoor.lua -- 「閉まるドア・ゴール」= 本物の障害物。閉まっている間はPlayer.solids経由で
--- 物理的に通行不可(既定では死なない、ただ塞ぐだけ)。[openT, closeT) の間だけ沈んで通行可になる。
--- 矢で先送りすると窓へ滑り込ませられるが、引きすぎると窓を通り過ぎてまた閉まる
--- (=オーバーシュート。引き量の見極めがパズルになる)。listenButton=trueならボタンで開閉をトグルできる
--- (この場合 openT/closeT の時間窓は無視され、ボタン状態がそのまま開閉を決める)。
--- deadly=trueにすると閉状態への接触も即死にできる(トゲ付きゲート等、任意)。
+-- TimedDoor.lua -- 「落とし格子(ポートカリス)」の可動格子。このスクリプトは格子エンティティ
+-- (models/Gate_Grill)に付ける。石のフレーム(models/Gate_Frame)は別エンティティで飾りのみ。
+-- 開閉は格子が物理的に上下にスライドする=当たり判定はAABBそのもの(solid_ghost等のハック不要)。
+--   ・閉(格子が下りている): Player.solids で通行不可。矢の的にもなる
+--   ・開くまで: openTに向けて格子がじわじわ持ち上がる(最大0.35=頭はくぐれない)=進捗が見える
+--   ・開(openT到達): slideTimeかけて一気に引き上がり、下をくぐって通れる
+--   ・閉鎖予告: closeTの1.2秒前からゆっくり降り始める=「今のうちに抜けろ」が見える
+--   ・窓を逃した(closeT超過): 下りたまま赤い火花が明滅=矢では開かない、後戻りで呼び戻せの合図
+-- 矢で先送りすると刺した量だけ時計が進む=格子が跳ね上がる。後戻りで時計ごと降りてくる。
 properties = {
-  { name = "openT",       type = "float", default = 8.0,  min = 0, max = 60, label = "開き始める時刻(秒)" },
-  { name = "closeT",      type = "float", default = 11.0, min = 0, max = 60, label = "閉じる時刻(秒)" },
-  { name = "sinkAmount",  type = "float", default = 2.6,  min = 0, max = 10, label = "開いた時に沈む量" },
-  { name = "listenButton",type = "bool",  default = false,                   label = "ボタン連動(時間窓の代わりにボタンで開閉)" },
-  { name = "deadly",      type = "bool",  default = false,                   label = "閉まってる間に触れると死ぬ(任意、既定は物理ブロックのみ)" },
-  { name = "hitScale",    type = "float", default = 0.8,  min = 0.2, max = 1.5,label = "deadly時の当たり判定倍率" },
+  { name = "openT",       type = "float", default = 8.0,   min = 0, max = 60,   label = "開く時刻(秒)" },
+  { name = "closeT",      type = "float", default = 9999.0,min = 0, max = 9999, label = "閉じる時刻(秒。9999=開いたら閉じない)" },
+  { name = "slideTime",   type = "float", default = 0.7,   min = 0.1, max = 3,  label = "全開までのスライド時間" },
+  { name = "listenButton",type = "bool",  default = false,                      label = "ボタン連動(時間の代わりにボタンで開閉)" },
 }
 
-local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
-  return math.abs(ax - bx) < (ahw + bhw) and math.abs(ay - by) < (ahh + bhh)
-end
-
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
+  self.riseHeight = self.transform.scale.y * 0.78  -- 全開時の引き上げ量(頭上まで抜ける)
+  self.teaser = 0.35                               -- 開く前のじわじわ上昇の上限(くぐれない高さ)
   self.clock = 0
   self.buttonOpen = false
   self.ffRemain = 0
+  self.rwGlow = 0
+  self.redT = 0
+  -- 閉門ゲート(openT=0で最初から開)は開いた状態で始める
+  self.rise = (self.openT <= 0) and self.riseHeight or 0
 
   events:on("time_skip", function(data)
     if data.target ~= self.name then return end
-    -- 一括加算せず早送り(0.5秒で消化)して、開閉の動きが見えるようにする
+    -- 一括加算せず早送り(0.5秒で消化)して、格子が跳ね上がる様子を見せる
     self.ffRemain = self.ffRemain + data.amount
     self.ffSpeed = self.ffRemain / 0.5
-    FX.spark(self.bx, self.by, self.bz, 10, 0.3, 0.75, 1.0)
+    FX.spark(self.bx, self.transform.position.y, self.bz, 10, 0.3, 0.75, 1.0)
+    FX.shockwave(self.bx, self.transform.position.y, self.bz, 10, 6, 0.3, 0.9, 1.0)
   end)
 
   events:on("button_toggle", function(data)
     if data.target ~= self.name or not self.listenButton then return end
     self.buttonOpen = not self.buttonOpen
   end)
+
+  -- 後戻り(グローバル): 上がった格子も時計と一緒に降りてくる。逃した窓も呼び戻せる
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
+  end)
 end
 
 function OnUpdate(self, dt)
-  local open
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
+  local target
   if self.listenButton then
-    open = self.buttonOpen
+    target = self.buttonOpen and self.riseHeight or 0
   else
     self.clock = self.clock + dt
     if self.ffRemain > 0 then
@@ -49,25 +68,58 @@ function OnUpdate(self, dt)
       self.clock = self.clock + step
       self.ffRemain = self.ffRemain - step
     end
-    open = self.clock >= self.openT and self.clock < self.closeT
+    if self.rwRemain and self.rwRemain > 0 then
+      -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+      local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+      if step <= 0 then
+        self.rwRemain = 0
+      else
+        self.clock = self.clock - step
+        self.rwRemain = self.rwRemain - step
+        self.rwGlow = 0.1
+        events:emit("time_refund", { amount = step })
+      end
+    end
+
+    if self.clock >= self.closeT then
+      target = 0                                   -- 窓を逃した(赤明滅は下で)
+    elseif self.clock >= self.openT then
+      target = self.riseHeight
+      local untilClose = self.closeT - self.clock
+      if untilClose < 1.2 then                     -- 閉鎖予告: ゆっくり降り始める
+        target = self.riseHeight * (untilClose / 1.2)
+      end
+    else
+      -- 開くまでのじわじわ上昇(進捗表示。くぐれる高さにはならない)
+      target = self.teaser * (self.clock / math.max(self.openT, 0.01))
+    end
   end
 
-  local y = open and (self.by - self.sinkAmount) or self.by
+  -- 目標へ一定速度で追従(早送り消化中は時計が速いぶん自然に跳ね上がる)
+  local speed = self.riseHeight / math.max(self.slideTime, 0.1)
+  if self.rise < target then
+    self.rise = math.min(target, self.rise + speed * dt)
+  elseif self.rise > target then
+    self.rise = math.max(target, self.rise - speed * dt)
+  end
+  local y = self.by + self.rise
   self.transform.position = Vec3.new(self.bx, y, self.bz)
 
-  -- 早送り中は半透明(=実体がない「経由中」の表現)
-  local selfE = scene:findEntity(self.name)
-  if selfE and selfE:isValid() then
-    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+  -- 窓を逃した合図: 赤い火花が明滅(矢は効かない、後戻りで呼び戻せ)
+  if not self.listenButton and self.clock >= self.closeT then
+    self.redT = self.redT + dt
+    if self.redT > 0.6 then
+      self.redT = 0
+      FX.spark(self.bx, y + self.transform.scale.y * 0.45, self.bz, 8, 1.0, 0.2, 0.15)
+    end
   end
 
-  -- 早送り中は途中経過なので即死判定しない(従来のワープと同じ扱い)
-  if open or not self.deadly or self.ffRemain > 0 then return end
-  local s = self.transform.scale
-  local pl = scene:findEntity("Player")
-  if not (pl and pl:isValid()) then return end
-  local pp, ps = pl.transform.position, pl.transform.scale
-  if overlapAABB(self.bx, self.by, s.x * 0.5 * self.hitScale, s.y * 0.5 * self.hitScale, pp.x, pp.y, ps.x * 0.5, ps.y * 0.5) then
-    events:emit("player_died", {})
+  -- 早送り=水色 / 後戻り=紫 の残像
+  if self.ffRemain > 0 then
+    FX.trail(self.bx, y, self.bz, 0.3, 0.9, 1.0)
+  end
+  if self.rwGlow > 0 then
+    self.rwGlow = self.rwGlow - dt
+    FX.trail(self.bx, y, self.bz, 0.65, 0.4, 1.0)
   end
 end

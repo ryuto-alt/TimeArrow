@@ -14,6 +14,8 @@ local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
 end
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = self.startPhase
@@ -25,24 +27,63 @@ function OnStart(self)
     self.ffRemain = self.ffRemain + data.amount
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.transform.position.x, self.by, self.bz, 8, 0.3, 0.75, 1.0)
+    FX.shockwave(self.transform.position.x, self.by, self.bz, 10, 6, 0.3, 0.9, 1.0)
+  end)
+
+  -- 後戻り(グローバル): 位相も世界時計と一緒に巻き戻る
+  self.rwGlow = 0
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
   end)
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   self.clock = self.clock + dt
   if self.ffRemain > 0 then
     local step = math.min(self.ffRemain, self.ffSpeed * dt)
     self.clock = self.clock + step
     self.ffRemain = self.ffRemain - step
   end
+  if self.rwRemain and self.rwRemain > 0 then
+    -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
+    end
+  end
   local ang = math.sin((self.clock / self.period) * math.pi * 2)
   local nx = self.bx + ang * self.amplitude
   self.transform.position = Vec3.new(nx, self.by, self.bz)
 
-  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  -- TimeWarpシェーダーへ状態を送る: 早送り=1 / 後戻り=2.8 / 通常=0
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+    local eff = 0
+    if self.ffRemain > 0 then eff = 1.0
+    elseif self.rwGlow > 0 then eff = 2.8 end
+    scene:setMeshEffect(selfE, eff)
+  end
+
+  -- 早送り=水色 / 後戻り=紫 の残像で時間操作の向きを見せる
+  if self.ffRemain > 0 then
+    FX.trail(nx, self.by, self.bz, 0.3, 0.9, 1.0)
+  end
+  if self.rwGlow > 0 then
+    self.rwGlow = self.rwGlow - dt
+    FX.trail(nx, self.by, self.bz, 0.65, 0.4, 1.0)
   end
 
   -- 早送り中は途中の位相を"経由しただけ"なので即死判定しない(従来のワープと同じ扱い)
