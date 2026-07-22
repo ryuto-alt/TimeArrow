@@ -104,10 +104,9 @@ function OnUpdate(self, dt)
   -- まだ着地していない(降下中・待機中)=0.35の弱い早送り風シマー(実体前の予告) / 着地済み=0
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 5.0  -- 撃てる=金色の的アピール
+    local eff = 0  -- 橋は普段は光らせない(FF=シアン/RW=紫のときだけ)
     if self.ffRemain > 0 then eff = 1.0
-    elseif self.rwGlow > 0 then eff = 2.8
-    elseif frac < 1 then eff = 0.35 end
+    elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)
   end
 

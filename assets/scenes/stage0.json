@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "LabFan,LabCrumble,LabHammer,LabTurret,LabHourglass"
+      "value": "LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret,LabHourglass"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "LabF,LabLedge"
+      "value": "LabF,LabLedge,LabTurret,LabHourglass,LabFan"
      },
      {
       "name": "mirrors",
@@ -670,7 +670,7 @@
    "transform": {
     "position": [
      17.0,
-     5.6,
+     3.6,
      0.0
     ],
     "rotation": [
@@ -711,6 +711,26 @@
     "scriptPath": "scripts/HammerSwing.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "LabHammerX",
+   "transform": {
+    "position": [
+     17.0,
+     2.04,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
   },
   {
    "material": {
@@ -1108,12 +1128,12 @@
      {
       "name": "fullY",
       "type": "float",
-      "value": -14.24
+      "value": -14.69
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -107.23
+      "value": -106.68
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -1172,7 +1192,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 21,
+   "parent": 22,
    "transform": {
     "position": [
      0.0,
@@ -1246,7 +1266,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 21,
+   "parent": 22,
    "transform": {
     "position": [
      0.0,
@@ -1452,7 +1472,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 21
+   "parent": 22
   },
   {
    "name": "TimeLeft",
@@ -1544,7 +1564,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 21
+   "parent": 22
   },
   {
    "name": "DrawAmount",
@@ -1636,7 +1656,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 21
+   "parent": 22
   },
   {
    "name": "RewindCount",
@@ -1728,7 +1748,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 21
+   "parent": 22
   }
  ]
 }

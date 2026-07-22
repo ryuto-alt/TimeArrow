@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Tur6,HG6"
+      "value": "GateA6,Bomb6,GateC6,Bomb62,GateE6,LockZ6,Ham6,Ham6X,Tur6,HG6"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F6,WallW6,WallW62St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6"
+      "value": "F6,WallW6,WallW62St6a,St6b,St6c,St6d,L6,GateA6,GateC6,GateE6,LockZ6,Tur6,HG6"
      },
      {
       "name": "mirrors",
@@ -1441,6 +1441,26 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "name": "Ham6X",
+   "transform": {
+    "position": [
+     70.5,
+     1.94,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
+  },
+  {
    "material": {
     "metallic": 0.05,
     "roughness": 0.6
@@ -2028,7 +2048,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 40,
+   "parent": 41,
    "transform": {
     "position": [
      0.0,
@@ -2102,7 +2122,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 40,
+   "parent": 41,
    "transform": {
     "position": [
      0.0,
@@ -2308,7 +2328,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 40
+   "parent": 41
   },
   {
    "name": "TimeLeft",
@@ -2400,7 +2420,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 40
+   "parent": 41
   },
   {
    "name": "DrawAmount",
@@ -2492,7 +2512,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 40
+   "parent": 41
   },
   {
    "name": "RewindCount",
@@ -2584,7 +2604,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 40
+   "parent": 41
   }
  ]
 }

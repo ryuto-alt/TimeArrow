@@ -93,10 +93,12 @@ function OnStart(self)
   self.ridePrevX = 0
   self.ridePrevY = 0
 
-  -- ファンの上昇気流(Fan.luaが毎フレーム送ってくる外力。適用したら消費)
+  -- ファンの気流(Fan.luaが毎フレーム送ってくる外力。適用したら消費)
   self.extAY = 0
+  self.extAX = 0
   events:on("fan_force", function(data)
     self.extAY = data.ay or 0
+    self.extAX = data.ax or 0
   end)
 
   -- 早送り中で実体のない solid(CrushWall等)。名前→残り秒。期間中は物理ブロックしない
@@ -290,12 +292,21 @@ local function updateMovement(self, dt)
   if not self.climbing then
     self.vy = self.vy - self.gravity * dt
     if self.extAY ~= 0 then
-      -- 上昇気流: 重力に逆らって押し上げ(上昇速度は控えめに頭打ち=ふわっと浮く)
-      self.vy = math.min(self.vy + self.extAY * dt, 7.5)
-      self.grounded = false
+      if self.extAY > 0 then
+        -- 上昇気流: 重力に逆らって押し上げ(上昇速度は控えめに頭打ち=ふわっと浮く)
+        self.vy = math.min(self.vy + self.extAY * dt, 7.5)
+        self.grounded = false
+      else
+        -- 吸い込み(下向きの力)
+        self.vy = math.max(self.vy + self.extAY * dt, -12.0)
+      end
     end
   end
+  if self.extAX ~= 0 then
+    self.vx = self.vx + self.extAX * 0.2   -- 吸い込みの横引き(入力より弱い=抗える)
+  end
   self.extAY = 0
+  self.extAX = 0
 
   local p = self.transform.position
   local nx = resolveX(self, p.y, p.x + self.vx * dt)
@@ -513,7 +524,9 @@ local function updateArrow(self, dt)
       local t = scene:findEntity(name)
       if t and t:isValid() then
         local tp, ts = t.transform.position, t.transform.scale
-        if overlapAABB(nx, ny, self.arrowHalf, self.arrowHalf, tp.x, tp.y, ts.x * 0.5, ts.y * 0.5) then
+        -- 的の判定は最低でも半幅/半高0.8を保証(薄い足場や小型ギミックも狙いやすく)
+        if overlapAABB(nx, ny, self.arrowHalf, self.arrowHalf, tp.x, tp.y,
+                       math.max(ts.x * 0.5, 0.8), math.max(ts.y * 0.5, 0.8)) then
           hitName = name
           break
         end

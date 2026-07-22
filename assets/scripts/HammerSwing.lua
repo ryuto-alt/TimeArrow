@@ -18,42 +18,36 @@ function OnStart(self)
   self.ffRemain = 0
 
   events:on("time_skip", function(data)
-    if data.target ~= self.name then return end
+    if data.target ~= self.name and data.target ~= self.name .. "X" then return end
     self.ffRemain = self.ffRemain + data.amount
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 8, 0.3, 0.75, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 10, 6, 0.3, 0.9, 1.0)
   end)
 
-  self.rwGlow = 0
+  -- 後戻り矢=【時間停止】: 当てた瞬間の姿勢のまま量×1.0秒だけ凍る(返金なし)。
+  -- 振り上がった瞬間を狙って撃てば、上がったまま固まる=下を安全に通れる。狙いどころがパズル
+  self.freeze = 0
   events:on("time_rewind", function(data)
-    if data.target ~= self.name then return end
-    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
-    self.rwSpeed = self.rwRemain / 0.5
-    self.rwGlow = 0.1
-    FX.spark(self.bx, self.by, self.bz, 10, 0.65, 0.4, 1.0)
-    FX.shockwave(self.bx, self.by, self.bz, 10, 6, 0.65, 0.4, 1.0)
+    if data.target ~= self.name and data.target ~= self.name .. "X" then return end
+    self.freeze = self.freeze + (data.amount or 0)
+    FX.spark(self.bx, self.by, self.bz, 14, 0.65, 0.4, 1.0)
+    FX.shockwave(self.bx, self.by, self.bz, 12, 8, 0.65, 0.4, 1.0)
   end)
 
 end
 
 function OnUpdate(self, dt)
   dt = dt * (self.ts or 1)
-  self.clock = self.clock + dt
-  if self.ffRemain > 0 then
-    local step = math.min(self.ffRemain, self.ffSpeed * dt)
-    self.clock = self.clock + step
-    self.ffRemain = self.ffRemain - step
-  end
-  if self.rwRemain and self.rwRemain > 0 then
-    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
-    if step <= 0 then
-      self.rwRemain = 0
-    else
-      self.clock = self.clock - step
-      self.rwRemain = self.rwRemain - step
-      self.rwGlow = 0.1
-      events:emit("time_refund", { amount = step })
+  local frozen = self.freeze and self.freeze > 0
+  if frozen then
+    self.freeze = self.freeze - dt      -- 時間停止中: 時計そのものが止まる
+  else
+    self.clock = self.clock + dt
+    if self.ffRemain > 0 then
+      local step = math.min(self.ffRemain, self.ffSpeed * dt)
+      self.clock = self.clock + step
+      self.ffRemain = self.ffRemain - step
     end
   end
 
@@ -70,12 +64,11 @@ function OnUpdate(self, dt)
   if selfE and selfE:isValid() then
     local eff = 5.0  -- 撃てる=金色の的アピール
     if self.ffRemain > 0 then eff = 1.0
-    elseif self.rwGlow > 0 then eff = 2.8 end
+    elseif frozen then eff = 2.8 end    -- 時間停止=紫
     scene:setMeshEffect(selfE, eff)
   end
   if self.ffRemain > 0 then FX.trail(hx, hy, self.bz, 0.3, 0.9, 1.0) end
-  if self.rwGlow > 0 then
-    self.rwGlow = self.rwGlow - dt
+  if frozen then
     FX.trail(hx, hy, self.bz, 0.65, 0.4, 1.0)
   end
 

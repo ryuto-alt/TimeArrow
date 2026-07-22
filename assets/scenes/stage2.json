@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA,GateB,GateC,GateD,Ham2,Tur2,CrA2,CrB2"
+      "value": "GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2"
      },
      {
       "name": "standables",
@@ -748,6 +748,26 @@
     "scriptPath": "scripts/HammerSwing.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "Ham2X",
+   "transform": {
+    "position": [
+     18.5,
+     1.94,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
   },
   {
    "material": {
@@ -1534,7 +1554,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 30,
+   "parent": 31,
    "transform": {
     "position": [
      0.0,
@@ -1608,7 +1628,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 30,
+   "parent": 31,
    "transform": {
     "position": [
      0.0,
@@ -1814,7 +1834,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 30
+   "parent": 31
   },
   {
    "name": "TimeLeft",
@@ -1906,7 +1926,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 30
+   "parent": 31
   },
   {
    "name": "DrawAmount",
@@ -1998,7 +2018,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 30
+   "parent": 31
   },
   {
    "name": "RewindCount",
@@ -2090,7 +2110,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 30
+   "parent": 31
   }
  ]
 }

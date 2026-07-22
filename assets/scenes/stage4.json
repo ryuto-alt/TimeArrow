@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA4,Lock4,GateB4,Saw4,Ham4,HG4,CW4,GateZ4"
+      "value": "GateA4,Lock4,GateB4,Saw4,Ham4,Ham4X,HG4,CW4,GateZ4"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F4a,PitF4,F4bGateA4,Lock4,GateB4,CW4,GateZ4"
+      "value": "F4a,PitF4,F4bGateA4,Lock4,GateB4,CW4,GateZ4,HG4"
      },
      {
       "name": "mirrors",
@@ -998,6 +998,26 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "name": "Ham4X",
+   "transform": {
+    "position": [
+     30.0,
+     1.94,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
+  },
+  {
    "material": {
     "metallic": 0.05,
     "roughness": 0.6
@@ -1520,7 +1540,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 28,
+   "parent": 29,
    "transform": {
     "position": [
      0.0,
@@ -1594,7 +1614,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 28,
+   "parent": 29,
    "transform": {
     "position": [
      0.0,
@@ -1800,7 +1820,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 28
+   "parent": 29
   },
   {
    "name": "TimeLeft",
@@ -1892,7 +1912,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 28
+   "parent": 29
   },
   {
    "name": "DrawAmount",
@@ -1984,7 +2004,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 28
+   "parent": 29
   },
   {
    "name": "RewindCount",
@@ -2076,7 +2096,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 28
+   "parent": 29
   }
  ]
 }

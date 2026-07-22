@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7b,HG7"
+      "value": "GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7,Ham7a,Ham7aX,Ham7b,Ham7bX,HG7"
      },
      {
       "name": "standables",
@@ -253,7 +253,7 @@
      {
       "name": "solids",
       "type": "string",
-      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
+      "value": "F7,Tower1,Baffle7,D7a,D7b,D7c,Pit1F,Pit2FSt7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7,HG7"
      },
      {
       "name": "mirrors",
@@ -1239,6 +1239,26 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "name": "Ham7aX",
+   "transform": {
+    "position": [
+     30.0,
+     2.34,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
+  },
+  {
    "material": {
     "metallic": 0.05,
     "roughness": 0.6
@@ -1291,6 +1311,26 @@
     "scriptPath": "scripts/HammerSwing.lua"
    },
    "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "Ham7bX",
+   "transform": {
+    "position": [
+     44.0,
+     2.34,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
   },
   {
    "material": {
@@ -2116,7 +2156,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 44,
+   "parent": 46,
    "transform": {
     "position": [
      0.0,
@@ -2190,7 +2230,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 44,
+   "parent": 46,
    "transform": {
     "position": [
      0.0,
@@ -2396,7 +2436,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 46
   },
   {
    "name": "TimeLeft",
@@ -2488,7 +2528,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 46
   },
   {
    "name": "DrawAmount",
@@ -2580,7 +2620,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 46
   },
   {
    "name": "RewindCount",
@@ -2672,7 +2712,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 46
   }
  ]
 }

@@ -249,25 +249,25 @@ S1 = K["s1"]
 
 def s1_noarrow(r):
     r.walk(13.0, "FloorA奥(x14)へ")
-    r.wait(max(0.0, S1["rise1"] - r.clock("Target1")), "橋1自然降下待ち")
+    r.wait(max(0.0, S1["rise1"] - r.clock("Bridge1")), "橋1自然降下待ち")
     r.walk(6.0, "橋1を渡る")
     r.walk(10.0, "FloorB横断(x30)")
-    r.wait(max(0.0, S1["rise2"] - r.clock("Target2")), "橋2自然降下待ち")
+    r.wait(max(0.0, S1["rise2"] - r.clock("Bridge2")), "橋2自然降下待ち")
     r.walk(6.0, "橋2を渡る")
     r.walk(7.0, "ゴールへ")
 
 
 def s1_plan(r):
     # x1で射程18ぎりぎりのTarget1を即射→FloorA奥へ歩く間に降下が進む
-    r.ff("Target1", 10.0, dist=17.2, label="出発点から橋1へフル加速")
+    r.ff("Bridge1", 10.0, dist=17.2, label="出発点から橋1へフル加速")
     r.walk(13.0, "FloorA奥(x14)へ")
-    r.wait(max(0.0, S1["rise1"] - r.clock("Target1")), "残りの降下待ち")
+    r.wait(max(0.0, S1["rise1"] - r.clock("Bridge1")), "残りの降下待ち")
     r.walk(6.0, "橋1を渡る")
     # FloorBに降りた瞬間(x20)Target2は射程14.4で届く→即2本撃って橋2を沈める
-    r.ff("Target2", 10.0, dist=14.4, label="橋2へ1本目")
-    r.ff("Target2", 10.0, dist=14.4, label="橋2へ2本目(rise2=32は1本では届かない)")
+    r.ff("Bridge2", 10.0, dist=14.4, label="橋2へ1本目")
+    r.ff("Bridge2", 10.0, dist=14.4, label="橋2へ2本目(rise2=32は1本では届かない)")
     r.walk(10.0, "FloorB横断(x30)")
-    r.wait(max(0.0, S1["rise2"] - r.clock("Target2")), "残りの降下待ち")
+    r.wait(max(0.0, S1["rise2"] - r.clock("Bridge2")), "残りの降下待ち")
     r.walk(6.0, "橋2を渡る")
     r.walk(7.0, "ゴールへ")
 

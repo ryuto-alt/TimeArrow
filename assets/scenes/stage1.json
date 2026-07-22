@@ -233,7 +233,7 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "Target1,Target2"
+      "value": "Bridge1,Bridge2"
      },
      {
       "name": "standables",
@@ -548,7 +548,7 @@
      {
       "name": "triggerName",
       "type": "string",
-      "value": "Target1"
+      "value": ""
      },
      {
       "name": "listenButton",
@@ -561,40 +561,7 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Target_Bull/Target_Bull.obj"
-   },
-   "name": "Target1",
-   "transform": {
-    "position": [
-     17.0,
-     6.75,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.3,
-     1.3,
-     0.5
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [],
-    "scriptPath": "scripts/TargetGlow.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "name": "Beacon_Target1",
+   "name": "Beacon_Bridge1",
    "transform": {
     "position": [
      0.0,
@@ -651,7 +618,7 @@
      {
       "name": "targetName",
       "type": "string",
-      "value": "Target1"
+      "value": "Bridge1"
      },
      {
       "name": "offsetY",
@@ -741,7 +708,7 @@
      {
       "name": "triggerName",
       "type": "string",
-      "value": "Target2"
+      "value": ""
      },
      {
       "name": "listenButton",
@@ -754,40 +721,7 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Target_Bull/Target_Bull.obj"
-   },
-   "name": "Target2",
-   "transform": {
-    "position": [
-     33.0,
-     6.75,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.3,
-     1.3,
-     0.5
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [],
-    "scriptPath": "scripts/TargetGlow.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "name": "Beacon_Target2",
+   "name": "Beacon_Bridge2",
    "transform": {
     "position": [
      0.0,
@@ -844,7 +778,7 @@
      {
       "name": "targetName",
       "type": "string",
-      "value": "Target2"
+      "value": "Bridge2"
      },
      {
       "name": "offsetY",
@@ -1109,12 +1043,12 @@
      {
       "name": "fullY",
       "type": "float",
-      "value": -13.25
+      "value": -14.38
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -108.29
+      "value": -106.89
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -1173,7 +1107,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 19,
+   "parent": 17,
    "transform": {
     "position": [
      0.0,
@@ -1247,7 +1181,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 19,
+   "parent": 17,
    "transform": {
     "position": [
      0.0,
@@ -1453,7 +1387,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 17
   },
   {
    "name": "TimeLeft",
@@ -1545,7 +1479,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 17
   },
   {
    "name": "DrawAmount",
@@ -1637,7 +1571,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 17
   },
   {
    "name": "RewindCount",
@@ -1729,7 +1663,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 19
+   "parent": 17
   }
  ]
 }
