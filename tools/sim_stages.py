@@ -725,8 +725,15 @@ def s7_plan(r):
     r.lock_wait("LockD7", S7["lockD"])
     r.walk(3.0, "デッキ西端(x19)へ")
     r.ff("Button1", 2.0, dist=2.4, label="塔上のボタンへFF矢→格子L1が開く")
-    r.wait(0.5, "飛び降り")
-    r.walk(49.5, "地上を東へ、開いた格子L1をくぐる")
+    r.walk(16.6, "デッキを東へ引き返す(刃ピット1へ)")
+    r.pit_cross("Saw7a", bx=38.8, amp=1.2, phase=0.0, pit0=38.0, pit1=39.6,
+                period=S7["sawP1"], x0=35.6, x1=42.0, label="(東向き)")
+    r.walk(6.6, "刃ピット2へ")
+    r.pit_cross("Saw7b", bx=50.8, amp=1.0, phase=0.0, pit0=50.0, pit1=51.6,
+                period=S7["sawP2"], x0=48.6, x1=52.8, label="(東向き)")
+    r.walk(10.5, "デッキ東端へ")
+    r.hops(2.1, 4, "階段を降りる")
+    r.walk(4.1, "開いた格子L1をくぐる")
     r.walk(4.0, "Vine7前")
     r.ff("Vine7", 10.0, dist=1.0, label="ツタへ1本目")
     r.ff("Vine7", 10.0, dist=1.0, label="ツタへ2本目(即育つ)")

@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F"
+      "value": "F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,Sill8,P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F,GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8"
+      "value": "F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,Sill8,P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F,GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8"
      },
      {
       "name": "mirrors",
@@ -1150,6 +1150,33 @@
     "scale": [
      17.4,
      0.5,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "Sill8",
+   "transform": {
+    "position": [
+     30.0,
+     1.95,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     3.9,
      3.0
     ]
    }
@@ -2519,7 +2546,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 53,
+   "parent": 54,
    "transform": {
     "position": [
      0.0,
@@ -2593,7 +2620,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 53,
+   "parent": 54,
    "transform": {
     "position": [
      0.0,
@@ -2799,7 +2826,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 53
+   "parent": 54
   },
   {
    "name": "TimeLeft",
@@ -2891,7 +2918,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 53
+   "parent": 54
   },
   {
    "name": "DrawAmount",
@@ -2983,7 +3010,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 53
+   "parent": 54
   },
   {
    "name": "RewindCount",
@@ -3075,7 +3102,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 53
+   "parent": 54
   }
  ]
 }

@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F7,Tower1,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
+      "value": "F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F7,Tower1,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
+      "value": "F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7"
      },
      {
       "name": "mirrors",
@@ -513,7 +513,7 @@
    "transform": {
     "position": [
      17.0,
-     2.5,
+     3.5,
      0.0
     ],
     "rotation": [
@@ -523,7 +523,34 @@
     ],
     "scale": [
      0.8,
-     5.0,
+     3.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "Baffle7",
+   "transform": {
+    "position": [
+     15.5,
+     3.95,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.6,
+     1.9,
      3.0
     ]
    }
@@ -940,7 +967,7 @@
    "name": "D7a",
    "transform": {
     "position": [
-     28.0,
+     27.75,
      4.15,
      0.0
     ],
@@ -950,7 +977,7 @@
      0.0
     ],
     "scale": [
-     20.0,
+     20.5,
      0.5,
      3.0
     ]
@@ -1048,7 +1075,7 @@
    "name": "D7c",
    "transform": {
     "position": [
-     56.2,
+     57.45,
      4.15,
      0.0
     ],
@@ -1058,7 +1085,7 @@
      0.0
     ],
     "scale": [
-     9.2,
+     11.7,
      0.5,
      3.0
     ]
@@ -2046,7 +2073,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 44,
+   "parent": 45,
    "transform": {
     "position": [
      0.0,
@@ -2120,7 +2147,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 44,
+   "parent": 45,
    "transform": {
     "position": [
      0.0,
@@ -2326,7 +2353,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 45
   },
   {
    "name": "TimeLeft",
@@ -2418,7 +2445,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 45
   },
   {
    "name": "DrawAmount",
@@ -2510,7 +2537,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 45
   },
   {
    "name": "RewindCount",
@@ -2602,7 +2629,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 45
   }
  ]
 }

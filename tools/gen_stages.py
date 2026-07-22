@@ -419,8 +419,8 @@ build(5, [
     gm(5, S5["limit"]),
     player(0.8, 0.55, targets="Lift5,Gate5,Ball5,LockD5,Vine5,Ferry5,GateY5,LockZ5",
            standables="Lift5,Ferry5", climbables="Vine5",
-           arrowStops="F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b",
-           solids="F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,"
+           arrowStops="F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5",
+           solids="F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,"
                   "Gate5,LockD5,GateY5,LockZ5", rewindShots=S5["rw"]),
     copy.deepcopy(arrow),
     exit_(85.5, 9.45, "scenes/stage6.json"), gate(85.5, 9.3),
@@ -430,6 +430,7 @@ build(5, [
     block("StepB5", 5.6, 0.85, 1.1, 1.7),
     riseplat("Lift5", 12.5, -0.3, 3.0, 0.5, arriveT=S5["lift"], waitHeight=4.3, riseTime=1.0),
     block("D5a", 22.0, 3.75, 12.0, 0.5),          # デッキ[16,28]
+    block("Sill5", 34.0, 1.6, 0.9, 3.2),          # デッキ支柱=地上バイパス封鎖
     block("PitR1F", 28.6, 2.55, 1.2, 0.5),        # 退避ピット1(上面2.8)
     block("D5b", 34.6, 3.75, 10.8, 0.5),          # [29.2,40]
     block("PitR2F", 40.6, 2.55, 1.2, 0.5),        # 退避ピット2
@@ -488,25 +489,26 @@ build(7, [
     gm(7, S7["limit"]),
     player(1.4, 0.55, targets="GateA7,LockD7,Button1,Saw7a,Saw7b,Saw7c,Vine7,LockZ7",
            climbables="Vine7",
-           arrowStops="F7,Tower1,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
+           arrowStops="F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
                       "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F",
-           solids="F7,Tower1,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
+           solids="F7,Tower1,Baffle7,P7aL,P7aR,P7bL,P7bR,D7a,D7b,D7c,Pit1F,Pit2F,"
                   "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,GateA7,LockD7,LatticeL1,LockZ7",
            rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
     exit_(101.5, 9.45, "scenes/stage8.json"), gate(101.5, 9.3),
     block("F7", 52.0, -0.5, 104.0, 1.0),
-    block("Tower1", 17.0, 2.5, 0.8, 5.0),
+    block("Tower1", 17.0, 3.5, 0.8, 3.0),   # 宙浮き[2,5]: 下を歩いてくぐれる
+    block("Baffle7", 15.5, 3.95, 0.6, 1.9),  # 地上からの45°ズル射撃を遮る浮き石
     button("Button1", 17.0, 5.45, "LatticeL1"),
     beacon("Button1", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
     patch("P7a", 3.4, 5.0, 0.7),
     patch("P7b", 7.2, 8.8, 0.7),
     door("GateA7", 11.4, openT=0.0, closeT=S7["slamA"]),
-    block("D7a", 28.0, 4.15, 20.0, 0.5),          # デッキ[18,38]
+    block("D7a", 27.75, 4.15, 20.5, 0.5),         # デッキ[17.5,38]
     block("Pit1F", 38.8, 3.15, 1.6, 0.5),         # 刃ピット1
     block("D7b", 44.8, 4.15, 10.4, 0.5),          # [39.6,50]
     block("Pit2F", 50.8, 3.15, 1.6, 0.5),         # 刃ピット2
-    block("D7c", 56.2, 4.15, 9.2, 0.5),           # [51.6,60.8]
+    block("D7c", 57.45, 4.15, 11.7, 0.5),         # [51.6,63.3] 階段へ接続
     pendulum("Saw7a", 38.8, 5.7, 1.4, period=S7["sawP1"], amplitude=1.2, phase=0.0),
     pendulum("Saw7b", 50.8, 5.7, 1.4, period=S7["sawP2"], amplitude=1.0, phase=0.0),
     door("LockD7", 22.0, openT=S7["lockD"], closeT=9999.0, base=4.4),
@@ -534,9 +536,9 @@ build(8, [
            targets="GateA8,Bomb8,GateC8,GateD8,BombF8,LockE8,SawB8,GateG8,Lift8,"
                    "Ball8,GateY8,LockZ8",
            standables="Lift8",
-           arrowStops="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,"
+           arrowStops="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,Sill8,"
                       "P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F",
-           solids="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,"
+           solids="F8,P8aL,P8aR,P8bL,P8bR,WallW8,St8a,St8b,St8c,D8a,Sill8,"
                   "P8cL,P8cR,P8dL,P8dR,PitS8F,T8,PitT8F,"
                   "GateA8,GateC8,GateD8,LockE8,GateG8,GateY8,LockZ8",
            rewindShots=S8["rw"]),
@@ -554,6 +556,7 @@ build(8, [
     block("St8b", 21.3, 1.1, 0.7, 2.2),
     block("St8c", 22.0, 1.65, 0.7, 3.3),
     block("D8a", 31.3, 4.15, 17.4, 0.5),          # デッキ[22.6,40]
+    block("Sill8", 30.0, 1.95, 0.9, 3.9),         # デッキ支柱=地上バイパス封鎖
     door("GateD8", 24.0, openT=0.0, closeT=S8["slamD"], base=4.4),
     bomb("BombF8", 31.0, 4.85, boomT=S8["boomF"], wallTarget=""),
     beacon("BombF8", color=(1.0, 0.5, 0.2, 0.9), offset=0.8),

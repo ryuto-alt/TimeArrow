@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b"
+      "value": "F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Gate5,LockD5,GateY5,LockZ5"
+      "value": "F5,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b,Sill5,Gate5,LockD5,GateY5,LockZ5"
      },
      {
       "name": "mirrors",
@@ -680,6 +680,33 @@
     "scale": [
      12.0,
      0.5,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "Sill5",
+   "transform": {
+    "position": [
+     34.0,
+     1.6,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     3.2,
      3.0
     ]
    }
@@ -1702,7 +1729,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 34,
+   "parent": 35,
    "transform": {
     "position": [
      0.0,
@@ -1776,7 +1803,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 34,
+   "parent": 35,
    "transform": {
     "position": [
      0.0,
@@ -1982,7 +2009,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 35
   },
   {
    "name": "TimeLeft",
@@ -2074,7 +2101,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 35
   },
   {
    "name": "DrawAmount",
@@ -2166,7 +2193,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 35
   },
   {
    "name": "RewindCount",
@@ -2258,7 +2285,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 35
   }
  ]
 }
