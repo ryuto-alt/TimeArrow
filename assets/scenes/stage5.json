@@ -1128,9 +1128,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.1,
-     4.9,
-     -9.5
+     11.1,
+     5.85,
+     -13.0
     ],
     "rotation": [
      14.0,
@@ -1149,32 +1149,47 @@
      {
       "name": "dist",
       "type": "float",
-      "value": 9.5
+      "value": 13.0
      },
      {
       "name": "offsetY",
       "type": "float",
-      "value": 4.35
+      "value": 5.3
      },
      {
       "name": "minX",
       "type": "float",
-      "value": 8.1
+      "value": 11.1
      },
      {
       "name": "maxX",
       "type": "float",
-      "value": 25.9
+      "value": 22.9
      },
      {
       "name": "minY",
       "type": "float",
-      "value": 4.9
+      "value": 5.85
      },
      {
       "name": "smooth",
       "type": "float",
       "value": 6.0
+     },
+     {
+      "name": "fullX",
+      "type": "float",
+      "value": 17.0
+     },
+     {
+      "name": "fullY",
+      "type": "float",
+      "value": 16.72
+     },
+     {
+      "name": "fullZ",
+      "type": "float",
+      "value": -22.86
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"

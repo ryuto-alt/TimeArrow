@@ -177,6 +177,14 @@ def button(name, x, y, link):
                     prop("arrowHit", "bool", True), prop("skipAmount", "float", 0.0)]))
 
 
+def beacon(target_name, color=(1.0, 0.8, 0.2, 0.9), offset=1.2):
+    return sprite("Beacon_" + target_name, "textures/arrow_rgba.png", 0, -100, 0.55, 0.28,
+                  layer=8, color=color, rot_z=-90.0,
+                  lua=script("Beacon.lua", [prop("targetName", "string", target_name),
+                                            prop("offsetY", "float", float(offset)),
+                                            prop("bob", "float", 0.15)]))
+
+
 def marker():
     return sprite("PlayerMarker", "textures/arrow_rgba.png", 1.5, 2.0, 0.6, 0.3, layer=8,
                   lua=script("PlayerMarker.lua", [prop("offsetY", "float", 1.35),
@@ -214,19 +222,22 @@ def build(n, entities, limit, width):
     backdrop["transform"]["scale"][0] = width * 2.32
     backdrop["transform"]["scale"][1] = width * 1.21
 
-    # プレイヤー追従カメラ(dist9.5で視界約16u幅=旧16幅ステージと同じプレイヤーサイズ)
+    # プレイヤー追従カメラ(dist13=視界約22u)+ TAB長押しで全景俯瞰(fit()で逆算)
     cam = copy.deepcopy(T["GameCamera"])
     x0, x1, y0, y1 = content_box(entities)
-    VIEW_HW = 8.1
+    VIEW_HW = 11.1
     min_x, max_x = x0 + VIEW_HW, max(x0 + VIEW_HW, x1 - VIEW_HW)
+    fx, fy, fz, _ = fit(x0 - 0.5, x1 + 0.5, y0, y1 + 0.4, 14.0)
     pl = next(e for e in entities if e["name"] == "Player")
     px, py = pl["transform"]["position"][0], pl["transform"]["position"][1]
-    cam["transform"]["position"] = [min(max(px, min_x), max_x), max(4.9, py + 4.35), -9.5]
+    cam["transform"]["position"] = [min(max(px, min_x), max_x), max(5.85, py + 5.3), -13.0]
     cam["transform"]["rotation"] = [14.0, 0.0, 0.0]
     cam["luaScript"] = script("CameraFollow.lua", [
-        prop("dist", "float", 9.5), prop("offsetY", "float", 4.35),
+        prop("dist", "float", 13.0), prop("offsetY", "float", 5.3),
         prop("minX", "float", round(min_x, 2)), prop("maxX", "float", round(max_x, 2)),
-        prop("minY", "float", 4.9), prop("smooth", "float", 6.0)])
+        prop("minY", "float", 5.85), prop("smooth", "float", 6.0),
+        prop("fullX", "float", round(fx, 2)), prop("fullY", "float", round(fy, 2)),
+        prop("fullZ", "float", round(fz, 2))])
 
     sun = copy.deepcopy(T["Sun"])
     sun["transform"]["position"][0] = width / 2.0
@@ -285,6 +296,7 @@ build(1, [
     riseplat("Bridge1", 24.0, -0.3, 8.0, 0.6, arriveT=0.0, waitHeight=6.0, riseTime=15.0,
              trigger="Target1"),
     target("Target1", 24.0, 6.8, 1.3),   # 撃つ的: x16-18から45°射線上。当てると橋の時計が進む
+    beacon("Target1"),
 ], limit=15, width=33)
 
 # ══ STAGE 2「二枚の閉門」 16s / RW2 (幅28) ═══════════════════════════
@@ -392,6 +404,7 @@ build(7, [
     block("F7", 15.5, -0.5, 31.0, 1.0),
     block("Tower7", 0.5, 3.1, 0.8, 6.2),
     button("ButtonB7", 0.5, 6.65, "LatticeL7"),
+    beacon("ButtonB7", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
     patch("P7a", 3.4, 5.0, 0.7),
     patch("P7b", 7.2, 8.8, 0.7),
     door("GateA7", 11.4, openT=0.0, closeT=2.3),

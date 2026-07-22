@@ -582,6 +582,80 @@
    }
   },
   {
+   "name": "Beacon_ButtonB7",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.55,
+     0.28,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.35,
+     0.3,
+     0.95
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "targetName",
+      "type": "string",
+      "value": "ButtonB7"
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 0.9
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.15
+     }
+    ],
+    "scriptPath": "scripts/Beacon.lua"
+   }
+  },
+  {
    "material": {
     "metallic": 0.05,
     "roughness": 0.6
@@ -1419,9 +1493,9 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     8.1,
-     4.9,
-     -9.5
+     10.825,
+     5.85,
+     -13.0
     ],
     "rotation": [
      14.0,
@@ -1440,32 +1514,47 @@
      {
       "name": "dist",
       "type": "float",
-      "value": 9.5
+      "value": 13.0
      },
      {
       "name": "offsetY",
       "type": "float",
-      "value": 4.35
+      "value": 5.3
      },
      {
       "name": "minX",
       "type": "float",
-      "value": 8.1
+      "value": 10.82
      },
      {
       "name": "maxX",
       "type": "float",
-      "value": 22.9
+      "value": 19.9
      },
      {
       "name": "minY",
       "type": "float",
-      "value": 4.9
+      "value": 5.85
      },
      {
       "name": "smooth",
       "type": "float",
       "value": 6.0
+     },
+     {
+      "name": "fullX",
+      "type": "float",
+      "value": 15.36
+     },
+     {
+      "name": "fullY",
+      "type": "float",
+      "value": -12.44
+     },
+     {
+      "name": "fullZ",
+      "type": "float",
+      "value": -109.28
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -1524,7 +1613,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 33,
+   "parent": 34,
    "transform": {
     "position": [
      0.0,
@@ -1598,7 +1687,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 33,
+   "parent": 34,
    "transform": {
     "position": [
      0.0,
@@ -1804,7 +1893,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 33
+   "parent": 34
   },
   {
    "name": "TimeLeft",
@@ -1896,7 +1985,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 33
+   "parent": 34
   },
   {
    "name": "DrawAmount",
@@ -1988,7 +2077,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 33
+   "parent": 34
   },
   {
    "name": "RewindCount",
@@ -2080,7 +2169,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 33
+   "parent": 34
   }
  ]
 }
