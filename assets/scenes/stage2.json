@@ -223,7 +223,7 @@
      {
       "name": "aimTurnSpeed",
       "type": "float",
-      "value": 720.0
+      "value": 220.0
      },
      {
       "name": "climbSpeed",

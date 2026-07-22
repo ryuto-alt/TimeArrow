@@ -78,7 +78,7 @@ def player(x, y, targets="", standables="", climbables="", arrowStops="", solids
         prop("arrowSpeed", "float", 15.0), prop("arrowRange", "float", 18.0),
         prop("arrowHalf", "float", 0.1), prop("minSkip", "float", 2.0),
         prop("maxSkip", "float", 10.0), prop("maxDrawTime", "float", 3.0),
-        prop("aimTurnSpeed", "float", 720.0), prop("climbSpeed", "float", 4.0),
+        prop("aimTurnSpeed", "float", 220.0), prop("climbSpeed", "float", 4.0),
         prop("targets", "string", targets), prop("standables", "string", standables),
         prop("climbables", "string", climbables), prop("arrowStops", "string", arrowStops),
         prop("solids", "string", solids), prop("mirrors", "string", ""),

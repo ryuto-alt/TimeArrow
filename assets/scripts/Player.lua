@@ -438,15 +438,56 @@ local function updateDraw(self, dt)
       self.drawMode = skipHeld and "skip" or "rewind"
       self.drawT = 0
       self.aimAngle = math.deg(math.atan(self.aimY or 0, self.aimX or self.facing))
+      -- キーボード用: (左右の向き, 仰角)に分解し10度刻みに丸める
+      local a0 = (self.aimAngle + 180) % 360 - 180
+      self.aimSide = (math.abs(a0) <= 90) and 1 or -1
+      local elev = (self.aimSide > 0) and a0 or ((a0 >= 0) and (180 - a0) or (-180 - a0))
+      self.aimElev = clamp(math.floor(elev / 10 + 0.5) * 10, -90, 90)
+      self.stepRepeatT = 0
     end
     self.drawT = math.min(self.drawT + dt, self.maxDrawTime)
 
-    -- 目標方向へ aimTurnSpeed(度/秒)で少しずつ回す(WASDでも滑らかに旋回する照準)
-    local tx, ty = aimTargetDir(self)
-    local targetAngle = math.deg(math.atan(ty, tx))
-    local delta = angleDelta(self.aimAngle, targetAngle)
-    local maxStep = self.aimTurnSpeed * dt
-    self.aimAngle = self.aimAngle + clamp(delta, -maxStep, maxStep)
+    -- 照準: パッド=スティックへなめらか追従(感度=aimTurnSpeed、低め) /
+    --        キーボード=矢印(またはWASD)で10度刻みのステップ選択
+    local stkX, stkY = padStick("left")
+    if math.abs(stkX) > 0.35 or math.abs(stkY) > 0.35 then
+      local targetAngle = math.deg(math.atan(stkY, stkX))
+      local delta = angleDelta(self.aimAngle, targetAngle)
+      local maxStep = self.aimTurnSpeed * dt
+      self.aimAngle = self.aimAngle + clamp(delta, -maxStep, maxStep)
+      -- 分解表現も追従させておく(パッド→キーボード持ち替え対策)
+      local a0 = (self.aimAngle + 180) % 360 - 180
+      self.aimSide = (math.abs(a0) <= 90) and 1 or -1
+      self.aimElev = clamp((self.aimSide > 0) and a0 or ((a0 >= 0) and (180 - a0) or (-180 - a0)), -90, 90)
+    else
+      -- 10度刻み: 押した瞬間に1段、押しっぱなしで0.35秒後からリピート
+      local function stepInput(up, down)
+        local dir = 0
+        if keyPressed(up) then dir = 1
+        elseif keyPressed(down) then dir = -1 end
+        if dir ~= 0 then
+          self.stepRepeatT = 0.35
+          return dir
+        end
+        if keyDown(up) or keyDown(down) then
+          self.stepRepeatT = (self.stepRepeatT or 0) - dt
+          if self.stepRepeatT <= 0 then
+            self.stepRepeatT = 0.11
+            return keyDown(up) and 1 or -1
+          end
+        end
+        return 0
+      end
+      local d1 = stepInput("UP", "DOWN")
+      local d2 = (d1 == 0) and stepInput("W", "S") or 0
+      local step = (d1 ~= 0) and d1 or d2
+      if step ~= 0 then
+        self.aimElev = clamp((self.aimElev or 0) + step * 10, -90, 90)
+      end
+      if keyPressed("LEFT") or keyPressed("A") then self.aimSide = -1 end
+      if keyPressed("RIGHT") or keyPressed("D") then self.aimSide = 1 end
+      self.aimAngle = (self.aimSide or 1) > 0 and self.aimElev or (180 - self.aimElev)
+    end
     local rad = math.rad(self.aimAngle)
     local ax, ay = math.cos(rad), math.sin(rad)
     self.aimX, self.aimY = ax, ay
