@@ -474,7 +474,7 @@ build(5, [
     block("StepA5", 4.2, 0.6, 1.1, 1.2),
     needle("N5", 4.9, 0.2, 0.6, 0.4),
     block("StepB5", 5.6, 0.85, 1.1, 1.7),
-    riseplat("Lift5", 12.5, -0.3, 3.0, 0.5, arriveT=S5["lift"], waitHeight=4.3, riseTime=1.0),
+    riseplat("Lift5", 12.5, -0.2, 3.0, 0.5, arriveT=S5["lift"], waitHeight=4.3, riseTime=1.0),
     block("D5a", 22.0, 3.75, 12.0, 0.5),          # デッキ[16,28]
     block("Sill5", 34.0, 1.6, 0.9, 3.2),          # デッキ支柱=地上バイパス封鎖
     block("PitR1F", 28.6, 2.55, 1.2, 0.5),        # 退避ピット1(上面2.8)
@@ -617,7 +617,7 @@ build(8, [
     patch("P8d", 52.0, 53.4, 0.5),
     hammer("Ham8", 49.5, 3.5, 1.2, period=3.0, maxAngle=55.0),
     door("GateG8", 58.0, openT=0.0, closeT=S8["closeG"]),     # スプリント門
-    riseplat("Lift8", 68.0, -0.3, 3.0, 0.5, arriveT=S8["lift"], waitHeight=8.7, riseTime=1.2),
+    riseplat("Lift8", 68.0, -0.2, 3.0, 0.5, arriveT=S8["lift"], waitHeight=8.7, riseTime=1.2),
     beacon("Lift8", color=(0.4, 0.8, 1.0, 0.9), offset=0.8),
     block("T8", 95.0, 8.55, 50.0, 0.5),           # 最上層[70,120]
     rollball("Ball8", 76.0, 9.55, 1.5, rollT=S8["ballRoll"], speed=S8["ballSpeed"]),
