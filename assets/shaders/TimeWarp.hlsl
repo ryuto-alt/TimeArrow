@@ -6,6 +6,8 @@
 //   2 <= v < 4    : 後戻り中(強度=v-2)。紫の帯が下へ逆スクロール+VHS風走査線+色反転パルス
 //   4.5<= v <=5.5 : 【的アピール】矢を当てられるオブジェクトの常時ゆらめき(金色のパルス)。
 //                   これが光っていない物は撃っても無反応=判別ルール
+//   6.0<= v < 7.0 : 【経年劣化】v-6.0=劣化度。錆がノイズ状に侵食し、ヒビ(黒い筋+熾火の
+//                   オレンジ)が走り、劣化が進むと表面がディザで欠け落ちる。金パルス内蔵
 // 帯のスクロール方向と色(シアン=進む/紫=戻る/金=撃てる)で時間の向きを言語化する。
 
 Texture2D    g_albedo  : register(t0);
@@ -64,6 +66,23 @@ PSInput VSMain(VSInput input)
     return output;
 }
 
+// 安価な2Dバリューノイズ(錆の斑・ヒビ用)
+float hash2(float2 p)
+{
+    return frac(sin(dot(p, float2(127.1f, 311.7f))) * 43758.5453f);
+}
+float vnoise(float2 p)
+{
+    float2 i = floor(p);
+    float2 f = frac(p);
+    f = f * f * (3.0f - 2.0f * f);
+    float a = hash2(i);
+    float b = hash2(i + float2(1, 0));
+    float c = hash2(i + float2(0, 1));
+    float d = hash2(i + float2(1, 1));
+    return lerp(lerp(a, b, f.x), lerp(c, d, f.x), f.y);
+}
+
 float4 PSMain(PSInput input) : SV_TARGET
 {
     float ff = (effectValue > 0.0f && effectValue < 1.5f) ? saturate(effectValue) : 0.0f;
@@ -116,6 +135,45 @@ float4 PSMain(PSInput input) : SV_TARGET
         // 時折ネガ反転がパルスする(過去へ戻るフラッシュバック)
         float pulse = saturate(sin(time * 5.0f) * 0.5f + 0.5f);
         lit = lerp(lit, float3(1.0f, 1.0f, 1.0f) - lit, 0.18f * rw * pulse);
+    }
+
+    // 【経年劣化】錆の侵食+ヒビ+欠け落ち。deg=0でほぼ新品、1でぼろぼろ
+    if (effectValue >= 6.0f && effectValue < 7.0f)
+    {
+        float deg = saturate(effectValue - 6.0f);
+        float2 wp = input.worldPos.xy;
+
+        // 錆の斑: ノイズしきい値が劣化度で下がる=錆が面で広がっていく
+        float rust = vnoise(wp * 3.1f) * 0.65f + vnoise(wp * 9.7f) * 0.35f;
+        if (rust < deg * 0.85f)
+        {
+            float3 rustCol = float3(0.45f, 0.2f, 0.08f) * (0.7f + 0.6f * vnoise(wp * 17.0f));
+            lit = lerp(lit, rustCol, 0.75f);
+        }
+
+        // ヒビ: ノイズの等高線を細く抜く。奥に熾火のオレンジが明滅
+        float vein = abs(vnoise(wp * 5.3f) - 0.5f);
+        float crackW = 0.015f + 0.05f * deg;
+        if (vein < crackW && deg > 0.15f)
+        {
+            float ember = 0.5f + 0.5f * sin(time * 7.0f + wp.x * 9.0f);
+            lit = lerp(lit, float3(0.05f, 0.03f, 0.02f), 0.85f);
+            lit += float3(1.0f, 0.45f, 0.1f) * ember * deg * 0.9f;
+        }
+
+        // 欠け落ち: 劣化が進むほど表面がディザで抜けてボロボロに見える
+        float crumble = vnoise(wp * 13.0f + float2(0.0f, time * 0.15f));
+        if (deg > 0.45f && crumble > 1.0f - (deg - 0.45f) * 0.5f)
+        {
+            uint2 pp = uint2(input.positionSV.xy);
+            if (((pp.x + pp.y) & 1) == 0)
+                discard;
+        }
+
+        // 金パルス内蔵(撃てる印は維持しつつ、劣化するほど鈍く)
+        float band6 = saturate(sin((input.worldPos.y * 2.2f - time * 1.6f) * 6.2831853f) * 0.5f + 0.5f);
+        band6 = pow(band6, 8.0f);
+        lit += float3(1.0f, 0.82f, 0.35f) * band6 * 0.45f * (1.0f - deg * 0.6f);
     }
 
     // 【的アピール】撃てるオブジェクトは金色の細い帯がゆっくり上り、全体が淡く脈動する

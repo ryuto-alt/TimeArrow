@@ -100,7 +100,7 @@ function OnUpdate(self, dt)
           e.transform.position = Vec3.new(self.bx, show and self.by or -100, self.bz)
           e.transform.rotation = Vec3.new(0, 0, ang)
           if show then
-            local eff = 5.0
+            local eff = 6.0 + math.min(0.95, self.clock / (self.decayT * 2.5))
             if self.ffRemain > 0 then eff = 1.0
             elseif self.rwGlow > 0 then eff = 2.8 end
             scene:setMeshEffect(e, eff)
@@ -115,9 +115,11 @@ function OnUpdate(self, dt)
   local hx = self.bx + math.sin(rad) * R
   local hy = self.by - math.cos(rad) * R
 
+  -- 劣化度(0=新品〜0.95=ぼろぼろ)をシェーダーへ: 錆の侵食+ヒビ+欠け落ち
+  local deg = math.min(0.95, self.clock / (self.decayT * 2.5))
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 5.0  -- 撃てる=金色の的アピール
+    local eff = 6.0 + deg
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
     scene:setMeshEffect(selfE, eff)
@@ -126,6 +128,22 @@ function OnUpdate(self, dt)
   if self.rwGlow > 0 then
     self.rwGlow = self.rwGlow - dt
     FX.trail(hx, hy, self.bz, 0.65, 0.4, 1.0)
+  end
+
+  -- 火花: 摩耗以降、振りの最下点を通過する瞬間にガリッと研削火花が散る
+  if self.lastStage and self.lastStage >= 2 then
+    local s = math.sin(self.phase * math.pi * 2)
+    if math.abs(s) < 0.10 then
+      if not self.sparked then
+        self.sparked = true
+        local n = (self.lastStage == 3) and 16 or 8
+        FX.spark(hx, hy - 0.4, self.bz, n, 1.0, 0.7, 0.2)
+        FX.spark(hx, hy - 0.4, self.bz, math.floor(n / 2), 1.0, 0.45, 0.1)
+        if self.lastStage == 3 then fx:pulse(0.04) end
+      end
+    else
+      self.sparked = false
+    end
   end
 
   -- 劣化した個体は錆粉を撒き、末期はヨレて震える(見た目のみ。判定は本来の角度)
