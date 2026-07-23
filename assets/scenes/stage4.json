@@ -128,7 +128,7 @@
           {
             "name": "standables",
             "type": "string",
-            "value": "Ferry4,Elev4,CrA4,CrB4"
+            "value": "Ferry4,Elev4,CrA4,CrB4,Ham4_m4"
           },
           {
             "name": "climbables",
@@ -2469,6 +2469,526 @@
           0.9,
           1.2,
           1.0
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.1,
+        "roughness": 0.85
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Dust/Hammer_Dust.obj"
+      },
+      "name": "Ham4_m4",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.2000000476837158,
+          1.2000000476837158,
+          1.0
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+      },
+      "name": "Ham4_f1",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
+      },
+      "name": "Ham4_f2",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+      },
+      "name": "Ham4_f3",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
+      },
+      "name": "Ham4_f4",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+      },
+      "name": "Ham4_f5",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
+      },
+      "name": "Ham4_f6",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+      },
+      "name": "Ham4_f7",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
+      },
+      "name": "Ham4_f8",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+      },
+      "name": "Ham4_f9",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
+      },
+      "name": "Ham4_f10",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+      },
+      "name": "Ham4_f11",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.15,
+        "roughness": 0.8
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
+      },
+      "name": "Ham4_f12",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.25
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+      },
+      "name": "Ham4_t1",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.25
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+      },
+      "name": "Ham4_t2",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.25
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+      },
+      "name": "Ham4_t3",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.25
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+      },
+      "name": "Ham4_t4",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.25
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+      },
+      "name": "Ham4_t5",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
+        ]
+      }
+    },
+    {
+      "material": {
+        "metallic": 0.3,
+        "roughness": 0.25
+      },
+      "meshRenderer": {
+        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+      },
+      "name": "Ham4_t6",
+      "shader": "shaders/TimeWarp.hlsl",
+      "transform": {
+        "position": [
+          27.0,
+          -100.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.5,
+          1.5,
+          1.5
         ]
       }
     }
