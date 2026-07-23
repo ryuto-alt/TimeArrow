@@ -43,7 +43,7 @@ function OnStart(self)
   events:on("time_skip", function(data)
     if data.target ~= self.name and data.target ~= self.name .. "X" then return end
     self.ffRemain = self.ffRemain + (data.amount or 0) * self.agePerSkip
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- 1.5秒かけて老化が進む(全ギミック共通の消化テンポ。早送り中は無害)
     FX.spark(self.bx, self.by, self.bz, 10, 0.3, 0.75, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 10, 6, 0.3, 0.9, 1.0)
   end)

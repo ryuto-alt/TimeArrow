@@ -124,7 +124,7 @@ def reached_exit(x, y, gx, gy):
 FAIL, SKIP = [], []
 
 print("=== 監査1: 開始位置からギミック無しで歩ける範囲 ===")
-for n in range(1, 9):
+for n in range(1, 5):
     sc = load(n)
     bxs = aabbs(sc, solid_names(sc))
     gx, gy = exit_pos(sc)
@@ -136,7 +136,7 @@ for n in range(1, 9):
         FAIL.append(n)
 
 print("\n=== 監査2: 門/格子/動く壁/砲台/瓦礫を全開にし、各地上ブロックの左端からも歩く ===")
-for n in range(1, 9):
+for n in range(1, 5):
     sc = load(n)
     names = solid_names(sc) - soft_names(sc)
     bxs = aabbs(sc, names)
@@ -169,7 +169,7 @@ print("\n=== 監査3: 刃の退避ピットが床板に埋まっていないか 
 # 平地の振り子ノコは歩行5では絶対に通過不能なので、刃には必ず「退避ピット」が要る。
 # ピットの上を床板が塞いでいると降りられず、その刃は回避不能の即死装置になる(S8で実際に発生)。
 PIT = []
-for n in range(1, 9):
+for n in range(1, 5):
     sc = load(n)
     names = solid_names(sc)
     bxs = aabbs(sc, names)

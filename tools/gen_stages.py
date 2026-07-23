@@ -9,7 +9,7 @@
 # 刃 : 平地の振り子ノコは絶対に通過不能(数値検証済) → 必ず退避ピット構造で使う
 import json, copy, os, sys
 
-SCENES = r"C:\Users\ryuto\game\TimeArrow\assets\scenes"
+SCENES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "scenes")
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sim"))
 from camera_fit import content_box, fit  # noqa: E402
 from knobs import K  # noqa: E402  タイミング定数の単一の真実源
@@ -104,10 +104,13 @@ def block(name, x, y, sx, sy, sz=3.0):
     return mesh(name, "Block", x, y, sx, sy, sz)
 
 
-def needle(name, x, y, sx, sy):
+def needle(name, x, y, sx, sy, stand=False):
+    # stand=True: 起立針山(StandNeedle.lua)。通常は立って道を塞ぎ、後戻し矢で寝る。
+    scr = "StandNeedle.lua" if stand else "Wall.lua"
     return mesh(name, "Needle_Small", x, y, sx, sy, 1.0,
-                lua=script("Wall.lua", [prop("deadly", "bool", True),
-                                        prop("hitScale", "float", 0.6)]))
+                shader=(TIMEWARP if stand else None),
+                lua=script(scr, [prop("deadly", "bool", True),
+                                 prop("hitScale", "float", 0.6)]))
 
 
 def door(name, x, openT, closeT, base=0.0):
@@ -289,20 +292,143 @@ def ui_text(name, text, size, color, outline, rect):
                        "wrap": False}}
 
 
+BGLAYER = "shaders/BackdropLayer.hlsl"
+
+# ── 2段背景 ──────────────────────────────────────────────────────
+# 手前段: 稜線帯(Blender自作 BG_Ridge_*、z≈9.5-10.4、BG装飾のさらに後ろ)。
+#         残り時間による崩壊(BackgroundCollapse.lua+BackdropRidge.hlsl)はこの層が担う。
+# 奥段  : 空壁(z=30)。ステージ別の自作空 bg_sky{n}.png をアンリット表示。
+#         追従カメラとTAB全景の両フラスタムから必要サイズを逆算して、
+#         画面外のクリアカラー(青)が絶対に見えないよう覆い切る。
+RIDGES = {0: ["BG_Ridge_Ruins"], 1: ["BG_Ridge_Gears"],
+          2: ["BG_Ridge_Ruins", "BG_Ridge_Gears"],
+          3: ["BG_Ridge_Spires"], 4: ["BG_Ridge_Spires", "BG_Ridge_Gears"]}
+RIDGE_H = {"BG_Ridge_Gears": 0.271, "BG_Ridge_Ruins": 0.231, "BG_Ridge_Spires": 0.315}
+RIDGE_TINT = {0: [0.85, 0.88, 1.0], 1: [1.0, 1.0, 1.0], 2: [0.82, 1.0, 0.9],
+              3: [0.9, 0.8, 1.0], 4: [1.0, 0.8, 0.68]}
+
+
+def backdrop_sky(n, width, y_top, fx, fy, fz):
+    import math
+    zs = 30.0
+    half_v = math.radians(25.0)           # FOV50°の半分
+    pitch = math.radians(14.0)
+    th = math.tan(half_v) * 16.0 / 9.0    # 水平半画角tan(16:9)
+    xs, ys = [], []
+    max_cy = max(5.85, y_top + 5.3)
+    for (cx, cy, cz) in ((11.1, 5.85, -13.0), (width - 11.1, max_cy, -13.0),
+                         (fx, fy, fz)):
+        d = zs - cz
+        ys += [cy - d * math.tan(pitch + half_v), cy - d * math.tan(pitch - half_v)]
+        hw = d * th / math.cos(pitch)
+        xs += [cx - hw, cx + hw]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    return {"name": "Backdrop", "primitive": "box",
+            "shader": "shaders/BackdropSky.hlsl",
+            "materialTextureOverrides": [{"albedo": f"textures/bg_sky{n}.png"}],
+            "luaScript": script("BGProp.lua", [
+                prop("spinZ", "float", 0.0), prop("bobAmp", "float", 0.0),
+                prop("bobPeriod", "float", 9.0), prop("phase", "float", 0.0)]),
+            "transform": {"position": [round((x0 + x1) / 2, 1), round((y0 + y1) / 2, 1), zs],
+                          "rotation": [0.0, 180.0, 0.0],
+                          "scale": [round((x1 - x0) * 1.18, 1), round((y1 - y0) * 1.18, 1), 1.0]}}
+
+
+def backdrop_ridge(n, width, limit):
+    import random
+    rnd = random.Random(500 + n)
+    models = RIDGES[n]
+    pieces, x, i = [], -8.0, 0
+    while x < width + 8.0:
+        m = models[i % len(models)]
+        s = rnd.uniform(29.0, 35.0)
+        h = RIDGE_H[m] * s
+        e = mesh(f"BackdropRidge{i + 1}", m, round(x + s / 2, 2), round(h / 2 - 2.4, 2),
+                 s, s, s,
+                 lua=script("BackgroundCollapse.lua", [
+                     # collapseAt=0: ステージ時間の全体を使って左から徐々に崩壊し、
+                     # 残り0秒で完全消滅する(進行度=経過割合、シェーダー側も線形)
+                     prop("T", "float", float(limit)), prop("collapseAt", "float", 0.0),
+                     # 吸い込みイベントは1枚目だけが発行(SuckIn側は冪等だが多重発火を避ける)
+                     prop("suckInAt", "float", 0.75 if i == 0 else 1.5)]),
+                 shader="shaders/BackdropRidge.hlsl", z=9.5 + (i % 2) * 0.9)
+        e["color"] = RIDGE_TINT[n]
+        pieces.append(e)
+        x += s * rnd.uniform(0.82, 0.95)
+        i += 1
+    return pieces
+
+
+def bg_decor(n, width, limit):
+    """Blender自作の背景モデル群(BG_*)を奥行き3層に散らす。純装飾でギミック無関係。
+    z: ゲーム面=0 / 近景3.4 / 中景4.2前後 / 遠景6前後 / 稜線9.5 / Backdrop(空)=30。
+    全プロップに BGProp.lua(T=制限時間)を付け、ステージ時間の全体を使って
+    砕けて消えていき残り0秒で完全消滅する。減光ティント(color)で
+    ゲーム面と見分けやすく沈める。配置はステージ番号シードの決定論。"""
+    import random
+    rnd = random.Random(1000 + n)
+    w = float(width)
+    ents = []
+
+    def bg(name, model, fx, y, s, z, spin=0.0, bob=0.0, per=9.0, rot_z=0.0):
+        lua = script("BGProp.lua", [
+            prop("spinZ", "float", round(spin, 2)), prop("bobAmp", "float", round(bob, 2)),
+            prop("bobPeriod", "float", round(per, 2)),
+            prop("phase", "float", round(rnd.uniform(0, 8), 2)),
+            prop("T", "float", float(limit))])
+        e = mesh(name, model, round(fx * w, 2), round(y, 2), s, s, s,
+                 lua=lua, shader=BGLAYER, rot=(0.0, 0.0, round(rot_z, 1)),
+                 z=round(z, 2))
+        e["color"] = [0.80, 0.83, 0.95]   # 背景減光(視認性: ゲーム面より一段沈める)
+        ents.append(e)
+
+    # ── 遠景: 壊れた大時計(針は凍結したまま)+半分沈んで回り続ける大歯車 ──
+    bg("BG_Clock", "BG_ClockRuin", 0.5 + rnd.uniform(-0.13, 0.13), 8.2 + rnd.uniform(-0.8, 1.2),
+       13.0, 6.2, rot_z=rnd.uniform(-14, 14))
+    bg("BG_GearL", "BG_Gear", 0.10 + rnd.uniform(-0.03, 0.03), rnd.uniform(-2.5, -0.5),
+       rnd.uniform(6.5, 8.5), 5.8, spin=rnd.uniform(8, 14))
+    bg("BG_GearR", "BG_Gear", 0.90 + rnd.uniform(-0.03, 0.03), rnd.uniform(-2.0, 0.5),
+       rnd.uniform(5.0, 7.0), 6.0, spin=-rnd.uniform(10, 16))
+
+    # ── 中景: 砂時計のモノリスと崩れたアーチが地表に立つ(左右はステージで入替) ──
+    hx, ax = (0.28, 0.72) if n % 2 == 1 else (0.74, 0.30)
+    hs = rnd.uniform(4.2, 5.6)
+    bg("BG_Hourglass1", "BG_Hourglass", hx + rnd.uniform(-0.04, 0.04), hs * 0.5 - 0.7,
+       hs, 4.4, rot_z=rnd.uniform(-3, 3))
+    as_ = rnd.uniform(3.6, 4.8)
+    bg("BG_Arch1", "BG_Arch", ax + rnd.uniform(-0.04, 0.04), as_ * 0.5 - 0.9,
+       as_, 4.2, rot_z=rnd.uniform(-2, 2))
+
+    # ── 中景の浮遊岩(ゆっくり上下)。広いステージほど数を足す ──
+    n_isle = 2 + max(0, int((w - 40) / 15))
+    for i in range(n_isle):
+        fx = (i + 0.5 + rnd.uniform(-0.22, 0.22)) / n_isle
+        bg(f"BG_Isle{i+1}", "BG_Isle", fx, rnd.uniform(6.8, 9.6),
+           rnd.uniform(2.2, 3.6), rnd.uniform(3.4, 4.8),
+           bob=rnd.uniform(0.25, 0.6), per=rnd.uniform(9, 16), rot_z=rnd.uniform(-8, 8))
+
+    # ── 近景アクセント: 画面端でしっかり回る小歯車(視差で奥行きが出る) ──
+    bg("BG_GearN1", "BG_Gear", 0.04, rnd.uniform(0.0, 1.5), rnd.uniform(1.6, 2.4),
+       3.4, spin=rnd.uniform(22, 34))
+    bg("BG_GearN2", "BG_Gear", 0.97, rnd.uniform(0.5, 2.0), rnd.uniform(1.4, 2.0),
+       3.5, spin=-rnd.uniform(26, 40))
+
+    # 広いステージは砂時計かアーチをもう1基(中間の空白を埋める)
+    if w >= 55:
+        model, s = (("BG_Hourglass", rnd.uniform(3.6, 4.6)) if n % 2 == 0
+                    else ("BG_Arch", rnd.uniform(3.4, 4.2)))
+        bg("BG_Mid2", model, 0.5 + rnd.uniform(-0.06, 0.06), s * 0.5 - 0.8, s, 4.6,
+           rot_z=rnd.uniform(-3, 3))
+    return ents
+
+
 def build(n, entities, limit, width):
+    if 5 <= n <= 8:   # いったんstage4まで(5-8は封印中: シーンを書き出さない)
+        return
     flat = []
     for e in entities:
         (flat.extend if isinstance(e, list) else flat.append)(e)
     entities = flat + [marker()]
-
-    backdrop = copy.deepcopy(T["Backdrop"])
-    for pr in backdrop["luaScript"]["props"]:
-        if pr["name"] == "T":
-            pr["value"] = float(limit)
-    backdrop["transform"]["position"][0] = width / 2.0
-    backdrop["transform"]["position"][1] = width * 0.10
-    backdrop["transform"]["scale"][0] = width * 2.32
-    backdrop["transform"]["scale"][1] = width * 1.21
 
     # プレイヤー追従カメラ(dist13=視界約22u)+ TAB長押しで全景俯瞰(fit()で逆算)
     cam = copy.deepcopy(T["GameCamera"])
@@ -324,8 +450,9 @@ def build(n, entities, limit, width):
     sun = copy.deepcopy(T["Sun"])
     sun["transform"]["position"][0] = width / 2.0
 
-    ents = entities + [backdrop, sun, cam, copy.deepcopy(T["Grid"]),
-                       copy.deepcopy(T["HudCanvas"])]
+    ents = entities + [backdrop_sky(n, width, y1, fx, fy, fz)] + \
+        backdrop_ridge(n, width, limit) + bg_decor(n, width, limit) + \
+        [sun, cam, copy.deepcopy(T["Grid"]), copy.deepcopy(T["HudCanvas"])]
     hud_i = len(ents) - 1
     seek = copy.deepcopy(T["SeekBar"])
     seek["uiSlider"]["maxValue"] = float(limit)
@@ -361,7 +488,7 @@ arrow = copy.deepcopy(T["Arrow"])
 # トゲ帯: 平地に置く幅1.6のトゲ。飛び越え必須(跳距離2.9に余裕)=「意味のあるトゲ」
 def patch(pfx, xa, xb, nw=0.9):
     mid = (xa + xb) / 2
-    return [needle(f"{pfx}N", mid, 0.3, 1.6, 0.6)]
+    return [needle(f"{pfx}N", mid, 0.3, 1.6, 0.6, stand=True)]
 
 
 # ══ 大型化レイアウト(2026-07-22 v3)══════════════════════════════════
@@ -395,7 +522,7 @@ build(1, [
 # 道中: ハンマー(タイミング)/タレット弾幕(スロモで抜ける)/崩れ橋(急いで渡る or 戻す)
 build(2, [
     gm(2, S2["limit"]),
-    player(0.8, 0.55, targets="GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2",
+    player(0.8, 0.55, targets="GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2,P2aN,P2cN",
            standables="CrA2,CrB2",
            arrowStops="F2a,F2b",
            solids="F2a,F2b,GateA,GateB,GateC,GateD",
@@ -423,7 +550,7 @@ build(2, [
 # 棚の途中は崩れ足場(渡り切るか、RWで復活させるか)。最後の閉門はRWでしか開かない。
 build(3, [
     gm(3, S3["limit"]),
-    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,GateZ3",
+    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,GateZ3,P3aN",
            standables="Bridge3,CrA3,CrB3",
            arrowStops="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c",
            solids="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c,Fan3,GateZ3",
@@ -454,12 +581,12 @@ build(3, [
 # 途中に刃ピット/ハンマー(平地で唯一渡れる刃)/崩れ足場。
 build(4, [
     gm(4, S4["limit"]),
-    player(0.8, 0.55, targets="GateA4,Saw4,Ham4,Ham4X,Ferry4,Elev4,Lock4,CrA4,CrB4",
+    player(0.8, 0.55, targets="GateA4,Saw4,Ham4,Ham4X,Ferry4,Elev4,Lock4,CrA4,CrB4,P4aN,P4bN",
            standables="Ferry4,Elev4,CrA4,CrB4",
            arrowStops="F4a,PitF4,F4b,F4c,L4a,L4b",
            solids="F4a,PitF4,F4b,F4c,L4a,L4b,GateA4,Lock4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
-    exit_(62.5, 5.55, "scenes/stage5.json"), gate(62.5, 5.4),
+    exit_(62.5, 5.55, "scenes/game_clear.json"), gate(62.5, 5.4),
     block("F4a", 9.4, -0.5, 18.8, 1.0),           # [0,18.8]
     block("PitF4", 19.4, -1.5, 1.2, 1.0),         # 刃の退避ピット
     block("F4b", 25.5, -0.5, 11.0, 1.0),          # [20,31]
@@ -705,7 +832,7 @@ SLAMS = {
     4: (13.0, K["s4"]["slamA"], 2, 0.8),
     8: (12.2, K["s8"]["slamA"], 2, 0.8),
 }
-for n in range(1, 9):
+for n in range(1, 5):   # 5-8は封印中(build()が書き出さない)ので検証も1-4のみ
     s = json.load(open(os.path.join(SCENES, f"stage{n}.json"), encoding="utf-8"))
     names = [e["name"] for e in s["entities"]]
     # Playerの参照リスト(targets/solids等)の全名が実在するか(カンマ欠落・消し忘れ検出)
@@ -723,4 +850,4 @@ for n in range(1, 9):
         fastest = (gx - sx) / WALK + hops * HOPJ
         assert fastest > ct + 0.15, f"stage{n}: スラム最速到達{fastest:.2f} <= 閉{ct}(+0.15)"
         print(f"  stage{n} スラム検証: 最速{fastest:.2f}s > 閉{ct}s ✓")
-print("all 8 scenes valid")
+print("all 4 scenes valid")

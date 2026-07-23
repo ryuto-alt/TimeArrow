@@ -80,6 +80,8 @@ def scan(boxes, tgt, bands):
     return hits
 
 
+FORBIDDEN = [c for c in FORBIDDEN if c[0] <= 4]   # stage4まで構成
+REQUIRED  = [c for c in REQUIRED  if c[0] <= 4]
 NG = []
 print("=== 射線監査: 撃てては困る場所から撃てないこと ===")
 for n, target, desc, bands in FORBIDDEN:

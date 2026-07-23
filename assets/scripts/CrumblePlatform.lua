@@ -24,7 +24,7 @@ function OnStart(self)
     if data.target ~= self.name then return end
     self.armed = true
     self.ffRemain = self.ffRemain + (data.amount or 0)
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- ゆっくり消化(サージが速すぎて避けられない問題への全体調整)
     FX.spark(self.bx, self.by, self.bz, 8, 0.3, 0.75, 1.0)
   end)
 

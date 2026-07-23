@@ -40,7 +40,7 @@ function OnStart(self)
     -- 一括加算せず早送り(0.5秒で消化)して、格子が跳ね上がる様子を見せる
     -- 矢の秒数は arrowBoost 倍で効く(openTが長い錠ゲートも数発で開くように)
     self.ffRemain = self.ffRemain + data.amount * self.arrowBoost
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- ゆっくり消化(サージが速すぎて避けられない問題への全体調整)
     FX.spark(self.bx, self.transform.position.y, self.bz, 10, 0.3, 0.75, 1.0)
     FX.shockwave(self.bx, self.transform.position.y, self.bz, 10, 6, 0.3, 0.9, 1.0)
   end)

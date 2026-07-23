@@ -40,7 +40,9 @@ function OnUpdate(self, dt)
     scene:setMeshEffect(selfE, intensity + slow)
   end
 
-  if frac < self.collapseAt then return end
+  -- 煙バーストは崩壊がある程度進むまで抑える(collapseAt=0の全時間崩壊でも
+  -- 開始直後から煙だらけにならないように)
+  if frac < self.collapseAt or intensity < 0.08 then return end
 
   self.emitAccum = self.emitAccum + dt * (1 + intensity * 6)
   if self.emitAccum > 0.15 then

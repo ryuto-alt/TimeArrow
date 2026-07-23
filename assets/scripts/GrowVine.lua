@@ -30,7 +30,7 @@ function OnStart(self)
     if data.target ~= self.name then return end
     -- 一括加算せず早送り(0.5秒で消化)して、育つ様子が見えるようにする
     self.ffRemain = self.ffRemain + data.amount
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- ゆっくり消化(サージが速すぎて避けられない問題への全体調整)
     FX.spark(self.transform.position.x, self.transform.position.y, self.bz, 10, 0.6, 0.9, 0.4)
   end)
 

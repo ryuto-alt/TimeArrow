@@ -1,2959 +1,2956 @@
 {
-  "entities": [
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "T",
-            "type": "float",
-            "value": 18.0
-          },
-          {
-            "name": "scenePath",
-            "type": "string",
-            "value": "scenes/stage2.json"
-          },
-          {
-            "name": "title",
-            "type": "string",
-            "value": "STAGE 2"
-          },
-          {
-            "name": "markers",
-            "type": "string",
-            "value": ""
-          }
-        ],
-        "scriptPath": "scripts/GameManager.lua"
-      },
-      "name": "GameManager",
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "speed",
-            "type": "float",
-            "value": 5.0
-          },
-          {
-            "name": "jumpSpeed",
-            "type": "float",
-            "value": 12.4
-          },
-          {
-            "name": "gravity",
-            "type": "float",
-            "value": 40.0
-          },
-          {
-            "name": "killY",
-            "type": "float",
-            "value": -4.0
-          },
-          {
-            "name": "halfW",
-            "type": "float",
-            "value": 0.34
-          },
-          {
-            "name": "halfHeight",
-            "type": "float",
-            "value": 0.55
-          },
-          {
-            "name": "arrowSpeed",
-            "type": "float",
-            "value": 15.0
-          },
-          {
-            "name": "arrowRange",
-            "type": "float",
-            "value": 18.0
-          },
-          {
-            "name": "arrowHalf",
-            "type": "float",
-            "value": 0.1
-          },
-          {
-            "name": "minSkip",
-            "type": "float",
-            "value": 2.0
-          },
-          {
-            "name": "maxSkip",
-            "type": "float",
-            "value": 10.0
-          },
-          {
-            "name": "maxDrawTime",
-            "type": "float",
-            "value": 3.0
-          },
-          {
-            "name": "aimTurnSpeed",
-            "type": "float",
-            "value": 220.0
-          },
-          {
-            "name": "climbSpeed",
-            "type": "float",
-            "value": 4.0
-          },
-          {
-            "name": "targets",
-            "type": "string",
-            "value": "GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2"
-          },
-          {
-            "name": "standables",
-            "type": "string",
-            "value": "CrA2,CrB2,Ham2_m4"
-          },
-          {
-            "name": "climbables",
-            "type": "string",
-            "value": ""
-          },
-          {
-            "name": "arrowStops",
-            "type": "string",
-            "value": "F2a,F2b"
-          },
-          {
-            "name": "solids",
-            "type": "string",
-            "value": "F2a,F2b,GateA,GateB,GateC,GateD"
-          },
-          {
-            "name": "mirrors",
-            "type": "string",
-            "value": ""
-          },
-          {
-            "name": "maxBounces",
-            "type": "int",
-            "value": 4
-          },
-          {
-            "name": "rewindShots",
-            "type": "int",
-            "value": 3
-          }
-        ],
-        "scriptPath": "scripts/Player.lua"
-      },
-      "name": "Player",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 6,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/player_rgba.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          0.800000011920929,
-          0.550000011920929,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.8999999761581421,
-          1.2000000476837158,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "Arrow",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 7,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/arrow_rgba.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.8999999761581421,
-          0.27000001072883606,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "radius",
-            "type": "float",
-            "value": 1.2
-          },
-          {
-            "name": "next",
-            "type": "string",
-            "value": "scenes/stage3.json"
-          }
-        ],
-        "scriptPath": "scripts/Exit.lua"
-      },
-      "name": "Exit",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "effectValue": 0.0,
-        "layer": 5,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/exit_rgba.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          49.5,
-          0.6499999761581421,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.2999999523162842,
-          1.2999999523162842,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.5
-      },
-      "meshRenderer": {
-        "modelPath": "models/Goal_Gate/Goal_Gate.obj"
-      },
-      "name": "GoalGate",
-      "transform": {
-        "position": [
-          49.5,
-          0.5,
-          0.800000011920929
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.100000023841858,
-          1.100000023841858,
-          1.100000023841858
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Block/Block.obj"
-      },
-      "name": "F2a",
-      "transform": {
-        "position": [
-          19.25,
-          -0.5,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          38.5,
-          1.0,
-          3.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Block/Block.obj"
-      },
-      "name": "F2b",
-      "transform": {
-        "position": [
-          47.25,
-          -0.5,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          9.5,
-          1.0,
-          3.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "deadly",
-            "type": "bool",
-            "value": true
-          },
-          {
-            "name": "hitScale",
-            "type": "float",
-            "value": 0.6
-          }
-        ],
-        "scriptPath": "scripts/Wall.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Needle_Small/Needle_Small.obj"
-      },
-      "name": "P2aN",
-      "transform": {
-        "position": [
-          5.849999904632568,
-          0.30000001192092896,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.600000023841858,
-          0.6000000238418579,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "RewindCount",
-      "parent": 33,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiRect": {
-        "alpha": 1.0,
-        "anchorMax": [
-          0.0,
-          0.0
-        ],
-        "anchorMin": [
-          0.0,
-          0.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          300.0,
-          78.0
-        ],
-        "offsetMin": [
-          16.0,
-          26.0
-        ],
-        "order": 2,
-        "pivot": [
-          0.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "skewX": 0.0,
-        "visible": true
-      },
-      "uiText": {
-        "alignH": 1,
-        "alignV": 1,
-        "charAnim": 0,
-        "charAnimAmount": 4.0,
-        "charAnimSpeed": 2.0,
-        "color": [
-          0.75,
-          0.550000011920929,
-          1.0,
-          1.0
-        ],
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "fontSize": 26.0,
-        "gradientColor2": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "gradientDir": 0,
-        "letterSpacing": 2.0,
-        "outlineColor": [
-          0.05000000074505806,
-          0.10000000149011612,
-          0.25,
-          1.0
-        ],
-        "outlineWidth": 2.0,
-        "rich": false,
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.6000000238418579
-        ],
-        "shadowOffset": [
-          2.0,
-          2.0
-        ],
-        "text": "まき戻し ×0",
-        "typewriterSpeed": 0.0,
-        "wrap": false
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Frame/Gate_Frame.obj"
-      },
-      "name": "GateAFrame",
-      "transform": {
-        "position": [
-          14.600000381469727,
-          2.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.100000023841858,
-          4.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "openT",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "closeT",
-            "type": "float",
-            "value": 2.8
-          },
-          {
-            "name": "slideTime",
-            "type": "float",
-            "value": 0.7
-          },
-          {
-            "name": "listenButton",
-            "type": "bool",
-            "value": false
-          }
-        ],
-        "scriptPath": "scripts/TimedDoor.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Grill/Gate_Grill.obj"
-      },
-      "name": "GateA",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          14.600000381469727,
-          1.7999999523162842,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.75,
-          3.5999999046325684,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "period",
-            "type": "float",
-            "value": 3.0
-          },
-          {
-            "name": "maxAngle",
-            "type": "float",
-            "value": 50.0
-          },
-          {
-            "name": "startPhase",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "decayT",
-            "type": "float",
-            "value": 25.0
-          },
-          {
-            "name": "hitHalf",
-            "type": "float",
-            "value": 0.42
-          }
-        ],
-        "scriptPath": "scripts/HammerSwing.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
-      },
-      "name": "Ham2",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          3.5,
-          0.0
-        ],
-        "rotation": [
-          -0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.2000000476837158,
-          1.2000000476837158,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
-      },
-      "name": "Ham2_m2",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          17.600000381469727,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.2000000476837158,
-          1.2000000476837158,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
-      },
-      "name": "Ham2_m3",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          17.600000381469727,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.2000000476837158,
-          1.2000000476837158,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "Ham2X",
-      "transform": {
-        "position": [
-          17.600000381469727,
-          1.940000057220459,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          2.640000104904175,
-          3.4800000190734863,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Frame/Gate_Frame.obj"
-      },
-      "name": "GateBFrame",
-      "transform": {
-        "position": [
-          24.0,
-          2.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.100000023841858,
-          4.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "openT",
-            "type": "float",
-            "value": 8.6
-          },
-          {
-            "name": "closeT",
-            "type": "float",
-            "value": 9999.0
-          },
-          {
-            "name": "slideTime",
-            "type": "float",
-            "value": 0.7
-          },
-          {
-            "name": "listenButton",
-            "type": "bool",
-            "value": false
-          }
-        ],
-        "scriptPath": "scripts/TimedDoor.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Grill/Gate_Grill.obj"
-      },
-      "name": "GateB",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          24.0,
-          1.7999999523162842,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.75,
-          3.5999999046325684,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "period",
-            "type": "float",
-            "value": 2.6
-          },
-          {
-            "name": "shotSpeed",
-            "type": "float",
-            "value": 6.0
-          },
-          {
-            "name": "range",
-            "type": "float",
-            "value": 11.0
-          },
-          {
-            "name": "startPhase",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "ammo",
-            "type": "int",
-            "value": 10
-          }
-        ],
-        "scriptPath": "scripts/Turret.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Turret/Turret.obj"
-      },
-      "name": "Tur2",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          31.23548126220703,
-          1.0,
-          0.0
-        ],
-        "rotation": [
-          -0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Cannonball/Cannonball.obj"
-      },
-      "name": "Tur2_p1",
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.550000011920929,
-          0.550000011920929,
-          0.550000011920929
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Cannonball/Cannonball.obj"
-      },
-      "name": "Tur2_p2",
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.550000011920929,
-          0.550000011920929,
-          0.550000011920929
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Cannonball/Cannonball.obj"
-      },
-      "name": "Tur2_p3",
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.550000011920929,
-          0.550000011920929,
-          0.550000011920929
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "deadly",
-            "type": "bool",
-            "value": true
-          },
-          {
-            "name": "hitScale",
-            "type": "float",
-            "value": 0.6
-          }
-        ],
-        "scriptPath": "scripts/Wall.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Needle_Small/Needle_Small.obj"
-      },
-      "name": "P2cN",
-      "transform": {
-        "position": [
-          27.850000381469727,
-          0.30000001192092896,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.600000023841858,
-          0.6000000238418579,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Frame/Gate_Frame.obj"
-      },
-      "name": "GateCFrame",
-      "transform": {
-        "position": [
-          35.5,
-          2.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.100000023841858,
-          4.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "openT",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "closeT",
-            "type": "float",
-            "value": 12.5
-          },
-          {
-            "name": "slideTime",
-            "type": "float",
-            "value": 0.7
-          },
-          {
-            "name": "listenButton",
-            "type": "bool",
-            "value": false
-          }
-        ],
-        "scriptPath": "scripts/TimedDoor.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Grill/Gate_Grill.obj"
-      },
-      "name": "GateC",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          35.5,
-          1.7999999523162842,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.75,
-          3.5999999046325684,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "crumbleT",
-            "type": "float",
-            "value": 1.6
-          }
-        ],
-        "scriptPath": "scripts/CrumblePlatform.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
-      },
-      "name": "CrA2",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          39.599998474121094,
-          0.20000000298023224,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.600000023841858,
-          0.44999998807907104,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "crumbleT",
-            "type": "float",
-            "value": 1.6
-          }
-        ],
-        "scriptPath": "scripts/CrumblePlatform.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
-      },
-      "name": "CrB2",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          41.5,
-          0.20000000298023224,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.600000023841858,
-          0.44999998807907104,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Frame/Gate_Frame.obj"
-      },
-      "name": "GateDFrame",
-      "transform": {
-        "position": [
-          45.0,
-          2.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.100000023841858,
-          4.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "openT",
-            "type": "float",
-            "value": 0.0
-          },
-          {
-            "name": "closeT",
-            "type": "float",
-            "value": 15.5
-          },
-          {
-            "name": "slideTime",
-            "type": "float",
-            "value": 0.7
-          },
-          {
-            "name": "listenButton",
-            "type": "bool",
-            "value": false
-          }
-        ],
-        "scriptPath": "scripts/TimedDoor.lua"
-      },
-      "material": {
-        "metallic": 0.05000000074505806,
-        "roughness": 0.6000000238418579
-      },
-      "meshRenderer": {
-        "modelPath": "models/Gate_Grill/Gate_Grill.obj"
-      },
-      "name": "GateD",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          45.0,
-          1.7999999523162842,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.75,
-          3.5999999046325684,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "offsetY",
-            "type": "float",
-            "value": 1.35
-          },
-          {
-            "name": "bob",
-            "type": "float",
-            "value": 0.12
-          }
-        ],
-        "scriptPath": "scripts/PlayerMarker.lua"
-      },
-      "name": "PlayerMarker",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          0.8500000238418579,
-          0.25,
-          0.8999999761581421
-        ],
-        "effectValue": 0.0,
-        "layer": 8,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/arrow_rgba.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          1.5,
-          2.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          -90.0
-        ],
-        "scale": [
-          0.6000000238418579,
-          0.30000001192092896,
-          1.0
-        ]
-      }
-    },
-    {
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "T",
-            "type": "float",
-            "value": 18.0
-          },
-          {
-            "name": "collapseAt",
-            "type": "float",
-            "value": 0.5
-          },
-          {
-            "name": "suckInAt",
-            "type": "float",
-            "value": 0.75
-          }
-        ],
-        "scriptPath": "scripts/BackgroundCollapse.lua"
-      },
-      "materialAssets": [
-        "materials/blue_floor_tiles_01.dxmat"
-      ],
-      "materialTextureOverrides": [
-        {
-          "albedo": "textures/needle_rgba.png"
-        }
-      ],
-      "name": "Backdrop",
-      "primitive": "box",
-      "shader": "shaders/BackdropCollapse.hlsl",
-      "transform": {
-        "position": [
-          26.0,
-          5.199999809265137,
-          7.0
-        ],
-        "rotation": [
-          0.0,
-          180.0,
-          0.0
-        ],
-        "scale": [
-          120.63999938964844,
-          62.91999816894531,
-          1.0
-        ]
-      }
-    },
-    {
-      "directionalLight": {
-        "ambient": 0.5,
-        "color": [
-          1.0,
-          0.9700000286102295,
-          0.8999999761581421
-        ],
-        "direction": [
-          -0.3499999940395355,
-          -1.0,
-          -0.30000001192092896
-        ],
-        "intensity": 1.149999976158142
-      },
-      "name": "Sun",
-      "transform": {
-        "position": [
-          26.0,
-          10.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "camera": {
-        "farClip": 1000.0,
-        "fovDegrees": 50.0,
-        "isActive": true,
-        "nearClip": 0.10000000149011612,
-        "orthoSize": 6.0,
-        "projection": 0
-      },
-      "luaScript": {
-        "enabled": true,
-        "props": [
-          {
-            "name": "dist",
-            "type": "float",
-            "value": 13.0
-          },
-          {
-            "name": "offsetY",
-            "type": "float",
-            "value": 5.3
-          },
-          {
-            "name": "minX",
-            "type": "float",
-            "value": 11.1
-          },
-          {
-            "name": "maxX",
-            "type": "float",
-            "value": 40.9
-          },
-          {
-            "name": "minY",
-            "type": "float",
-            "value": 5.85
-          },
-          {
-            "name": "smooth",
-            "type": "float",
-            "value": 6.0
-          },
-          {
-            "name": "fullX",
-            "type": "float",
-            "value": 26.0
-          },
-          {
-            "name": "fullY",
-            "type": "float",
-            "value": 26.24
-          },
-          {
-            "name": "fullZ",
-            "type": "float",
-            "value": -34.62
-          }
-        ],
-        "scriptPath": "scripts/CameraFollow.lua"
-      },
-      "name": "GameCamera",
-      "transform": {
-        "position": [
-          11.100000381469727,
-          5.849999904632568,
-          -13.0
-        ],
-        "rotation": [
-          14.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "gridPlane": {
-        "size": 500.0
-      },
-      "name": "Grid",
-      "primitive": "plane",
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "HudCanvas",
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiCanvas": {
-        "refHeight": 720.0,
-        "refWidth": 1280.0,
-        "scaleMode": 0,
-        "sortOrder": 0,
-        "visible": true
-      }
-    },
-    {
-      "name": "SeekBar",
-      "parent": 33,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiRect": {
-        "alpha": 1.0,
-        "anchorMax": [
-          1.0,
-          1.0
-        ],
-        "anchorMin": [
-          0.0,
-          1.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          0.0,
-          0.0
-        ],
-        "offsetMin": [
-          0.0,
-          -16.0
-        ],
-        "order": 0,
-        "pivot": [
-          0.5,
-          1.0
-        ],
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "skewX": 0.0,
-        "visible": true
-      },
-      "uiSlider": {
-        "fillColor": [
-          0.8999999761581421,
-          0.05999999865889549,
-          0.05999999865889549,
-          1.0
-        ],
-        "interactable": false,
-        "knobColor": [
-          1.0,
-          0.15000000596046448,
-          0.15000000596046448,
-          1.0
-        ],
-        "maxValue": 18.0,
-        "minValue": 0.0,
-        "onChangeEvent": "",
-        "step": 0.0,
-        "trackColor": [
-          1.0,
-          1.0,
-          1.0,
-          0.25
-        ],
-        "value": 0.0
-      }
-    },
-    {
-      "name": "ScreenFlash",
-      "parent": 33,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiImage": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          0.0
-        ],
-        "cornerRadius": 0.0,
-        "fillAmount": 1.0,
-        "fillDir": 0,
-        "fillOrigin": 0.0,
-        "gradientColor2": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "gradientDir": 0,
-        "gradientScrollSpeed": 0.0,
-        "outlineColor": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
-        ],
-        "outlineDash": 12.0,
-        "outlineStyle": 0,
-        "outlineWidth": 0.0,
-        "raycastBlock": false,
-        "ringThickness": 8.0,
-        "segmentColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.699999988079071
-        ],
-        "segmentGap": 3.0,
-        "segments": 0,
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shadowOffset": [
-          2.0,
-          2.0
-        ],
-        "shadowSoftness": 4.0,
-        "shape": 0,
-        "sliceBorder": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "texturePath": "",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "uvScroll": [
-          0.0,
-          0.0
-        ]
-      },
-      "uiRect": {
-        "alpha": 1.0,
-        "anchorMax": [
-          1.0,
-          1.0
-        ],
-        "anchorMin": [
-          0.0,
-          0.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          0.0,
-          0.0
-        ],
-        "offsetMin": [
-          0.0,
-          0.0
-        ],
-        "order": 3,
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "skewX": 0.0,
-        "visible": true
-      }
-    },
-    {
-      "name": "TimeBanner",
-      "parent": 33,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiRect": {
-        "alpha": 1.0,
-        "anchorMax": [
-          1.0,
-          0.0
-        ],
-        "anchorMin": [
-          0.0,
-          0.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          0.0,
-          120.0
-        ],
-        "offsetMin": [
-          0.0,
-          26.0
-        ],
-        "order": 2,
-        "pivot": [
-          0.5,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "skewX": 0.0,
-        "visible": true
-      },
-      "uiText": {
-        "alignH": 1,
-        "alignV": 1,
-        "charAnim": 0,
-        "charAnimAmount": 4.0,
-        "charAnimSpeed": 2.0,
-        "color": [
-          1.0,
-          0.8500000238418579,
-          0.30000001192092896,
-          1.0
-        ],
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "fontSize": 44.0,
-        "gradientColor2": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "gradientDir": 0,
-        "letterSpacing": 2.0,
-        "outlineColor": [
-          0.05000000074505806,
-          0.10000000149011612,
-          0.25,
-          1.0
-        ],
-        "outlineWidth": 2.0,
-        "rich": false,
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.6000000238418579
-        ],
-        "shadowOffset": [
-          2.0,
-          2.0
-        ],
-        "text": "18秒以内にゴールしろ！",
-        "typewriterSpeed": 0.0,
-        "wrap": false
-      }
-    },
-    {
-      "name": "TimeLeft",
-      "parent": 33,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiRect": {
-        "alpha": 1.0,
-        "anchorMax": [
-          1.0,
-          0.0
-        ],
-        "anchorMin": [
-          1.0,
-          0.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          -16.0,
-          80.0
-        ],
-        "offsetMin": [
-          -180.0,
-          26.0
-        ],
-        "order": 2,
-        "pivot": [
-          1.0,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "skewX": 0.0,
-        "visible": true
-      },
-      "uiText": {
-        "alignH": 1,
-        "alignV": 1,
-        "charAnim": 0,
-        "charAnimAmount": 4.0,
-        "charAnimSpeed": 2.0,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "fontSize": 34.0,
-        "gradientColor2": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "gradientDir": 0,
-        "letterSpacing": 2.0,
-        "outlineColor": [
-          0.05000000074505806,
-          0.10000000149011612,
-          0.25,
-          1.0
-        ],
-        "outlineWidth": 2.0,
-        "rich": false,
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.6000000238418579
-        ],
-        "shadowOffset": [
-          2.0,
-          2.0
-        ],
-        "text": "18.0",
-        "typewriterSpeed": 0.0,
-        "wrap": false
-      }
-    },
-    {
-      "name": "DrawAmount",
-      "parent": 33,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiRect": {
-        "alpha": 1.0,
-        "anchorMax": [
-          1.0,
-          0.0
-        ],
-        "anchorMin": [
-          0.0,
-          0.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          0.0,
-          200.0
-        ],
-        "offsetMin": [
-          0.0,
-          140.0
-        ],
-        "order": 2,
-        "pivot": [
-          0.5,
-          0.0
-        ],
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "skewX": 0.0,
-        "visible": true
-      },
-      "uiText": {
-        "alignH": 1,
-        "alignV": 1,
-        "charAnim": 0,
-        "charAnimAmount": 4.0,
-        "charAnimSpeed": 2.0,
-        "color": [
-          0.4000000059604645,
-          0.8999999761581421,
-          1.0,
-          1.0
-        ],
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "fontSize": 38.0,
-        "gradientColor2": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "gradientDir": 0,
-        "letterSpacing": 2.0,
-        "outlineColor": [
-          0.05000000074505806,
-          0.10000000149011612,
-          0.25,
-          1.0
-        ],
-        "outlineWidth": 2.0,
-        "rich": false,
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.6000000238418579
-        ],
-        "shadowOffset": [
-          2.0,
-          2.0
-        ],
-        "text": "",
-        "typewriterSpeed": 0.0,
-        "wrap": false
-      }
-    },
-    {
-      "name": "PlayerIdleSprite",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          0.0
-        ],
-        "effectValue": 0.0,
-        "layer": 6,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/player_rgba.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.9,
-          1.2,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "PlayerRunSprite",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          0.0
-        ],
-        "effectValue": 0.0,
-        "layer": 6,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/player_run.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.9,
-          1.2,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "PlayerJumpSprite",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          0.0
-        ],
-        "effectValue": 0.0,
-        "layer": 6,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/player_jump.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.9,
-          1.2,
-          1.0
-        ]
-      }
-    },
-    {
-      "name": "PlayerBowSprite",
-      "sprite2d": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "billboard": false,
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          0.0
-        ],
-        "effectValue": 0.0,
-        "layer": 6,
-        "scrollU": 0.0,
-        "scrollV": 0.0,
-        "shaderAlphaBlend": false,
-        "shaderParams": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "shaderPath": "",
-        "size": [
-          1.0,
-          1.0
-        ],
-        "texturePath": "textures/player_bow.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "worldSpace": true
-      },
-      "transform": {
-        "position": [
-          0.0,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          0.9,
-          1.2,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.1,
-        "roughness": 0.85
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Dust/Hammer_Dust.obj"
-      },
-      "name": "Ham2_m4",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.2000000476837158,
-          1.2000000476837158,
-          1.0
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-      },
-      "name": "Ham2_f1",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
-      },
-      "name": "Ham2_f2",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-      },
-      "name": "Ham2_f3",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
-      },
-      "name": "Ham2_f4",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-      },
-      "name": "Ham2_f5",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
-      },
-      "name": "Ham2_f6",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-      },
-      "name": "Ham2_f7",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
-      },
-      "name": "Ham2_f8",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-      },
-      "name": "Ham2_f9",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
-      },
-      "name": "Ham2_f10",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-      },
-      "name": "Ham2_f11",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.15,
-        "roughness": 0.8
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Splinter/Hammer_Splinter.obj"
-      },
-      "name": "Ham2_f12",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.3,
-        "roughness": 0.25
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-      },
-      "name": "Ham2_t1",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.3,
-        "roughness": 0.25
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-      },
-      "name": "Ham2_t2",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.3,
-        "roughness": 0.25
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-      },
-      "name": "Ham2_t3",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.3,
-        "roughness": 0.25
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-      },
-      "name": "Ham2_t4",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.3,
-        "roughness": 0.25
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-      },
-      "name": "Ham2_t5",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    },
-    {
-      "material": {
-        "metallic": 0.3,
-        "roughness": 0.25
-      },
-      "meshRenderer": {
-        "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-      },
-      "name": "Ham2_t6",
-      "shader": "shaders/TimeWarp.hlsl",
-      "transform": {
-        "position": [
-          9.596307754516602,
-          -100.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.5,
-          1.5,
-          1.5
-        ]
-      }
-    }
+ "postProcess": {
+  "aeEvComp": 0.0,
+  "aeLogMax": 4.0,
+  "aeLogMin": -8.0,
+  "aeSpeed": 2.0,
+  "autoExposureOn": false,
+  "bloom": 0.5,
+  "bloomKnee": 0.5,
+  "bloomOn": false,
+  "bloomRadius": 0.6499999761581421,
+  "bloomThreshold": 0.75,
+  "brightness": 0.0,
+  "brightnessOn": false,
+  "chromatic": 0.5,
+  "chromaticOn": false,
+  "contrast": 1.0,
+  "contrastOn": false,
+  "debandOn": true,
+  "ditherLevels": 4,
+  "ditherOn": false,
+  "dofBlurSize": 12.0,
+  "dofFocusDist": 8.0,
+  "dofFocusRange": 5.0,
+  "dofOn": false,
+  "enabled": true,
+  "exposure": 1.0,
+  "exposureOn": false,
+  "fxaaOn": false,
+  "glitch": 0.30000001192092896,
+  "glitchOn": false,
+  "godraysOn": false,
+  "grDecay": 0.9599999785423279,
+  "grDensity": 0.8999999761581421,
+  "grIntensity": 0.6000000238418579,
+  "grain": 0.30000001192092896,
+  "grainOn": false,
+  "grayscale": 1.0,
+  "grayscaleOn": false,
+  "hueOn": false,
+  "hueShift": 0.0,
+  "invert": 1.0,
+  "invertOn": false,
+  "lens": 0.30000001192092896,
+  "lensOn": false,
+  "lensflareOn": false,
+  "lfChroma": 0.009999999776482582,
+  "lfDispersal": 0.3499999940395355,
+  "lfGhosts": 4,
+  "lfHalo": 0.44999998807907104,
+  "lfIntensity": 0.5,
+  "lutAmount": 1.0,
+  "lutOn": false,
+  "lutPath": "",
+  "mbSamples": 10,
+  "mbStrength": 0.5,
+  "motionBlurOn": false,
+  "outline": 1.0,
+  "outlineColor": [
+   0.0,
+   0.0,
+   0.0
   ],
-  "postProcess": {
-    "aeEvComp": 0.0,
-    "aeLogMax": 4.0,
-    "aeLogMin": -8.0,
-    "aeSpeed": 2.0,
-    "autoExposureOn": false,
-    "bloom": 0.5,
-    "bloomKnee": 0.5,
-    "bloomOn": false,
-    "bloomRadius": 0.6499999761581421,
-    "bloomThreshold": 0.75,
-    "brightness": 0.0,
-    "brightnessOn": false,
-    "chromatic": 0.5,
-    "chromaticOn": false,
-    "contrast": 1.0,
-    "contrastOn": false,
-    "debandOn": true,
-    "ditherLevels": 4,
-    "ditherOn": false,
-    "dofBlurSize": 12.0,
-    "dofFocusDist": 8.0,
-    "dofFocusRange": 5.0,
-    "dofOn": false,
+  "outlineOn": false,
+  "pixelSize": 8.0,
+  "pixelizeOn": false,
+  "posterize": 6,
+  "posterizeOn": false,
+  "radial": 0.30000001192092896,
+  "radialOn": false,
+  "saturation": 1.0,
+  "saturationOn": false,
+  "scanline": 0.5,
+  "scanlineOn": false,
+  "sepia": 1.0,
+  "sepiaOn": false,
+  "sharpen": 0.5,
+  "sharpenOn": false,
+  "tint": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "tintOn": false,
+  "tonemapper": 0,
+  "vignette": 0.5,
+  "vignetteOn": false,
+  "warmth": 0.0,
+  "warmthOn": false,
+  "waveAmp": 0.009999999776482582,
+  "waveFreq": 12.0,
+  "waveOn": false,
+  "waveSpeed": 2.0
+ },
+ "shadows": true,
+ "skybox": {
+  "drawSkybox": true,
+  "envMapPath": "",
+  "iblIntensity": 1.0,
+  "skyboxIntensity": 1.0
+ },
+ "ssao": {
+  "bias": 0.02500000037252903,
+  "blur": true,
+  "enabled": false,
+  "intensity": 1.0,
+  "power": 1.5,
+  "radius": 0.5,
+  "sampleCount": 16
+ },
+ "version": 1,
+ "entities": [
+  {
+   "luaScript": {
     "enabled": true,
-    "exposure": 1.0,
-    "exposureOn": false,
-    "fxaaOn": false,
-    "glitch": 0.30000001192092896,
-    "glitchOn": false,
-    "godraysOn": false,
-    "grDecay": 0.9599999785423279,
-    "grDensity": 0.8999999761581421,
-    "grIntensity": 0.6000000238418579,
-    "grain": 0.30000001192092896,
-    "grainOn": false,
-    "grayscale": 1.0,
-    "grayscaleOn": false,
-    "hueOn": false,
-    "hueShift": 0.0,
-    "invert": 1.0,
-    "invertOn": false,
-    "lens": 0.30000001192092896,
-    "lensOn": false,
-    "lensflareOn": false,
-    "lfChroma": 0.009999999776482582,
-    "lfDispersal": 0.3499999940395355,
-    "lfGhosts": 4,
-    "lfHalo": 0.44999998807907104,
-    "lfIntensity": 0.5,
-    "lutAmount": 1.0,
-    "lutOn": false,
-    "lutPath": "",
-    "mbSamples": 10,
-    "mbStrength": 0.5,
-    "motionBlurOn": false,
-    "outline": 1.0,
+    "props": [
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     },
+     {
+      "name": "scenePath",
+      "type": "string",
+      "value": "scenes/stage2.json"
+     },
+     {
+      "name": "title",
+      "type": "string",
+      "value": "STAGE 2"
+     },
+     {
+      "name": "markers",
+      "type": "string",
+      "value": ""
+     }
+    ],
+    "scriptPath": "scripts/GameManager.lua"
+   },
+   "name": "GameManager",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "speed",
+      "type": "float",
+      "value": 5.0
+     },
+     {
+      "name": "jumpSpeed",
+      "type": "float",
+      "value": 12.4
+     },
+     {
+      "name": "gravity",
+      "type": "float",
+      "value": 40.0
+     },
+     {
+      "name": "killY",
+      "type": "float",
+      "value": -4.0
+     },
+     {
+      "name": "halfW",
+      "type": "float",
+      "value": 0.34
+     },
+     {
+      "name": "halfHeight",
+      "type": "float",
+      "value": 0.55
+     },
+     {
+      "name": "arrowSpeed",
+      "type": "float",
+      "value": 15.0
+     },
+     {
+      "name": "arrowRange",
+      "type": "float",
+      "value": 18.0
+     },
+     {
+      "name": "arrowHalf",
+      "type": "float",
+      "value": 0.1
+     },
+     {
+      "name": "minSkip",
+      "type": "float",
+      "value": 2.0
+     },
+     {
+      "name": "maxSkip",
+      "type": "float",
+      "value": 10.0
+     },
+     {
+      "name": "maxDrawTime",
+      "type": "float",
+      "value": 3.0
+     },
+     {
+      "name": "aimTurnSpeed",
+      "type": "float",
+      "value": 220.0
+     },
+     {
+      "name": "climbSpeed",
+      "type": "float",
+      "value": 4.0
+     },
+     {
+      "name": "targets",
+      "type": "string",
+      "value": "GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2,P2aN,P2cN"
+     },
+     {
+      "name": "standables",
+      "type": "string",
+      "value": "CrA2,CrB2"
+     },
+     {
+      "name": "climbables",
+      "type": "string",
+      "value": ""
+     },
+     {
+      "name": "arrowStops",
+      "type": "string",
+      "value": "F2a,F2b"
+     },
+     {
+      "name": "solids",
+      "type": "string",
+      "value": "F2a,F2b,GateA,GateB,GateC,GateD"
+     },
+     {
+      "name": "mirrors",
+      "type": "string",
+      "value": ""
+     },
+     {
+      "name": "maxBounces",
+      "type": "int",
+      "value": 4
+     },
+     {
+      "name": "rewindShots",
+      "type": "int",
+      "value": 5
+     }
+    ],
+    "scriptPath": "scripts/Player.lua"
+   },
+   "name": "Player",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.8,
+     0.55,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "Arrow",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 7,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.8999999761581421,
+     0.27000001072883606,
+     1.0
+    ]
+   }
+  },
+  {
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "radius",
+      "type": "float",
+      "value": 1.2
+     },
+     {
+      "name": "next",
+      "type": "string",
+      "value": "scenes/stage3.json"
+     }
+    ],
+    "scriptPath": "scripts/Exit.lua"
+   },
+   "name": "Exit",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 5,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/exit_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     49.5,
+     0.65,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2999999523162842,
+     1.2999999523162842,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.5
+   },
+   "meshRenderer": {
+    "modelPath": "models/Goal_Gate/Goal_Gate.obj"
+   },
+   "name": "GoalGate",
+   "transform": {
+    "position": [
+     49.5,
+     0.5,
+     0.8
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.100000023841858,
+     1.100000023841858,
+     1.100000023841858
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "F2a",
+   "transform": {
+    "position": [
+     19.25,
+     -0.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     38.5,
+     1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "F2b",
+   "transform": {
+    "position": [
+     47.25,
+     -0.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     9.5,
+     1.0,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P2aN",
+   "transform": {
+    "position": [
+     5.85,
+     0.3,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.6
+     }
+    ],
+    "scriptPath": "scripts/StandNeedle.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P2bN",
+   "transform": {
+    "position": [
+     10.85,
+     0.3,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.6
+     }
+    ],
+    "scriptPath": "scripts/StandNeedle.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateAFrame",
+   "transform": {
+    "position": [
+     14.6,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateA",
+   "transform": {
+    "position": [
+     14.6,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 2.8
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
+   },
+   "name": "Ham2",
+   "transform": {
+    "position": [
+     17.6,
+     3.5,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 3.0
+     },
+     {
+      "name": "maxAngle",
+      "type": "float",
+      "value": 50.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "decayT",
+      "type": "float",
+      "value": 25.0
+     },
+     {
+      "name": "hitHalf",
+      "type": "float",
+      "value": 0.42
+     }
+    ],
+    "scriptPath": "scripts/HammerSwing.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
+   },
+   "name": "Ham2_m2",
+   "transform": {
+    "position": [
+     17.6,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
+   },
+   "name": "Ham2_m3",
+   "transform": {
+    "position": [
+     17.6,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "Ham2X",
+   "transform": {
+    "position": [
+     17.6,
+     1.94,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.64,
+     3.48,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateBFrame",
+   "transform": {
+    "position": [
+     24.0,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateB",
+   "transform": {
+    "position": [
+     24.0,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 8.6
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Turret/Turret.obj"
+   },
+   "name": "Tur2",
+   "transform": {
+    "position": [
+     33.0,
+     1.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "period",
+      "type": "float",
+      "value": 2.6
+     },
+     {
+      "name": "shotSpeed",
+      "type": "float",
+      "value": 6.0
+     },
+     {
+      "name": "range",
+      "type": "float",
+      "value": 11.0
+     },
+     {
+      "name": "startPhase",
+      "type": "float",
+      "value": 0.0
+     }
+    ],
+    "scriptPath": "scripts/Turret.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
+   "name": "Tur2_p1",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.55,
+     0.55,
+     0.55
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
+   "name": "Tur2_p2",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.55,
+     0.55,
+     0.55
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Cannonball/Cannonball.obj"
+   },
+   "name": "Tur2_p3",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.55,
+     0.55,
+     0.55
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "P2cN",
+   "transform": {
+    "position": [
+     27.85,
+     0.3,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.6
+     }
+    ],
+    "scriptPath": "scripts/StandNeedle.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateCFrame",
+   "transform": {
+    "position": [
+     35.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateC",
+   "transform": {
+    "position": [
+     35.5,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 12.5
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
+   },
+   "name": "CrA2",
+   "transform": {
+    "position": [
+     39.6,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.45,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "crumbleT",
+      "type": "float",
+      "value": 1.6
+     }
+    ],
+    "scriptPath": "scripts/CrumblePlatform.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
+   },
+   "name": "CrB2",
+   "transform": {
+    "position": [
+     41.5,
+     0.2,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.6,
+     0.45,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "crumbleT",
+      "type": "float",
+      "value": 1.6
+     }
+    ],
+    "scriptPath": "scripts/CrumblePlatform.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
+   },
+   "name": "GateDFrame",
+   "transform": {
+    "position": [
+     45.0,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "GateD",
+   "transform": {
+    "position": [
+     45.0,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 15.5
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "PlayerMarker",
+   "transform": {
+    "position": [
+     1.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.6,
+     0.3,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     0.85,
+     0.25,
+     0.9
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.35
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.12
+     }
+    ],
+    "scriptPath": "scripts/PlayerMarker.lua"
+   }
+  },
+  {
+   "name": "Backdrop",
+   "primitive": "box",
+   "shader": "shaders/BackdropSky.hlsl",
+   "materialTextureOverrides": [
+    {
+     "albedo": "textures/bg_sky2.png"
+    }
+   ],
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 0.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "transform": {
+    "position": [
+     26.0,
+     4.9,
+     30.0
+    ],
+    "rotation": [
+     0.0,
+     180.0,
+     0.0
+    ],
+    "scale": [
+     130.3,
+     80.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Ridge_Ruins/BG_Ridge_Ruins.obj"
+   },
+   "name": "BackdropRidge1",
+   "transform": {
+    "position": [
+     8.02,
+     1.3,
+     9.5
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     32.03302748636007,
+     32.03302748636007,
+     32.03302748636007
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     },
+     {
+      "name": "collapseAt",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "suckInAt",
+      "type": "float",
+      "value": 0.75
+     }
+    ],
+    "scriptPath": "scripts/BackgroundCollapse.lua"
+   },
+   "shader": "shaders/BackdropRidge.hlsl",
+   "color": [
+    0.82,
+    1.0,
+    0.9
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Ridge_Gears/BG_Ridge_Gears.obj"
+   },
+   "name": "BackdropRidge2",
+   "transform": {
+    "position": [
+     34.52,
+     1.82,
+     10.4
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     31.111135455824424,
+     31.111135455824424,
+     31.111135455824424
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     },
+     {
+      "name": "collapseAt",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "suckInAt",
+      "type": "float",
+      "value": 1.5
+     }
+    ],
+    "scriptPath": "scripts/BackgroundCollapse.lua"
+   },
+   "shader": "shaders/BackdropRidge.hlsl",
+   "color": [
+    0.82,
+    1.0,
+    0.9
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Ridge_Ruins/BG_Ridge_Ruins.obj"
+   },
+   "name": "BackdropRidge3",
+   "transform": {
+    "position": [
+     64.34,
+     1.43,
+     9.5
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     33.18653885874157,
+     33.18653885874157,
+     33.18653885874157
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     },
+     {
+      "name": "collapseAt",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "suckInAt",
+      "type": "float",
+      "value": 1.5
+     }
+    ],
+    "scriptPath": "scripts/BackgroundCollapse.lua"
+   },
+   "shader": "shaders/BackdropRidge.hlsl",
+   "color": [
+    0.82,
+    1.0,
+    0.9
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_ClockRuin/BG_ClockRuin.obj"
+   },
+   "name": "BG_Clock",
+   "transform": {
+    "position": [
+     26.28,
+     8.24,
+     6.2
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -7.8
+    ],
+    "scale": [
+     13.0,
+     13.0,
+     13.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 1.04
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Gear/BG_Gear.obj"
+   },
+   "name": "BG_GearL",
+   "transform": {
+    "position": [
+     5.15,
+     -1.25,
+     5.8
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     7.742243663864748,
+     7.742243663864748,
+     7.742243663864748
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 12.24
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 3.48
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Gear/BG_Gear.obj"
+   },
+   "name": "BG_GearR",
+   "transform": {
+    "position": [
+     45.39,
+     -1.44,
+     6.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     6.577096090321998,
+     6.577096090321998,
+     6.577096090321998
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -12.53
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 4.52
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Hourglass/BG_Hourglass.obj"
+   },
+   "name": "BG_Hourglass1",
+   "transform": {
+    "position": [
+     39.55,
+     1.87,
+     4.4
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -2.0
+    ],
+    "scale": [
+     5.146965965490429,
+     5.146965965490429,
+     5.146965965490429
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 3.73
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Arch/BG_Arch.obj"
+   },
+   "name": "BG_Arch1",
+   "transform": {
+    "position": [
+     17.41,
+     1.29,
+     4.2
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -0.9
+    ],
+    "scale": [
+     4.383190296131909,
+     4.383190296131909,
+     4.383190296131909
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 7.2
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Isle/BG_Isle.obj"
+   },
+   "name": "BG_Isle1",
+   "transform": {
+    "position": [
+     16.99,
+     8.27,
+     4.71
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     4.8
+    ],
+    "scale": [
+     3.0101049864013407,
+     3.0101049864013407,
+     3.0101049864013407
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.4
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 11.03
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 0.81
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Isle/BG_Isle.obj"
+   },
+   "name": "BG_Isle2",
+   "transform": {
+    "position": [
+     41.5,
+     8.61,
+     4.72
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -1.3
+    ],
+    "scale": [
+     2.7477746608743314,
+     2.7477746608743314,
+     2.7477746608743314
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.46
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 10.08
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 7.63
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Gear/BG_Gear.obj"
+   },
+   "name": "BG_GearN1",
+   "transform": {
+    "position": [
+     2.08,
+     0.13,
+     3.4
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     2.2481665778279316,
+     2.2481665778279316,
+     2.2481665778279316
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 28.59
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 6.38
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Gear/BG_Gear.obj"
+   },
+   "name": "BG_GearN2",
+   "transform": {
+    "position": [
+     50.44,
+     1.88,
+     3.5
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.4504084069925411,
+     1.4504084069925411,
+     1.4504084069925411
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -31.98
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 3.86
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 18.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.83,
+    0.95
+   ]
+  },
+  {
+   "directionalLight": {
+    "ambient": 0.5,
+    "color": [
+     1.0,
+     0.9700000286102295,
+     0.8999999761581421
+    ],
+    "direction": [
+     -0.3499999940395355,
+     -1.0,
+     -0.30000001192092896
+    ],
+    "intensity": 1.149999976158142
+   },
+   "name": "Sun",
+   "transform": {
+    "position": [
+     26.0,
+     10.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "camera": {
+    "farClip": 1000.0,
+    "fovDegrees": 50.0,
+    "isActive": true,
+    "nearClip": 0.10000000149011612,
+    "orthoSize": 6.0,
+    "projection": 0
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "dist",
+      "type": "float",
+      "value": 13.0
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 5.3
+     },
+     {
+      "name": "minX",
+      "type": "float",
+      "value": 11.1
+     },
+     {
+      "name": "maxX",
+      "type": "float",
+      "value": 40.9
+     },
+     {
+      "name": "minY",
+      "type": "float",
+      "value": 5.85
+     },
+     {
+      "name": "smooth",
+      "type": "float",
+      "value": 6.0
+     },
+     {
+      "name": "fullX",
+      "type": "float",
+      "value": 26.0
+     },
+     {
+      "name": "fullY",
+      "type": "float",
+      "value": 26.24
+     },
+     {
+      "name": "fullZ",
+      "type": "float",
+      "value": -34.62
+     }
+    ],
+    "scriptPath": "scripts/CameraFollow.lua"
+   },
+   "name": "GameCamera",
+   "transform": {
+    "position": [
+     11.1,
+     5.85,
+     -13.0
+    ],
+    "rotation": [
+     14.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "gridPlane": {
+    "size": 500.0
+   },
+   "name": "Grid",
+   "primitive": "plane",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "HudCanvas",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiCanvas": {
+    "refHeight": 720.0,
+    "refWidth": 1280.0,
+    "scaleMode": 0,
+    "sortOrder": 0,
+    "visible": true
+   }
+  },
+  {
+   "name": "SeekBar",
+   "parent": 45,
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "alpha": 1.0,
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "anchorMin": [
+     0.0,
+     1.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "offsetMin": [
+     0.0,
+     -16.0
+    ],
+    "order": 0,
+    "pivot": [
+     0.5,
+     1.0
+    ],
+    "rotation": 0.0,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiSlider": {
+    "fillColor": [
+     0.8999999761581421,
+     0.05999999865889549,
+     0.05999999865889549,
+     1.0
+    ],
+    "interactable": false,
+    "knobColor": [
+     1.0,
+     0.15000000596046448,
+     0.15000000596046448,
+     1.0
+    ],
+    "maxValue": 18.0,
+    "minValue": 0.0,
+    "onChangeEvent": "",
+    "step": 0.0,
+    "trackColor": [
+     1.0,
+     1.0,
+     1.0,
+     0.25
+    ],
+    "value": 0.0
+   }
+  },
+  {
+   "name": "ScreenFlash",
+   "parent": 45,
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiImage": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "fillAmount": 1.0,
+    "fillDir": 0,
+    "fillOrigin": 0.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "gradientScrollSpeed": 0.0,
     "outlineColor": [
-      0.0,
-      0.0,
-      0.0
+     0.0,
+     0.0,
+     0.0,
+     1.0
     ],
-    "outlineOn": false,
-    "pixelSize": 8.0,
-    "pixelizeOn": false,
-    "posterize": 6,
-    "posterizeOn": false,
-    "radial": 0.30000001192092896,
-    "radialOn": false,
-    "saturation": 1.0,
-    "saturationOn": false,
-    "scanline": 0.5,
-    "scanlineOn": false,
-    "sepia": 1.0,
-    "sepiaOn": false,
-    "sharpen": 0.5,
-    "sharpenOn": false,
-    "tint": [
-      1.0,
-      1.0,
-      1.0
+    "outlineDash": 12.0,
+    "outlineStyle": 0,
+    "outlineWidth": 0.0,
+    "raycastBlock": false,
+    "ringThickness": 8.0,
+    "segmentColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.699999988079071
     ],
-    "tintOn": false,
-    "tonemapper": 0,
-    "vignette": 0.5,
-    "vignetteOn": false,
-    "warmth": 0.0,
-    "warmthOn": false,
-    "waveAmp": 0.009999999776482582,
-    "waveFreq": 12.0,
-    "waveOn": false,
-    "waveSpeed": 2.0
+    "segmentGap": 3.0,
+    "segments": 0,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "shadowSoftness": 4.0,
+    "shape": 0,
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "texturePath": "",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvScroll": [
+     0.0,
+     0.0
+    ]
+   },
+   "uiRect": {
+    "alpha": 1.0,
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "order": 3,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "scaleX": 1.0,
+    "scaleY": 1.0,
+    "skewX": 0.0,
+    "visible": true
+   }
   },
-  "shadows": true,
-  "skybox": {
-    "drawSkybox": true,
-    "envMapPath": "",
-    "iblIntensity": 1.0,
-    "skyboxIntensity": 1.0
+  {
+   "name": "TimeBanner",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     120.0
+    ],
+    "offsetMin": [
+     0.0,
+     26.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     1.0,
+     0.85,
+     0.3,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 44.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.1,
+     0.25,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "18秒以内にゴールしろ！",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 45
   },
-  "ssao": {
-    "bias": 0.02500000037252903,
-    "blur": true,
-    "enabled": false,
-    "intensity": 1.0,
-    "power": 1.5,
-    "radius": 0.5,
-    "sampleCount": 16
+  {
+   "name": "TimeLeft",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     1.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     -16.0,
+     80.0
+    ],
+    "offsetMin": [
+     -180.0,
+     26.0
+    ],
+    "order": 2,
+    "pivot": [
+     1.0,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 34.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.1,
+     0.25,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "18.0",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 45
   },
-  "version": 1
+  {
+   "name": "DrawAmount",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     200.0
+    ],
+    "offsetMin": [
+     0.0,
+     140.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     0.4,
+     0.9,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 38.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.1,
+     0.25,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 45
+  },
+  {
+   "name": "RewindCount",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     300.0,
+     78.0
+    ],
+    "offsetMin": [
+     16.0,
+     26.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.0,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     0.75,
+     0.55,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 26.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.1,
+     0.25,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "まき戻し ×0",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 45
+  }
+ ]
 }

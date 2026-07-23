@@ -15,13 +15,13 @@ K = {
     "s1": dict(limit=16.0, rw=1, rise1=12.0, rise2=9.0),
 
     # S2「四枚の閉門回廊」スラム(RW)とスプリント(急げば間に合う)の混合
-    "s2": dict(limit=18.0, rw=3, closeA=2.8, closeB=8.6, closeC=12.5, closeD=15.5),
+    "s2": dict(limit=18.0, rw=5, closeA=2.8, closeB=8.6, closeC=12.5, closeD=15.5),
 
     # S3「風の谷」橋(FF)+ファンサージ(FF)+崩れ足場+閉門1枚(RW)
-    "s3": dict(limit=33.0, rw=2, rise3=24.0, closeZ=14.0),
+    "s3": dict(limit=33.0, rw=3, rise3=24.0, closeZ=14.0),
 
     # S4「昇降の工房」スラム(RW)+刃ピット+ハンマー+フェリー+昇降足場+錠(種まき)
-    "s4": dict(limit=44.0, rw=2, slamA=2.55, ferryP=7.0,
+    "s4": dict(limit=44.0, rw=4, slamA=2.55, ferryP=7.0,
                elevP=6.0, elevPh=0.0, lockZ=40.0),
 
     # S5「時の昇降機・改」リフト+大玉チェイス+ツタ+フェリー+最上層
@@ -29,14 +29,14 @@ K = {
                lockD=30.0, vineGrow=33.0, ferryP=6.0, lockZ=52.0),
 
     # S6「導火線と気流」逆橋(RW)+爆弾2+ファンサージ+錆びた動く壁+終錠
-    "s6": dict(limit=70.0, rw=2, rev6=3.0, boom1=20.0, boom2=40.0,
-               cwStart=6.0, lockZ=42.0),
+    "s6": dict(limit=46.0, rw=2, rev6=3.0, boom1=5.0, boom2=5.0,
+               cwStart=6.0, lockZ=34.0),
 
     # S7「時計塔大回廊」ボタン+2リズムの刃+ツタ+最上層
     "s7": dict(limit=100.0, rw=4, rev7=2.6, lockD=30.0, sawP1=4.0, sawP2=3.0,
                vineGrow=40.0, sawP3=5.0, lockZ=68.0),
 
     # S8「時計職人の卒業試験」門は2枚だけ。習った道具の総ざらい5フェーズ
-    "s8": dict(limit=86.0, rw=4, slamA=2.4, boomB=18.0, boomF=19.0, lockE=34.0,
+    "s8": dict(limit=72.0, rw=4, slamA=2.4, boomB=5.0, boomF=5.0, lockE=34.0,
                rev8=3.0, ferryP=7.0, lift=58.0),
 }

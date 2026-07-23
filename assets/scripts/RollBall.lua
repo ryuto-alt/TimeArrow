@@ -35,7 +35,7 @@ function OnStart(self)
     if data.target ~= self.name then return end
     -- 一括加算せず早送り(0.5秒で消化)して、転がって飛んでいく様子が見えるようにする
     self.ffRemain = self.ffRemain + data.amount
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- ゆっくり消化(サージが速すぎて避けられない問題への全体調整)
     FX.spark(self.transform.position.x, self.by, self.bz, 12, 0.85, 0.7, 0.55)
     FX.shockwave(self.transform.position.x, self.by, self.bz, 12, 7, 0.3, 0.9, 1.0)
   end)
