@@ -1,6 +1,7 @@
 -- StageSelect.lua -- ステージセレクト画面。選択中のカードが縮んで消え、次のカードが逆側から
 -- 拡がって出てくるカルーセル演出(仕様書のステージセレクトスケッチを再現)。
 local STAGES = {
+  { path = "scenes/stage0.json", name = "TUTORIAL" },
   { path = "scenes/stage1.json", name = "STAGE 1" },
   { path = "scenes/stage2.json", name = "STAGE 2" },
   { path = "scenes/stage3.json", name = "STAGE 3" },

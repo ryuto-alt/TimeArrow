@@ -314,6 +314,96 @@ def ui_text(name, text, size, color, outline, rect):
                        "wrap": False}}
 
 
+def ui_image(name, tex, rect, color=(1.0, 1.0, 1.0, 1.0), slice_px=0.0, order=1):
+    return {"name": name, "transform": transform(0, 0, 1, 1),
+            "uiRect": {"anchorMax": rect["aMax"], "anchorMin": rect["aMin"],
+                       "clipChildren": False, "offsetMax": rect["oMax"], "offsetMin": rect["oMin"],
+                       "order": order, "pivot": rect.get("pivot", [0.5, 0.5]),
+                       "rotation": 0.0, "skewX": 0.0, "visible": True},
+            "uiImage": {"texturePath": tex, "color": list(map(float, color)),
+                        "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0],
+                        "sliceBorder": [float(slice_px)] * 4, "cornerRadius": 0.0,
+                        "raycastBlock": False, "fillAmount": 1.0, "fillDir": 0}}
+
+
+def tut_hud():
+    """stage0専用チュートリアルHUD。下部パネル(TutPanel)に子要素をぶら下げる
+    (親のtweenUi dy/alphaが子へ効く=パネルごと出入りできる)。中身の文言/表示制御は
+    scripts/Tutorial.lua が行う。parentName キーは build() が親indexへ解決する。"""
+    def child(e, parent="TutPanel"):
+        e["parentName"] = parent
+        return e
+
+    panel = ui_image("TutPanel", "textures/ui_tut_panel_rgba.png",
+                     {"aMin": [0.5, 1.0], "aMax": [0.5, 1.0], "pivot": [0.5, 1.0],
+                      "oMin": [-330.0, -196.0], "oMax": [330.0, -16.0]},
+                     color=(1.0, 1.0, 1.0, 0.96), slice_px=60.0)
+
+    # タイトルは左寄せ(パネル上辺中央の砂時計エンブレムと重ならない位置)
+    title = ui_text("TutStepTitle", "", 24, [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
+                    {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                     "oMin": [96.0, 16.0], "oMax": [-96.0, 48.0]})
+    title["uiText"]["alignH"] = 0
+    body = ui_text("TutStepText", "", 26, [1.0, 1.0, 1.0, 1.0], [0.02, 0.05, 0.15, 1.0],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                    "oMin": [24.0, 48.0], "oMax": [-24.0, 84.0]})
+    body["uiText"]["rich"] = True
+    body["uiText"]["typewriterSpeed"] = 30.0
+    sub = ui_text("TutStepSub", "", 18, [0.72, 0.8, 0.98, 1.0], [0.02, 0.05, 0.15, 1.0],
+                  {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                   "oMin": [24.0, 86.0], "oMax": [-24.0, 112.0]})
+    sub["uiText"]["rich"] = True
+    dots = ui_text("TutDots", "", 16, [1.0, 1.0, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                    "oMin": [0.0, -28.0], "oMax": [0.0, -4.0]})
+    dots["uiText"]["rich"] = True
+
+    cap1 = ui_image("TutKeyCap1", "textures/ui_tut_keycap_rgba.png",
+                    {"aMin": [0.5, 0.0], "aMax": [0.5, 0.0],
+                     "oMin": [-56.0, 110.0], "oMax": [-10.0, 156.0]}, order=2)
+    cap2 = ui_image("TutKeyCap2", "textures/ui_tut_keycap_rgba.png",
+                    {"aMin": [0.5, 0.0], "aMax": [0.5, 0.0],
+                     "oMin": [10.0, 110.0], "oMax": [56.0, 156.0]}, order=2)
+    wide = ui_image("TutKeyWide", "textures/ui_tut_keycap_rgba.png",
+                    {"aMin": [0.5, 0.0], "aMax": [0.5, 0.0],
+                     "oMin": [-80.0, 110.0], "oMax": [80.0, 156.0]}, order=2)
+    lbl1 = ui_text("TutKeyLbl1", "", 22, [0.85, 0.95, 1.0, 1.0], [0.0, 0.0, 0.0, 0.8],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0],
+                    "oMin": [0.0, -2.0], "oMax": [0.0, -2.0]})
+    lbl2 = ui_text("TutKeyLbl2", "", 22, [0.85, 0.95, 1.0, 1.0], [0.0, 0.0, 0.0, 0.8],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0],
+                    "oMin": [0.0, -2.0], "oMax": [0.0, -2.0]})
+    lblw = ui_text("TutKeyLblW", "SPACE", 17, [0.85, 0.95, 1.0, 1.0], [0.0, 0.0, 0.0, 0.8],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0],
+                    "oMin": [0.0, -2.0], "oMax": [0.0, -2.0]})
+
+    icon_ff = ui_image("TutIconFF", "textures/ui_tut_ff_rgba.png",
+                       {"aMin": [0.0, 0.5], "aMax": [0.0, 0.5],
+                        "oMin": [20.0, -30.0], "oMax": [80.0, 30.0]}, order=2)
+    icon_rw = ui_image("TutIconRW", "textures/ui_tut_rw_rgba.png",
+                       {"aMin": [0.0, 0.5], "aMax": [0.0, 0.5],
+                        "oMin": [20.0, -30.0], "oMax": [80.0, 30.0]}, order=2)
+    check = ui_image("TutCheck", "textures/ui_tut_check_rgba.png",
+                     {"aMin": [1.0, 0.5], "aMax": [1.0, 0.5],
+                      "oMin": [-86.0, -32.0], "oMax": [-18.0, 27.0]}, order=3)
+
+    burst = ui_text("TutBurst", "", 46, [1.0, 0.85, 0.3, 1.0], [0.05, 0.08, 0.2, 1.0],
+                    {"aMin": [0.0, 0.30], "aMax": [1.0, 0.30], "pivot": [0.5, 0.5],
+                     "oMin": [0.0, -50.0], "oMax": [0.0, 50.0]})
+    burst["uiText"]["rich"] = True
+    burst["uiText"]["charAnim"] = 1          # ウェーブ
+    burst["uiText"]["charAnimAmount"] = 3.0
+    burst["uiText"]["charAnimSpeed"] = 2.5
+    burst["uiText"]["outlineWidth"] = 3.0
+
+    return [panel,
+            child(title), child(body), child(sub), child(dots),
+            child(cap1), child(cap2), child(wide),
+            child(lbl1, "TutKeyCap1"), child(lbl2, "TutKeyCap2"), child(lblw, "TutKeyWide"),
+            child(icon_ff), child(icon_rw), child(check),
+            burst]
+
+
 BGLAYER = "shaders/BackdropLayer.hlsl"
 
 # ── 2段背景 ──────────────────────────────────────────────────────
@@ -483,7 +573,7 @@ def bg_decor(n, width):
     return ents
 
 
-def build(n, entities, limit, width):
+def build(n, entities, limit, width, hud_extra=None, banner=None):
     if 5 <= n <= 8:   # いったんstage4まで(5-8は封印中: シーンを書き出さない)
         return
     flat = []
@@ -520,7 +610,7 @@ def build(n, entities, limit, width):
     hud_i = len(ents) - 1
     seek = copy.deepcopy(T["SeekBar"])
     seek["uiSlider"]["maxValue"] = float(limit)
-    banner = ui_text("TimeBanner", f"{int(limit)}秒以内にゴールしろ！", 44,
+    banner = ui_text("TimeBanner", banner or f"{int(limit)}秒以内にゴールしろ！", 44,
                      [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
                      {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
                       "oMin": [0.0, 26.0], "oMax": [0.0, 120.0], "pivot": [0.5, 0.0]})
@@ -538,6 +628,13 @@ def build(n, entities, limit, width):
                       "oMin": [16.0, 26.0], "oMax": [300.0, 78.0], "pivot": [0.0, 0.0]})
     for child in (seek, copy.deepcopy(T["ScreenFlash"]), banner, tleft, draw_amt, rw_cnt):
         child["parent"] = hud_i
+        ents.append(child)
+    # 追加HUD(チュートリアル等)。parentName 指定があればその名前のエンティティ(先に
+    # 追加済みであること)へ、無ければ HudCanvas 直下へぶら下げる
+    for child in copy.deepcopy(hud_extra or []):
+        pn = child.pop("parentName", None)
+        child["parent"] = (next(i for i, e in enumerate(ents) if e["name"] == pn)
+                           if pn else hud_i)
         ents.append(child)
     scene = {k: copy.deepcopy(v) for k, v in tpl.items() if k != "entities"}
     scene["entities"] = ents
@@ -873,21 +970,35 @@ build(8, [
     beacon("Button8", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
 ], limit=S8["limit"], width=120)
 
-# ── ギミックラボ(stage0: 新ギミック実機検証用。セレクト未登録)─────────
+# ── チュートリアル(stage0: 実プレイ+HUDで5ステップを教える。進行=Tutorial.lua)──
+# コース: 平地(いどう) → 段差(ジャンプ) → 時間ルール解説 → 錠門=先送り矢で開ける →
+# 起立針山=まき戻し矢で寝かせる → ゴール。奈落なし・死因は針山のみ(低プレッシャー)。
+# 門はopenT=40なので撃てなくても40秒待てば開く(詰み防止)。制限75秒はルール解説
+# ステップ(自動進行10.5秒)込みの余裕。HUDは tut_hud() を build() が stage0 にだけ足す。
 build(0, [
-    gm(0, 120),
-    player(1.0, 0.55, targets="LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret",
-           standables="LabCrumble",
-           arrowStops="LabF,LabLedge", solids="LabF,LabLedge,LabTurret,LabFan", rewindShots=9),
+    gm(0, 75),
+    player(1.0, 0.55, targets="TutDoor,TutNeedle",
+           arrowStops="TutF,TutStep", solids="TutF,TutStep,TutDoor", rewindShots=9),
     copy.deepcopy(arrow),
-    exit_(34.0, 0.65, "scenes/title.json"), gate(34.0, 0.5),
-    block("LabF", 18.0, -0.5, 36.0, 1.0),
-    fan("LabFan", 5.0, 0.0, liftH=2.5, surgeH=6.5),
-    block("LabLedge", 8.2, 5.4, 2.4, 0.5),        # サージでしか届かない棚
-    crumble("LabCrumble", 12.5, 2.2, 1.6, 1.6),
-    hammer("LabHammer", 17.0, 3.6, 1.2, period=3.2, maxAngle=55.0),
-    turret("LabTurret", 30.0, 1.0, period=2.4, shotSpeed=6.0, rng=12.0),
-], limit=120, width=36)
+    {"name": "TutorialDirector", "transform": transform(0.0, 0.0, 1.0, 1.0),
+     "luaScript": script("Tutorial.lua", [
+         prop("walkGoal", "float", 2.5), prop("jumpX", "float", 12.8),
+         prop("doorX", "float", 18.5), prop("needleX", "float", 27.0)])},
+    exit_(34.0, 0.65, "scenes/stage1.json"), gate(34.0, 0.5),
+    block("TutF", 17.0, -0.5, 42.0, 1.0),         # x[-4,38] 全面床(奈落なし)
+    block("TutStep", 11.0, 0.6, 2.6, 1.2),        # 上面y=1.2: ジャンプ(高1.68)で越える段差
+    door("TutDoor", 18.5, openT=40.0, closeT=9999.0),
+    needle("TutNeedle", 27.0, 0.3, 1.6, 0.6, stand=True),
+    # 的の頭上に浮かぶモード色の時計アイコン(=どの矢で撃つかのヒント)
+    sprite("TutHintFF", "textures/ui_tut_ff_rgba.png", 0, -100, 1.0, 1.0, layer=8,
+           lua=script("Beacon.lua", [prop("targetName", "string", "TutDoor"),
+                                     prop("offsetY", "float", 1.0),
+                                     prop("bob", "float", 0.18)])),
+    sprite("TutHintRW", "textures/ui_tut_rw_rgba.png", 0, -100, 1.0, 1.0, layer=8,
+           lua=script("Beacon.lua", [prop("targetName", "string", "TutNeedle"),
+                                     prop("offsetY", "float", 1.6),
+                                     prop("bob", "float", 0.18)])),
+], limit=75, width=38, banner="チュートリアル！ 矢で 時間を あやつれ！", hud_extra=tut_hud())
 
 # ── 検証: JSON再読込 + parent整合 + スラム門の最速到達チェック ─────────
 WALK, HOPJ = 5.0, 0.15

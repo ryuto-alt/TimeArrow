@@ -117,7 +117,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 120.0
+      "value": 75.0
      },
      {
       "name": "scenePath",
@@ -233,12 +233,12 @@
      {
       "name": "targets",
       "type": "string",
-      "value": "LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret"
+      "value": "TutDoor,TutNeedle"
      },
      {
       "name": "standables",
       "type": "string",
-      "value": "LabCrumble"
+      "value": ""
      },
      {
       "name": "climbables",
@@ -248,12 +248,12 @@
      {
       "name": "arrowStops",
       "type": "string",
-      "value": "LabF,LabLedge"
+      "value": "TutF,TutStep"
      },
      {
       "name": "solids",
       "type": "string",
-      "value": "LabF,LabLedge,LabTurret,LabFan"
+      "value": "TutF,TutStep,TutDoor"
      },
      {
       "name": "mirrors",
@@ -395,6 +395,52 @@
    }
   },
   {
+   "name": "TutorialDirector",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "walkGoal",
+      "type": "float",
+      "value": 2.5
+     },
+     {
+      "name": "jumpX",
+      "type": "float",
+      "value": 12.8
+     },
+     {
+      "name": "doorX",
+      "type": "float",
+      "value": 18.5
+     },
+     {
+      "name": "needleX",
+      "type": "float",
+      "value": 27.0
+     }
+    ],
+    "scriptPath": "scripts/Tutorial.lua"
+   }
+  },
+  {
    "luaScript": {
     "enabled": true,
     "props": [
@@ -406,7 +452,7 @@
      {
       "name": "next",
       "type": "string",
-      "value": "scenes/title.json"
+      "value": "scenes/stage1.json"
      }
     ],
     "scriptPath": "scripts/Exit.lua"
@@ -506,10 +552,10 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "LabF",
+   "name": "TutF",
    "transform": {
     "position": [
-     18.0,
+     17.0,
      -0.5,
      0.0
     ],
@@ -519,100 +565,9 @@
      0.0
     ],
     "scale": [
-     36.0,
+     42.0,
      1.0,
      3.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Fan_Base/Fan_Base.obj"
-   },
-   "name": "LabFan",
-   "transform": {
-    "position": [
-     5.0,
-     0.28,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.0,
-     1.0,
-     1.0
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "bladesName",
-      "type": "string",
-      "value": "LabFanBlades"
-     },
-     {
-      "name": "liftHeight",
-      "type": "float",
-      "value": 2.5
-     },
-     {
-      "name": "surgeHeight",
-      "type": "float",
-      "value": 6.5
-     },
-     {
-      "name": "strength",
-      "type": "float",
-      "value": 70.0
-     },
-     {
-      "name": "surgePerSkip",
-      "type": "float",
-      "value": 0.8
-     },
-     {
-      "name": "zoneHalfW",
-      "type": "float",
-      "value": 0.9
-     }
-    ],
-    "scriptPath": "scripts/Fan.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Fan_Blades/Fan_Blades.obj"
-   },
-   "name": "LabFanBlades",
-   "transform": {
-    "position": [
-     5.0,
-     0.42,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.0,
-     1.0,
-     1.0
     ]
    }
   },
@@ -624,11 +579,11 @@
    "meshRenderer": {
     "modelPath": "models/Block/Block.obj"
    },
-   "name": "LabLedge",
+   "name": "TutStep",
    "transform": {
     "position": [
-     8.2,
-     5.4,
+     11.0,
+     0.6,
      0.0
     ],
     "rotation": [
@@ -637,8 +592,8 @@
      0.0
     ],
     "scale": [
-     2.4,
-     0.5,
+     2.6,
+     1.2,
      3.0
     ]
    }
@@ -649,13 +604,94 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/Crumble_Plank/Crumble_Plank.obj"
+    "modelPath": "models/Gate_Frame/Gate_Frame.obj"
    },
-   "name": "LabCrumble",
+   "name": "TutDoorFrame",
    "transform": {
     "position": [
-     12.5,
-     2.2,
+     18.5,
+     2.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.1,
+     4.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Gate_Grill/Gate_Grill.obj"
+   },
+   "name": "TutDoor",
+   "transform": {
+    "position": [
+     18.5,
+     1.8,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.75,
+     3.6,
+     1.0
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "openT",
+      "type": "float",
+      "value": 40.0
+     },
+     {
+      "name": "closeT",
+      "type": "float",
+      "value": 9999.0
+     },
+     {
+      "name": "slideTime",
+      "type": "float",
+      "value": 0.7
+     },
+     {
+      "name": "listenButton",
+      "type": "bool",
+      "value": false
+     }
+    ],
+    "scriptPath": "scripts/TimedDoor.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/Needle_Small/Needle_Small.obj"
+   },
+   "name": "TutNeedle",
+   "transform": {
+    "position": [
+     27.0,
+     0.3,
      0.0
     ],
     "rotation": [
@@ -665,7 +701,7 @@
     ],
     "scale": [
      1.6,
-     0.45,
+     0.6,
      1.0
     ]
    },
@@ -673,803 +709,166 @@
     "enabled": true,
     "props": [
      {
-      "name": "crumbleT",
+      "name": "deadly",
+      "type": "bool",
+      "value": true
+     },
+     {
+      "name": "hitScale",
+      "type": "float",
+      "value": 0.6
+     }
+    ],
+    "scriptPath": "scripts/StandNeedle.lua"
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "name": "TutHintFF",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/ui_tut_ff_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "targetName",
+      "type": "string",
+      "value": "TutDoor"
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.0
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.18
+     }
+    ],
+    "scriptPath": "scripts/Beacon.lua"
+   }
+  },
+  {
+   "name": "TutHintRW",
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "sprite2d": {
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/ui_tut_rw_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "targetName",
+      "type": "string",
+      "value": "TutNeedle"
+     },
+     {
+      "name": "offsetY",
       "type": "float",
       "value": 1.6
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.18
      }
     ],
-    "scriptPath": "scripts/CrumblePlatform.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Age1/Hammer_Age1.obj"
-   },
-   "name": "LabHammer",
-   "transform": {
-    "position": [
-     17.0,
-     3.6,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.2,
-     1.2,
-     1.0
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "period",
-      "type": "float",
-      "value": 3.2
-     },
-     {
-      "name": "maxAngle",
-      "type": "float",
-      "value": 55.0
-     },
-     {
-      "name": "startPhase",
-      "type": "float",
-      "value": 0.0
-     },
-     {
-      "name": "decayT",
-      "type": "float",
-      "value": 25.0
-     },
-     {
-      "name": "hitHalf",
-      "type": "float",
-      "value": 0.42
-     }
-    ],
-    "scriptPath": "scripts/HammerSwing.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Age2/Hammer_Age2.obj"
-   },
-   "name": "LabHammer_m2",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.2,
-     1.2,
-     1.0
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Age3/Hammer_Age3.obj"
-   },
-   "name": "LabHammer_m3",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.2,
-     1.2,
-     1.0
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.1,
-    "roughness": 0.85
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Dust/Hammer_Dust.obj"
-   },
-   "name": "LabHammer_m4",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.2,
-     1.2,
-     1.0
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f1",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f2",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f3",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f4",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f5",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f6",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f7",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f8",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f9",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f10",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f11",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.15,
-    "roughness": 0.8
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
-   },
-   "name": "LabHammer_f12",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.3,
-    "roughness": 0.25
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-   },
-   "name": "LabHammer_t1",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.3,
-    "roughness": 0.25
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-   },
-   "name": "LabHammer_t2",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.3,
-    "roughness": 0.25
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-   },
-   "name": "LabHammer_t3",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.3,
-    "roughness": 0.25
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-   },
-   "name": "LabHammer_t4",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.3,
-    "roughness": 0.25
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-   },
-   "name": "LabHammer_t5",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.3,
-    "roughness": 0.25
-   },
-   "meshRenderer": {
-    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
-   },
-   "name": "LabHammer_t6",
-   "transform": {
-    "position": [
-     17.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.5,
-     1.5,
-     1.5
-    ]
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "name": "LabHammerX",
-   "transform": {
-    "position": [
-     17.0,
-     2.04,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     2.64,
-     3.48,
-     1.0
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Turret/Turret.obj"
-   },
-   "name": "LabTurret",
-   "transform": {
-    "position": [
-     30.0,
-     1.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     1.0,
-     1.0,
-     1.0
-    ]
-   },
-   "luaScript": {
-    "enabled": true,
-    "props": [
-     {
-      "name": "period",
-      "type": "float",
-      "value": 2.4
-     },
-     {
-      "name": "shotSpeed",
-      "type": "float",
-      "value": 6.0
-     },
-     {
-      "name": "range",
-      "type": "float",
-      "value": 12.0
-     },
-     {
-      "name": "startPhase",
-      "type": "float",
-      "value": 0.0
-     }
-    ],
-    "scriptPath": "scripts/Turret.lua"
-   },
-   "shader": "shaders/TimeWarp.hlsl"
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Cannonball/Cannonball.obj"
-   },
-   "name": "LabTurret_p1",
-   "transform": {
-    "position": [
-     0.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     0.55,
-     0.55,
-     0.55
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Cannonball/Cannonball.obj"
-   },
-   "name": "LabTurret_p2",
-   "transform": {
-    "position": [
-     0.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     0.55,
-     0.55,
-     0.55
-    ]
-   }
-  },
-  {
-   "material": {
-    "metallic": 0.05,
-    "roughness": 0.6
-   },
-   "meshRenderer": {
-    "modelPath": "models/Cannonball/Cannonball.obj"
-   },
-   "name": "LabTurret_p3",
-   "transform": {
-    "position": [
-     0.0,
-     -100.0,
-     0.0
-    ],
-    "rotation": [
-     0.0,
-     0.0,
-     0.0
-    ],
-    "scale": [
-     0.55,
-     0.55,
-     0.55
-    ]
+    "scriptPath": "scripts/Beacon.lua"
    }
   },
   {
@@ -1822,8 +1221,8 @@
    },
    "transform": {
     "position": [
-     18.0,
-     -0.3,
+     17.0,
+     1.6,
      30.0
     ],
     "rotation": [
@@ -1832,8 +1231,8 @@
      0.0
     ],
     "scale": [
-     109.2,
-     67.6,
+     117.1,
+     72.2,
      1.0
     ]
    }
@@ -1849,7 +1248,7 @@
    "name": "BG_Shard1",
    "transform": {
     "position": [
-     17.62,
+     18.6,
      6.64,
      15.63
     ],
@@ -1919,7 +1318,7 @@
    "name": "BG_Shard2",
    "transform": {
     "position": [
-     28.97,
+     30.58,
      8.82,
      17.54
     ],
@@ -1989,7 +1388,7 @@
    "name": "BG_Shard3",
    "transform": {
     "position": [
-     30.26,
+     31.94,
      11.28,
      14.92
     ],
@@ -2059,7 +1458,7 @@
    "name": "BG_Shard4",
    "transform": {
     "position": [
-     30.94,
+     32.66,
      1.4,
      14.1
     ],
@@ -2129,7 +1528,7 @@
    "name": "BG_Shard5",
    "transform": {
     "position": [
-     6.26,
+     6.6,
      0.21,
      14.48
     ],
@@ -2199,7 +1598,7 @@
    "name": "BG_Shard6",
    "transform": {
     "position": [
-     14.03,
+     14.81,
      0.69,
      15.71
     ],
@@ -2269,7 +1668,7 @@
    "name": "BG_Shard7",
    "transform": {
     "position": [
-     16.47,
+     17.38,
      10.95,
      22.59
     ],
@@ -2339,7 +1738,7 @@
    "name": "BG_Shard8",
    "transform": {
     "position": [
-     37.02,
+     39.08,
      1.38,
      16.96
     ],
@@ -2409,7 +1808,7 @@
    "name": "BG_Shard9",
    "transform": {
     "position": [
-     26.67,
+     28.15,
      2.92,
      20.92
     ],
@@ -2479,7 +1878,7 @@
    "name": "BG_Shard10",
    "transform": {
     "position": [
-     10.01,
+     10.57,
      3.96,
      21.49
     ],
@@ -2549,7 +1948,7 @@
    "name": "BG_Shard11",
    "transform": {
     "position": [
-     8.96,
+     9.45,
      4.49,
      19.12
     ],
@@ -2619,7 +2018,7 @@
    "name": "BG_Shard12",
    "transform": {
     "position": [
-     33.7,
+     35.57,
      1.46,
      15.59
     ],
@@ -2689,7 +2088,7 @@
    "name": "BG_Shard13",
    "transform": {
     "position": [
-     2.71,
+     2.86,
      1.25,
      22.94
     ],
@@ -2759,7 +2158,7 @@
    "name": "BG_Shard14",
    "transform": {
     "position": [
-     17.14,
+     18.09,
      0.06,
      13.56
     ],
@@ -2829,7 +2228,7 @@
    "name": "BG_Shard15",
    "transform": {
     "position": [
-     31.26,
+     33.0,
      6.16,
      22.97
     ],
@@ -2899,7 +2298,7 @@
    "name": "BG_Shard16",
    "transform": {
     "position": [
-     22.06,
+     23.29,
      2.64,
      21.95
     ],
@@ -2969,7 +2368,7 @@
    "name": "BG_Shard17",
    "transform": {
     "position": [
-     30.13,
+     31.8,
      -0.25,
      18.55
     ],
@@ -3039,7 +2438,7 @@
    "name": "BG_Shard18",
    "transform": {
     "position": [
-     34.61,
+     36.53,
      1.73,
      11.63
     ],
@@ -3109,7 +2508,7 @@
    "name": "BG_Shard19",
    "transform": {
     "position": [
-     26.24,
+     27.7,
      0.19,
      11.61
     ],
@@ -3179,7 +2578,7 @@
    "name": "BG_Shard20",
    "transform": {
     "position": [
-     4.35,
+     4.59,
      -0.33,
      23.94
     ],
@@ -3249,7 +2648,7 @@
    "name": "BG_Shard21",
    "transform": {
     "position": [
-     22.15,
+     23.38,
      12.19,
      11.37
     ],
@@ -3319,7 +2718,7 @@
    "name": "BG_Shard22",
    "transform": {
     "position": [
-     2.8,
+     2.96,
      1.2,
      16.68
     ],
@@ -3389,7 +2788,7 @@
    "name": "BG_Shard23",
    "transform": {
     "position": [
-     13.05,
+     13.77,
      4.12,
      15.75
     ],
@@ -3459,7 +2858,7 @@
    "name": "BG_Shard24",
    "transform": {
     "position": [
-     24.49,
+     25.85,
      2.55,
      14.68
     ],
@@ -3529,7 +2928,7 @@
    "name": "BG_Shard25",
    "transform": {
     "position": [
-     33.52,
+     35.38,
      11.73,
      14.25
     ],
@@ -3599,7 +2998,7 @@
    "name": "BG_Shard26",
    "transform": {
     "position": [
-     33.32,
+     35.17,
      11.19,
      20.47
     ],
@@ -3669,7 +3068,7 @@
    "name": "BG_Shard27",
    "transform": {
     "position": [
-     19.52,
+     20.6,
      4.55,
      22.88
     ],
@@ -3734,6 +3133,76 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard28",
+   "transform": {
+    "position": [
+     28.51,
+     3.2,
+     20.45
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     266.0
+    ],
+    "scale": [
+     2.090819768098031,
+     2.090819768098031,
+     2.090819768098031
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -17.5
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.31
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.25
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.9
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 6.7
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.8
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/BG_Ridge_Ruins/BG_Ridge_Ruins.obj"
    },
    "name": "BackdropRidge1",
@@ -3760,7 +3229,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 120.0
+      "value": 75.0
      },
      {
       "name": "collapseAt",
@@ -3820,7 +3289,7 @@
      {
       "name": "T",
       "type": "float",
-      "value": 120.0
+      "value": 75.0
      },
      {
       "name": "collapseAt",
@@ -3859,7 +3328,7 @@
    "name": "BG_Clock",
    "transform": {
     "position": [
-     20.6,
+     21.74,
      8.74,
      6.2
     ],
@@ -3924,7 +3393,7 @@
    "name": "BG_GearL",
    "transform": {
     "position": [
-     3.53,
+     3.73,
      -1.43,
      5.8
     ],
@@ -3989,7 +3458,7 @@
    "name": "BG_GearR",
    "transform": {
     "position": [
-     32.11,
+     33.89,
      -0.78,
      6.0
     ],
@@ -4054,7 +3523,7 @@
    "name": "BG_Hourglass1",
    "transform": {
     "position": [
-     25.32,
+     26.72,
      1.72,
      4.4
     ],
@@ -4119,7 +3588,7 @@
    "name": "BG_Arch1",
    "transform": {
     "position": [
-     11.42,
+     12.05,
      1.18,
      4.2
     ],
@@ -4184,7 +3653,7 @@
    "name": "BG_Isle1",
    "transform": {
     "position": [
-     5.22,
+     5.51,
      9.13,
      4.54
     ],
@@ -4249,7 +3718,7 @@
    "name": "BG_Isle2",
    "transform": {
     "position": [
-     23.9,
+     25.23,
      7.25,
      3.84
     ],
@@ -4314,7 +3783,7 @@
    "name": "BG_GearN1",
    "transform": {
     "position": [
-     1.44,
+     1.52,
      0.82,
      3.4
     ],
@@ -4379,7 +3848,7 @@
    "name": "BG_GearN2",
    "transform": {
     "position": [
-     34.92,
+     36.86,
      1.49,
      3.5
     ],
@@ -4451,7 +3920,7 @@
    "name": "Sun",
    "transform": {
     "position": [
-     18.0,
+     19.0,
      10.0,
      0.0
     ],
@@ -4492,12 +3961,12 @@
      {
       "name": "minX",
       "type": "float",
-      "value": 11.1
+      "value": 7.1
      },
      {
       "name": "maxX",
       "type": "float",
-      "value": 24.9
+      "value": 26.9
      },
      {
       "name": "minY",
@@ -4512,17 +3981,17 @@
      {
       "name": "fullX",
       "type": "float",
-      "value": 18.0
+      "value": 17.0
      },
      {
       "name": "fullY",
       "type": "float",
-      "value": 17.77
+      "value": 20.95
      },
      {
       "name": "fullZ",
       "type": "float",
-      "value": -24.17
+      "value": -28.09
      }
     ],
     "scriptPath": "scripts/CameraFollow.lua"
@@ -4530,7 +3999,7 @@
    "name": "GameCamera",
    "transform": {
     "position": [
-     11.1,
+     7.1,
      5.85,
      -13.0
     ],
@@ -4599,7 +4068,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 84,
+   "parent": 61,
    "transform": {
     "position": [
      0.0,
@@ -4661,7 +4130,7 @@
      0.15000000596046448,
      1.0
     ],
-    "maxValue": 120.0,
+    "maxValue": 75.0,
     "minValue": 0.0,
     "onChangeEvent": "",
     "step": 0.0,
@@ -4676,7 +4145,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 84,
+   "parent": 61,
    "transform": {
     "position": [
      0.0,
@@ -4887,11 +4356,11 @@
      2.0,
      2.0
     ],
-    "text": "120秒以内にゴールしろ！",
+    "text": "チュートリアル！ 矢で 時間を あやつれ！",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 84
+   "parent": 61
   },
   {
    "name": "TimeLeft",
@@ -4979,11 +4448,11 @@
      2.0,
      2.0
     ],
-    "text": "120.0",
+    "text": "75.0",
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 84
+   "parent": 61
   },
   {
    "name": "DrawAmount",
@@ -5075,7 +4544,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 84
+   "parent": 61
   },
   {
    "name": "RewindCount",
@@ -5167,7 +4636,1268 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 84
+   "parent": 61
+  },
+  {
+   "name": "TutPanel",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.5,
+     1.0
+    ],
+    "anchorMin": [
+     0.5,
+     1.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     330.0,
+     -16.0
+    ],
+    "offsetMin": [
+     -330.0,
+     -196.0
+    ],
+    "order": 1,
+    "pivot": [
+     0.5,
+     1.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_panel_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.96
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 61
+  },
+  {
+   "name": "TutStepTitle",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     -96.0,
+     48.0
+    ],
+    "offsetMin": [
+     96.0,
+     16.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 0,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     1.0,
+     0.85,
+     0.3,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 24.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.1,
+     0.25,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutStepText",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     -24.0,
+     84.0
+    ],
+    "offsetMin": [
+     24.0,
+     48.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 26.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.02,
+     0.05,
+     0.15,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": true,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 30.0,
+    "wrap": false
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutStepSub",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     -24.0,
+     112.0
+    ],
+    "offsetMin": [
+     24.0,
+     86.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     0.72,
+     0.8,
+     0.98,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 18.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.02,
+     0.05,
+     0.15,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": true,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutDots",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     -4.0
+    ],
+    "offsetMin": [
+     0.0,
+     -28.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.0
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 16.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.1,
+     0.25,
+     1.0
+    ],
+    "outlineWidth": 2.0,
+    "rich": true,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutKeyCap1",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.5,
+     0.0
+    ],
+    "anchorMin": [
+     0.5,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     -10.0,
+     156.0
+    ],
+    "offsetMin": [
+     -56.0,
+     110.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_keycap_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutKeyCap2",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.5,
+     0.0
+    ],
+    "anchorMin": [
+     0.5,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     56.0,
+     156.0
+    ],
+    "offsetMin": [
+     10.0,
+     110.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_keycap_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutKeyWide",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.5,
+     0.0
+    ],
+    "anchorMin": [
+     0.5,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     80.0,
+     156.0
+    ],
+    "offsetMin": [
+     -80.0,
+     110.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_keycap_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutKeyLbl1",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     -2.0
+    ],
+    "offsetMin": [
+     0.0,
+     -2.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     0.85,
+     0.95,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 22.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.8
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 73
+  },
+  {
+   "name": "TutKeyLbl2",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     -2.0
+    ],
+    "offsetMin": [
+     0.0,
+     -2.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     0.85,
+     0.95,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 22.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.8
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 74
+  },
+  {
+   "name": "TutKeyLblW",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     -2.0
+    ],
+    "offsetMin": [
+     0.0,
+     -2.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 0,
+    "charAnimAmount": 4.0,
+    "charAnimSpeed": 2.0,
+    "color": [
+     0.85,
+     0.95,
+     1.0,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 17.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.8
+    ],
+    "outlineWidth": 2.0,
+    "rich": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "SPACE",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 75
+  },
+  {
+   "name": "TutIconFF",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.0,
+     0.5
+    ],
+    "anchorMin": [
+     0.0,
+     0.5
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     80.0,
+     30.0
+    ],
+    "offsetMin": [
+     20.0,
+     -30.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_ff_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutIconRW",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     0.0,
+     0.5
+    ],
+    "anchorMin": [
+     0.0,
+     0.5
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     80.0,
+     30.0
+    ],
+    "offsetMin": [
+     20.0,
+     -30.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_rw_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutCheck",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.5
+    ],
+    "anchorMin": [
+     1.0,
+     0.5
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     -18.0,
+     27.0
+    ],
+    "offsetMin": [
+     -86.0,
+     -32.0
+    ],
+    "order": 3,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiImage": {
+    "texturePath": "textures/ui_tut_check_rgba.png",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "sliceBorder": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cornerRadius": 0.0,
+    "raycastBlock": false,
+    "fillAmount": 1.0,
+    "fillDir": 0
+   },
+   "parent": 68
+  },
+  {
+   "name": "TutBurst",
+   "transform": {
+    "position": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "uiRect": {
+    "anchorMax": [
+     1.0,
+     0.3
+    ],
+    "anchorMin": [
+     0.0,
+     0.3
+    ],
+    "clipChildren": false,
+    "offsetMax": [
+     0.0,
+     50.0
+    ],
+    "offsetMin": [
+     0.0,
+     -50.0
+    ],
+    "order": 2,
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "rotation": 0.0,
+    "skewX": 0.0,
+    "visible": true
+   },
+   "uiText": {
+    "alignH": 1,
+    "alignV": 1,
+    "charAnim": 1,
+    "charAnimAmount": 3.0,
+    "charAnimSpeed": 2.5,
+    "color": [
+     1.0,
+     0.85,
+     0.3,
+     1.0
+    ],
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "fontSize": 46.0,
+    "gradientColor2": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "gradientDir": 0,
+    "letterSpacing": 2.0,
+    "outlineColor": [
+     0.05,
+     0.08,
+     0.2,
+     1.0
+    ],
+    "outlineWidth": 3.0,
+    "rich": true,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     2.0,
+     2.0
+    ],
+    "text": "",
+    "typewriterSpeed": 0.0,
+    "wrap": false
+   },
+   "parent": 61
   }
  ]
 }
