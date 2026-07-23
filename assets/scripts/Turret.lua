@@ -35,7 +35,7 @@ function OnStart(self)
   events:on("time_rewind", function(data)
     if data.target ~= self.name and data.target ~= self.name .. "X" then return end
     self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
-    self.rwSpeed = self.rwRemain / 0.5
+    self.rwSpeed = self.rwRemain / 1.5   -- FFと同じ1.5秒消化(全ギミック統一テンポ。RWだけ3倍速で落下が速すぎた)
     self.rwGlow = 0.1
     FX.spark(self.bx - 0.8, self.by, self.bz, 14, 0.65, 0.4, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 12, 8, 0.65, 0.4, 1.0)
