@@ -35,6 +35,22 @@ properties = {
   { name = "rewindShots",   type = "int",    default = 3,   min = 0,  max = 9,  label = "後戻り矢の使用可能回数(タイマー返金は強いので有限)" },
 }
 
+-- プレイヤーの表示状態を、補助スプライトの名前で一元管理する。
+local PLAYER_SPRITE_NAMES = {
+  idle = "PlayerIdleSprite",
+  run = "PlayerRunSprite",
+  jump = "PlayerJumpSprite",
+  bow = "PlayerBowSprite",
+}
+
+-- 状態ごとのスプライトアニメーション設定を一つにまとめる。
+local PLAYER_ANIMATION_SETTINGS = {
+  idle = { frames = 0, fps = 0, cols = 0, row = 0 },
+  run = { frames = 6, fps = 10, cols = 6, row = 0 },
+  jump = { frames = 7, fps = 8, cols = 7, row = 0 },
+  bow = { frames = 0, fps = 0, cols = 0, row = 0 },
+}
+
 local function trimSplit(csv)
   local out = {}
   for w in string.gmatch(csv or "", "[^,]+") do
@@ -105,6 +121,22 @@ function OnStart(self)
     return out
   end
 
+  -- 各状態の表示用エンティティを取得し、初期状態を待機にする。
+  self.playerSprites = {}
+  for state, name in pairs(PLAYER_SPRITE_NAMES) do
+    local sprite = scene:findEntity(name)
+    if sprite and sprite:isValid() then self.playerSprites[state] = sprite end
+  end
+  -- Sprite2D APIへ渡すPlayer本体のEntity userdataを取得する。
+  self.playerEntity = scene:findEntity("Player")
+  -- 補助スプライトが1つでもあるシーンだけ素のPlayerスプライトを非表示にする
+  -- (アニメ用スプライト未配置のシーンでプレイヤーが消えないための保険)
+  if next(self.playerSprites) and self.playerEntity and self.playerEntity:isValid() then
+    scene:setSpriteAlpha(self.playerEntity, 0.0)
+  end
+  self.playerVisualState = nil
+  self.bowTimer = 0
+
   self.targetList = expandDuplicates(trimSplit(self.targets))
   self.standList  = expandDuplicates(trimSplit(self.standables))
   self.climbList  = expandDuplicates(trimSplit(self.climbables))
@@ -136,6 +168,52 @@ function OnStart(self)
   if arrowE and arrowE:isValid() then
     arrowE.transform.position = Vec3.new(0, -100, 0)
   end
+end
+
+-- 表示用スプライトをPlayer本体と同じ位置・向き・大きさへ同期する。
+local function syncPlayerSpriteTransform(self)
+  local transform = self.transform
+  for _, sprite in pairs(self.playerSprites or {}) do
+    if sprite and sprite:isValid() then
+      sprite.transform.position = Vec3.new(transform.position.x, transform.position.y, transform.position.z)
+      sprite.transform.rotation = Vec3.new(transform.rotation.x, transform.rotation.y, transform.rotation.z)
+      sprite.transform.scale = Vec3.new(transform.scale.x, transform.scale.y, transform.scale.z)
+    end
+  end
+end
+
+-- 待機・走行・ジャンプ・弓の表示を切り替え、状態変更時だけ再生位置をリセットする。
+local function setPlayerVisualState(self, state)
+  if self.playerVisualState == state then
+    syncPlayerSpriteTransform(self)
+    return
+  end
+
+  self.playerVisualState = state
+  local setting = PLAYER_ANIMATION_SETTINGS[state]
+  for name, sprite in pairs(self.playerSprites or {}) do
+    if sprite and sprite:isValid() then
+      scene:setSpriteAlpha(sprite, name == state and 1.0 or 0.0)
+      if name == state and setting then
+        scene:setSpriteAnim(sprite, setting.frames, setting.fps, setting.cols, setting.row)
+        scene:setSpriteAnimMode(sprite, 0)
+      end
+    end
+  end
+  syncPlayerSpriteTransform(self)
+end
+
+-- 物理状態と弓操作状態から、現在表示すべきプレイヤー状態を決める。
+local function updatePlayerVisual(self)
+  local state = "idle"
+  if self.drawing or self.bowTimer > 0 then
+    state = "bow"
+  elseif not self.grounded or self.climbing then
+    state = "jump"
+  elseif math.abs(self.vx or 0) > 0.01 then
+    state = "run"
+  end
+  setPlayerVisualState(self, state)
 end
 
 -- ghost中(CrushWallが早送りで実体を失っている間)は当たり判定から外す
@@ -396,6 +474,8 @@ local function fireArrow(self)
   self.pendingMode = self.drawMode
   self.bounces = 0
   self.drawT = 0
+  -- 発射直後も弓を短時間表示して、引き絞りから発射までの動きを途切れさせない。
+  self.bowTimer = 0.2
 
   if self.drawMode == "rewind" then
     self.shotsLeft = self.shotsLeft - 1
@@ -735,6 +815,8 @@ local function updateArrow(self, dt)
 end
 
 function OnUpdate(self, dt)
+  -- 弓の発射表示時間を減らし、0未満にはしない。
+  self.bowTimer = math.max(0, (self.bowTimer or 0) - dt)
   for name, t in pairs(self.ghostSolids) do
     self.ghostSolids[name] = t - dt
   end
@@ -743,6 +825,7 @@ function OnUpdate(self, dt)
   updateMovement(self, dt)
   updateDraw(self, dt)
   updateArrow(self, dt)
+  updatePlayerVisual(self)
 
   -- 弓を構えている間、世界は0.25倍速。スクリプト環境は分離されているので
   -- グローバル変数ではなくイベントで全ギミック+GameManagerへ配る(変化時のみ発行)
