@@ -88,6 +88,8 @@ def content_box(stage_or_entities):
         if any(k.startswith("ui") for k in e) or "parent" in e:
             continue
         p = e["transform"]["position"]
+        if p[1] < -50:                       # 隠しプール(ビーコン/砲弾等)は範囲に含めない
+            continue
         sc = e["transform"]["scale"]
         hw, hh = abs(sc[0]) / 2, abs(sc[1]) / 2
         ax0, ax1 = p[0] - hw, p[0] + hw
@@ -109,6 +111,8 @@ def content_box(stage_or_entities):
             elif sp == "CrushWall.lua":          # 走り抜ける範囲まで
                 t = pr.get("travel", 0) * pr.get("axisX", -1)
                 ax0, ax1 = min(ax0, ax0 + t), max(ax1, ax1 + t)
+            elif sp == "RisePlatform.lua":       # 上空で待機している間も見せる
+                ay1 += pr.get("waitHeight", 0)
             elif sp == "TimedDoor.lua":          # 沈む先は見えなくてよい
                 pass
         x0, x1 = min(x0, ax0), max(x1, ax1)

@@ -69,8 +69,12 @@ float4 PSMain(PSInput input) : SV_TARGET
     float2 cell = min(floor(saturate(input.texCoord) * GRID_SIZE), GRID_SIZE - 1.0f);
     float randomOffset = (RandomCell(cell) - 0.5f) * RANDOM_WIDTH;
     float cellOrder = (cell.x + 0.5f) / GRID_SIZE + randomOffset;
+    // effectValue >= 10 はスローモーションフラグ(弓の構え中)。実際の崩壊割合は -10 して取り出す
+    bool slowMo = effectValue >= 10.0f;
+    float rawValue = slowMo ? (effectValue - 10.0f) : effectValue;
+
     // イージング(ease-out): 序盤から見た目にわかりやすく崩れるように、経過割合を前倒しする。
-    float linearProgress = saturate(effectValue);
+    float linearProgress = saturate(rawValue);
     float progress = 1.0f - (1.0f - linearProgress) * (1.0f - linearProgress);
     float collapseThreshold = lerp(-RANDOM_WIDTH, 1.0f + RANDOM_WIDTH, progress);
 
@@ -96,6 +100,16 @@ float4 PSMain(PSInput input) : SV_TARGET
     float3 collapseGlow = float3(1.0f, 0.55f, 0.25f) * rimGlow * rimGlow * 1.8f;
 
     float3 result = lit + glowColor * stripe * 0.35f + collapseGlow;
+
+    // スローモーション中: 青白く彩度を落とし、水平のタイムラインがゆっくり流れる
+    // (時間が引き延ばされている感覚を画面全体の背景で伝える)
+    if (slowMo)
+    {
+        float grey = dot(result, float3(0.299f, 0.587f, 0.114f));
+        result = lerp(result, float3(grey * 0.8f, grey * 0.95f, grey * 1.25f), 0.55f);
+        float streak = pow(saturate(sin((input.texCoord.y * 40.0f - time * 1.5f) * 6.2831853f) * 0.5f + 0.5f), 8.0f);
+        result += float3(0.2f, 0.5f, 0.9f) * streak * 0.3f;
+    }
 
     return float4(result, albedo.a);
 }

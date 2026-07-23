@@ -12,6 +12,11 @@ local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
 end
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+  events:on("aim_preview", function(d)
+    if d.target == self.name then self.aimPv = { m = d.mode, t = 0.12 } end
+  end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
@@ -25,9 +30,23 @@ function OnStart(self)
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 10, 1.0, 0.7, 0.3)
   end)
+
+  -- 後戻り(グローバル): 導火線が伸び直す。爆発済みは戻せない(破壊は不可逆)
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    if self.exploded then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
+  end)
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   if self.exploded then return end
   self.clock = self.clock + dt
   if self.ffRemain > 0 then
@@ -35,11 +54,44 @@ function OnUpdate(self, dt)
     self.clock = self.clock + step
     self.ffRemain = self.ffRemain - step
   end
+  if self.rwRemain and self.rwRemain > 0 then
+    -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
+    end
+  end
+
+  -- 見た目: 金色=撃てる / FF中=シアン / RW中=紫 / 照準ロック=帯8-9。
+  -- 導火線が短くなるほど点滅が速くなる(残り3秒で危険を伝える)
+  local selfE = scene:findEntity(self.name)
+  if selfE and selfE:isValid() then
+    local eff = 5.0
+    local left = self.boomT - self.clock
+    if left < 3.0 then
+      eff = 6.0 + math.sin(self.clock * (18.0 - left * 4.0)) * 0.9  -- 経年帯で焦げていく
+    end
+    if self.ffRemain > 0 then eff = 1.0
+    elseif (self.rwGlow or 0) > 0 then eff = 2.8 end
+    if self.aimPv then
+      self.aimPv.t = self.aimPv.t - dt
+      if self.aimPv.t > 0 then eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+      else self.aimPv = nil end
+    end
+    scene:setMeshEffect(selfE, eff)
+  end
+
   if self.clock < self.boomT then return end
 
   self.exploded = true
   FX.explosion(self.bx, self.by, self.bz, 1.3, 1.0, 0.5, 0.15)
   fx:pulse(0.5)
+  self.transform.position = Vec3.new(self.bx, -100.0, self.bz)  -- 爆散して消える
 
   if self.wallTarget ~= "" then
     events:emit("wall_destroyed", { target = self.wallTarget })
@@ -50,7 +102,7 @@ function OnUpdate(self, dt)
   if pl and pl:isValid() then
     local pp, ps = pl.transform.position, pl.transform.scale
     if overlapAABB(self.bx, self.by, s.x * 0.5 * self.blastScale, s.y * 0.5 * self.blastScale,
-                    pp.x, pp.y, ps.x * 0.5, ps.y * 0.5) then
+                    pp.x, pp.y, 0.30, 0.42) then
       events:emit("player_died", {})
     end
   end

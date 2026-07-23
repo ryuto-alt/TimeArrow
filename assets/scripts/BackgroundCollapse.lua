@@ -10,6 +10,8 @@ properties = {
 }
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
   local p = self.transform.position
   local s = self.transform.scale
   self.bx, self.by, self.bz = p.x, p.y, p.z
@@ -17,9 +19,11 @@ function OnStart(self)
   self.clock = 0
   self.emitAccum = 0
   self.suckFired = false
+
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   self.clock = self.clock + dt
   local frac = clamp(self.clock / self.T, 0, 1)
 
@@ -28,9 +32,12 @@ function OnUpdate(self, dt)
     intensity = (frac - self.collapseAt) / math.max(1 - self.collapseAt, 0.001)
   end
 
+  -- スローモーション中(弓の構え中)は +10 のフラグを乗せて送る。
+  -- BackdropCollapse.hlsl 側が青白い減彩+流れるタイムラインの「時間が引き延ばされた」演出に切り替える
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    scene:setMeshEffect(selfE, intensity)
+    local slow = (self.ts or 1) < 1 and 10 or 0
+    scene:setMeshEffect(selfE, intensity + slow)
   end
 
   if frac < self.collapseAt then return end

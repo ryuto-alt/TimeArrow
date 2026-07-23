@@ -222,12 +222,6 @@
         ]
       },
       "uiImage": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
         "color": [
           1.0,
           1.0,
@@ -383,12 +377,6 @@
         ]
       },
       "uiImage": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
         "color": [
           1.0,
           1.0,
@@ -674,7 +662,7 @@
       "color": [
         1.0,
         0.5,
-        0.07999999821186066
+        0.08
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -706,8 +694,8 @@
     {
       "color": [
         1.0,
-        0.5199999809265137,
-        0.0949999988079071
+        0.52,
+        0.095
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -739,8 +727,8 @@
     {
       "color": [
         1.0,
-        0.5400000214576721,
-        0.10999999940395355
+        0.54,
+        0.11
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -772,7 +760,7 @@
     {
       "color": [
         1.0,
-        0.5600000023841858,
+        0.56,
         0.125
       ],
       "material": {
@@ -805,8 +793,8 @@
     {
       "color": [
         1.0,
-        0.5799999833106995,
-        0.14000000059604645
+        0.58,
+        0.14
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -838,8 +826,8 @@
     {
       "color": [
         1.0,
-        0.6000000238418579,
-        0.1550000011920929
+        0.6,
+        0.155
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -871,8 +859,8 @@
     {
       "color": [
         1.0,
-        0.6200000047683716,
-        0.17000000178813934
+        0.62,
+        0.17
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -904,8 +892,8 @@
     {
       "color": [
         1.0,
-        0.6399999856948853,
-        0.1850000023841858
+        0.64,
+        0.185
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -937,8 +925,8 @@
     {
       "color": [
         1.0,
-        0.6600000262260437,
-        0.20000000298023224
+        0.66,
+        0.2
       ],
       "material": {
         "metallic": 0.3499999940395355,
@@ -981,7 +969,6 @@
         "modelPath": "model/fbxmodel/tl6_arrow.fbx"
       },
       "name": "TitleArrow",
-      "shader": "TitleGlow.hlsl",
       "transform": {
         "position": [
           -8.84000015258789,
@@ -998,7 +985,8 @@
           1.399999976158142,
           1.399999976158142
         ]
-      }
+      },
+      "shader": "TitleGlow.hlsl"
     },
     {
       "luaScript": {
@@ -1032,25 +1020,25 @@
       }
     },
     {
-      "color": [
-        0.75,
-        0.9200000166893005,
-        1.0
-      ],
-      "material": {
-        "metallic": 0.44999998807907104,
-        "roughness": 0.25
-      },
+      "name": "TitleBow",
       "meshRenderer": {
         "modelPath": "model/fbxmodel/tl6_bow.fbx"
       },
-      "name": "TitleBow",
+      "material": {
+        "metallic": 0.45,
+        "roughness": 0.25
+      },
+      "color": [
+        0.75,
+        0.92,
+        1.0
+      ],
       "shader": "TitleGlow.hlsl",
       "transform": {
         "position": [
           -19.0,
-          2.9000000953674316,
-          2.200000047683716
+          2.9,
+          2.2
         ],
         "rotation": [
           0.0,
@@ -1065,19 +1053,19 @@
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut1",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut1.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut1.fbx"
-      },
-      "name": "TitleCharOut1",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1091,26 +1079,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut2",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut2.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut2.fbx"
-      },
-      "name": "TitleCharOut2",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1124,26 +1112,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut3",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut3.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut3.fbx"
-      },
-      "name": "TitleCharOut3",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1157,26 +1145,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut4",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut4.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut4.fbx"
-      },
-      "name": "TitleCharOut4",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1190,26 +1178,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut5",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut5.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut5.fbx"
-      },
-      "name": "TitleCharOut5",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1223,26 +1211,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut6",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut6.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut6.fbx"
-      },
-      "name": "TitleCharOut6",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1256,26 +1244,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut7",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut7.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut7.fbx"
-      },
-      "name": "TitleCharOut7",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1289,26 +1277,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut8",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut8.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut8.fbx"
-      },
-      "name": "TitleCharOut8",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1322,26 +1310,26 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     },
     {
-      "color": [
-        0.05000000074505806,
-        0.41999998688697815,
-        1.0
-      ],
+      "name": "TitleCharOut9",
+      "meshRenderer": {
+        "modelPath": "model/fbxmodel/tl6_charOut9.fbx"
+      },
       "material": {
         "metallic": 0.0,
         "roughness": 1.0
       },
-      "meshRenderer": {
-        "modelPath": "model/fbxmodel/tl6_charOut9.fbx"
-      },
-      "name": "TitleCharOut9",
+      "color": [
+        0.05,
+        0.42,
+        1.0
+      ],
       "shader": "TitleOutline.hlsl",
       "transform": {
         "position": [
@@ -1355,9 +1343,9 @@
           0.0
         ],
         "scale": [
-          1.7000000476837158,
-          1.7000000476837158,
-          1.7000000476837158
+          1.7,
+          1.7,
+          1.7
         ]
       }
     }

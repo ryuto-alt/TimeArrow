@@ -17,6 +17,13 @@ local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
 end
 
 function OnStart(self)
+  self.ts = 1.0
+  events:on("time_scale", function(d) self.ts = d.scale or 1 end)
+  events:on("aim_preview", function(d)
+    if d.target == self.name or d.target == self.name .. "X" then
+      self.aimPv = { m = d.mode, t = 0.12 }
+    end
+  end)
   local p = self.transform.position
   self.bx, self.by, self.bz = p.x, p.y, p.z
   self.clock = 0
@@ -30,15 +37,44 @@ function OnStart(self)
     self.ffRemain = self.ffRemain + data.amount
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.transform.position.x, self.by, self.bz, 12, 0.85, 0.7, 0.55)
+    FX.shockwave(self.transform.position.x, self.by, self.bz, 12, 7, 0.3, 0.9, 1.0)
+  end)
+
+  -- 後戻り(グローバル): 転がった大玉が坂を戻るように滑り戻る。
+  -- 注意: 戻ってくる玉の軌道上に立っていると轢かれて死ぬ(即死判定は通常通り生きている)
+  self.rwGlow = 0
+  events:on("time_rewind", function(data)
+    if data.target ~= self.name then return end
+    if self.passedGoal then return end
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwSpeed = self.rwRemain / 0.5
+    self.rwGlow = 0.1
+    local p = self.transform.position
+    FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
+    FX.shockwave(p.x, p.y, p.z, 10, 6, 0.65, 0.4, 1.0)
   end)
 end
 
 function OnUpdate(self, dt)
+  dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   self.clock = self.clock + dt
   if self.ffRemain > 0 then
     local step = math.min(self.ffRemain, self.ffSpeed * dt)
     self.clock = self.clock + step
     self.ffRemain = self.ffRemain - step
+  end
+  if self.rwRemain and self.rwRemain > 0 then
+    -- 対象の時計は0で底打ち。それ以上は戻せない=タイマー返金もされない(戻しすぎは無駄撃ち)
+    local step = math.min(self.rwRemain, self.rwSpeed * dt, self.clock)
+    if step <= 0 then
+      self.rwRemain = 0
+    else
+      self.clock = self.clock - step
+      self.rwRemain = self.rwRemain - step
+      self.rwGlow = 0.1
+      events:emit("time_refund", { amount = step })
+    end
   end
   if self.passedGoal then return end
 
@@ -47,10 +83,30 @@ function OnUpdate(self, dt)
   local s = self.transform.scale
   self.transform.position = Vec3.new(nx, self.by, self.bz)
 
-  -- 早送り中は半透明(=実体がない「経由中」の表現)
+  -- TimeWarpシェーダーへ状態を送る: 早送り=1 / 後戻り=2.8 / 通常=0
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    scene:setSpriteAlpha(selfE, self.ffRemain > 0 and 0.45 or 1.0)
+    local eff = 5.0  -- 撃てる=金色の的アピール
+    if self.ffRemain > 0 then eff = 1.0
+    elseif self.rwGlow > 0 then eff = 2.8 end
+    if self.aimPv then
+      self.aimPv.t = self.aimPv.t - dt
+      if self.aimPv.t > 0 then
+        eff = (self.aimPv.m == "rewind") and 9.5 or 8.5
+      else
+        self.aimPv = nil
+      end
+    end
+    scene:setMeshEffect(selfE, eff)
+  end
+
+  -- 早送り=水色 / 後戻り=紫 の残像
+  if self.ffRemain > 0 then
+    FX.trail(nx, self.by, self.bz, 0.3, 0.9, 1.0)
+  end
+  if self.rwGlow > 0 then
+    self.rwGlow = self.rwGlow - dt
+    FX.trail(nx, self.by, self.bz, 0.65, 0.4, 1.0)
   end
 
   -- 早送り中の途中位置では判定しない(従来のワープ同様、危険区間を"経由せず"飛び越せる)
@@ -73,7 +129,7 @@ function OnUpdate(self, dt)
   local pl = scene:findEntity("Player")
   if pl and pl:isValid() then
     local pp, ps = pl.transform.position, pl.transform.scale
-    if overlapAABB(nx, self.by, s.x * 0.5 * self.hitScale, s.y * 0.5 * self.hitScale, pp.x, pp.y, ps.x * 0.5, ps.y * 0.5) then
+    if overlapAABB(nx, self.by, s.x * 0.5 * self.hitScale, s.y * 0.5 * self.hitScale, pp.x, pp.y, 0.30, 0.42) then
       events:emit("player_died", {})
     end
   end
