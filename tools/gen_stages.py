@@ -310,38 +310,40 @@ RIDGE_TINT = {0: [0.85, 0.88, 1.0], 1: [1.0, 1.0, 1.0], 2: [0.82, 1.0, 0.9],
 # BackdropLayer/Ridge へ渡す(未指定=旧来の青系デフォルト)
 FOG_COL = {0: [0.30, 0.34, 0.52], 1: [0.10, 0.22, 0.33], 2: [0.09, 0.26, 0.23],
            3: [0.22, 0.15, 0.34], 4: [0.34, 0.15, 0.11]}
-# 4層目=遠影(z=17)。巨大シルエット帯。ステージで山嶺/時計城砦を使い分ける
-FARS = {0: ["BG_Far_Peaks"], 1: ["BG_Far_Citadel", "BG_Far_Peaks"],
-        2: ["BG_Far_Peaks", "BG_Far_Citadel"], 3: ["BG_Far_Citadel"],
-        4: ["BG_Far_Peaks", "BG_Far_Citadel"]}
-FAR_H = {"BG_Far_Peaks": 0.295, "BG_Far_Citadel": 0.437}
+# かけら色パレット(ティント=頂点カラー。結晶は白ベースなので鮮やかに染まる)
+SHARD_COLORS = [[0.55, 0.9, 1.0], [1.0, 0.82, 0.4], [0.8, 0.6, 1.0],
+                [1.0, 0.55, 0.75], [0.55, 1.0, 0.8], [0.95, 0.95, 1.0]]
+SHARD_MODELS = ["BG_Shard_Crystal", "BG_Shard_Crystal", "BG_Shard_Rock",
+                "BG_Shard_Rock", "BG_Shard_Gear"]
 
 
-def backdrop_far(n, width, limit):
-    """4層目: 遠影の巨大シルエット帯(z=17、フォグでほぼ空に溶ける)。
-    BGProp(T)で時間消滅にも参加する。"""
+def shards(n, width, count_per_u=0.75):
+    """奥の空間(z=11..24)に漂う「時のかけら」を大量散布する。
+    色とりどり(SHARD_COLORS)・回転+8の字浮遊+きらめき(shaderParams.w)。
+    時間では消えない(消えるのは稜線=BackdropRidgeのみ)。"""
     import random
-    rnd = random.Random(700 + n)
-    models = FARS[n]
-    pieces, x, i = [], -12.0, 0
-    while x < width + 12.0:
-        m = models[i % len(models)]
-        s = rnd.uniform(52, 60) if m == "BG_Far_Peaks" else rnd.uniform(36, 44)
-        h = FAR_H[m] * s
-        e = mesh(f"BackdropFar{i + 1}", m, round(x + s / 2, 2), round(h / 2 - 3.5, 2),
-                 s, s, s,
+    rnd = random.Random(300 + n)
+    w = float(width)
+    ents = []
+    for i in range(int(w * count_per_u)):
+        m = rnd.choice(SHARD_MODELS)
+        z = rnd.uniform(11.0, 24.0)
+        s = rnd.uniform(0.5, 1.5) * (0.7 + z / 18.0)   # 遠いものほど少し大きく
+        e = mesh(f"BG_Shard{i + 1}", m,
+                 round(rnd.uniform(-0.06, 1.06) * w, 2),
+                 round(rnd.uniform(-0.5, 13.0), 2), s, s, s,
                  lua=script("BGProp.lua", [
-                     prop("spinZ", "float", 0.0), prop("bobAmp", "float", 0.0),
-                     prop("bobPeriod", "float", 9.0),
-                     prop("phase", "float", round(rnd.uniform(0, 8), 2)),
-                     prop("T", "float", float(limit))]),
-                 shader=BGLAYER, z=17.0 + (i % 2) * 1.2)
-        e["color"] = [0.72, 0.74, 0.9]
-        e["shaderParams"] = FOG_COL[n] + [0.0]
-        pieces.append(e)
-        x += s * rnd.uniform(0.8, 0.92)
-        i += 1
-    return pieces
+                     prop("spinZ", "float", round(rnd.uniform(4, 30) * rnd.choice([-1, 1]), 1)),
+                     prop("bobAmp", "float", round(rnd.uniform(0.15, 0.5), 2)),
+                     prop("bobAmpX", "float", round(rnd.uniform(0.1, 0.4), 2)),
+                     prop("bobPeriod", "float", round(rnd.uniform(7, 20), 1)),
+                     prop("phase", "float", round(rnd.uniform(0, 20), 1))]),
+                 shader=BGLAYER, rot=(0.0, 0.0, round(rnd.uniform(0, 360), 0)),
+                 z=round(z, 2))
+        e["color"] = rnd.choice(SHARD_COLORS)
+        e["shaderParams"] = FOG_COL[n] + [round(rnd.uniform(0.6, 1.8), 2)]
+        ents.append(e)
+    return ents
 
 
 def backdrop_sky(n, width, y_top, fx, fy, fz):
@@ -387,7 +389,8 @@ def backdrop_ridge(n, width, limit):
                      prop("T", "float", float(limit)), prop("collapseAt", "float", 0.0),
                      # 吸い込みイベントは1枚目だけが発行(SuckIn側は冪等だが多重発火を避ける)
                      prop("suckInAt", "float", 0.75 if i == 0 else 1.5)]),
-                 shader="shaders/BackdropRidge.hlsl", z=9.5 + (i % 2) * 0.9)
+                 # 1層構成(z一定)。0.25の互い違いはタイル重なり部のZファイト回避用
+                 shader="shaders/BackdropRidge.hlsl", z=9.5 + (i % 2) * 0.25)
         e["color"] = RIDGE_TINT[n]
         e["shaderParams"] = FOG_COL[n] + [0.0]
         pieces.append(e)
@@ -396,11 +399,10 @@ def backdrop_ridge(n, width, limit):
     return pieces
 
 
-def bg_decor(n, width, limit):
+def bg_decor(n, width):
     """Blender自作の背景モデル群(BG_*)を奥行き3層に散らす。純装飾でギミック無関係。
-    z: ゲーム面=0 / 近景3.4 / 中景4.2前後 / 遠景6前後 / 稜線9.5 / Backdrop(空)=30。
-    全プロップに BGProp.lua(T=制限時間)を付け、ステージ時間の全体を使って
-    砕けて消えていき残り0秒で完全消滅する。減光ティント(color)で
+    z: ゲーム面=0 / 近景3.4 / 中景4.2前後 / 遠景6前後 / 稜線9.5 / かけら11-24 / 空30。
+    時間で消えるのは稜線(BackdropRidge)だけ。装飾は減光ティント(color)で
     ゲーム面と見分けやすく沈める。配置はステージ番号シードの決定論。"""
     import random
     rnd = random.Random(1000 + n)
@@ -411,8 +413,7 @@ def bg_decor(n, width, limit):
         lua = script("BGProp.lua", [
             prop("spinZ", "float", round(spin, 2)), prop("bobAmp", "float", round(bob, 2)),
             prop("bobPeriod", "float", round(per, 2)),
-            prop("phase", "float", round(rnd.uniform(0, 8), 2)),
-            prop("T", "float", float(limit))])
+            prop("phase", "float", round(rnd.uniform(0, 8), 2))])
         e = mesh(name, model, round(fx * w, 2), round(y, 2), s, s, s,
                  lua=lua, shader=BGLAYER, rot=(0.0, 0.0, round(rot_z, 1)),
                  z=round(z, 2))
@@ -489,8 +490,8 @@ def build(n, entities, limit, width):
     sun["transform"]["position"][0] = width / 2.0
 
     ents = entities + [backdrop_sky(n, width, y1, fx, fy, fz)] + \
-        backdrop_far(n, width, limit) + backdrop_ridge(n, width, limit) + \
-        bg_decor(n, width, limit) + \
+        shards(n, width) + backdrop_ridge(n, width, limit) + \
+        bg_decor(n, width) + \
         [sun, cam, copy.deepcopy(T["Grid"]), copy.deepcopy(T["HudCanvas"])]
     hud_i = len(ents) - 1
     seek = copy.deepcopy(T["SeekBar"])

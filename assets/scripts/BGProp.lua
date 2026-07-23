@@ -7,6 +7,7 @@
 properties = {
   { name = "spinZ",     type = "float", default = 0.0, min = -180, max = 180, label = "Z回転速度(度/秒, 歯車用)" },
   { name = "bobAmp",    type = "float", default = 0.0, min = 0,    max = 5,   label = "上下浮遊の振れ幅(浮遊岩用)" },
+  { name = "bobAmpX",   type = "float", default = 0.0, min = 0,    max = 5,   label = "左右漂いの振れ幅(かけら用、上下と組で8の字)" },
   { name = "bobPeriod", type = "float", default = 9.0, min = 1,    max = 60,  label = "浮遊の周期(秒)" },
   { name = "phase",     type = "float", default = 0.0, min = 0,    max = 60,  label = "位相オフセット(秒)" },
   { name = "T",         type = "float", default = 0.0, min = 0,    max = 300, label = "ステージ制限時間(0=時間消滅なし)" },
@@ -38,9 +39,12 @@ function OnUpdate(self, dt)
     self.spin = (self.spin + self.spinZ * dt) % 360
     self.transform.rotation = Vec3.new(self.rx, self.ry, self.spin)
   end
-  if self.bobAmp > 0 then
-    local ny = self.by + math.sin((self.clock / self.bobPeriod) * math.pi * 2) * self.bobAmp
-    self.transform.position = Vec3.new(self.bx, ny, self.bz)
+  if self.bobAmp > 0 or self.bobAmpX > 0 then
+    local w = (self.clock / self.bobPeriod) * math.pi * 2
+    local ny = self.by + math.sin(w) * self.bobAmp
+    -- 横は倍周期+位相ずれ=ゆったりした8の字を描く
+    local nx = self.bx + math.sin(w * 0.5 + 1.7) * self.bobAmpX
+    self.transform.position = Vec3.new(nx, ny, self.bz)
   end
 
   local slow = (self.ts or 1) < 1 and 10 or 0

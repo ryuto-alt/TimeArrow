@@ -17,7 +17,7 @@ cbuffer PerObjectConstants : register(b0)
     float4x4 mvp;
     float4x4 model;
     float    effectValue;
-    float4   shaderParams;   // xyz=フォグ色(ステージの空に合わせる。全0なら既定の青)
+    float4   shaderParams;   // xyz=フォグ色(全0なら既定の青) / w=きらめき強度(かけら用)
 };
 
 cbuffer PerFrameConstants : register(b1)
@@ -107,6 +107,15 @@ float4 PSMain(PSInput input) : SV_TARGET
     float fog = saturate((input.viewDepth - 13.0f) / 8.0f) * 0.80f;
     lit = lerp(lit, fogColor, fog) * 0.80f;
     lit += glow * (1.0f - fog * 0.55f);   // 発光はフォグを少し貫いて残す
+
+    // きらめき(shaderParams.w>0): 位置ごとに違う周期で時折キラッと光る(時のかけら用)
+    if (shaderParams.w > 0.0f)
+    {
+        float tw = sin(time * (0.7f + shaderParams.w * 0.6f)
+                       + input.worldPos.x * 1.7f + input.worldPos.y * 2.3f) * 0.5f + 0.5f;
+        tw = pow(tw, 24.0f);
+        lit += (tex.rgb * input.color.rgb + 0.35f) * tw * shaderParams.w * 0.9f;
+    }
 
     // 砕ける直前のセルはシアンに光って予告する(時間に喰われていく感)
     if (progress > 0.001f)

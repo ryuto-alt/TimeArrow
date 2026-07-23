@@ -1321,24 +1321,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/BG_Far_Citadel/BG_Far_Citadel.obj"
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
    },
-   "name": "BackdropFar1",
+   "name": "BG_Shard1",
    "transform": {
     "position": [
-     6.2,
-     4.45,
-     17.0
+     2.49,
+     7.14,
+     14.12
     ],
     "rotation": [
      0.0,
      0.0,
-     0.0
+     190.0
     ],
     "scale": [
-     36.40103288400825,
-     36.40103288400825,
-     36.40103288400825
+     1.8415577578341278,
+     1.8415577578341278,
+     1.8415577578341278
     ]
    },
    "luaScript": {
@@ -1347,42 +1347,42 @@
      {
       "name": "spinZ",
       "type": "float",
-      "value": 0.0
+      "value": 20.2
      },
      {
       "name": "bobAmp",
       "type": "float",
-      "value": 0.0
+      "value": 0.21
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.24
      },
      {
       "name": "bobPeriod",
       "type": "float",
-      "value": 9.0
+      "value": 14.6
      },
      {
       "name": "phase",
       "type": "float",
-      "value": 1.24
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
+      "value": 1.8
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
    },
    "shader": "shaders/BackdropLayer.hlsl",
    "color": [
-    0.72,
-    0.74,
-    0.9
+    0.95,
+    0.95,
+    1.0
    ],
    "shaderParams": [
     0.22,
     0.15,
     0.34,
-    0.0
+    0.64
    ]
   },
   {
@@ -1391,24 +1391,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/BG_Far_Citadel/BG_Far_Citadel.obj"
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
    },
-   "name": "BackdropFar2",
+   "name": "BG_Shard2",
    "transform": {
     "position": [
-     40.36,
-     4.8,
-     18.2
+     15.35,
+     -0.44,
+     20.03
     ],
     "rotation": [
      0.0,
      0.0,
-     0.0
+     57.0
     ],
     "scale": [
-     37.99338867768583,
-     37.99338867768583,
-     37.99338867768583
+     1.156943383906341,
+     1.156943383906341,
+     1.156943383906341
     ]
    },
    "luaScript": {
@@ -1417,42 +1417,42 @@
      {
       "name": "spinZ",
       "type": "float",
-      "value": 0.0
+      "value": 20.1
      },
      {
       "name": "bobAmp",
       "type": "float",
-      "value": 0.0
+      "value": 0.25
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.38
      },
      {
       "name": "bobPeriod",
       "type": "float",
-      "value": 9.0
+      "value": 10.0
      },
      {
       "name": "phase",
       "type": "float",
-      "value": 0.62
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
+      "value": 6.8
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
    },
    "shader": "shaders/BackdropLayer.hlsl",
    "color": [
-    0.72,
-    0.74,
-    0.9
+    0.55,
+    1.0,
+    0.8
    ],
    "shaderParams": [
     0.22,
     0.15,
     0.34,
-    0.0
+    0.95
    ]
   },
   {
@@ -1461,24 +1461,24 @@
     "roughness": 0.6
    },
    "meshRenderer": {
-    "modelPath": "models/BG_Far_Citadel/BG_Far_Citadel.obj"
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
    },
-   "name": "BackdropFar3",
+   "name": "BG_Shard3",
    "transform": {
     "position": [
-     72.34,
-     5.29,
-     17.0
+     42.15,
+     8.32,
+     20.12
     ],
     "rotation": [
      0.0,
      0.0,
-     0.0
+     316.0
     ],
     "scale": [
-     40.21311348383447,
-     40.21311348383447,
-     40.21311348383447
+     2.4128262403234926,
+     2.4128262403234926,
+     2.4128262403234926
     ]
    },
    "luaScript": {
@@ -1487,42 +1487,2842 @@
      {
       "name": "spinZ",
       "type": "float",
-      "value": 0.0
+      "value": -10.5
      },
      {
       "name": "bobAmp",
       "type": "float",
-      "value": 0.0
+      "value": 0.5
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.32
      },
      {
       "name": "bobPeriod",
       "type": "float",
-      "value": 9.0
+      "value": 20.0
      },
      {
       "name": "phase",
       "type": "float",
-      "value": 3.15
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
+      "value": 17.7
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
    },
    "shader": "shaders/BackdropLayer.hlsl",
    "color": [
-    0.72,
-    0.74,
-    0.9
+    0.8,
+    0.6,
+    1.0
    ],
    "shaderParams": [
     0.22,
     0.15,
     0.34,
-    0.0
+    1.57
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard4",
+   "transform": {
+    "position": [
+     1.19,
+     12.67,
+     21.23
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     358.0
+    ],
+    "scale": [
+     2.306242047962841,
+     2.306242047962841,
+     2.306242047962841
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -26.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.27
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 18.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 16.8
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.57
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard5",
+   "transform": {
+    "position": [
+     20.91,
+     3.85,
+     12.22
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     1.0
+    ],
+    "scale": [
+     2.0064715047713615,
+     2.0064715047713615,
+     2.0064715047713615
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -19.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.48
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.39
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 15.1
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 14.1
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.76
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard6",
+   "transform": {
+    "position": [
+     36.96,
+     6.44,
+     13.49
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     243.0
+    ],
+    "scale": [
+     1.7154411062344634,
+     1.7154411062344634,
+     1.7154411062344634
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -4.1
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.17
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.18
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 13.6
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 17.1
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.19
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard7",
+   "transform": {
+    "position": [
+     34.06,
+     0.45,
+     13.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     14.0
+    ],
+    "scale": [
+     0.9736333530175452,
+     0.9736333530175452,
+     0.9736333530175452
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -14.7
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.33
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.3
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 13.5
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 17.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.16
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard8",
+   "transform": {
+    "position": [
+     22.33,
+     0.55,
+     17.87
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     31.0
+    ],
+    "scale": [
+     1.3487763815598142,
+     1.3487763815598142,
+     1.3487763815598142
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -15.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.46
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.26
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 18.3
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 10.8
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.58
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard9",
+   "transform": {
+    "position": [
+     51.26,
+     8.19,
+     21.29
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     293.0
+    ],
+    "scale": [
+     2.4775274538853136,
+     2.4775274538853136,
+     2.4775274538853136
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -20.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.5
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 0.9
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.87
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard10",
+   "transform": {
+    "position": [
+     17.33,
+     4.81,
+     17.61
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     235.0
+    ],
+    "scale": [
+     1.7653965548614385,
+     1.7653965548614385,
+     1.7653965548614385
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -27.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.2
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.29
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 16.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.63
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard11",
+   "transform": {
+    "position": [
+     52.03,
+     3.57,
+     21.35
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     266.0
+    ],
+    "scale": [
+     1.311287131490925,
+     1.311287131490925,
+     1.311287131490925
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 8.3
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.45
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.15
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 11.1
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 3.2
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.38
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard12",
+   "transform": {
+    "position": [
+     42.91,
+     5.22,
+     23.47
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     85.0
+    ],
+    "scale": [
+     2.4597969820617,
+     2.4597969820617,
+     2.4597969820617
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -26.3
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.42
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.37
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 7.9
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 1.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.45
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard13",
+   "transform": {
+    "position": [
+     46.71,
+     0.52,
+     20.51
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     49.0
+    ],
+    "scale": [
+     1.3238969708387882,
+     1.3238969708387882,
+     1.3238969708387882
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 12.1
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.2
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.32
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 13.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 10.2
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.77
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard14",
+   "transform": {
+    "position": [
+     53.19,
+     12.79,
+     14.09
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     2.0
+    ],
+    "scale": [
+     1.7841727434062193,
+     1.7841727434062193,
+     1.7841727434062193
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -16.8
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.48
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 14.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 8.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.74
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard15",
+   "transform": {
+    "position": [
+     21.95,
+     9.8,
+     12.65
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     259.0
+    ],
+    "scale": [
+     1.269717353127267,
+     1.269717353127267,
+     1.269717353127267
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 4.8
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.29
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 11.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 1.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.67
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard16",
+   "transform": {
+    "position": [
+     34.91,
+     8.58,
+     15.22
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     220.0
+    ],
+    "scale": [
+     0.9479649879960569,
+     0.9479649879960569,
+     0.9479649879960569
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -29.7
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.22
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.12
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 10.6
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 18.6
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.78
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard17",
+   "transform": {
+    "position": [
+     9.97,
+     4.31,
+     16.49
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     260.0
+    ],
+    "scale": [
+     2.1175996873535317,
+     2.1175996873535317,
+     2.1175996873535317
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -13.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.31
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.21
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 11.7
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 15.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.15
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard18",
+   "transform": {
+    "position": [
+     40.34,
+     12.14,
+     23.24
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     143.0
+    ],
+    "scale": [
+     2.274193080477537,
+     2.274193080477537,
+     2.274193080477537
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 26.4
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.16
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.2
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 10.5
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 12.2
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.82,
+    0.4
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.31
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard19",
+   "transform": {
+    "position": [
+     48.31,
+     9.98,
+     11.3
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     336.0
+    ],
+    "scale": [
+     1.8347491891561838,
+     1.8347491891561838,
+     1.8347491891561838
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -26.7
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.16
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 8.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 15.3
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.82,
+    0.4
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.41
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard20",
+   "transform": {
+    "position": [
+     40.96,
+     6.4,
+     20.49
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     184.0
+    ],
+    "scale": [
+     1.2540161945855968,
+     1.2540161945855968,
+     1.2540161945855968
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 5.3
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.22
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.19
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 8.3
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 12.1
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.94
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard21",
+   "transform": {
+    "position": [
+     14.28,
+     12.59,
+     18.48
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     54.0
+    ],
+    "scale": [
+     1.6576343205401443,
+     1.6576343205401443,
+     1.6576343205401443
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 5.6
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.45
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.12
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 15.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 5.9
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.82,
+    0.4
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.57
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard22",
+   "transform": {
+    "position": [
+     29.69,
+     8.07,
+     21.52
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     317.0
+    ],
+    "scale": [
+     0.9512256934421153,
+     0.9512256934421153,
+     0.9512256934421153
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 12.6
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.16
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.1
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 8.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 2.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.55,
+    0.75
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.9
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard23",
+   "transform": {
+    "position": [
+     32.86,
+     10.49,
+     12.12
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     226.0
+    ],
+    "scale": [
+     0.9682724644394783,
+     0.9682724644394783,
+     0.9682724644394783
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -8.8
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.2
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.9
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 14.9
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.64
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard24",
+   "transform": {
+    "position": [
+     18.96,
+     12.71,
+     22.62
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     134.0
+    ],
+    "scale": [
+     2.420600120824847,
+     2.420600120824847,
+     2.420600120824847
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 26.6
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.41
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.3
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 1.2
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.91
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard25",
+   "transform": {
+    "position": [
+     48.76,
+     7.09,
+     15.6
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     95.0
+    ],
+    "scale": [
+     0.7952310418563059,
+     0.7952310418563059,
+     0.7952310418563059
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 6.1
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.39
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.14
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 19.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 17.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.42
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard26",
+   "transform": {
+    "position": [
+     15.8,
+     6.48,
+     17.38
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     282.0
+    ],
+    "scale": [
+     1.1494106980640764,
+     1.1494106980640764,
+     1.1494106980640764
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 4.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.44
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.35
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.1
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 12.2
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.61
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard27",
+   "transform": {
+    "position": [
+     33.08,
+     1.03,
+     21.5
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     352.0
+    ],
+    "scale": [
+     1.4530336172858376,
+     1.4530336172858376,
+     1.4530336172858376
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -28.8
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.4
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.36
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.5
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 6.6
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.36
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard28",
+   "transform": {
+    "position": [
+     43.41,
+     1.37,
+     17.21
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     322.0
+    ],
+    "scale": [
+     2.428621333893427,
+     2.428621333893427,
+     2.428621333893427
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 28.7
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.21
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.24
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 16.7
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 2.3
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.97
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard29",
+   "transform": {
+    "position": [
+     3.34,
+     2.01,
+     12.25
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     117.0
+    ],
+    "scale": [
+     1.3329580895778106,
+     1.3329580895778106,
+     1.3329580895778106
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -28.4
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.32
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.12
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 7.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 14.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.55,
+    0.75
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.97
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard30",
+   "transform": {
+    "position": [
+     47.37,
+     3.11,
+     21.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     199.0
+    ],
+    "scale": [
+     2.0666644153352247,
+     2.0666644153352247,
+     2.0666644153352247
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 6.1
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.45
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.13
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.6
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 14.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.61
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard31",
+   "transform": {
+    "position": [
+     6.6,
+     7.26,
+     21.11
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     322.0
+    ],
+    "scale": [
+     2.1325220303081567,
+     2.1325220303081567,
+     2.1325220303081567
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -13.3
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.37
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.38
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 10.2
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 14.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.82,
+    0.4
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.13
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard32",
+   "transform": {
+    "position": [
+     43.53,
+     9.52,
+     23.72
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     246.0
+    ],
+    "scale": [
+     1.7538277003737217,
+     1.7538277003737217,
+     1.7538277003737217
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -21.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.37
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.34
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.3
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 14.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.45
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard33",
+   "transform": {
+    "position": [
+     27.84,
+     2.6,
+     23.84
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     127.0
+    ],
+    "scale": [
+     1.7198844787790715,
+     1.7198844787790715,
+     1.7198844787790715
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 4.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.4
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.36
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 8.9
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 16.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.28
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard34",
+   "transform": {
+    "position": [
+     11.44,
+     1.6,
+     14.11
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     42.0
+    ],
+    "scale": [
+     1.4340393187550522,
+     1.4340393187550522,
+     1.4340393187550522
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 12.9
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.39
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.15
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.1
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 4.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.82,
+    0.4
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.78
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard35",
+   "transform": {
+    "position": [
+     47.91,
+     9.8,
+     21.55
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     240.0
+    ],
+    "scale": [
+     1.866399324211652,
+     1.866399324211652,
+     1.866399324211652
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -17.4
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.26
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.34
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 11.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 8.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.2
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard36",
+   "transform": {
+    "position": [
+     39.26,
+     11.92,
+     13.88
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     86.0
+    ],
+    "scale": [
+     2.1392743742590468,
+     2.1392743742590468,
+     2.1392743742590468
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -4.5
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.22
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.36
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 11.3
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 15.5
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.79
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard37",
+   "transform": {
+    "position": [
+     49.66,
+     8.77,
+     19.18
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     27.0
+    ],
+    "scale": [
+     1.4553124423656316,
+     1.4553124423656316,
+     1.4553124423656316
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -13.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.38
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.4
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 10.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 10.9
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.54
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard38",
+   "transform": {
+    "position": [
+     2.76,
+     11.18,
+     17.03
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     135.0
+    ],
+    "scale": [
+     1.8204730952569264,
+     1.8204730952569264,
+     1.8204730952569264
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -8.8
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.31
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.13
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 19.6
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 5.1
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.95,
+    0.95,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.45
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard39",
+   "transform": {
+    "position": [
+     24.57,
+     1.25,
+     14.98
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     320.0
+    ],
+    "scale": [
+     1.157958777467475,
+     1.157958777467475,
+     1.157958777467475
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -5.5
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.17
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.15
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 8.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 5.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    0.9,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.76
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard40",
+   "transform": {
+    "position": [
+     10.27,
+     9.52,
+     12.47
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     353.0
+    ],
+    "scale": [
+     1.784246965160101,
+     1.784246965160101,
+     1.784246965160101
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -20.6
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.22
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.17
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.4
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 7.7
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.8,
+    0.6,
+    1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.82
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Gear/BG_Shard_Gear.obj"
+   },
+   "name": "BG_Shard41",
+   "transform": {
+    "position": [
+     18.7,
+     3.03,
+     19.76
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     13.0
+    ],
+    "scale": [
+     0.9146977731050718,
+     0.9146977731050718,
+     0.9146977731050718
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -24.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.49
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.28
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 12.3
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 11.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.82,
+    0.4
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.63
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Rock/BG_Shard_Rock.obj"
+   },
+   "name": "BG_Shard42",
+   "transform": {
+    "position": [
+     50.67,
+     3.96,
+     15.69
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     115.0
+    ],
+    "scale": [
+     0.8635845060477678,
+     0.8635845060477678,
+     0.8635845060477678
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": -4.8
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.45
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.36
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 14.5
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 17.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.55,
+    1.0,
+    0.8
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.08
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Shard_Crystal/BG_Shard_Crystal.obj"
+   },
+   "name": "BG_Shard43",
+   "transform": {
+    "position": [
+     46.89,
+     7.49,
+     21.07
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     129.0
+    ],
+    "scale": [
+     1.4521286124482085,
+     1.4521286124482085,
+     1.4521286124482085
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 24.3
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.32
+     },
+     {
+      "name": "bobAmpX",
+      "type": "float",
+      "value": 0.28
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 17.3
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 18.4
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    1.0,
+    0.55,
+    0.75
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    1.24
    ]
   },
   {
@@ -1598,7 +4398,7 @@
     "position": [
      33.08,
      2.35,
-     10.4
+     9.75
     ],
     "rotation": [
      0.0,
@@ -1753,11 +4553,6 @@
       "name": "phase",
       "type": "float",
       "value": 3.57
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -1823,11 +4618,6 @@
       "name": "phase",
       "type": "float",
       "value": 3.61
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -1893,11 +4683,6 @@
       "name": "phase",
       "type": "float",
       "value": 5.74
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -1963,11 +4748,6 @@
       "name": "phase",
       "type": "float",
       "value": 4.31
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2033,11 +4813,6 @@
       "name": "phase",
       "type": "float",
       "value": 0.01
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2103,11 +4878,6 @@
       "name": "phase",
       "type": "float",
       "value": 6.85
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2173,11 +4943,6 @@
       "name": "phase",
       "type": "float",
       "value": 1.06
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2243,11 +5008,6 @@
       "name": "phase",
       "type": "float",
       "value": 5.1
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2313,11 +5073,6 @@
       "name": "phase",
       "type": "float",
       "value": 0.78
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2383,11 +5138,6 @@
       "name": "phase",
       "type": "float",
       "value": 4.06
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2453,11 +5203,6 @@
       "name": "phase",
       "type": "float",
       "value": 5.67
-     },
-     {
-      "name": "T",
-      "type": "float",
-      "value": 33.0
      }
     ],
     "scriptPath": "scripts/BGProp.lua"
@@ -2641,7 +5386,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 44,
+   "parent": 84,
    "transform": {
     "position": [
      0.0,
@@ -2718,7 +5463,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 44,
+   "parent": 84,
    "transform": {
     "position": [
      0.0,
@@ -2933,7 +5678,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 84
   },
   {
    "name": "TimeLeft",
@@ -3025,7 +5770,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 84
   },
   {
    "name": "DrawAmount",
@@ -3117,7 +5862,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 84
   },
   {
    "name": "RewindCount",
@@ -3209,7 +5954,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 44
+   "parent": 84
   }
  ]
 }
