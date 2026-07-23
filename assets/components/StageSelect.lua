@@ -1,10 +1,10 @@
 -- 4枚目を先読み連続スクロール ステージ選択
 local STAGES = {
-  { path = "scenes/stage1.json", name = "STAGE 01", thumbnail = "textures/ui/stageN.png" },
-  { path = "scenes/stage2.json", name = "STAGE 02",  thumbnail = "textures/ui/stageN.png" },
-  { path = "scenes/stage3.json", name = "STAGE 03",   thumbnail = "textures/ui/stageN.png" },
-  { path = "scenes/stage4.json", name = "STAGE 04", thumbnail = "textures/ui/stageN.png" },
-  { path = "scenes/stage5.json", name = "STAGE 05",  thumbnail = "textures/ui/stageN.png" },
+  { path = "scenes/stage1.json", name = "遅れ橋の丘", thumbnail = "textures/ui/stage1.png" },
+  { path = "scenes/stage2.json", name = "時限の回廊", thumbnail = "textures/ui/stage2.png" },
+  { path = "scenes/stage3.json", name = "風わたる谷", thumbnail = "textures/ui/stage3.png" },
+  { path = "scenes/stage4.json", name = "歯車の工房", thumbnail = "textures/ui/stage4.png" },
+  { path = "scenes/stage5.json", name = "時果ての塔", thumbnail = "textures/ui/stage5.png" },
 }
 
 local ENTER_AT = 0.45

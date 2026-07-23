@@ -159,7 +159,7 @@
       }
     },
     {
-      "name": "SelectHeader",
+      "name": "StageThumbnailBuffer",
       "parent": 5,
       "transform": {
         "position": [
@@ -178,60 +178,23 @@
           1.0
         ]
       },
-      "uiAnimator": {
-        "hoverScale": 1.0,
-        "hoverSpeed": 14.0,
-        "loopAmount": 8.0,
-        "loopAnim": 0,
-        "loopSpeed": 1.0,
-        "pressScale": 1.0,
-        "showAnim": 1,
-        "showDelay": 0.0,
-        "showDuration": 0.4000000059604645,
-        "showEasing": 2,
-        "slideOffset": 80.0
-      },
-      "uiRect": {
-        "anchorMax": [
-          0.5,
-          1.0
-        ],
-        "anchorMin": [
-          0.5,
-          1.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          300.0,
-          -116.0
-        ],
-        "offsetMin": [
-          -300.0,
-          -158.0
-        ],
-        "order": 0,
-        "pivot": [
-          0.5,
-          0.0
-        ],
-        "rotation": 0.0,
-        "skewX": 0.0,
-        "visible": true
-      },
-      "uiText": {
-        "alignH": 1,
-        "alignV": 1,
-        "charAnim": 0,
-        "charAnimAmount": 4.0,
-        "charAnimSpeed": 2.0,
+      "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
         "color": [
+          0.7200000286102295,
+          0.8199999928474426,
           1.0,
-          0.8500000238418579,
-          0.30000001192092896,
-          1.0
+          0.7200000286102295
         ],
-        "fontPath": "",
-        "fontSize": 34.0,
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
         "gradientColor2": [
           1.0,
           1.0,
@@ -239,28 +202,84 @@
           1.0
         ],
         "gradientDir": 0,
-        "letterSpacing": 0.0,
+        "gradientScrollSpeed": 0.0,
         "outlineColor": [
-          0.0,
-          0.0,
-          0.0,
-          1.0
+          0.550000011920929,
+          0.7799999713897705,
+          1.0,
+          0.800000011920929
         ],
+        "outlineDash": 18.0,
+        "outlineStyle": 2,
         "outlineWidth": 0.0,
-        "rich": false,
+        "raycastBlock": false,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
         "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.44999998807907104
+        ],
+        "shadowOffset": [
+          0.0,
+          6.0
+        ],
+        "shadowSoftness": 10.0,
+        "shape": 0,
+        "sliceBorder": [
           0.0,
           0.0,
           0.0,
           0.0
         ],
-        "shadowOffset": [
+        "texturePath": "textures/ui/stageN.png",
+        "uvMax": [
           1.0,
           1.0
         ],
-        "text": "ステージセレクト",
-        "typewriterSpeed": 0.0,
-        "wrap": false
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
+      },
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          1095.0,
+          205.0
+        ],
+        "offsetMin": [
+          837.0,
+          60.0
+        ],
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": false
       }
     },
     {
@@ -315,8 +334,8 @@
           0.8999999761581421
         ],
         "outlineDash": 28.0,
-        "outlineStyle": 2,
-        "outlineWidth": 4.5,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
         "raycastBlock": false,
         "ringThickness": 8.0,
         "segmentColor": [
@@ -345,7 +364,7 @@
           40.0,
           40.0
         ],
-        "texturePath": "textures/ui/stageN.png",
+        "texturePath": "textures/ui/stage1.png",
         "uvMax": [
           1.0,
           1.0
@@ -410,25 +429,25 @@
       "uiRect": {
         "anchorMax": [
           0.5,
-          0.5
+          0.0
         ],
         "anchorMin": [
           0.5,
-          0.5
+          0.0
         ],
         "clipChildren": false,
         "offsetMax": [
           220.0,
-          -168.0
+          170.0
         ],
         "offsetMin": [
           -220.0,
-          -220.0
+          118.0
         ],
         "order": 2,
         "pivot": [
           0.5,
-          0.5
+          1.0
         ],
         "rotation": 0.0,
         "skewX": 0.0,
@@ -441,8 +460,8 @@
         "charAnimAmount": 4.0,
         "charAnimSpeed": 2.0,
         "color": [
-          0.6000000238418579,
-          0.8500000238418579,
+          1.0,
+          1.0,
           1.0,
           1.0
         ],
@@ -1451,8 +1470,8 @@
           0.800000011920929
         ],
         "outlineDash": 18.0,
-        "outlineStyle": 2,
-        "outlineWidth": 1.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
         "raycastBlock": false,
         "ringThickness": 8.0,
         "segmentColor": [
@@ -1481,7 +1500,7 @@
           0.0,
           0.0
         ],
-        "texturePath": "textures/ui/stageN.png",
+        "texturePath": "textures/ui/stage5.png",
         "uvMax": [
           1.0,
           1.0
@@ -1576,7 +1595,7 @@
         ],
         "outlineDash": 18.0,
         "outlineStyle": 2,
-        "outlineWidth": 1.0,
+        "outlineWidth": 0.0,
         "raycastBlock": false,
         "ringThickness": 8.0,
         "segmentColor": [
@@ -1605,7 +1624,7 @@
           0.0,
           0.0
         ],
-        "texturePath": "textures/ui/stageN.png",
+        "texturePath": "textures/ui/stage2.png",
         "uvMax": [
           1.0,
           1.0
@@ -1829,130 +1848,6 @@
         "text": "",
         "typewriterSpeed": 0.0,
         "wrap": false
-      }
-    },
-    {
-      "name": "StageThumbnailBuffer",
-      "parent": 5,
-      "transform": {
-        "position": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "rotation": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "scale": [
-          1.0,
-          1.0,
-          1.0
-        ]
-      },
-      "uiImage": {
-        "animCols": 0,
-        "animFps": 8.0,
-        "animFrames": 0,
-        "animMode": 0,
-        "animRow": 0,
-        "animRows": 0,
-        "color": [
-          0.7200000286102295,
-          0.8199999928474426,
-          1.0,
-          0.7200000286102295
-        ],
-        "cornerRadius": 0.0,
-        "fillAmount": 1.0,
-        "fillDir": 0,
-        "fillOrigin": 0.0,
-        "gradientColor2": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "gradientDir": 0,
-        "gradientScrollSpeed": 0.0,
-        "outlineColor": [
-          0.550000011920929,
-          0.7799999713897705,
-          1.0,
-          0.800000011920929
-        ],
-        "outlineDash": 18.0,
-        "outlineStyle": 2,
-        "outlineWidth": 1.0,
-        "raycastBlock": false,
-        "ringThickness": 8.0,
-        "segmentColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.699999988079071
-        ],
-        "segmentGap": 3.0,
-        "segments": 0,
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.44999998807907104
-        ],
-        "shadowOffset": [
-          0.0,
-          6.0
-        ],
-        "shadowSoftness": 10.0,
-        "shape": 0,
-        "sliceBorder": [
-          0.0,
-          0.0,
-          0.0,
-          0.0
-        ],
-        "texturePath": "textures/ui/stageN.png",
-        "uvMax": [
-          1.0,
-          1.0
-        ],
-        "uvMin": [
-          0.0,
-          0.0
-        ],
-        "uvScroll": [
-          0.0,
-          0.0
-        ]
-      },
-      "uiRect": {
-        "anchorMax": [
-          0.5,
-          0.5
-        ],
-        "anchorMin": [
-          0.5,
-          0.5
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          1095.0,
-          205.0
-        ],
-        "offsetMin": [
-          837.0,
-          60.0
-        ],
-        "order": 0,
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "rotation": 0.0,
-        "skewX": 0.0,
-        "visible": false
       }
     }
   ],
