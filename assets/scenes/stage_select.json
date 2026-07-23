@@ -2978,6 +2978,241 @@
         "pressScale": 1.0,
         "loopAnim": 0
       }
+    },
+    {
+      "name": "SelectBg",
+      "parent": 5,
+      "uiRect": {
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "offsetMin": [
+          0.0,
+          0.0
+        ],
+        "offsetMax": [
+          0.0,
+          0.0
+        ],
+        "visible": true,
+        "order": -5
+      },
+      "uiImage": {
+        "texturePath": "textures/ui/bg_stage_select.png",
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "raycastBlock": false
+      },
+      "uiAnimator": {
+        "showAnim": 1,
+        "showDuration": 0.6,
+        "showDelay": 0.0,
+        "showEasing": 2,
+        "hoverScale": 1.0,
+        "pressScale": 1.0,
+        "loopAnim": 0
+      }
+    },
+    {
+      "name": "SelectGear_gearL1",
+      "parent": 5,
+      "uiRect": {
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "offsetMin": [
+          200.7,
+          31.9
+        ],
+        "offsetMax": [
+          463.3,
+          294.5
+        ],
+        "visible": true,
+        "order": -4
+      },
+      "uiImage": {
+        "texturePath": "textures/ui/select_gearL1.png",
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "raycastBlock": false
+      },
+      "uiAnimator": {
+        "showAnim": 1,
+        "showDuration": 0.6,
+        "showDelay": 0.0,
+        "showEasing": 2,
+        "hoverScale": 1.0,
+        "pressScale": 1.0,
+        "loopAnim": 0
+      }
+    },
+    {
+      "name": "SelectGear_gearL2",
+      "parent": 5,
+      "uiRect": {
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "offsetMin": [
+          147.2,
+          -78.8
+        ],
+        "offsetMax": [
+          315.2,
+          89.2
+        ],
+        "visible": true,
+        "order": -4
+      },
+      "uiImage": {
+        "texturePath": "textures/ui/select_gearL2.png",
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "raycastBlock": false
+      },
+      "uiAnimator": {
+        "showAnim": 1,
+        "showDuration": 0.6,
+        "showDelay": 0.0,
+        "showEasing": 2,
+        "hoverScale": 1.0,
+        "pressScale": 1.0,
+        "loopAnim": 0
+      }
+    },
+    {
+      "name": "SelectGear_gearR1",
+      "parent": 5,
+      "uiRect": {
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "offsetMin": [
+          852.1,
+          6.8
+        ],
+        "offsetMax": [
+          1073.5,
+          228.2
+        ],
+        "visible": true,
+        "order": -4
+      },
+      "uiImage": {
+        "texturePath": "textures/ui/select_gearR1.png",
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "raycastBlock": false
+      },
+      "uiAnimator": {
+        "showAnim": 1,
+        "showDuration": 0.6,
+        "showDelay": 0.0,
+        "showEasing": 2,
+        "hoverScale": 1.0,
+        "pressScale": 1.0,
+        "loopAnim": 0
+      }
+    },
+    {
+      "name": "SelectGear_gearR2",
+      "parent": 5,
+      "uiRect": {
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "offsetMin": [
+          983.8,
+          -94.0
+        ],
+        "offsetMax": [
+          1125.2,
+          47.4
+        ],
+        "visible": true,
+        "order": -4
+      },
+      "uiImage": {
+        "texturePath": "textures/ui/select_gearR2.png",
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "raycastBlock": false
+      },
+      "uiAnimator": {
+        "showAnim": 1,
+        "showDuration": 0.6,
+        "showDelay": 0.0,
+        "showEasing": 2,
+        "hoverScale": 1.0,
+        "pressScale": 1.0,
+        "loopAnim": 0
+      }
     }
   ],
   "postProcess": {

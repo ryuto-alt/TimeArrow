@@ -290,8 +290,27 @@ function OnStart(self)
   end)
 end
 
+-- 背景の歯車(Blenderレイヤー出し UI画像)をゆっくり回す。隣り合う歯車は逆回転。
+-- オプション中/退場中も回し続ける(背景は生きたまま)。
+local GEAR_SPINS = {
+  { name = "SelectGear_gearL1", speed = 8 },
+  { name = "SelectGear_gearL2", speed = -11 },
+  { name = "SelectGear_gearR1", speed = -7 },
+  { name = "SelectGear_gearR2", speed = 10 },
+}
+
+local function spinGears(dt)
+  for _, s in ipairs(GEAR_SPINS) do
+    s.e = s.e or scene:findEntity(s.name)
+    if isValid(s.e) then
+      scene:setUiRotation(s.e, (scene:getUiRotation(s.e) + s.speed * dt) % 360)
+    end
+  end
+end
+
 --- Advances the transition timer and routes keyboard, gamepad, and button input.
 function OnUpdate(self, dt)
+  spinGears(dt)
   if leaving or optionsOpen then return end
   entryTime = entryTime + dt
 
