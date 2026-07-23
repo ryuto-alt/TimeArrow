@@ -24,7 +24,7 @@ function OnStart(self)
     if data.target ~= self.name then return end
     -- 一括加算せず早送り(0.5秒で消化)して、足場が高速で動いて見えるようにする
     self.ffRemain = self.ffRemain + data.amount
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- ゆっくり消化(サージが速すぎて避けられない問題への全体調整)
     FX.spark(self.bx, self.transform.position.y, self.bz, 8, 0.3, 0.75, 1.0)
     FX.shockwave(self.bx, self.transform.position.y, self.bz, 10, 6, 0.3, 0.9, 1.0)
   end)
@@ -35,7 +35,7 @@ function OnStart(self)
     if data.target ~= self.name then return end
     -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
     self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
-    self.rwSpeed = self.rwRemain / 0.5
+    self.rwSpeed = self.rwRemain / 1.5   -- FFと同じ1.5秒消化(全ギミック統一テンポ。RWだけ3倍速で落下が速すぎた)
     self.rwGlow = 0.1
     local p = self.transform.position
     FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)

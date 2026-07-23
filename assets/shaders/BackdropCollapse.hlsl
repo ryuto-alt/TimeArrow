@@ -83,15 +83,14 @@ float4 PSMain(PSInput input) : SV_TARGET
 
     float4 albedo = g_albedo.Sample(g_sampler, input.texCoord) * input.color;
 
-    float3 N = normalize(input.worldNormal);
-    float3 L = normalize(-lightDir);
-    float  ndotl = max(dot(N, L), 0.0f);
-    float3 lit = albedo.rgb * (lightColor * ndotl + ambientStrength);
+    // 空(bg_sky.png)は自発光なのでライティングしない。カメラ正対の法線は
+    // 太陽と逆向きで ndotl=0 になり、環境光だけの半減でくすんでいた
+    float3 lit = albedo.rgb;
 
     // 斜めに緩やかに流れる細い発光ライン(backdrop.hlsl と同じ「時計の目盛」演出)
     float diag = input.texCoord.x * 6.0f + input.texCoord.y * 2.0f - time * 0.15f;
     float stripe = saturate(sin(diag * 6.2831853f) * 0.5f + 0.5f);
-    stripe = pow(stripe, 8.0f);
+    stripe = pow(stripe, 8.0f) * 0.4f;   // 空の上では控えめに
     float3 glowColor = float3(0.35f, 0.75f, 1.0f);
 
     // 崩壊境界のすぐ内側だけオレンジで発光させる(崩れる縁が光る演出)。

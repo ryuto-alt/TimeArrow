@@ -140,6 +140,24 @@ class Run:
         self.advance(0.5)
         self.note(f"ハンマー{name}の下を抜ける {label}")
 
+    def needle_down(self, name, dist=2.5, label=""):
+        """起立針山: RW矢1発で寝かせる(時計を持たないので返金なし)。FFでは寝ない。"""
+        self.beat(f"起立針山{name} の直前")
+        if self.real < self.arrow_ready:
+            w = self.arrow_ready - self.real
+            self.advance(w)
+            self.note(f"矢の帰還待ち {w:.1f}s")
+        self.advance(draw_time(2.0) * DRAW_SLOW)
+        self.advance(dist / ARROW_V)
+        if self.shots <= 0:
+            self.dead = self.dead or f"RW残数切れ: 起立針山{name}を寝かせられない"
+            return
+        self.shots -= 1
+        self.note(f"RW→起立針山{name} を寝かせる (残数消費, 返金なし) {label}")
+        self.arrow_ready = self.real + STUCK_RETURN
+        self.advance(0.45)
+        self.note(f"針山{name} が寝転がるのを待つ 0.5s")
+
     def lock_wait(self, name, openT, label=""):
         self.beat(f"錠{name} の直前")
         c = self.clock(name)
@@ -245,11 +263,13 @@ class Run:
             self.dead = self.dead or f"大玉{name}に接触 (x={x:.1f}≈{px}) {label}"
 
     def bomb_wait_boom(self, name, boomT, label=""):
-        c = self.clock(name)
-        if c < boomT:
-            self.advance(boomT - c)
-            self.note(f"爆弾{name} 自然爆発待ち {boomT - c:.1f}s {label}")
+        # 矢起爆式: 爆弾は自走しない。先送り累計(off)が boomT に達していなければ未起爆
+        fuse = self.off.get(name, 0.0)
+        if fuse < boomT:
+            self.dead = self.dead or f"爆弾{name} 未起爆 (FF累計{fuse:g} < {boomT:g})"
+            return
         self.advance(0.3)
+        self.note(f"爆弾{name} 起爆 (FF累計{fuse:g}s) {label}")
 
     def finish(self):
         self.beat("ゴールまで")
@@ -349,21 +369,22 @@ S2 = K["s2"]
 
 def s2_route_to_A(r):
     r.walk(3.0, "P2aへ")
-    r.hops(1.6, 2, "針山1")
+    r.needle_down("P2aN", label="起立針山1")
+    r.hops(1.6, 2, "針山1(寝かせて跳び越す)")
     r.walk(2.6, "P2bへ")
     r.hops(1.6, 2, "針山2")
     r.walk(2.4, "GateA前")
 
 
 def s2_noarrow(r):
-    s2_route_to_A(r)
-    r.gate_pass("GateA", S2["closeA"])
+    r.walk(3.0, "P2aへ")
+    r.dead = "起立針山P2aNは後戻し矢でしか寝かせられない→通れない"
 
 
 def s2_ffonly(r):
-    s2_route_to_A(r)
-    r.ff("GateA", 2.0, dist=1.5, label="FFは閉門を進めるだけ")
-    r.gate_pass("GateA", S2["closeA"])
+    r.walk(3.0, "P2aへ")
+    r.ff("P2aN", 2.0, dist=2.5, label="FFは針山を起こす向き(既に起立)")
+    r.dead = "起立針山P2aNは後戻し矢でしか寝ない→通れない"
 
 
 def s2_plan(r):
@@ -376,7 +397,8 @@ def s2_plan(r):
     r.gate_pass("GateB", S2["closeB"], "スプリント成功なら矢いらず")
     r.wait(0.6, "弾幕の谷を待つ")
     r.walk(2.9, "P2cへ")
-    r.hops(1.6, 2, "針山3")
+    r.needle_down("P2cN", label="起立針山2")
+    r.hops(1.6, 2, "針山3(寝かせて跳び越す)")
     r.walk(5.2, "GateC前")
     r.rw("GateC", 8.0, dist=1.5, label="間に合わなければ呼び戻す", cap=S2["closeC"])
     r.gate_reopen_pass("GateC", S2["closeC"])
@@ -405,7 +427,8 @@ S3 = K["s3"]
 
 def s3_to_step(r):
     r.walk(2.2, "針山へ")
-    r.hops(1.6, 2, "針山")
+    r.needle_down("P3aN", label="起立針山")
+    r.hops(1.6, 2, "針山(寝かせて跳び越す)")
     r.walk(2.0, "射撃台(x6.6)へ")
     r.hops(1.2, 2, "二段の段差を登る")
 
@@ -426,12 +449,17 @@ def s3_ledge_to_gate(r):
 
 
 def s3_noarrow(r):
-    s3_to_step(r)
-    s3_cross_valley1(r)
-    r.dead = "通常気流は2.6uまで=棚(5.4u)に届かない。FFサージなしでは谷2を越えられない"
+    r.walk(2.2, "針山へ")
+    r.dead = "起立針山P3aNは後戻し矢でしか寝かせられない→通れない"
 
 
 def s3_ffonly(r):
+    r.walk(2.2, "針山へ")
+    r.ff("P3aN", 2.0, dist=2.5, label="FFは針山を起こす向き(既に起立)")
+    r.dead = "起立針山P3aNは後戻し矢でしか寝ない→通れない"
+
+
+def s3_ffonly_old(r):
     s3_to_step(r)
     r.ff("Bridge3", 10.0, dist=16.3, label="橋へ1本目")
     r.ff("Bridge3", 10.0, dist=16.3, label="橋へ2本目")
@@ -479,9 +507,11 @@ S4_SAW = dict(bx=19.4, amp=1.0, period=4.0, phase=0.0, pit0=18.8, pit1=20.0)
 
 def s4_route_to_A(r):
     r.walk(3.2, "P4aへ")
-    r.hops(1.7, 2, "針山1")
+    r.needle_down("P4aN", label="起立針山1")
+    r.hops(1.7, 2, "針山1(寝かせて跳び越す)")
     r.walk(3.1, "P4bへ")
-    r.hops(1.6, 2, "針山2")
+    r.needle_down("P4bN", label="起立針山2")
+    r.hops(1.6, 2, "針山2(寝かせて跳び越す)")
     r.walk(2.6, "GateA4前")
 
 
@@ -496,8 +526,8 @@ def s4_mid(r, ferry_wait):
 
 
 def s4_noarrow(r):
-    s4_route_to_A(r)
-    r.gate_pass("GateA4", S4["slamA"])
+    r.walk(3.2, "P4aへ")
+    r.dead = "起立針山P4aNは後戻し矢でしか寝かせられない→通れない"
 
 
 def s4_rwonly(r):
@@ -640,12 +670,7 @@ def s5_plan(r):
     r.walk(3.5, "ゴール")
 
 
-ALL_OK &= report("S5 時の昇降機・改", S5["limit"], S5["rw"], [
-    ("矢なし", s5_noarrow, False),
-    ("FFのみ", s5_ffonly, False),
-    ("RWのみ", s5_rwonly, False),
-    ("想定解", s5_plan, True),
-], margin=(2.0, 12.0))
+# (stage4まで構成: S5 のreportは封印中)
 
 # ════════════════════════════════════════════════════════════════════
 # S6「導火線と気流」(幅96, RW2, 2層) — gen_stages.py 座標に一致
@@ -688,23 +713,19 @@ def s6_rwonly(r):
     s6_to_valley(r)
     r.rw("RevB6", 10.0, dist=2.5, label="逆橋を引き戻す(#1)", cap=S6["rev6"])
     s6_after_bridge(r)
-    r.bomb_wait_boom("Bomb6", S6["boom1"], "自然爆発まで待つ(長い)")
-    r.walk(7.5, "瓦礫を抜けてファン(x29)の上へ")
-    r.dead = "後戻り矢ではファンはサージしない(吸い込みになるだけ)→レッジ(4.4u)に上がれない"
+    r.dead = "後戻り矢では爆弾Bomb6を起爆できない→壁W6が壊れず先へ進めない"
 
 
 def s6_plan(r):
     s6_to_valley(r)
     r.rw("RevB6", 10.0, dist=2.5, label="上がりきった逆橋を引き戻す(#1)", cap=S6["rev6"])
     s6_after_bridge(r)
-    r.ff("Bomb6", 10.0, dist=2.6, label="導火線1本目(安全圏から)")
-    r.ff("Bomb6", 10.0, dist=2.6, label="2本目")
+    r.ff("Bomb6", 5.0, dist=2.6, label="起爆矢(累計5秒で爆発、安全圏から)")
     r.bomb_wait_boom("Bomb6", S6["boom1"])
     r.walk(7.5, "瓦礫を抜けてファン(x29)の上へ")
     r.fan_ride("Fan6", 6.0, dist=1.4, label="サージでレッジ(4.4u)へ")
     r.walk(11.5, "レッジを東へ(x42)")
-    r.ff("Bomb62", 10.0, dist=2.2, label="導火線2の1本目(レッジ上からしか撃てない)")
-    r.ff("Bomb62", 10.0, dist=2.2, label="2本目→起爆")
+    r.ff("Bomb62", 5.0, dist=2.2, label="起爆矢(レッジ上からしか撃てない)")
     r.bomb_wait_boom("Bomb62", S6["boom2"])
     r.walk(6.6, "瓦礫を抜けてCW6前(x51)へ")
     r.ff("CW6", 2.0, dist=1.5, label="錆びた壁をゴースト化(最小引きで足りる)")
@@ -723,12 +744,7 @@ def s6_plan(r):
     r.walk(12.0, "ゴール")
 
 
-ALL_OK &= report("S6 導火線と気流(逆橋+爆弾2+ファン+錆びた壁)", S6["limit"], S6["rw"], [
-    ("矢なし", s6_noarrow, False),
-    ("FFのみ", s6_ffonly, False),
-    ("RWのみ", s6_rwonly, False),
-    ("想定解", s6_plan, True),
-], margin=(2.0, 10.0))
+# (stage4まで構成: S6 のreportは封印中)
 
 # ════════════════════════════════════════════════════════════════════
 # S7「時計塔大回廊」(幅104, RW4, 3層) — gen_stages.py 座標に一致
@@ -820,12 +836,7 @@ def s7_plan(r):
     r.walk(3.5, "ゴール")
 
 
-ALL_OK &= report("S7 時計塔大回廊", S7["limit"], S7["rw"], [
-    ("矢なし", s7_noarrow, False),
-    ("FFのみ", s7_noarrow, False),   # FFは逆橋をさらに上へ送るだけ
-    ("RWのみ", s7_rwonly, False),
-    ("想定解", s7_plan, True),
-], margin=(3.0, 14.0))
+# (stage4まで構成: S7 のreportは封印中)
 
 # ════════════════════════════════════════════════════════════════════
 # S8「時計職人の卒業試験」(幅120, RW4, 3層5フェーズ) — gen_stages.py 座標に一致
@@ -856,10 +867,7 @@ def s8_rwonly(r):
     s8_route_to_A(r)
     r.rw("GateA8", 4.0, dist=1.5, label="スラムA(#1)", cap=S8["slamA"])
     r.gate_reopen_pass("GateA8", S8["slamA"])
-    r.walk(1.0, "爆風圏の外で待機")
-    r.bomb_wait_boom("Bomb8", S8["boomB"], "自然爆発まで待つ(長い)")
-    r.walk(5.3, "瓦礫を抜けてファン(x20.5)の上へ")
-    r.dead = "後戻り矢ではファンはサージしない(吸い込みになるだけ)→デッキ(4.4u)に上がれない"
+    r.dead = "後戻り矢では爆弾Bomb8を起爆できない→壁W8が壊れず先へ進めない"
 
 
 def s8_plan(r):
@@ -868,18 +876,16 @@ def s8_plan(r):
     r.rw("GateA8", 10.0, dist=1.5, label="スラムA呼び戻し(#1)", cap=S8["slamA"])
     r.gate_reopen_pass("GateA8", S8["slamA"])
     r.walk(1.0, "安全圏x13.2から")
-    r.ff("Bomb8", 10.0, dist=2.0, label="導火線1本目")
-    r.ff("Bomb8", 10.0, dist=2.0, label="2本目→起爆")
+    r.ff("Bomb8", 5.0, dist=2.0, label="起爆矢(累計5秒で爆発)")
     r.bomb_wait_boom("Bomb8", S8["boomB"])
     r.walk(5.3, "瓦礫を抜けてファン(x20.5)の上へ")
     # ── P2 ──
     r.fan_ride("Fan8", 6.0, dist=1.4, label="サージでデッキ(4.4u)へ")
-    r.walk(6.5, "デッキを東へ(x28)。圧力爆弾BombF8の圏内に入る")
-    r.ff("LockE8", 10.0, dist=5.2, label="◆種まき1: 圏内に居る間に終錠Eへ")
+    # BombF8 は矢起爆式化により自然爆発しなくなった(撃たなければ無害な置き爆弾)
+    r.walk(6.5, "デッキを東へ(x28)")
+    r.ff("LockE8", 10.0, dist=5.2, label="◆種まき1: 終錠Eへ")
     r.ff("LockE8", 10.0, dist=5.2, label="◆種まき2")
-    if r.clock("BombF8") >= S8["boomF"]:
-        r.dead = r.dead or "圧力爆弾BombF8の爆風内に留まって爆死"
-    r.walk(4.2, "圏外(x32.2)へ抜けてLockE8前")
+    r.walk(4.2, "LockE8前(x32.2)へ")
     r.lock_wait("LockE8", S8["lockE"])
     r.walk(3.3, "刃ピット手前(x36.3)へ")
     r.pit_cross("SawB8", **S8_SAW, x0=36.3, x1=40.7, label="退避ピットで刃越え")
@@ -912,12 +918,7 @@ def s8_plan(r):
     r.walk(9.6, "開いた格子をくぐってゴール")
 
 
-ALL_OK &= report("S8 時計職人の卒業試験(総ざらい5フェーズ)", S8["limit"], S8["rw"], [
-    ("矢なし", s8_noarrow, False),
-    ("FFのみ", s8_noarrow, False),
-    ("RWのみ", s8_rwonly, False),
-    ("想定解", s8_plan, True),
-], margin=(3.0, 12.0))
+# (stage4まで構成: S8 のreportは封印中)
 
 print("\n" + "═" * 68)
 print("判定:", "ALL OK" if ALL_OK else "NG あり — 数値を調整せよ")

@@ -1,0 +1,634 @@
+{
+ "player_sprites": [
+  {
+   "name": "PlayerIdleSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerRunSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_run.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerJumpSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_jump.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerBowSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_bow.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  }
+ ],
+ "stage3": [
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "L3b (1)",
+   "transform": {
+    "position": [
+     42.969791412353516,
+     5.150000095367432,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.8764779567718506,
+     0.5,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "L3b (2)",
+   "transform": {
+    "position": [
+     42.969791412353516,
+     5.150000095367432,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.8764779567718506,
+     0.5,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "L3b (3)",
+   "transform": {
+    "position": [
+     51.21566390991211,
+     1.7768406867980957,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.8764779567718506,
+     3.9003944396972656,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Fan_Blades/Fan_Blades.obj"
+   },
+   "name": "Fan3Blades (1)",
+   "prefabLink": {
+    "sourcePath": "prefabs/Fan3Blades.prefab"
+   },
+   "transform": {
+    "position": [
+     49.599998474121094,
+     5.679999828338623,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.600000023841858,
+     1.600000023841858,
+     1.600000023841858
+    ]
+   }
+  },
+  {
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "bladesName",
+      "type": "string",
+      "value": "Fan3Blades (1)"
+     },
+     {
+      "name": "liftHeight",
+      "type": "float",
+      "value": 2.6
+     },
+     {
+      "name": "surgeHeight",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "strength",
+      "type": "float",
+      "value": 150.0
+     },
+     {
+      "name": "surgePerSkip",
+      "type": "float",
+      "value": 0.8
+     },
+     {
+      "name": "suckPerRewind",
+      "type": "float",
+      "value": 0.8
+     },
+     {
+      "name": "zoneHalfW",
+      "type": "float",
+      "value": 1.4
+     },
+     {
+      "name": "suckRadius",
+      "type": "float",
+      "value": 7.5
+     }
+    ],
+    "scriptPath": "scripts/Fan.lua"
+   },
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Fan_Base/Fan_Base.obj"
+   },
+   "name": "Fan3 (1)",
+   "shader": "shaders/TimeWarp.hlsl",
+   "transform": {
+    "position": [
+     49.599998474121094,
+     5.900000095367432,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     180.0
+    ],
+    "scale": [
+     1.600000023841858,
+     1.600000023841858,
+     1.600000023841858
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "L3b (4)",
+   "transform": {
+    "position": [
+     51.21566390991211,
+     1.7768406867980957,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.8764779567718506,
+     3.9003944396972656,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepB3 (1)",
+   "prefabLink": {
+    "sourcePath": "prefabs/StepB3.prefab"
+   },
+   "transform": {
+    "position": [
+     10.169845581054688,
+     0.8500000238418579,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.100000023841858,
+     1.7000000476837158,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepB3 (2)",
+   "prefabLink": {
+    "sourcePath": "prefabs/StepB3.prefab"
+   },
+   "transform": {
+    "position": [
+     12.934005737304688,
+     0.8500000238418579,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.100000023841858,
+     1.7000000476837158,
+     3.0
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.05000000074505806,
+    "roughness": 0.6000000238418579
+   },
+   "meshRenderer": {
+    "modelPath": "models/Block/Block.obj"
+   },
+   "name": "StepB3 (3)",
+   "prefabLink": {
+    "sourcePath": "prefabs/StepB3.prefab"
+   },
+   "transform": {
+    "position": [
+     17.290132522583008,
+     0.8500000238418579,
+     0.0
+    ],
+    "rotation": [
+     -0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     4.8031325340271,
+     1.7000000476837158,
+     3.0
+    ]
+   }
+  },
+  {
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "targetName",
+      "type": "string",
+      "value": "Fan3 (1)"
+     },
+     {
+      "name": "offsetY",
+      "type": "float",
+      "value": 1.1
+     },
+     {
+      "name": "bob",
+      "type": "float",
+      "value": 0.15
+     }
+    ],
+    "scriptPath": "scripts/Beacon.lua"
+   },
+   "name": "Beacon_Fan3b",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     0.4000000059604645,
+     0.8999999761581421,
+     1.0,
+     0.949999988079071
+    ],
+    "effectValue": 0.0,
+    "layer": 8,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/arrow_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     -90.0
+    ],
+    "scale": [
+     0.550000011920929,
+     0.2800000011920929,
+     1.0
+    ]
+   }
+  }
+ ]
+}

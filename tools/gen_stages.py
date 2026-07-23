@@ -9,13 +9,20 @@
 # 刃 : 平地の振り子ノコは絶対に通過不能(数値検証済) → 必ず退避ピット構造で使う
 import json, copy, os, sys
 
-SCENES = r"C:\Users\ryuto\game\TimeArrow\assets\scenes"
+SCENES = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "scenes")
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "sim"))
 from camera_fit import content_box, fit  # noqa: E402
 from knobs import K  # noqa: E402  タイミング定数の単一の真実源
 
 tpl = json.load(open(os.path.join(SCENES, "stage2.json"), encoding="utf-8"))
 T = {e["name"]: e for e in tpl["entities"]}
+
+# 手作業由来の実体(genの宣言で表現しない原文verbatim)。commit 22c34f3 から抽出。
+#  player_sprites: プレイヤーアニメ4スプライト(095e9ae移植分、Player.luaが名前で拾う)
+#  stage3       : ユーザーがエディタで手追加した2つ目のファン+化粧足場(" (1)"付き)
+# ※かつてシーン直パッチだったため再生成で消えた。復元も追加もこのファイル経由で行うこと
+EXTRAS = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                     "stage_extras.json"), encoding="utf-8"))
 
 TIMEWARP = "shaders/TimeWarp.hlsl"
 FONT = "fonts/DotGothic16-400.ttf"
@@ -104,10 +111,13 @@ def block(name, x, y, sx, sy, sz=3.0):
     return mesh(name, "Block", x, y, sx, sy, sz)
 
 
-def needle(name, x, y, sx, sy):
+def needle(name, x, y, sx, sy, stand=False):
+    # stand=True: 起立針山(StandNeedle.lua)。通常は立って道を塞ぎ、後戻し矢で寝る。
+    scr = "StandNeedle.lua" if stand else "Wall.lua"
     return mesh(name, "Needle_Small", x, y, sx, sy, 1.0,
-                lua=script("Wall.lua", [prop("deadly", "bool", True),
-                                        prop("hitScale", "float", 0.6)]))
+                shader=(TIMEWARP if stand else None),
+                lua=script(scr, [prop("deadly", "bool", True),
+                                 prop("hitScale", "float", 0.6)]))
 
 
 def door(name, x, openT, closeT, base=0.0):
@@ -224,7 +234,10 @@ def crumble(name, x, y, sx=1.6, crumbleT=1.6):
 
 
 def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0, decayT=25.0):
-    # 経年劣化3段階(新品/摩耗/錆)。HammerSwingが年齢でモデルを切り替える
+    # 経年劣化3段階(新品/摩耗/錆)。HammerSwingが年齢でモデルを切り替える。
+    # 崩壊/復活サイクルの演出実体もここで全部生成する(_m4=チリ化 / _f1..12=飛散破片 /
+    # _t1..6=復活の時の結晶)。HammerSwing.luaがこれらを名前で拾う。
+    # ※かつてシーン直パッチだったため再生成で消えた事故あり — genが真実源、ここに置くこと
     body = mesh(name, "Hammer_Age1", x, pivotY, s, s, 1.0, shader=TIMEWARP,
                 lua=script("HammerSwing.lua", [
                     prop("period", "float", float(period)), prop("maxAngle", "float", float(maxAngle)),
@@ -232,8 +245,20 @@ def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0, decayT=
                     prop("hitHalf", "float", 0.42)]))
     mid = mesh(name + "_m2", "Hammer_Age2", x, -100.0, s, s, 1.0, shader=TIMEWARP)
     old = mesh(name + "_m3", "Hammer_Age3", x, -100.0, s, s, 1.0, shader=TIMEWARP)
-    proxy = {"name": name + "X", "transform": transform(x, pivotY - 1.3 * s, 2.2 * s, 2.9 * s)}
-    return [body, mid, old, proxy]
+    dust = mesh(name + "_m4", "Hammer_Dust", x, -100.0, s, s, 1.0, shader=TIMEWARP)
+    dust["material"] = {"metallic": 0.1, "roughness": 0.85}
+    parts = [body, mid, old, dust]
+    for i in range(1, 13):
+        f = mesh(f"{name}_f{i}", "Hammer_Frag", x, -100.0, 1.25 * s, 1.25 * s, 1.25 * s)
+        f["material"] = {"metallic": 0.15, "roughness": 0.8}
+        parts.append(f)
+    for i in range(1, 7):
+        t = mesh(f"{name}_t{i}", "Hammer_Timeshard", x, -100.0, 1.25 * s, 1.25 * s, 1.25 * s,
+                 shader=TIMEWARP)
+        t["material"] = {"metallic": 0.3, "roughness": 0.25}
+        parts.append(t)
+    parts.append({"name": name + "X", "transform": transform(x, pivotY - 1.3 * s, 2.2 * s, 2.9 * s)})
+    return parts
 
 
 def turret(name, x, y, period=2.4, shotSpeed=6.0, rng=14.0, phase=0.0):
@@ -289,20 +314,272 @@ def ui_text(name, text, size, color, outline, rect):
                        "wrap": False}}
 
 
-def build(n, entities, limit, width):
+def ui_image(name, tex, rect, color=(1.0, 1.0, 1.0, 1.0), slice_px=0.0, order=1):
+    return {"name": name, "transform": transform(0, 0, 1, 1),
+            "uiRect": {"anchorMax": rect["aMax"], "anchorMin": rect["aMin"],
+                       "clipChildren": False, "offsetMax": rect["oMax"], "offsetMin": rect["oMin"],
+                       "order": order, "pivot": rect.get("pivot", [0.5, 0.5]),
+                       "rotation": 0.0, "skewX": 0.0, "visible": True},
+            "uiImage": {"texturePath": tex, "color": list(map(float, color)),
+                        "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0],
+                        "sliceBorder": [float(slice_px)] * 4, "cornerRadius": 0.0,
+                        "raycastBlock": False, "fillAmount": 1.0, "fillDir": 0}}
+
+
+def tut_hud():
+    """stage0専用チュートリアルHUD。下部パネル(TutPanel)に子要素をぶら下げる
+    (親のtweenUi dy/alphaが子へ効く=パネルごと出入りできる)。中身の文言/表示制御は
+    scripts/Tutorial.lua が行う。parentName キーは build() が親indexへ解決する。"""
+    def child(e, parent="TutPanel"):
+        e["parentName"] = parent
+        return e
+
+    panel = ui_image("TutPanel", "textures/ui_tut_panel_rgba.png",
+                     {"aMin": [0.5, 1.0], "aMax": [0.5, 1.0], "pivot": [0.5, 1.0],
+                      "oMin": [-330.0, -196.0], "oMax": [330.0, -16.0]},
+                     color=(1.0, 1.0, 1.0, 0.96), slice_px=60.0)
+
+    # タイトルは左寄せ(パネル上辺中央の砂時計エンブレムと重ならない位置)
+    title = ui_text("TutStepTitle", "", 24, [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
+                    {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                     "oMin": [96.0, 16.0], "oMax": [-96.0, 48.0]})
+    title["uiText"]["alignH"] = 0
+    body = ui_text("TutStepText", "", 26, [1.0, 1.0, 1.0, 1.0], [0.02, 0.05, 0.15, 1.0],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                    "oMin": [24.0, 48.0], "oMax": [-24.0, 84.0]})
+    body["uiText"]["rich"] = True
+    body["uiText"]["typewriterSpeed"] = 30.0
+    sub = ui_text("TutStepSub", "", 18, [0.72, 0.8, 0.98, 1.0], [0.02, 0.05, 0.15, 1.0],
+                  {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                   "oMin": [24.0, 86.0], "oMax": [-24.0, 112.0]})
+    sub["uiText"]["rich"] = True
+    dots = ui_text("TutDots", "", 16, [1.0, 1.0, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
+                    "oMin": [0.0, -28.0], "oMax": [0.0, -4.0]})
+    dots["uiText"]["rich"] = True
+
+    cap1 = ui_image("TutKeyCap1", "textures/ui_tut_keycap_rgba.png",
+                    {"aMin": [0.5, 0.0], "aMax": [0.5, 0.0],
+                     "oMin": [-56.0, 110.0], "oMax": [-10.0, 156.0]}, order=2)
+    cap2 = ui_image("TutKeyCap2", "textures/ui_tut_keycap_rgba.png",
+                    {"aMin": [0.5, 0.0], "aMax": [0.5, 0.0],
+                     "oMin": [10.0, 110.0], "oMax": [56.0, 156.0]}, order=2)
+    wide = ui_image("TutKeyWide", "textures/ui_tut_keycap_rgba.png",
+                    {"aMin": [0.5, 0.0], "aMax": [0.5, 0.0],
+                     "oMin": [-80.0, 110.0], "oMax": [80.0, 156.0]}, order=2)
+    lbl1 = ui_text("TutKeyLbl1", "", 22, [0.85, 0.95, 1.0, 1.0], [0.0, 0.0, 0.0, 0.8],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0],
+                    "oMin": [0.0, -2.0], "oMax": [0.0, -2.0]})
+    lbl2 = ui_text("TutKeyLbl2", "", 22, [0.85, 0.95, 1.0, 1.0], [0.0, 0.0, 0.0, 0.8],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0],
+                    "oMin": [0.0, -2.0], "oMax": [0.0, -2.0]})
+    lblw = ui_text("TutKeyLblW", "SPACE", 17, [0.85, 0.95, 1.0, 1.0], [0.0, 0.0, 0.0, 0.8],
+                   {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0],
+                    "oMin": [0.0, -2.0], "oMax": [0.0, -2.0]})
+
+    icon_ff = ui_image("TutIconFF", "textures/ui_tut_ff_rgba.png",
+                       {"aMin": [0.0, 0.5], "aMax": [0.0, 0.5],
+                        "oMin": [20.0, -30.0], "oMax": [80.0, 30.0]}, order=2)
+    icon_rw = ui_image("TutIconRW", "textures/ui_tut_rw_rgba.png",
+                       {"aMin": [0.0, 0.5], "aMax": [0.0, 0.5],
+                        "oMin": [20.0, -30.0], "oMax": [80.0, 30.0]}, order=2)
+    check = ui_image("TutCheck", "textures/ui_tut_check_rgba.png",
+                     {"aMin": [1.0, 0.5], "aMax": [1.0, 0.5],
+                      "oMin": [-86.0, -32.0], "oMax": [-18.0, 27.0]}, order=3)
+
+    burst = ui_text("TutBurst", "", 46, [1.0, 0.85, 0.3, 1.0], [0.05, 0.08, 0.2, 1.0],
+                    {"aMin": [0.0, 0.30], "aMax": [1.0, 0.30], "pivot": [0.5, 0.5],
+                     "oMin": [0.0, -50.0], "oMax": [0.0, 50.0]})
+    burst["uiText"]["rich"] = True
+    burst["uiText"]["charAnim"] = 1          # ウェーブ
+    burst["uiText"]["charAnimAmount"] = 3.0
+    burst["uiText"]["charAnimSpeed"] = 2.5
+    burst["uiText"]["outlineWidth"] = 3.0
+
+    return [panel,
+            child(title), child(body), child(sub), child(dots),
+            child(cap1), child(cap2), child(wide),
+            child(lbl1, "TutKeyCap1"), child(lbl2, "TutKeyCap2"), child(lblw, "TutKeyWide"),
+            child(icon_ff), child(icon_rw), child(check),
+            burst]
+
+
+BGLAYER = "shaders/BackdropLayer.hlsl"
+
+# ── 2段背景 ──────────────────────────────────────────────────────
+# 手前段: 稜線帯(Blender自作 BG_Ridge_*、z≈9.5-10.4、BG装飾のさらに後ろ)。
+#         残り時間による崩壊(BackgroundCollapse.lua+BackdropRidge.hlsl)はこの層が担う。
+# 奥段  : 空壁(z=30)。ステージ別の自作空 bg_sky{n}.png をアンリット表示。
+#         追従カメラとTAB全景の両フラスタムから必要サイズを逆算して、
+#         画面外のクリアカラー(青)が絶対に見えないよう覆い切る。
+RIDGES = {0: ["BG_Ridge_Ruins"], 1: ["BG_Ridge_Gears"],
+          2: ["BG_Ridge_Ruins", "BG_Ridge_Gears"],
+          3: ["BG_Ridge_Spires"], 4: ["BG_Ridge_Spires", "BG_Ridge_Gears"]}
+RIDGE_H = {"BG_Ridge_Gears": 0.271, "BG_Ridge_Ruins": 0.231, "BG_Ridge_Spires": 0.315}
+RIDGE_TINT = {0: [0.85, 0.88, 1.0], 1: [1.0, 1.0, 1.0], 2: [0.82, 1.0, 0.9],
+              3: [0.9, 0.8, 1.0], 4: [1.0, 0.8, 0.68]}
+# ステージ別フォグ色(空bg_sky{n}の中間色に合わせる)。shaderParams.xyzで
+# BackdropLayer/Ridge へ渡す(未指定=旧来の青系デフォルト)
+FOG_COL = {0: [0.30, 0.34, 0.52], 1: [0.10, 0.22, 0.33], 2: [0.09, 0.26, 0.23],
+           3: [0.22, 0.15, 0.34], 4: [0.34, 0.15, 0.11]}
+# かけら色パレット(ティント=頂点カラー。結晶は白ベースなので鮮やかに染まる)
+SHARD_COLORS = [[0.55, 0.9, 1.0], [1.0, 0.82, 0.4], [0.8, 0.6, 1.0],
+                [1.0, 0.55, 0.75], [0.55, 1.0, 0.8], [0.95, 0.95, 1.0]]
+SHARD_MODELS = ["BG_Shard_Crystal", "BG_Shard_Crystal", "BG_Shard_Rock",
+                "BG_Shard_Rock", "BG_Shard_Gear"]
+
+
+def shards(n, width, count_per_u=0.75):
+    """奥の空間(z=11..24)に漂う「時のかけら」を大量散布する。
+    色とりどり(SHARD_COLORS)・回転+8の字浮遊+きらめき(shaderParams.w)。
+    時間では消えない(消えるのは稜線=BackdropRidgeのみ)。"""
+    import random
+    rnd = random.Random(300 + n)
+    w = float(width)
+    ents = []
+    for i in range(int(w * count_per_u)):
+        m = rnd.choice(SHARD_MODELS)
+        z = rnd.uniform(11.0, 24.0)
+        s = rnd.uniform(0.5, 1.5) * (0.7 + z / 18.0)   # 遠いものほど少し大きく
+        e = mesh(f"BG_Shard{i + 1}", m,
+                 round(rnd.uniform(-0.06, 1.06) * w, 2),
+                 round(rnd.uniform(-0.5, 13.0), 2), s, s, s,
+                 lua=script("BGProp.lua", [
+                     prop("spinZ", "float", round(rnd.uniform(4, 30) * rnd.choice([-1, 1]), 1)),
+                     prop("bobAmp", "float", round(rnd.uniform(0.15, 0.5), 2)),
+                     prop("bobAmpX", "float", round(rnd.uniform(0.1, 0.4), 2)),
+                     prop("bobPeriod", "float", round(rnd.uniform(7, 20), 1)),
+                     prop("phase", "float", round(rnd.uniform(0, 20), 1))]),
+                 shader=BGLAYER, rot=(0.0, 0.0, round(rnd.uniform(0, 360), 0)),
+                 z=round(z, 2))
+        e["color"] = rnd.choice(SHARD_COLORS)
+        e["shaderParams"] = FOG_COL[n] + [round(rnd.uniform(0.6, 1.8), 2)]
+        ents.append(e)
+    return ents
+
+
+def backdrop_sky(n, width, y_top, fx, fy, fz):
+    import math
+    zs = 30.0
+    half_v = math.radians(25.0)           # FOV50°の半分
+    pitch = math.radians(14.0)
+    th = math.tan(half_v) * 16.0 / 9.0    # 水平半画角tan(16:9)
+    xs, ys = [], []
+    max_cy = max(5.85, y_top + 5.3)
+    for (cx, cy, cz) in ((11.1, 5.85, -13.0), (width - 11.1, max_cy, -13.0),
+                         (fx, fy, fz)):
+        d = zs - cz
+        ys += [cy - d * math.tan(pitch + half_v), cy - d * math.tan(pitch - half_v)]
+        hw = d * th / math.cos(pitch)
+        xs += [cx - hw, cx + hw]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    return {"name": "Backdrop", "primitive": "box",
+            "shader": "shaders/BackdropSky.hlsl",
+            "materialTextureOverrides": [{"albedo": f"textures/bg_sky{n}.png"}],
+            "luaScript": script("BGProp.lua", [
+                prop("spinZ", "float", 0.0), prop("bobAmp", "float", 0.0),
+                prop("bobPeriod", "float", 9.0), prop("phase", "float", 0.0)]),
+            "transform": {"position": [round((x0 + x1) / 2, 1), round((y0 + y1) / 2, 1), zs],
+                          "rotation": [0.0, 180.0, 0.0],
+                          "scale": [round((x1 - x0) * 1.18, 1), round((y1 - y0) * 1.18, 1), 1.0]}}
+
+
+def backdrop_ridge(n, width, limit):
+    import random
+    rnd = random.Random(500 + n)
+    models = RIDGES[n]
+    pieces, x, i = [], -8.0, 0
+    while x < width + 8.0:
+        m = models[i % len(models)]
+        s = rnd.uniform(29.0, 35.0)
+        h = RIDGE_H[m] * s
+        e = mesh(f"BackdropRidge{i + 1}", m, round(x + s / 2, 2), round(h / 2 - 2.4, 2),
+                 s, s, s,
+                 lua=script("BackgroundCollapse.lua", [
+                     # collapseAt=0: ステージ時間の全体を使って左から徐々に崩壊し、
+                     # 残り0秒で完全消滅する(進行度=経過割合、シェーダー側も線形)
+                     prop("T", "float", float(limit)), prop("collapseAt", "float", 0.0),
+                     # 吸い込みイベントは1枚目だけが発行(SuckIn側は冪等だが多重発火を避ける)
+                     prop("suckInAt", "float", 0.75 if i == 0 else 1.5)]),
+                 # 1層構成(z一定)。0.25の互い違いはタイル重なり部のZファイト回避用
+                 shader="shaders/BackdropRidge.hlsl", z=9.5 + (i % 2) * 0.25)
+        e["color"] = RIDGE_TINT[n]
+        e["shaderParams"] = FOG_COL[n] + [0.0]
+        pieces.append(e)
+        x += s * rnd.uniform(0.82, 0.95)
+        i += 1
+    return pieces
+
+
+def bg_decor(n, width):
+    """Blender自作の背景モデル群(BG_*)を奥行き3層に散らす。純装飾でギミック無関係。
+    z: ゲーム面=0 / 近景3.4 / 中景4.2前後 / 遠景6前後 / 稜線9.5 / かけら11-24 / 空30。
+    時間で消えるのは稜線(BackdropRidge)だけ。装飾は減光ティント(color)で
+    ゲーム面と見分けやすく沈める。配置はステージ番号シードの決定論。"""
+    import random
+    rnd = random.Random(1000 + n)
+    w = float(width)
+    ents = []
+
+    def bg(name, model, fx, y, s, z, spin=0.0, bob=0.0, per=9.0, rot_z=0.0):
+        lua = script("BGProp.lua", [
+            prop("spinZ", "float", round(spin, 2)), prop("bobAmp", "float", round(bob, 2)),
+            prop("bobPeriod", "float", round(per, 2)),
+            prop("phase", "float", round(rnd.uniform(0, 8), 2))])
+        e = mesh(name, model, round(fx * w, 2), round(y, 2), s, s, s,
+                 lua=lua, shader=BGLAYER, rot=(0.0, 0.0, round(rot_z, 1)),
+                 z=round(z, 2))
+        e["color"] = [0.80, 0.83, 0.95]   # 背景減光(視認性: ゲーム面より一段沈める)
+        e["shaderParams"] = FOG_COL[n] + [0.0]
+        ents.append(e)
+
+    # ── 遠景: 壊れた大時計(針は凍結したまま)+半分沈んで回り続ける大歯車 ──
+    bg("BG_Clock", "BG_ClockRuin", 0.5 + rnd.uniform(-0.13, 0.13), 8.2 + rnd.uniform(-0.8, 1.2),
+       13.0, 6.2, rot_z=rnd.uniform(-14, 14))
+    bg("BG_GearL", "BG_Gear", 0.10 + rnd.uniform(-0.03, 0.03), rnd.uniform(-2.5, -0.5),
+       rnd.uniform(6.5, 8.5), 5.8, spin=rnd.uniform(8, 14))
+    bg("BG_GearR", "BG_Gear", 0.90 + rnd.uniform(-0.03, 0.03), rnd.uniform(-2.0, 0.5),
+       rnd.uniform(5.0, 7.0), 6.0, spin=-rnd.uniform(10, 16))
+
+    # ── 中景: 砂時計のモノリスと崩れたアーチが地表に立つ(左右はステージで入替) ──
+    hx, ax = (0.28, 0.72) if n % 2 == 1 else (0.74, 0.30)
+    hs = rnd.uniform(4.2, 5.6)
+    bg("BG_Hourglass1", "BG_Hourglass", hx + rnd.uniform(-0.04, 0.04), hs * 0.5 - 0.7,
+       hs, 4.4, rot_z=rnd.uniform(-3, 3))
+    as_ = rnd.uniform(3.6, 4.8)
+    bg("BG_Arch1", "BG_Arch", ax + rnd.uniform(-0.04, 0.04), as_ * 0.5 - 0.9,
+       as_, 4.2, rot_z=rnd.uniform(-2, 2))
+
+    # ── 中景の浮遊岩(ゆっくり上下)。広いステージほど数を足す ──
+    n_isle = 2 + max(0, int((w - 40) / 15))
+    for i in range(n_isle):
+        fx = (i + 0.5 + rnd.uniform(-0.22, 0.22)) / n_isle
+        bg(f"BG_Isle{i+1}", "BG_Isle", fx, rnd.uniform(6.8, 9.6),
+           rnd.uniform(2.2, 3.6), rnd.uniform(3.4, 4.8),
+           bob=rnd.uniform(0.25, 0.6), per=rnd.uniform(9, 16), rot_z=rnd.uniform(-8, 8))
+
+    # ── 近景アクセント: 画面端でしっかり回る小歯車(視差で奥行きが出る) ──
+    bg("BG_GearN1", "BG_Gear", 0.04, rnd.uniform(0.0, 1.5), rnd.uniform(1.6, 2.4),
+       3.4, spin=rnd.uniform(22, 34))
+    bg("BG_GearN2", "BG_Gear", 0.97, rnd.uniform(0.5, 2.0), rnd.uniform(1.4, 2.0),
+       3.5, spin=-rnd.uniform(26, 40))
+
+    # 広いステージは砂時計かアーチをもう1基(中間の空白を埋める)
+    if w >= 55:
+        model, s = (("BG_Hourglass", rnd.uniform(3.6, 4.6)) if n % 2 == 0
+                    else ("BG_Arch", rnd.uniform(3.4, 4.2)))
+        bg("BG_Mid2", model, 0.5 + rnd.uniform(-0.06, 0.06), s * 0.5 - 0.8, s, 4.6,
+           rot_z=rnd.uniform(-3, 3))
+    return ents
+
+
+def build(n, entities, limit, width, hud_extra=None, banner=None):
+    if 5 <= n <= 8:   # いったんstage4まで(5-8は封印中: シーンを書き出さない)
+        return
     flat = []
     for e in entities:
         (flat.extend if isinstance(e, list) else flat.append)(e)
     entities = flat + [marker()]
-
-    backdrop = copy.deepcopy(T["Backdrop"])
-    for pr in backdrop["luaScript"]["props"]:
-        if pr["name"] == "T":
-            pr["value"] = float(limit)
-    backdrop["transform"]["position"][0] = width / 2.0
-    backdrop["transform"]["position"][1] = width * 0.10
-    backdrop["transform"]["scale"][0] = width * 2.32
-    backdrop["transform"]["scale"][1] = width * 1.21
 
     # プレイヤー追従カメラ(dist13=視界約22u)+ TAB長押しで全景俯瞰(fit()で逆算)
     cam = copy.deepcopy(T["GameCamera"])
@@ -324,12 +601,16 @@ def build(n, entities, limit, width):
     sun = copy.deepcopy(T["Sun"])
     sun["transform"]["position"][0] = width / 2.0
 
-    ents = entities + [backdrop, sun, cam, copy.deepcopy(T["Grid"]),
-                       copy.deepcopy(T["HudCanvas"])]
+    ents = entities + copy.deepcopy(EXTRAS["player_sprites"]) + \
+        copy.deepcopy(EXTRAS.get(f"stage{n}", [])) + \
+        [backdrop_sky(n, width, y1, fx, fy, fz)] + \
+        shards(n, width) + backdrop_ridge(n, width, limit) + \
+        bg_decor(n, width) + \
+        [sun, cam, copy.deepcopy(T["Grid"]), copy.deepcopy(T["HudCanvas"])]
     hud_i = len(ents) - 1
     seek = copy.deepcopy(T["SeekBar"])
     seek["uiSlider"]["maxValue"] = float(limit)
-    banner = ui_text("TimeBanner", f"{int(limit)}秒以内にゴールしろ！", 44,
+    banner = ui_text("TimeBanner", banner or f"{int(limit)}秒以内にゴールしろ！", 44,
                      [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
                      {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
                       "oMin": [0.0, 26.0], "oMax": [0.0, 120.0], "pivot": [0.5, 0.0]})
@@ -348,6 +629,13 @@ def build(n, entities, limit, width):
     for child in (seek, copy.deepcopy(T["ScreenFlash"]), banner, tleft, draw_amt, rw_cnt):
         child["parent"] = hud_i
         ents.append(child)
+    # 追加HUD(チュートリアル等)。parentName 指定があればその名前のエンティティ(先に
+    # 追加済みであること)へ、無ければ HudCanvas 直下へぶら下げる
+    for child in copy.deepcopy(hud_extra or []):
+        pn = child.pop("parentName", None)
+        child["parent"] = (next(i for i, e in enumerate(ents) if e["name"] == pn)
+                           if pn else hud_i)
+        ents.append(child)
     scene = {k: copy.deepcopy(v) for k, v in tpl.items() if k != "entities"}
     scene["entities"] = ents
     path = os.path.join(SCENES, f"stage{n}.json")
@@ -361,7 +649,7 @@ arrow = copy.deepcopy(T["Arrow"])
 # トゲ帯: 平地に置く幅1.6のトゲ。飛び越え必須(跳距離2.9に余裕)=「意味のあるトゲ」
 def patch(pfx, xa, xb, nw=0.9):
     mid = (xa + xb) / 2
-    return [needle(f"{pfx}N", mid, 0.3, 1.6, 0.6)]
+    return [needle(f"{pfx}N", mid, 0.3, 1.6, 0.6, stand=True)]
 
 
 # ══ 大型化レイアウト(2026-07-22 v3)══════════════════════════════════
@@ -395,7 +683,7 @@ build(1, [
 # 道中: ハンマー(タイミング)/タレット弾幕(スロモで抜ける)/崩れ橋(急いで渡る or 戻す)
 build(2, [
     gm(2, S2["limit"]),
-    player(0.8, 0.55, targets="GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2",
+    player(0.8, 0.55, targets="GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2,P2aN,P2cN",
            standables="CrA2,CrB2",
            arrowStops="F2a,F2b",
            solids="F2a,F2b,GateA,GateB,GateC,GateD",
@@ -423,7 +711,7 @@ build(2, [
 # 棚の途中は崩れ足場(渡り切るか、RWで復活させるか)。最後の閉門はRWでしか開かない。
 build(3, [
     gm(3, S3["limit"]),
-    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,GateZ3",
+    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,GateZ3,P3aN",
            standables="Bridge3,CrA3,CrB3",
            arrowStops="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c",
            solids="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c,Fan3,GateZ3",
@@ -454,12 +742,12 @@ build(3, [
 # 途中に刃ピット/ハンマー(平地で唯一渡れる刃)/崩れ足場。
 build(4, [
     gm(4, S4["limit"]),
-    player(0.8, 0.55, targets="GateA4,Saw4,Ham4,Ham4X,Ferry4,Elev4,Lock4,CrA4,CrB4",
+    player(0.8, 0.55, targets="GateA4,Saw4,Ham4,Ham4X,Ferry4,Elev4,Lock4,CrA4,CrB4,P4aN,P4bN",
            standables="Ferry4,Elev4,CrA4,CrB4",
            arrowStops="F4a,PitF4,F4b,F4c,L4a,L4b",
            solids="F4a,PitF4,F4b,F4c,L4a,L4b,GateA4,Lock4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
-    exit_(62.5, 5.55, "scenes/stage5.json"), gate(62.5, 5.4),
+    exit_(62.5, 5.55, "scenes/game_clear.json"), gate(62.5, 5.4),
     block("F4a", 9.4, -0.5, 18.8, 1.0),           # [0,18.8]
     block("PitF4", 19.4, -1.5, 1.2, 1.0),         # 刃の退避ピット
     block("F4b", 25.5, -0.5, 11.0, 1.0),          # [20,31]
@@ -682,21 +970,35 @@ build(8, [
     beacon("Button8", color=(1.0, 0.35, 0.3, 0.95), offset=0.9),
 ], limit=S8["limit"], width=120)
 
-# ── ギミックラボ(stage0: 新ギミック実機検証用。セレクト未登録)─────────
+# ── チュートリアル(stage0: 実プレイ+HUDで5ステップを教える。進行=Tutorial.lua)──
+# コース: 平地(いどう) → 段差(ジャンプ) → 時間ルール解説 → 錠門=先送り矢で開ける →
+# 起立針山=まき戻し矢で寝かせる → ゴール。奈落なし・死因は針山のみ(低プレッシャー)。
+# 門はopenT=40なので撃てなくても40秒待てば開く(詰み防止)。制限75秒はルール解説
+# ステップ(自動進行10.5秒)込みの余裕。HUDは tut_hud() を build() が stage0 にだけ足す。
 build(0, [
-    gm(0, 120),
-    player(1.0, 0.55, targets="LabFan,LabCrumble,LabHammer,LabHammerX,LabTurret",
-           standables="LabCrumble",
-           arrowStops="LabF,LabLedge", solids="LabF,LabLedge,LabTurret,LabFan", rewindShots=9),
+    gm(0, 75),
+    player(1.0, 0.55, targets="TutDoor,TutNeedle",
+           arrowStops="TutF,TutStep", solids="TutF,TutStep,TutDoor", rewindShots=9),
     copy.deepcopy(arrow),
-    exit_(34.0, 0.65, "scenes/title.json"), gate(34.0, 0.5),
-    block("LabF", 18.0, -0.5, 36.0, 1.0),
-    fan("LabFan", 5.0, 0.0, liftH=2.5, surgeH=6.5),
-    block("LabLedge", 8.2, 5.4, 2.4, 0.5),        # サージでしか届かない棚
-    crumble("LabCrumble", 12.5, 2.2, 1.6, 1.6),
-    hammer("LabHammer", 17.0, 3.6, 1.2, period=3.2, maxAngle=55.0),
-    turret("LabTurret", 30.0, 1.0, period=2.4, shotSpeed=6.0, rng=12.0),
-], limit=120, width=36)
+    {"name": "TutorialDirector", "transform": transform(0.0, 0.0, 1.0, 1.0),
+     "luaScript": script("Tutorial.lua", [
+         prop("walkGoal", "float", 2.5), prop("jumpX", "float", 12.8),
+         prop("doorX", "float", 18.5), prop("needleX", "float", 27.0)])},
+    exit_(34.0, 0.65, "scenes/stage1.json"), gate(34.0, 0.5),
+    block("TutF", 17.0, -0.5, 42.0, 1.0),         # x[-4,38] 全面床(奈落なし)
+    block("TutStep", 11.0, 0.6, 2.6, 1.2),        # 上面y=1.2: ジャンプ(高1.68)で越える段差
+    door("TutDoor", 18.5, openT=40.0, closeT=9999.0),
+    needle("TutNeedle", 27.0, 0.3, 1.6, 0.6, stand=True),
+    # 的の頭上に浮かぶモード色の時計アイコン(=どの矢で撃つかのヒント)
+    sprite("TutHintFF", "textures/ui_tut_ff_rgba.png", 0, -100, 1.0, 1.0, layer=8,
+           lua=script("Beacon.lua", [prop("targetName", "string", "TutDoor"),
+                                     prop("offsetY", "float", 1.0),
+                                     prop("bob", "float", 0.18)])),
+    sprite("TutHintRW", "textures/ui_tut_rw_rgba.png", 0, -100, 1.0, 1.0, layer=8,
+           lua=script("Beacon.lua", [prop("targetName", "string", "TutNeedle"),
+                                     prop("offsetY", "float", 1.6),
+                                     prop("bob", "float", 0.18)])),
+], limit=75, width=38, banner="チュートリアル！ 矢で 時間を あやつれ！", hud_extra=tut_hud())
 
 # ── 検証: JSON再読込 + parent整合 + スラム門の最速到達チェック ─────────
 WALK, HOPJ = 5.0, 0.15
@@ -705,7 +1007,7 @@ SLAMS = {
     4: (13.0, K["s4"]["slamA"], 2, 0.8),
     8: (12.2, K["s8"]["slamA"], 2, 0.8),
 }
-for n in range(1, 9):
+for n in range(1, 5):   # 5-8は封印中(build()が書き出さない)ので検証も1-4のみ
     s = json.load(open(os.path.join(SCENES, f"stage{n}.json"), encoding="utf-8"))
     names = [e["name"] for e in s["entities"]]
     # Playerの参照リスト(targets/solids等)の全名が実在するか(カンマ欠落・消し忘れ検出)
@@ -723,4 +1025,4 @@ for n in range(1, 9):
         fastest = (gx - sx) / WALK + hops * HOPJ
         assert fastest > ct + 0.15, f"stage{n}: スラム最速到達{fastest:.2f} <= 閉{ct}(+0.15)"
         print(f"  stage{n} スラム検証: 最速{fastest:.2f}s > 閉{ct}s ✓")
-print("all 8 scenes valid")
+print("all 4 scenes valid")

@@ -9,6 +9,10 @@
       "next": "scenes/stage1.json",
       "onFail": ""
     },
+    "scenes/stage0.json": {
+      "next": "scenes/stage1.json",
+      "onFail": ""
+    },
     "scenes/stage1.json": {
       "next": "scenes/stage2.json",
       "onFail": ""
@@ -22,10 +26,6 @@
       "onFail": ""
     },
     "scenes/stage4.json": {
-      "next": "scenes/stage5.json",
-      "onFail": ""
-    },
-    "scenes/stage5.json": {
       "next": "scenes/game_clear.json",
       "onFail": ""
     },

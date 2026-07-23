@@ -1,8 +1,8 @@
--- Bomb.lua -- boomT に自爆し、隣接する Wall(wallTarget名)を破壊する。矢で先送りすると
--- 「遠くから安全に起爆」できる(=近くにいると爆風に巻き込まれる)。
+-- Bomb.lua -- 矢起爆式の爆弾。自分では爆発せず、先送り矢で導火線を累計 boomT 秒
+-- 進めると爆発して隣接する Wall(wallTarget名)を破壊する(近くにいると爆風に巻き込まれる)。
 -- 爆風は自分の transform.scale から出すAABBに blastScale 倍率をかけたもの。
 properties = {
-  { name = "boomT",      type = "float",  default = 12.0, min = 0,   max = 60, label = "起爆時刻(秒)" },
+  { name = "boomT",      type = "float",  default = 5.0,  min = 0,   max = 60, label = "起爆に必要な先送り累計(秒)" },
   { name = "blastScale", type = "float",  default = 2.2,  min = 1,   max = 6,  label = "爆風の広がり(自身の見た目サイズに対する倍率)" },
   { name = "wallTarget", type = "string", default = "",                        label = "破壊するWallの名前(任意)" },
 }
@@ -27,7 +27,7 @@ function OnStart(self)
     if data.target ~= self.name or self.exploded then return end
     -- 一括加算せず早送り(0.5秒で消化)。導火線が縮む間が生まれ、起爆に"溜め"がつく
     self.ffRemain = self.ffRemain + data.amount
-    self.ffSpeed = self.ffRemain / 0.5
+    self.ffSpeed = self.ffRemain / 1.5   -- ゆっくり消化(サージが速すぎて避けられない問題への全体調整)
     FX.spark(self.bx, self.by, self.bz, 10, 1.0, 0.7, 0.3)
   end)
 
@@ -37,7 +37,7 @@ function OnStart(self)
     if self.exploded then return end
     -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
     self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
-    self.rwSpeed = self.rwRemain / 0.5
+    self.rwSpeed = self.rwRemain / 1.5   -- FFと同じ1.5秒消化(全ギミック統一テンポ。RWだけ3倍速で落下が速すぎた)
     self.rwGlow = 0.1
     local p = self.transform.position
     FX.spark(p.x, p.y, p.z, 10, 0.65, 0.4, 1.0)
@@ -48,7 +48,7 @@ end
 function OnUpdate(self, dt)
   dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
   if self.exploded then return end
-  self.clock = self.clock + dt
+  -- 自走しない: 導火線(clock)は先送り矢の消化でのみ進む
   if self.ffRemain > 0 then
     local step = math.min(self.ffRemain, self.ffSpeed * dt)
     self.clock = self.clock + step
