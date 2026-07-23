@@ -99,12 +99,13 @@ function OnUpdate(self, dt)
   local pp = pl.transform.position
 
   if sucking then
-    -- 吸い込み: 半径内なら誰でもファンへ引き寄せる(横は入力で抗える強さ)
+    -- 吸い込み: 半径内のプレイヤーを縦方向だけ引き寄せる(横位置は完全にプレイヤーの自由。
+    -- 横にも引くと空中で操作を奪われて窮屈なので ax は与えない)
     local dx, dy = self.bx - pp.x, (self.by + 0.6) - pp.y
     local dist = math.sqrt(dx * dx + dy * dy)
     if dist < self.suckRadius and dist > 0.2 then
       local pull = self.strength * 1.1 * (1.0 - dist / self.suckRadius + 0.25)
-      events:emit("fan_force", { ax = dx / dist * pull * 0.06, ay = dy / dist * pull })
+      events:emit("fan_force", { ay = dy / dist * pull })
     end
   elseif math.abs(pp.x - self.bx) < self.zoneHalfW and pp.y > self.by and pp.y < self.by + h then
     local frac = 1.0 - (pp.y - self.by) / h

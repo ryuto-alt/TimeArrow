@@ -9,6 +9,7 @@ properties = {
   { name = "startPhase", type = "float", default = 0.0, min = 0,   max = 60, label = "開始時の年齢(秒)" },
   { name = "decayT",     type = "float", default = 25.0, min = 5,  max = 120,label = "この年齢で周期が2倍に伸びる(老化速度)" },
   { name = "hitHalf",    type = "float", default = 0.42, min = 0.2, max = 2, label = "ヘッドの当たり半径" },
+  { name = "agePerSkip", type = "float", default = 5.0, min = 1, max = 20, label = "矢1秒あたりの老化年数(5秒スキップ=+25歳で段階が進む)" },
 }
 
 function OnStart(self)
@@ -25,9 +26,10 @@ function OnStart(self)
   self.phase = 0            -- 振りの位相。周期が年齢で変わるため別積分
   self.ffRemain = 0
 
+  -- 矢の秒数は agePerSkip 倍の「年齢」に換算(5秒スキップ=+25歳: 新品→摩耗、もう1発で錆)
   events:on("time_skip", function(data)
     if data.target ~= self.name and data.target ~= self.name .. "X" then return end
-    self.ffRemain = self.ffRemain + (data.amount or 0)
+    self.ffRemain = self.ffRemain + (data.amount or 0) * self.agePerSkip
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.by, self.bz, 10, 0.3, 0.75, 1.0)
     FX.shockwave(self.bx, self.by, self.bz, 10, 6, 0.3, 0.9, 1.0)
@@ -36,7 +38,7 @@ function OnStart(self)
   self.rwGlow = 0
   events:on("time_rewind", function(data)
     if data.target ~= self.name and data.target ~= self.name .. "X" then return end
-    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0) * self.agePerSkip
     self.rwSpeed = self.rwRemain / 0.5
     self.rwGlow = 0.1
     FX.spark(self.bx, self.by, self.bz, 12, 0.65, 0.4, 1.0)
@@ -67,7 +69,8 @@ function OnUpdate(self, dt)
       self.clock = self.clock - step
       self.rwRemain = self.rwRemain - step
       self.rwGlow = 0.1
-      events:emit("time_refund", { amount = step })
+      -- 返金は矢の実秒数ぶんだけ(年齢換算の逆変換。倍率ぶん得する銀行にはしない)
+      events:emit("time_refund", { amount = step / self.agePerSkip })
     end
   end
 

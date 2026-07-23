@@ -81,11 +81,35 @@ function OnStart(self)
     scene:setUiText(self.rewindCountUi, "まき戻し ×" .. self.shotsLeft)
   end
 
-  self.targetList = trimSplit(self.targets)
-  self.standList  = trimSplit(self.standables)
-  self.climbList  = trimSplit(self.climbables)
-  self.solidList  = trimSplit(self.solids)
-  self.stopList   = trimSplit(self.arrowStops)
+  -- エディタで複製すると「名前 (1)」「名前 (2)」…ができる。propsのリストは基本名だけ書けば
+  -- よいように、実在する "(n)" 付き複製をシーンから探して自動で同じリストに加える。
+  -- (エディタ保存でprops値が古いリストへ戻っても、複製がすり抜けにならない保険)
+  local function expandDuplicates(list)
+    local out = {}
+    for _, base in ipairs(list) do
+      out[#out + 1] = base
+      local miss = 0
+      local i = 1
+      while miss < 3 and i <= 32 do        -- 欠番(削除済み)は3連続まで許容して先を探す
+        local name = base .. " (" .. i .. ")"
+        local e = scene:findEntity(name)
+        if e and e:isValid() then
+          out[#out + 1] = name
+          miss = 0
+        else
+          miss = miss + 1
+        end
+        i = i + 1
+      end
+    end
+    return out
+  end
+
+  self.targetList = expandDuplicates(trimSplit(self.targets))
+  self.standList  = expandDuplicates(trimSplit(self.standables))
+  self.climbList  = expandDuplicates(trimSplit(self.climbables))
+  self.solidList  = expandDuplicates(trimSplit(self.solids))
+  self.stopList   = expandDuplicates(trimSplit(self.arrowStops))
   self.mirrorList = trimSplit(self.mirrors)
   self.bounces    = 0
   -- 乗っている足場(名前と前フレーム位置)。床が動いた分だけプレイヤーを一緒に運ぶ

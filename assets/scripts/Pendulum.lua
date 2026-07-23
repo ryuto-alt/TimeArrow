@@ -1,12 +1,15 @@
 -- Pendulum.lua -- period周期でX方向に振り子運動する足場/刃。矢で先送りすると位相がずれる
 -- (=タイミングを手繰り寄せて安全な位相へ持っていける)。deadly=trueなら刃、falseなら足場として使う。
 -- 当たり判定は自分の transform.scale から出すAABB。
+-- oneWay=true: 往復せず左端(bx-amplitude)→右端(bx+amplitude)へ period 秒かけて片道航行して停止。
+-- 待てば渡れるが、先送り矢で到着を前倒しできる(後戻り矢で呼び戻し=乗り損ねの救済)。
 properties = {
-  { name = "period",      type = "float", default = 3.0, min = 0.3, max = 20, label = "往復周期(秒)" },
+  { name = "period",      type = "float", default = 3.0, min = 0.3, max = 30, label = "往復周期(片道モードでは片道時間)(秒)" },
   { name = "amplitude",   type = "float", default = 3.0, min = 0,   max = 20, label = "振れ幅" },
   { name = "startPhase",  type = "float", default = 0.0, min = 0,   max = 20, label = "開始位相オフセット(秒)" },
   { name = "deadly",      type = "bool",  default = false,                    label = "刃として扱う(接触で死亡)" },
   { name = "hitScale",    type = "float", default = 0.8, min = 0.2, max = 1.5,label = "当たり判定の見た目に対する倍率" },
+  { name = "oneWay",      type = "bool",  default = false,                    label = "片道モード(左端→右端へ渡って停止)" },
 }
 
 local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
@@ -69,8 +72,15 @@ function OnUpdate(self, dt)
       events:emit("time_refund", { amount = step })
     end
   end
-  local ang = math.sin((self.clock / self.period) * math.pi * 2)
-  local nx = self.bx + ang * self.amplitude
+  local nx
+  if self.oneWay then
+    -- 片道航行: 到着したら時計を止める(超過分が溜まらないので後戻り矢が即効く)
+    if self.clock > self.period then self.clock = self.period end
+    nx = self.bx - self.amplitude + (self.clock / self.period) * self.amplitude * 2
+  else
+    local ang = math.sin((self.clock / self.period) * math.pi * 2)
+    nx = self.bx + ang * self.amplitude
+  end
   self.transform.position = Vec3.new(nx, self.by, self.bz)
   -- 丸ノコの回転(スローモーション中はゆっくり回る=時間の速度が見える)。
   -- deadly=false(フェリー等の乗れる足場)は回転させない

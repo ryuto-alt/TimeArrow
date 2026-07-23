@@ -10,6 +10,7 @@ properties = {
   { name = "triggerName", type = "string", default = "",                       label = "矢が当たる的の名前(空なら自分の名前)" },
   { name = "listenButton",type = "bool",   default = false,                    label = "ボタン連動リフト(押すたびに上下をトグル)" },
   { name = "reverse",     type = "bool",   default = false,                    label = "逆モード: 設置位置から上空へ上がっていく(後戻しで引き戻す)" },
+  { name = "arrowBoost",  type = "float",  default = 4.0,  min = 1,   max = 10,label = "矢1秒で時計が進む倍率(序盤の1発でもarriveTに届くように)" },
 }
 
 function OnStart(self)
@@ -33,8 +34,10 @@ function OnStart(self)
   local listenName = self.triggerName ~= "" and self.triggerName or self.name
   events:on("time_skip", function(data)
     if data.target ~= listenName then return end
-    -- 一括加算せず早送り(0.5秒で消化)して、降りてくる様子が見えるようにする
-    self.ffRemain = self.ffRemain + data.amount
+    -- 一括加算せず早送り(0.5秒で消化)して、降りてくる様子が見えるようにする。
+    -- どんなに軽い矢でも最低「到着まで」は進める(arriveTが遠いと無反応に見えるのを防ぐ)
+    local need = (self.arriveT + self.riseTime) - self.clock
+    self.ffRemain = math.max(self.ffRemain + data.amount * self.arrowBoost, need)
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.transform.position.y, self.bz, 12, 0.3, 0.75, 1.0)
   end)
@@ -49,8 +52,8 @@ function OnStart(self)
   self.rwGlow = 0
   events:on("time_rewind", function(data)
     if data.target ~= listenName then return end
-    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
-    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる(FFと同倍率)
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0) * self.arrowBoost
     self.rwSpeed = self.rwRemain / 0.5
     self.rwGlow = 0.1
     local p = self.transform.position
@@ -88,7 +91,8 @@ function OnUpdate(self, dt)
         self.clock = self.clock - step
         self.rwRemain = self.rwRemain - step
         self.rwGlow = 0.1
-        events:emit("time_refund", { amount = step })
+        -- 返金は矢の実秒数ぶんだけ(倍率ぶんの水増し返金はしない)
+        events:emit("time_refund", { amount = step / self.arrowBoost })
       end
     end
     -- 完了後は時計停止(扉と同じ「終わった機構は時計が止まる」ルール)=いつでも後戻しが効く

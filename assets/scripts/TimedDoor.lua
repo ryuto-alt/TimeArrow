@@ -12,6 +12,7 @@ properties = {
   { name = "closeT",      type = "float", default = 9999.0,min = 0, max = 9999, label = "閉じる時刻(秒。9999=開いたら閉じない)" },
   { name = "slideTime",   type = "float", default = 0.7,   min = 0.1, max = 3,  label = "全開までのスライド時間" },
   { name = "listenButton",type = "bool",  default = false,                      label = "ボタン連動(時間の代わりにボタンで開閉)" },
+  { name = "arrowBoost",  type = "float", default = 4.0,   min = 1, max = 10,   label = "矢1秒で時計が進む倍率(フル溜め10秒×4=40秒分)" },
 }
 
 function OnStart(self)
@@ -37,7 +38,8 @@ function OnStart(self)
   events:on("time_skip", function(data)
     if data.target ~= self.name then return end
     -- 一括加算せず早送り(0.5秒で消化)して、格子が跳ね上がる様子を見せる
-    self.ffRemain = self.ffRemain + data.amount
+    -- 矢の秒数は arrowBoost 倍で効く(openTが長い錠ゲートも数発で開くように)
+    self.ffRemain = self.ffRemain + data.amount * self.arrowBoost
     self.ffSpeed = self.ffRemain / 0.5
     FX.spark(self.bx, self.transform.position.y, self.bz, 10, 0.3, 0.75, 1.0)
     FX.shockwave(self.bx, self.transform.position.y, self.bz, 10, 6, 0.3, 0.9, 1.0)
@@ -51,8 +53,8 @@ function OnStart(self)
   -- 後戻り(グローバル): 上がった格子も時計と一緒に降りてくる。逃した窓も呼び戻せる
   events:on("time_rewind", function(data)
     if data.target ~= self.name then return end
-    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる
-    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0)
+    -- 後戻り矢: 一括減算せず逆再生(0.5秒で消化)して、巻き戻る様子を見せる(FFと同倍率)
+    self.rwRemain = (self.rwRemain or 0) + (data.amount or 0) * self.arrowBoost
     self.rwSpeed = self.rwRemain / 0.5
     self.rwGlow = 0.1
     local p = self.transform.position
@@ -87,7 +89,8 @@ function OnUpdate(self, dt)
         self.clock = self.clock - step
         self.rwRemain = self.rwRemain - step
         self.rwGlow = 0.1
-        events:emit("time_refund", { amount = step })
+        -- 返金は矢の実秒数ぶんだけ(倍率で時計が膨らんでも返金は膨らませない=無限時間の抜け道防止)
+        events:emit("time_refund", { amount = step / self.arrowBoost })
       end
     end
 
@@ -124,10 +127,28 @@ function OnUpdate(self, dt)
     end
   end
 
-  -- シェーダー: 撃てる=金色 / FF=シアン / RW=紫
+  -- ゲート状態の色: 開いていく=青(10.x) / 閉まっていく・閉鎖=ピンク(11.x, 後戻りの示唆)
+  local gateEff = nil
+  if self.listenButton then
+    if self.rise < target - 0.01 then gateEff = 10.9      -- ボタンで開いていく
+    elseif self.rise > target + 0.01 then gateEff = 11.6  -- ボタンで閉まっていく
+    end
+  else
+    if self.clock >= self.closeT then
+      gateEff = 11.9                                      -- 窓を逃して閉鎖: 後戻りで呼び戻せ
+    elseif self.clock >= self.openT then
+      if self.closeT - self.clock < 1.2 then gateEff = 11.5    -- 閉鎖予告で降下中
+      elseif self.rise < target - 0.01 then gateEff = 10.9     -- 全開へ引き上げ中
+      end
+    elseif self.openT > 0 then
+      gateEff = 10.15 + 0.55 * (self.clock / self.openT)  -- 開くまでの充填: 青がじわじわ強まる
+    end
+  end
+
+  -- シェーダー: 撃てる=金色 / FF=シアン / RW=紫 / 開閉状態=青・ピンク
   local selfE = scene:findEntity(self.name)
   if selfE and selfE:isValid() then
-    local eff = 5.0
+    local eff = gateEff or 5.0
     if self.ffRemain > 0 then eff = 1.0
     elseif self.rwGlow > 0 then eff = 2.8 end
     if self.aimPv then

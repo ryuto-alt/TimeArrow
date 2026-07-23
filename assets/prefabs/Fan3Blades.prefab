@@ -1,0 +1,33 @@
+{
+  "entities": [
+    {
+      "material": {
+        "metallic": 0.05000000074505806,
+        "roughness": 0.6000000238418579
+      },
+      "meshRenderer": {
+        "modelPath": "models/Fan_Blades/Fan_Blades.obj"
+      },
+      "name": "Fan3Blades",
+      "transform": {
+        "position": [
+          30.0,
+          0.41999998688697815,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "prefab": true,
+  "version": 1
+}

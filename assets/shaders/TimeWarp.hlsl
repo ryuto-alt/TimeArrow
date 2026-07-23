@@ -8,6 +8,9 @@
 //                   これが光っていない物は撃っても無反応=判別ルール
 //   6.0<= v < 7.0 : 【経年劣化】v-6.0=劣化度。錆がノイズ状に侵食し、ヒビ(黒い筋+熾火の
 //                   オレンジ)が走り、劣化が進むと表面がディザで欠け落ちる。金パルス内蔵
+//   10.0<=v <11.0 : 【開門中】青(強度=v-10)。帯が上へ流れる=開いていく。金パルス内蔵
+//   11.0<=v <12.0 : 【閉門中】ピンク(強度=v-11)。帯が下へ流れる(=RWと同じ向き)+警告
+//                   パルス=「後戻りで呼び戻せ」の示唆。金パルス内蔵
 // 帯のスクロール方向と色(シアン=進む/紫=戻る/金=撃てる)で時間の向きを言語化する。
 
 Texture2D    g_albedo  : register(t0);
@@ -185,6 +188,40 @@ float4 PSMain(PSInput input) : SV_TARGET
         lit = lerp(lit, mc, 0.35f * blink);
         float edge = saturate(sin((input.worldPos.y * 4.0f + time * 6.0f) * 6.2831853f) * 0.5f + 0.5f);
         lit += mc * pow(edge, 6.0f) * 0.8f;
+    }
+
+    // 【開門中】青: エネルギー帯が上へ流れ、ゲートが開いていくのを見せる
+    if (effectValue >= 10.0f && effectValue < 11.0f)
+    {
+        float op = saturate(effectValue - 10.0f);
+        float band = saturate(sin((wy * 2.6f - time * 3.2f) * 6.2831853f) * 0.5f + 0.5f);
+        band = pow(band, 6.0f);
+        lit += float3(0.2f, 0.55f, 1.0f) * band * (0.5f + 0.9f * op);
+        lit += float3(0.06f, 0.18f, 0.45f) * (0.25f + 0.5f * op);   // 全体を青へ寄せる
+
+        // 金パルス内蔵(撃てる印は維持)
+        float gb = saturate(sin((wy * 2.2f - time * 1.6f) * 6.2831853f) * 0.5f + 0.5f);
+        lit += float3(1.0f, 0.82f, 0.35f) * pow(gb, 8.0f) * 0.35f;
+    }
+
+    // 【閉門中】ピンク: 帯が下へ流れ(=RWと同じ向き)+鼓動する警告=後戻りで呼び戻せの示唆
+    if (effectValue >= 11.0f && effectValue < 12.0f)
+    {
+        float cl = saturate(effectValue - 11.0f);
+        float band = saturate(sin((wy * 2.6f + time * 3.6f) * 6.2831853f) * 0.5f + 0.5f);
+        band = pow(band, 6.0f);
+        lit += float3(1.0f, 0.25f, 0.62f) * band * (0.55f + 0.9f * cl);
+        float pulse = 0.5f + 0.5f * sin(time * 6.0f);
+        lit += float3(0.5f, 0.08f, 0.28f) * (0.15f + 0.35f * cl * pulse);
+
+        // VHS風の細い走査線を下方向へ流す(後戻りの語彙をピンクで反復)
+        float scan = frac(input.positionSV.y * 0.14f - time * 2.0f);
+        if (scan < 0.10f)
+            lit += float3(0.9f, 0.2f, 0.5f) * 0.4f * cl;
+
+        // 金パルス内蔵(撃てる印は維持)
+        float gb = saturate(sin((wy * 2.2f - time * 1.6f) * 6.2831853f) * 0.5f + 0.5f);
+        lit += float3(1.0f, 0.82f, 0.35f) * pow(gb, 8.0f) * 0.3f;
     }
 
     // 【的アピール】撃てるオブジェクトは金色の細い帯がゆっくり上り、全体が淡く脈動する
