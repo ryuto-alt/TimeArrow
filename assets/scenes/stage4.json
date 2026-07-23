@@ -923,6 +923,526 @@
    "shader": "shaders/TimeWarp.hlsl"
   },
   {
+   "material": {
+    "metallic": 0.1,
+    "roughness": 0.85
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Dust/Hammer_Dust.obj"
+   },
+   "name": "Ham4_m4",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.2,
+     1.2,
+     1.0
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f1",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f2",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f3",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f4",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f5",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f6",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f7",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f8",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f9",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f10",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f11",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.15,
+    "roughness": 0.8
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Frag/Hammer_Frag.obj"
+   },
+   "name": "Ham4_f12",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   }
+  },
+  {
+   "material": {
+    "metallic": 0.3,
+    "roughness": 0.25
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+   },
+   "name": "Ham4_t1",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.3,
+    "roughness": 0.25
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+   },
+   "name": "Ham4_t2",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.3,
+    "roughness": 0.25
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+   },
+   "name": "Ham4_t3",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.3,
+    "roughness": 0.25
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+   },
+   "name": "Ham4_t4",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.3,
+    "roughness": 0.25
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+   },
+   "name": "Ham4_t5",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
+   "material": {
+    "metallic": 0.3,
+    "roughness": 0.25
+   },
+   "meshRenderer": {
+    "modelPath": "models/Hammer_Timeshard/Hammer_Timeshard.obj"
+   },
+   "name": "Ham4_t6",
+   "transform": {
+    "position": [
+     27.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.5,
+     1.5,
+     1.5
+    ]
+   },
+   "shader": "shaders/TimeWarp.hlsl"
+  },
+  {
    "name": "Ham4X",
    "transform": {
     "position": [
@@ -1505,6 +2025,250 @@
      }
     ],
     "scriptPath": "scripts/PlayerMarker.lua"
+   }
+  },
+  {
+   "name": "PlayerIdleSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerRunSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_run.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerJumpSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_jump.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerBowSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_bow.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
    }
   },
   {
@@ -5981,7 +6745,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 95,
+   "parent": 118,
    "transform": {
     "position": [
      0.0,
@@ -6058,7 +6822,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 95,
+   "parent": 118,
    "transform": {
     "position": [
      0.0,
@@ -6273,7 +7037,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 95
+   "parent": 118
   },
   {
    "name": "TimeLeft",
@@ -6365,7 +7129,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 95
+   "parent": 118
   },
   {
    "name": "DrawAmount",
@@ -6457,7 +7221,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 95
+   "parent": 118
   },
   {
    "name": "RewindCount",
@@ -6549,7 +7313,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 95
+   "parent": 118
   }
  ]
 }

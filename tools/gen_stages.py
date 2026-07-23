@@ -17,6 +17,13 @@ from knobs import K  # noqa: E402  タイミング定数の単一の真実源
 tpl = json.load(open(os.path.join(SCENES, "stage2.json"), encoding="utf-8"))
 T = {e["name"]: e for e in tpl["entities"]}
 
+# 手作業由来の実体(genの宣言で表現しない原文verbatim)。commit 22c34f3 から抽出。
+#  player_sprites: プレイヤーアニメ4スプライト(095e9ae移植分、Player.luaが名前で拾う)
+#  stage3       : ユーザーがエディタで手追加した2つ目のファン+化粧足場(" (1)"付き)
+# ※かつてシーン直パッチだったため再生成で消えた。復元も追加もこのファイル経由で行うこと
+EXTRAS = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                     "stage_extras.json"), encoding="utf-8"))
+
 TIMEWARP = "shaders/TimeWarp.hlsl"
 FONT = "fonts/DotGothic16-400.ttf"
 
@@ -227,7 +234,10 @@ def crumble(name, x, y, sx=1.6, crumbleT=1.6):
 
 
 def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0, decayT=25.0):
-    # 経年劣化3段階(新品/摩耗/錆)。HammerSwingが年齢でモデルを切り替える
+    # 経年劣化3段階(新品/摩耗/錆)。HammerSwingが年齢でモデルを切り替える。
+    # 崩壊/復活サイクルの演出実体もここで全部生成する(_m4=チリ化 / _f1..12=飛散破片 /
+    # _t1..6=復活の時の結晶)。HammerSwing.luaがこれらを名前で拾う。
+    # ※かつてシーン直パッチだったため再生成で消えた事故あり — genが真実源、ここに置くこと
     body = mesh(name, "Hammer_Age1", x, pivotY, s, s, 1.0, shader=TIMEWARP,
                 lua=script("HammerSwing.lua", [
                     prop("period", "float", float(period)), prop("maxAngle", "float", float(maxAngle)),
@@ -235,8 +245,20 @@ def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0, decayT=
                     prop("hitHalf", "float", 0.42)]))
     mid = mesh(name + "_m2", "Hammer_Age2", x, -100.0, s, s, 1.0, shader=TIMEWARP)
     old = mesh(name + "_m3", "Hammer_Age3", x, -100.0, s, s, 1.0, shader=TIMEWARP)
-    proxy = {"name": name + "X", "transform": transform(x, pivotY - 1.3 * s, 2.2 * s, 2.9 * s)}
-    return [body, mid, old, proxy]
+    dust = mesh(name + "_m4", "Hammer_Dust", x, -100.0, s, s, 1.0, shader=TIMEWARP)
+    dust["material"] = {"metallic": 0.1, "roughness": 0.85}
+    parts = [body, mid, old, dust]
+    for i in range(1, 13):
+        f = mesh(f"{name}_f{i}", "Hammer_Frag", x, -100.0, 1.25 * s, 1.25 * s, 1.25 * s)
+        f["material"] = {"metallic": 0.15, "roughness": 0.8}
+        parts.append(f)
+    for i in range(1, 7):
+        t = mesh(f"{name}_t{i}", "Hammer_Timeshard", x, -100.0, 1.25 * s, 1.25 * s, 1.25 * s,
+                 shader=TIMEWARP)
+        t["material"] = {"metallic": 0.3, "roughness": 0.25}
+        parts.append(t)
+    parts.append({"name": name + "X", "transform": transform(x, pivotY - 1.3 * s, 2.2 * s, 2.9 * s)})
+    return parts
 
 
 def turret(name, x, y, period=2.4, shotSpeed=6.0, rng=14.0, phase=0.0):
@@ -489,7 +511,9 @@ def build(n, entities, limit, width):
     sun = copy.deepcopy(T["Sun"])
     sun["transform"]["position"][0] = width / 2.0
 
-    ents = entities + [backdrop_sky(n, width, y1, fx, fy, fz)] + \
+    ents = entities + copy.deepcopy(EXTRAS["player_sprites"]) + \
+        copy.deepcopy(EXTRAS.get(f"stage{n}", [])) + \
+        [backdrop_sky(n, width, y1, fx, fy, fz)] + \
         shards(n, width) + backdrop_ridge(n, width, limit) + \
         bg_decor(n, width) + \
         [sun, cam, copy.deepcopy(T["Grid"]), copy.deepcopy(T["HudCanvas"])]

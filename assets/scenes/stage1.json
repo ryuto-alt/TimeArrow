@@ -925,6 +925,250 @@
    }
   },
   {
+   "name": "PlayerIdleSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_rgba.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerRunSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_run.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerJumpSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_jump.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "PlayerBowSprite",
+   "sprite2d": {
+    "animCols": 0,
+    "animFps": 8.0,
+    "animFrames": 0,
+    "animMode": 0,
+    "animRow": 0,
+    "animRows": 0,
+    "billboard": false,
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.0
+    ],
+    "effectValue": 0.0,
+    "layer": 6,
+    "scrollU": 0.0,
+    "scrollV": 0.0,
+    "shaderAlphaBlend": false,
+    "shaderParams": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "shaderPath": "",
+    "size": [
+     1.0,
+     1.0
+    ],
+    "texturePath": "textures/player_bow.png",
+    "uvMax": [
+     1.0,
+     1.0
+    ],
+    "uvMin": [
+     0.0,
+     0.0
+    ],
+    "worldSpace": true
+   },
+   "transform": {
+    "position": [
+     0.0,
+     -100.0,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     0.9,
+     1.2,
+     1.0
+    ]
+   }
+  },
+  {
    "name": "Backdrop",
    "primitive": "box",
    "shader": "shaders/BackdropSky.hlsl",
@@ -4218,7 +4462,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 62,
+   "parent": 66,
    "transform": {
     "position": [
      0.0,
@@ -4295,7 +4539,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 62,
+   "parent": 66,
    "transform": {
     "position": [
      0.0,
@@ -4510,7 +4754,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 62
+   "parent": 66
   },
   {
    "name": "TimeLeft",
@@ -4602,7 +4846,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 62
+   "parent": 66
   },
   {
    "name": "DrawAmount",
@@ -4694,7 +4938,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 62
+   "parent": 66
   },
   {
    "name": "RewindCount",
@@ -4786,7 +5030,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 62
+   "parent": 66
   }
  ]
 }
