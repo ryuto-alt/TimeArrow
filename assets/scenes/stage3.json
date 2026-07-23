@@ -1321,6 +1321,216 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/BG_Far_Citadel/BG_Far_Citadel.obj"
+   },
+   "name": "BackdropFar1",
+   "transform": {
+    "position": [
+     6.2,
+     4.45,
+     17.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     36.40103288400825,
+     36.40103288400825,
+     36.40103288400825
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 1.24
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 33.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.72,
+    0.74,
+    0.9
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Far_Citadel/BG_Far_Citadel.obj"
+   },
+   "name": "BackdropFar2",
+   "transform": {
+    "position": [
+     40.36,
+     4.8,
+     18.2
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     37.99338867768583,
+     37.99338867768583,
+     37.99338867768583
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 0.62
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 33.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.72,
+    0.74,
+    0.9
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Far_Citadel/BG_Far_Citadel.obj"
+   },
+   "name": "BackdropFar3",
+   "transform": {
+    "position": [
+     72.34,
+     5.29,
+     17.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     40.21311348383447,
+     40.21311348383447,
+     40.21311348383447
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 3.15
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 33.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.72,
+    0.74,
+    0.9
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/BG_Ridge_Spires/BG_Ridge_Spires.obj"
    },
    "name": "BackdropRidge1",
@@ -1367,6 +1577,12 @@
     0.9,
     0.8,
     1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1421,6 +1637,12 @@
     0.9,
     0.8,
     1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1475,6 +1697,12 @@
     0.9,
     0.8,
     1.0
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1539,6 +1767,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1603,6 +1837,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1667,6 +1907,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1731,6 +1977,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1795,6 +2047,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1859,6 +2117,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1923,6 +2187,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -1987,6 +2257,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -2051,6 +2327,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -2115,6 +2397,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -2179,6 +2467,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.22,
+    0.15,
+    0.34,
+    0.0
    ]
   },
   {
@@ -2347,7 +2641,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 41,
+   "parent": 44,
    "transform": {
     "position": [
      0.0,
@@ -2424,7 +2718,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 41,
+   "parent": 44,
    "transform": {
     "position": [
      0.0,
@@ -2639,7 +2933,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 41
+   "parent": 44
   },
   {
    "name": "TimeLeft",
@@ -2731,7 +3025,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 41
+   "parent": 44
   },
   {
    "name": "DrawAmount",
@@ -2823,7 +3117,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 41
+   "parent": 44
   },
   {
    "name": "RewindCount",
@@ -2915,7 +3209,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 41
+   "parent": 44
   }
  ]
 }

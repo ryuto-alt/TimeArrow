@@ -17,6 +17,7 @@ cbuffer PerObjectConstants : register(b0)
     float4x4 mvp;
     float4x4 model;
     float    effectValue;
+    float4   shaderParams;   // xyz=フォグ色(ステージの空に合わせる。全0なら既定の青)
 };
 
 cbuffer PerFrameConstants : register(b1)
@@ -100,9 +101,11 @@ float4 PSMain(PSInput input) : SV_TARGET
     float3 glow = tex.rgb * glowMask * pulse * 1.2f;
 
     // 大気フォグ+全体減光: 背景はゲーム面より一段沈めて見分けやすくする
-    static const float3 FOG_COLOR = float3(0.10f, 0.22f, 0.33f);
+    // フォグ色はステージの空に合わせて shaderParams.xyz で差し替え(全0なら既定の青)
+    float3 fogColor = (dot(shaderParams.xyz, shaderParams.xyz) > 0.0001f)
+                      ? shaderParams.xyz : float3(0.10f, 0.22f, 0.33f);
     float fog = saturate((input.viewDepth - 13.0f) / 8.0f) * 0.80f;
-    lit = lerp(lit, FOG_COLOR, fog) * 0.80f;
+    lit = lerp(lit, fogColor, fog) * 0.80f;
     lit += glow * (1.0f - fog * 0.55f);   // 発光はフォグを少し貫いて残す
 
     // 砕ける直前のセルはシアンに光って予告する(時間に喰われていく感)

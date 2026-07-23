@@ -1080,6 +1080,146 @@
     "roughness": 0.6
    },
    "meshRenderer": {
+    "modelPath": "models/BG_Far_Peaks/BG_Far_Peaks.obj"
+   },
+   "name": "BackdropFar1",
+   "transform": {
+    "position": [
+     14.66,
+     4.37,
+     17.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     53.32971548453476,
+     53.32971548453476,
+     53.32971548453476
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 1.53
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 120.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.72,
+    0.74,
+    0.9
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
+    "modelPath": "models/BG_Far_Peaks/BG_Far_Peaks.obj"
+   },
+   "name": "BackdropFar2",
+   "transform": {
+    "position": [
+     64.48,
+     5.15,
+     18.2
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     58.676790924720265,
+     58.676790924720265,
+     58.676790924720265
+    ]
+   },
+   "luaScript": {
+    "enabled": true,
+    "props": [
+     {
+      "name": "spinZ",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobAmp",
+      "type": "float",
+      "value": 0.0
+     },
+     {
+      "name": "bobPeriod",
+      "type": "float",
+      "value": 9.0
+     },
+     {
+      "name": "phase",
+      "type": "float",
+      "value": 4.92
+     },
+     {
+      "name": "T",
+      "type": "float",
+      "value": 120.0
+     }
+    ],
+    "scriptPath": "scripts/BGProp.lua"
+   },
+   "shader": "shaders/BackdropLayer.hlsl",
+   "color": [
+    0.72,
+    0.74,
+    0.9
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
+   ]
+  },
+  {
+   "material": {
+    "metallic": 0.05,
+    "roughness": 0.6
+   },
+   "meshRenderer": {
     "modelPath": "models/BG_Ridge_Ruins/BG_Ridge_Ruins.obj"
    },
    "name": "BackdropRidge1",
@@ -1126,6 +1266,12 @@
     0.85,
     0.88,
     1.0
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1180,6 +1326,12 @@
     0.85,
     0.88,
     1.0
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1244,6 +1396,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1308,6 +1466,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1372,6 +1536,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1436,6 +1606,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1500,6 +1676,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1564,6 +1746,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1628,6 +1816,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1692,6 +1886,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1756,6 +1956,12 @@
     0.8,
     0.83,
     0.95
+   ],
+   "shaderParams": [
+    0.3,
+    0.34,
+    0.52,
+    0.0
    ]
   },
   {
@@ -1924,7 +2130,7 @@
   },
   {
    "name": "SeekBar",
-   "parent": 34,
+   "parent": 36,
    "transform": {
     "position": [
      0.0,
@@ -2001,7 +2207,7 @@
   },
   {
    "name": "ScreenFlash",
-   "parent": 34,
+   "parent": 36,
    "transform": {
     "position": [
      0.0,
@@ -2216,7 +2422,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 36
   },
   {
    "name": "TimeLeft",
@@ -2308,7 +2514,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 36
   },
   {
    "name": "DrawAmount",
@@ -2400,7 +2606,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 36
   },
   {
    "name": "RewindCount",
@@ -2492,7 +2698,7 @@
     "typewriterSpeed": 0.0,
     "wrap": false
    },
-   "parent": 34
+   "parent": 36
   }
  ]
 }

@@ -14,6 +14,7 @@ cbuffer PerObjectConstants : register(b0)
     float4x4 mvp;
     float4x4 model;
     float    effectValue;
+    float4   shaderParams;   // xyz=フォグ色(ステージの空に合わせる。全0なら既定の青)
 };
 
 cbuffer PerFrameConstants : register(b1)
@@ -102,9 +103,10 @@ float4 PSMain(PSInput input) : SV_TARGET
     float3 glow = tex.rgb * glowMask * pulse * 1.6f;
 
     // 大気フォグ+減光: 稜線は空壁の手前=一番奥のシルエットとして強めに空へ溶かす
-    static const float3 FOG_COLOR = float3(0.10f, 0.22f, 0.33f);
+    float3 fogColor = (dot(shaderParams.xyz, shaderParams.xyz) > 0.0001f)
+                      ? shaderParams.xyz : float3(0.10f, 0.22f, 0.33f);
     float fog = saturate((input.viewDepth - 15.0f) / 11.0f) * 0.84f;
-    lit = lerp(lit, FOG_COLOR, fog) * 0.85f;
+    lit = lerp(lit, fogColor, fog) * 0.85f;
     lit += glow * (1.0f - fog * 0.55f);
 
     // 崩壊境界のすぐ内側をオレンジに光らせる(崩れていく縁)

@@ -306,6 +306,42 @@ RIDGES = {0: ["BG_Ridge_Ruins"], 1: ["BG_Ridge_Gears"],
 RIDGE_H = {"BG_Ridge_Gears": 0.271, "BG_Ridge_Ruins": 0.231, "BG_Ridge_Spires": 0.315}
 RIDGE_TINT = {0: [0.85, 0.88, 1.0], 1: [1.0, 1.0, 1.0], 2: [0.82, 1.0, 0.9],
               3: [0.9, 0.8, 1.0], 4: [1.0, 0.8, 0.68]}
+# ステージ別フォグ色(空bg_sky{n}の中間色に合わせる)。shaderParams.xyzで
+# BackdropLayer/Ridge へ渡す(未指定=旧来の青系デフォルト)
+FOG_COL = {0: [0.30, 0.34, 0.52], 1: [0.10, 0.22, 0.33], 2: [0.09, 0.26, 0.23],
+           3: [0.22, 0.15, 0.34], 4: [0.34, 0.15, 0.11]}
+# 4層目=遠影(z=17)。巨大シルエット帯。ステージで山嶺/時計城砦を使い分ける
+FARS = {0: ["BG_Far_Peaks"], 1: ["BG_Far_Citadel", "BG_Far_Peaks"],
+        2: ["BG_Far_Peaks", "BG_Far_Citadel"], 3: ["BG_Far_Citadel"],
+        4: ["BG_Far_Peaks", "BG_Far_Citadel"]}
+FAR_H = {"BG_Far_Peaks": 0.295, "BG_Far_Citadel": 0.437}
+
+
+def backdrop_far(n, width, limit):
+    """4層目: 遠影の巨大シルエット帯(z=17、フォグでほぼ空に溶ける)。
+    BGProp(T)で時間消滅にも参加する。"""
+    import random
+    rnd = random.Random(700 + n)
+    models = FARS[n]
+    pieces, x, i = [], -12.0, 0
+    while x < width + 12.0:
+        m = models[i % len(models)]
+        s = rnd.uniform(52, 60) if m == "BG_Far_Peaks" else rnd.uniform(36, 44)
+        h = FAR_H[m] * s
+        e = mesh(f"BackdropFar{i + 1}", m, round(x + s / 2, 2), round(h / 2 - 3.5, 2),
+                 s, s, s,
+                 lua=script("BGProp.lua", [
+                     prop("spinZ", "float", 0.0), prop("bobAmp", "float", 0.0),
+                     prop("bobPeriod", "float", 9.0),
+                     prop("phase", "float", round(rnd.uniform(0, 8), 2)),
+                     prop("T", "float", float(limit))]),
+                 shader=BGLAYER, z=17.0 + (i % 2) * 1.2)
+        e["color"] = [0.72, 0.74, 0.9]
+        e["shaderParams"] = FOG_COL[n] + [0.0]
+        pieces.append(e)
+        x += s * rnd.uniform(0.8, 0.92)
+        i += 1
+    return pieces
 
 
 def backdrop_sky(n, width, y_top, fx, fy, fz):
@@ -353,6 +389,7 @@ def backdrop_ridge(n, width, limit):
                      prop("suckInAt", "float", 0.75 if i == 0 else 1.5)]),
                  shader="shaders/BackdropRidge.hlsl", z=9.5 + (i % 2) * 0.9)
         e["color"] = RIDGE_TINT[n]
+        e["shaderParams"] = FOG_COL[n] + [0.0]
         pieces.append(e)
         x += s * rnd.uniform(0.82, 0.95)
         i += 1
@@ -380,6 +417,7 @@ def bg_decor(n, width, limit):
                  lua=lua, shader=BGLAYER, rot=(0.0, 0.0, round(rot_z, 1)),
                  z=round(z, 2))
         e["color"] = [0.80, 0.83, 0.95]   # 背景減光(視認性: ゲーム面より一段沈める)
+        e["shaderParams"] = FOG_COL[n] + [0.0]
         ents.append(e)
 
     # ── 遠景: 壊れた大時計(針は凍結したまま)+半分沈んで回り続ける大歯車 ──
@@ -451,7 +489,8 @@ def build(n, entities, limit, width):
     sun["transform"]["position"][0] = width / 2.0
 
     ents = entities + [backdrop_sky(n, width, y1, fx, fy, fz)] + \
-        backdrop_ridge(n, width, limit) + bg_decor(n, width, limit) + \
+        backdrop_far(n, width, limit) + backdrop_ridge(n, width, limit) + \
+        bg_decor(n, width, limit) + \
         [sun, cam, copy.deepcopy(T["Grid"]), copy.deepcopy(T["HudCanvas"])]
     hud_i = len(ents) - 1
     seek = copy.deepcopy(T["SeekBar"])

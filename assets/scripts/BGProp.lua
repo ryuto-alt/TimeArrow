@@ -23,6 +23,10 @@ function OnStart(self)
   self.clock = self.phase
   self.life = 0
   self.slowSent = -1
+  -- 世界タイマーと同じ収支(GameManager.luaと同係数)。
+  -- 先送りで一気に砕け、後戻りの返金で砕けた分が再生する
+  events:on("time_skip", function(d) self.life = self.life + (d.amount or 0) * 0.5 end)
+  events:on("time_refund", function(d) self.life = math.max(0, self.life - (d.amount or 0) * 0.5) end)
 end
 
 function OnUpdate(self, dt)
