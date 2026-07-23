@@ -78,6 +78,16 @@ function OnUpdate(self, dt)
     end
   end
 
+  -- 崩落の瞬間に一度だけ鳴らす(後戻りで閾値を割ったら再アーム)
+  if self.clock >= self.crumbleT then
+    if not self.fellSfx then
+      self.fellSfx = true
+      audio:playSpatial("audio/se/crush.wav", self.bx, self.by, self.bz, 3, 22, 0.9)
+    end
+  else
+    self.fellSfx = false
+  end
+
   -- 状態→位置: 崩壊前=揺れ / 崩壊後=落下(クロックに比例した深さ=巻き戻しで戻れる)
   local x, y = self.bx, self.by
   if self.clock > 0 and self.clock < self.crumbleT then

@@ -82,6 +82,24 @@ function OnStart(self)
   events:on("quit_clicked", function(e)
     quitGame(e and e.source)
   end)
+
+  -- オプション(ESC/☰)開閉: 開いている間は自キャンバスを隠し、フォーカスの逃げ先を消す。
+  -- UI登場前(uiShown=false)はキャンバスがまだ不可視なので触らない
+  optionsOpen = false
+  events:on("options_open", function()
+    optionsOpen = true
+    if uiShown and canvas and canvas:isValid() then scene:hideUi(canvas) end
+  end)
+  events:on("options_close", function()
+    optionsOpen = false
+    if uiShown and canvas and canvas:isValid() and not done then
+      scene:showUi(canvas)
+      time.after(0.05, function()
+        local sb = scene:findEntity("StartButton")
+        if sb and sb:isValid() then setUiFocus(sb) end
+      end)
+    end
+  end)
 end
 
 -- 発進シーケンス(audio/ui/title_warp.wav の波形に同期。立ち上がり0〜0.5s→0.5sクライマックス→1.6sまで残響):
@@ -182,15 +200,12 @@ function OnUpdate(self, dt)
     scene:setMeshEffect(wall, beats)
   end
 
-  -- UI表示前: SPACE/ENTER/A/START はどれも「イントロスキップ」(曲・演出ごとサビ頭へ。
-  -- 誤爆でいきなり次シーンへ行かない)。UI表示後: Enter/Space/A はエンジンのフォーカス
-  -- ナビが処理(START⇄QUIT選択→決定)、パッドSTARTだけは即スタート。
-  if not done then
-    local press = keyPressed("SPACE") or keyPressed("ENTER")
-                  or padPressed("A") or padPressed("START")
-    if uiShown then
-      if padPressed("START") then startGame(nil) end
-    elseif press and not skipped then
+  -- UI表示前: SPACE/ENTER/A は「イントロスキップ」(曲・演出ごとサビ頭へ。誤爆で
+  -- いきなり次シーンへ行かない)。UI表示後: Enter/Space/A はエンジンのフォーカスナビが
+  -- 処理(START⇄QUIT選択→決定)。ESC/パッド☰(START) はオプションメニューが取る。
+  if not done and not optionsOpen then
+    local press = keyPressed("SPACE") or keyPressed("ENTER") or padPressed("A")
+    if not uiShown and press and not skipped then
       skipIntro()
     end
   end

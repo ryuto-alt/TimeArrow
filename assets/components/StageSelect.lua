@@ -18,6 +18,7 @@ local SIDE_VERTICAL_SHIFT = 142.5
 
 local index = 1
 local state = "idle"
+local optionsOpen = false
 local transitionTime = 0
 local transitionDirection = 1
 local entryTime = 0
@@ -238,6 +239,7 @@ end
 --- Initializes card references, visual content, and menu events when the scene starts.
 function OnStart(self)
   audio:setBGMVolume(loadNum("bgm_restore", audio:getBGMVolume()))
+  audio:playBGM("audio/bgm/select_clock_piano.mp3", true)
 
   previousThumbnail = scene:findEntity("StageThumbnailPrevious")
   centerThumbnail = scene:findEntity("StageCardPanel")
@@ -275,11 +277,22 @@ function OnStart(self)
   events:on("stage_next", function() beginTransition(1) end)
   events:on("stage_play", function() goPlay() end)
   events:on("stage_back", function() goBack() end)
+
+  -- オプション(ESC/☰)が開いている間: 自分のキャンバスを隠してフォーカスナビの逃げ先を消す
+  local selectCanvas = scene:findEntity("SelectCanvas")
+  events:on("options_open", function()
+    optionsOpen = true
+    if isValid(selectCanvas) then scene:hideUi(selectCanvas) end
+  end)
+  events:on("options_close", function()
+    optionsOpen = false
+    if isValid(selectCanvas) then scene:showUi(selectCanvas) end
+  end)
 end
 
 --- Advances the transition timer and routes keyboard, gamepad, and button input.
 function OnUpdate(self, dt)
-  if leaving then return end
+  if leaving or optionsOpen then return end
   entryTime = entryTime + dt
 
   if state == "transitioning" then
@@ -293,6 +306,7 @@ function OnUpdate(self, dt)
     if keyPressed("LEFT") or keyPressed("A") or padPressed("DPAD_LEFT") then beginTransition(-1) end
     if keyPressed("RIGHT") or keyPressed("D") or padPressed("DPAD_RIGHT") then beginTransition(1) end
     if keyPressed("SPACE") or keyPressed("ENTER") or padPressed("A") then goPlay() end
-    if keyPressed("ESC") or padPressed("B") then goBack() end
+    -- ESC はオプションメニュー(OptionsMenu.lua)に譲る。タイトルへ戻るのはパッドB/BACKボタン
+    if padPressed("B") then goBack() end
   end
 end

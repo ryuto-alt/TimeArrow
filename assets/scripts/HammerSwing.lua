@@ -121,6 +121,7 @@ function OnUpdate(self, dt)
       fx:pulse(0.15)
       if stage == 4 then                      -- 崩壊: 豪快に弾けてチリの山へ
         -- 三重の衝撃波+上下2段の大量火花+粉塵。画面も大きく揺らす
+        audio:playSpatial("audio/se/crush.wav", self.bx, groundY + 0.5, self.bz, 4, 30, 1.0)
         FX.spark(self.bx, groundY + 0.4, self.bz, 60, 0.6, 0.55, 0.45)
         FX.spark(self.bx, groundY + 1.4, self.bz, 50, 1.0, 0.75, 0.3)
         FX.spark(self.bx, groundY + 0.2, self.bz, 40, 0.85, 0.8, 0.7)
@@ -338,6 +339,7 @@ function OnUpdate(self, dt)
     if math.abs(s) < 0.10 then
       if not self.sparked then
         self.sparked = true
+        audio:playSpatial("audio/se/hammer_hit.wav", hx, hy - 0.4, self.bz, 3, 20, 0.8)  -- 最下点通過のガリッ
         local n = (self.lastStage == 3) and 40 or 22
         FX.spark(hx, hy - 0.4, self.bz, n, 1.0, 0.75, 0.2)
         FX.spark(hx, hy - 0.3, self.bz, n, 1.0, 0.5, 0.1)

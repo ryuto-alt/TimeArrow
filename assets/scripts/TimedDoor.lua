@@ -48,6 +48,8 @@ function OnStart(self)
   events:on("button_toggle", function(data)
     if data.target ~= self.name or not self.listenButton then return end
     self.buttonOpen = not self.buttonOpen
+    local p = self.transform.position
+    audio:playSpatial("audio/se/door_stone.wav", p.x, p.y, p.z, 3, 22, 0.9)
   end)
 
   -- 後戻り(グローバル): 上がった格子も時計と一緒に降りてくる。逃した窓も呼び戻せる
@@ -105,6 +107,26 @@ function OnUpdate(self, dt)
     else
       -- 開くまでのじわじわ上昇(進捗表示。くぐれる高さにはならない)
       target = self.teaser * (self.clock / math.max(self.openT, 0.01))
+    end
+  end
+
+  -- 開門/閉鎖の節目で石扉のゴゴゴ(後戻りで閾値を割ったら再アーム)
+  if not self.listenButton then
+    if self.openT > 0 and self.clock >= self.openT then
+      if not self.openSfx then
+        self.openSfx = true
+        audio:playSpatial("audio/se/door_stone.wav", self.bx, self.transform.position.y, self.bz, 3, 22, 0.9)
+      end
+    else
+      self.openSfx = false
+    end
+    if self.closeT < 9000 and self.clock >= self.closeT then
+      if not self.closeSfx then
+        self.closeSfx = true
+        audio:playSpatial("audio/se/door_stone.wav", self.bx, self.transform.position.y, self.bz, 3, 22, 0.9)
+      end
+    else
+      self.closeSfx = false
     end
   end
 

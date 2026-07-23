@@ -25,11 +25,20 @@ function OnStart(self)
   self.waitT = 0
   self.nextScene = nil
   self.rewindGlow = 0
+  time.setScale(1)      -- TIME UP演出のsetScale(0)をリロード後に持ち越さない保険
 
   seekBar     = scene:findEntity("SeekBar")
   screenFlash = scene:findEntity("ScreenFlash")
   timeBanner  = scene:findEntity("TimeBanner")
   timeLeft    = scene:findEntity("TimeLeft")
+
+  -- ステージBGM: 前半(stage0〜2)=時計仕掛け / 後半(stage3〜)=時計台ダンジョン
+  local stageNo = tonumber(tostring(self.scenePath):match("stage(%d+)")) or 1
+  audio:playBGM(stageNo >= 3 and "audio/bgm/stage_clocktower.mp3"
+                              or "audio/bgm/stage_clockwork.mp3", true)
+  -- 後戻り用: 同じ曲の逆再生早送りスニペット(areverse+1.7x事前生成)
+  self.bgmRev = stageNo >= 3 and "audio/se/bgm_rev_clocktower.wav"
+                              or "audio/se/bgm_rev_clockwork.wav"
   self.bannerT = 2.4
   self.lastShown = -1
   self.ts = 1.0
@@ -42,10 +51,17 @@ function OnStart(self)
   events:on("time_skip", function(data)
     if self.state ~= "play" then return end
     self.t = self.t + (data.amount or 0) * 0.5
+    -- 先送り中: ステージBGM自体を早送り(消化テンポ1.5sぶん2倍速)
+    pcall(function() audio:setBGMRate(2.0) end)
+    self.ffRateT = 1.6
   end)
   events:on("time_rewind", function(data)
     if self.state ~= "play" then return end
     self.rewindGlow = 0.25
+    -- 後戻り中: BGMを止めて同じ曲の逆再生早送りを重ねる(=曲が巻き戻る)
+    audio:pauseBGM()
+    audio:playSFX(self.bgmRev, false)
+    self.rwMuteT = 1.7
   end)
   -- 返金は「対象が実際に巻き戻せた量」だけ(ギミック側が消化しながら発行する)
   -- 返金も半額(先送り→後戻りの往復で収支トントン=時間の錬金術を防ぐ)
@@ -54,12 +70,33 @@ function OnStart(self)
     self.t = math.max(0, self.t - (data.amount or 0) * 0.5)
   end)
 
+  -- オプションメニュー(OptionsMenu.lua)連携: 開いている間は入力を止め、
+  -- play 以外の局面(死亡/TIME UP/クリア演出中)は開かせない(gm_phase で通知)
+  self.optionsOpen = false
+  events:on("options_open",  function() self.optionsOpen = true  end)
+  events:on("options_close", function() self.optionsOpen = false end)
+  events:on("options_retry", function()
+    if self.state == "reloading" then return end
+    self.state = "reloading"
+    time.setScale(1)
+    goToScene(self.scenePath, 0.2)
+  end)
+  events:on("options_quit", function()
+    if self.state == "reloading" then return end
+    self.state = "reloading"
+    time.setScale(1)
+    audio:stopBGM()
+    goToScene("scenes/stage_select.json", 0.4)
+  end)
+
   events:on("player_died", function()
     if self.state == "play" then
       self.state = "dead"
+      events:emit("gm_phase", { phase = "dead" })
       self.waitT = 0.6
       fx:pulse(0.6)
       flash(0.85, 0.12, 0.1, 0.55, 0.7)
+      audio:playSFX("audio/se/miss.wav", false)
     end
   end)
 
@@ -72,10 +109,12 @@ function OnStart(self)
   events:on("stage_cleared", function(data)
     if self.state == "play" then
       self.state = "cleared"
+      events:emit("gm_phase", { phase = "cleared" })
       self.waitT = 0.9
       self.nextScene = (data and data.next) or "scenes/title.json"
       fx:pulse(0.5)
       flash(0.4, 0.9, 0.5, 0.45, 0.6)
+      audio:playSFX("audio/se/stage_clear.wav", false)
     end
   end)
 end
@@ -101,6 +140,23 @@ function OnUpdate(self, dt)
     end
   end
 
+  -- 先送りのBGM早送りを戻す
+  if self.ffRateT then
+    self.ffRateT = self.ffRateT - dt
+    if self.ffRateT <= 0 then
+      self.ffRateT = nil
+      pcall(function() audio:setBGMRate(1.0) end)
+    end
+  end
+  -- 後戻りの逆再生が終わったらBGM復帰
+  if self.rwMuteT then
+    self.rwMuteT = self.rwMuteT - dt
+    if self.rwMuteT <= 0 then
+      self.rwMuteT = nil
+      if self.state == "play" then audio:resumeBGM() end
+    end
+  end
+
   if self.state == "play" then
     self.t = self.t + dt * self.ts
     if seekBar and seekBar:isValid() then scene:setUiSlider(seekBar, self.t) end
@@ -119,15 +175,69 @@ function OnUpdate(self, dt)
       end
     end
     if self.t >= self.T then
+      -- TIME UP: 時が割れる。ガラス音(timeup_glass.wav)は頭0秒がインパクトなので
+      -- 鳴らした瞬間に世界を止めて(setScale 0)、破片が飛び散り→暗転→リロード。
       self.state = "over"
-      self.waitT = 0.7
-      fx:pulse(0.7)
-      flash(0.85, 0.55, 0.1, 0.5, 0.7)
+      events:emit("gm_phase", { phase = "over" })
+      self.waitT = 2.2
+      self.overT = 0
+      time.setScale(0)
+      audio:stopBGM()
+      audio:stopAllSFX()   -- 逆再生スニペット等が鳴っていたら止めてガラスに集中
+      audio:playSFX("audio/se/timeup_glass.wav", false)
+      fx:pulse(1.0)
+      local cx, cy, cz = 0, 0, 0
+      local pl = scene:findEntity("Player")
+      if pl and pl:isValid() then
+        local pp = pl.transform.position
+        cx, cy, cz = pp.x, pp.y, pp.z
+      end
+      self.shX, self.shY, self.shZ = cx, cy, cz
+      if screenFlash and screenFlash:isValid() then
+        scene:setUiColor(screenFlash, 1, 1, 1, 0.9)   -- 割れた瞬間の白閃光(減衰は下で手動)
+      end
+      -- 画面いっぱいにガラス片が弾け飛ぶ(パーティクルはsetScale対象外なので止まらない)
+      for i = 1, 14 do
+        local ox, oy = (math.random() - 0.5) * 16, (math.random() - 0.5) * 9
+        fx:burst{ x = cx + ox, y = cy + oy, z = cz, kind = "star", count = 6,
+                  size = 0.5, sizeEnd = 0.08, life = 1.1, speed = 6, spread = 1.0,
+                  gravity = -9, r = 0.72, g = 0.9, b = 1.0 }
+        fx:burst{ x = cx + ox, y = cy + oy, z = cz, kind = "spark", count = 10,
+                  size = 0.26, sizeEnd = 0, life = 0.9, speed = 8, spread = 1.0,
+                  gravity = -13, r = 0.55, g = 0.8, b = 1.0 }
+      end
+      FX.shockwave(cx, cy, cz, 30, 20, 0.8, 0.95, 1.0)
     end
   elseif self.state == "dead" or self.state == "over" or self.state == "cleared" then
-    self.waitT = self.waitT - dt
+    -- over中は setScale(0) で dt=0 なので実時間で進める
+    local step = (self.state == "over") and time.realDt() or dt
+    self.waitT = self.waitT - step
+
+    if self.state == "over" then
+      self.overT = self.overT + step
+      -- 破片の降りしきり(最初の0.8秒)
+      self.shardAcc = (self.shardAcc or 0) + step
+      if self.overT < 0.8 and self.shardAcc > 0.1 then
+        self.shardAcc = 0
+        fx:burst{ x = self.shX + (math.random() - 0.5) * 14,
+                  y = self.shY + 3.5 + math.random() * 3, z = self.shZ,
+                  kind = "spark", count = 6, size = 0.22, sizeEnd = 0, life = 0.8,
+                  speed = 3, spread = 0.6, gravity = -14, dy = -1,
+                  r = 0.6, g = 0.85, b = 1.0 }
+      end
+      -- 白閃光の減衰 → 暗転(手動制御。tweenのタイムスケール依存を避ける)
+      if screenFlash and screenFlash:isValid() then
+        if self.overT < 0.5 then
+          scene:setUiColor(screenFlash, 1, 1, 1, 0.9 * (1 - self.overT / 0.5))
+        elseif self.overT > 0.9 then
+          scene:setUiColor(screenFlash, 0, 0, 0, math.min(1, (self.overT - 0.9) / 0.6))
+        end
+      end
+    end
+
     if self.waitT <= 0 then
       self.state = "reloading"
+      time.setScale(1)
       if self.nextScene then
         goToScene(self.nextScene, 0.5)
       else
@@ -136,8 +246,10 @@ function OnUpdate(self, dt)
     end
   end
 
-  if self.state ~= "reloading" and self.state ~= "cleared" and (keyPressed("R") or padPressed("BACK")) then
+  if self.state ~= "reloading" and self.state ~= "cleared" and not self.optionsOpen
+     and (keyPressed("R") or padPressed("Y")) then
     self.state = "reloading"
+    time.setScale(1)
     goToScene(self.scenePath, 0.2)
   end
 end

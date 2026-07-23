@@ -75,6 +75,14 @@ function OnUpdate(self, dt)
     end
   end
 
+  -- 発射の瞬間のヒュン(後戻りで戻ったら再アーム)。初弾(シーン開始と同時)は鳴らさない
+  local shotN = math.floor(self.clock / self.period)
+  if self.lastShotN == nil then self.lastShotN = shotN end
+  if shotN > self.lastShotN and shotN < self.ammo then
+    audio:playSpatial("audio/se/arrow_shot.wav", self.bx - 0.9, self.by, self.bz, 3, 20, 0.8)
+  end
+  self.lastShotN = shotN
+
   local pl = scene:findEntity("Player")
   local pp = (pl and pl:isValid()) and pl.transform.position or nil
 

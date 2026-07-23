@@ -91,6 +91,7 @@ function OnUpdate(self, dt)
   self.exploded = true
   FX.explosion(self.bx, self.by, self.bz, 1.3, 1.0, 0.5, 0.15)
   fx:pulse(0.5)
+  audio:playSpatial("audio/se/explosion.wav", self.bx, self.by, self.bz, 4, 30, 1.0)
   self.transform.position = Vec3.new(self.bx, -100.0, self.bz)  -- 爆散して消える
 
   if self.wallTarget ~= "" then

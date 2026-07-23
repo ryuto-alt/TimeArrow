@@ -66,6 +66,11 @@ local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
 end
 
 function OnStart(self)
+  -- オプションメニューが開いている間は操作を受け付けない(環境分離のためイベントで受ける)
+  self.optionsOpen = false
+  events:on("options_open",  function() self.optionsOpen = true  end)
+  events:on("options_close", function() self.optionsOpen = false end)
+
   local p = self.transform.position
   self.startX, self.startY, self.startZ = p.x, p.y, p.z
   self.vx, self.vy = 0, 0
@@ -388,6 +393,7 @@ local function updateMovement(self, dt)
   if not self.drawing and self.grounded and (keyPressed("SPACE") or keyPressed("UP") or keyPressed("W") or padPressed("A")) then
     self.vy = self.jumpSpeed
     self.grounded = false
+    audio:playSFX("audio/se/jump.wav", false)
   end
 
   updateClimb(self, dt)  -- 登り中なら vx/vy をここで上書き
@@ -465,6 +471,7 @@ local function fireArrow(self)
   else
     FX.spark(sx, sy, sz, 10, 0.3, 0.75, 1.0)
   end
+  audio:playSFX("audio/se/arrow_shot.wav", false)
 
   self.hasArrow = false
   self.arrowFlying = true
@@ -708,6 +715,7 @@ local function stickArrow(self, arrowE, hitTargetName)
     end
     fx:pulse(0.18)
     padVibrate(0.5, 0.3, 0.12)
+    audio:playSpatial("audio/se/arrow_hit.wav", ap.x, ap.y, ap.z, 3, 26, 1.0)  -- 刺さってビーンと振動(刺さった場所から)
   end
 end
 
@@ -815,6 +823,7 @@ local function updateArrow(self, dt)
 end
 
 function OnUpdate(self, dt)
+  if self.optionsOpen then return end   -- ポーズ中は入力ごと止める
   -- 弓の発射表示時間を減らし、0未満にはしない。
   self.bowTimer = math.max(0, (self.bowTimer or 0) - dt)
   for name, t in pairs(self.ghostSolids) do
@@ -833,7 +842,33 @@ function OnUpdate(self, dt)
   if ts ~= self.lastTs then
     self.lastTs = ts
     events:emit("time_scale", { scale = ts })
+    -- スローモ入り: 溜め音の間BGMは止め、鳴り終わったらスローBGMで再開。解除で通常復帰
+    -- (setBGMRate はエンジン新API。旧ビルドでも構え自体は動くよう pcall)
+    if ts < 1.0 then
+      audio:playSFX("audio/se/slowmo.wav", false)
+      audio:pauseBGM()
+      self.slowBgmT = 1.4   -- slowmo.wav(1.5s)のフェード尻に少し重ねてスローBGMへ繋ぐ
+    else
+      self.slowBgmT = nil
+      pcall(function() audio:setBGMRate(1.0) end)
+      audio:resumeBGM()
+    end
+  end
+  -- 3Dサウンドのリスナーをプレイヤー位置に(右のギミックは右から鳴る)
+  pcall(function()
+    local lp = self.transform.position
+    audio:setListener(lp.x, lp.y, lp.z)
+  end)
+
+  -- 溜め音が鳴り終わったら、遅く低いBGMをそっと戻す
+  if self.slowBgmT then
+    self.slowBgmT = self.slowBgmT - dt
+    if self.slowBgmT <= 0 then
+      self.slowBgmT = nil
+      pcall(function() audio:setBGMRate(0.55) end)
+      audio:resumeBGM()
+    end
   end
 
-  if keyPressed("ESC") or padPressed("START") then goToScene("scenes/title.json", 0.5) end
+  -- ESC/START はオプションメニュー(OptionsMenu.lua)が取る。タイトルへ戻る旧ショートカットは廃止
 end
