@@ -452,7 +452,7 @@
           {
             "name": "next",
             "type": "string",
-            "value": "scenes/stage1.json"
+            "value": "scenes/stage_select.json"
           }
         ],
         "scriptPath": "scripts/Exit.lua"

@@ -1166,7 +1166,7 @@
       }
     },
     {
-      "name": "BackButton",
+      "name": "SelectGear_gearR1",
       "parent": 5,
       "transform": {
         "position": [
@@ -1186,41 +1186,17 @@
         ]
       },
       "uiAnimator": {
-        "hoverScale": 1.0499999523162842,
+        "hoverScale": 1.0,
         "hoverSpeed": 14.0,
         "loopAmount": 8.0,
         "loopAnim": 0,
         "loopSpeed": 1.0,
-        "pressScale": 0.949999988079071,
+        "pressScale": 1.0,
         "showAnim": 1,
         "showDelay": 0.0,
-        "showDuration": 0.3499999940395355,
+        "showDuration": 0.6000000238418579,
         "showEasing": 2,
         "slideOffset": 80.0
-      },
-      "uiButton": {
-        "clickSound": "",
-        "hoverColor": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "hoverSound": "audio/ui/menu_select.wav",
-        "interactable": true,
-        "normalColor": [
-          0.8500000238418579,
-          0.8500000238418579,
-          0.8500000238418579,
-          1.0
-        ],
-        "onClickEvent": "stage_back",
-        "pressedColor": [
-          0.699999988079071,
-          0.699999988079071,
-          0.699999988079071,
-          1.0
-        ]
       },
       "uiImage": {
         "animCols": 0,
@@ -1256,7 +1232,7 @@
         "outlineDash": 12.0,
         "outlineStyle": 0,
         "outlineWidth": 0.0,
-        "raycastBlock": true,
+        "raycastBlock": false,
         "ringThickness": 8.0,
         "segmentColor": [
           0.0,
@@ -1279,12 +1255,12 @@
         "shadowSoftness": 4.0,
         "shape": 0,
         "sliceBorder": [
-          24.0,
-          24.0,
-          24.0,
-          24.0
+          0.0,
+          0.0,
+          0.0,
+          0.0
         ],
-        "texturePath": "textures/ui_menu_button_rgba.png",
+        "texturePath": "textures/ui/select_gearR1.png",
         "uvMax": [
           1.0,
           1.0
@@ -1309,17 +1285,17 @@
         ],
         "clipChildren": false,
         "offsetMax": [
-          140.0,
-          68.0
+          1073.5,
+          228.1999969482422
         ],
         "offsetMin": [
-          24.0,
-          24.0
+          852.0999755859375,
+          6.800000190734863
         ],
-        "order": 7,
+        "order": -4,
         "pivot": [
-          0.0,
-          0.0
+          0.5,
+          0.5
         ],
         "rotation": 0.0,
         "skewX": 0.0,
@@ -1327,8 +1303,8 @@
       }
     },
     {
-      "name": "BackButtonLabel",
-      "parent": 14,
+      "name": "SelectGear_gearR2",
+      "parent": 5,
       "transform": {
         "position": [
           0.0,
@@ -1346,47 +1322,36 @@
           1.0
         ]
       },
-      "uiRect": {
-        "anchorMax": [
-          1.0,
-          1.0
-        ],
-        "anchorMin": [
-          0.0,
-          0.0
-        ],
-        "clipChildren": false,
-        "offsetMax": [
-          0.0,
-          0.0
-        ],
-        "offsetMin": [
-          0.0,
-          0.0
-        ],
-        "order": 0,
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "rotation": 0.0,
-        "skewX": 0.0,
-        "visible": true
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.0,
+        "showDuration": 0.6000000238418579,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
-      "uiText": {
-        "alignH": 1,
-        "alignV": 1,
-        "charAnim": 0,
-        "charAnimAmount": 4.0,
-        "charAnimSpeed": 2.0,
+      "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
         "color": [
           1.0,
           1.0,
           1.0,
           1.0
         ],
-        "fontPath": "",
-        "fontSize": 20.0,
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
         "gradientColor2": [
           1.0,
           1.0,
@@ -1394,15 +1359,26 @@
           1.0
         ],
         "gradientDir": 0,
-        "letterSpacing": 0.0,
+        "gradientScrollSpeed": 0.0,
         "outlineColor": [
           0.0,
           0.0,
           0.0,
           1.0
         ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
         "outlineWidth": 0.0,
-        "rich": false,
+        "raycastBlock": false,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
         "shadowColor": [
           0.0,
           0.0,
@@ -1410,12 +1386,57 @@
           0.0
         ],
         "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "textures/ui/select_gearR2.png",
+        "uvMax": [
           1.0,
           1.0
         ],
-        "text": "戻る",
-        "typewriterSpeed": 0.0,
-        "wrap": false
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
+      },
+      "uiRect": {
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          1125.199951171875,
+          47.400001525878906
+        ],
+        "offsetMin": [
+          983.7999877929688,
+          -94.0
+        ],
+        "order": -4,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
@@ -1851,194 +1872,407 @@
       }
     },
     {
-      "name": "OptionsCanvas",
-      "uiCanvas": {
-        "refWidth": 1280.0,
-        "refHeight": 720.0,
-        "scaleMode": 0,
-        "sortOrder": 100,
-        "visible": false
-      },
       "luaScript": {
         "enabled": true,
-        "scriptPath": "scripts/OptionsMenu.lua",
         "props": [
           {
             "name": "mode",
             "type": "string",
             "value": "menu"
           }
+        ],
+        "scriptPath": "scripts/OptionsMenu.lua"
+      },
+      "name": "OptionsCanvas",
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
         ]
+      },
+      "uiCanvas": {
+        "refHeight": 720.0,
+        "refWidth": 1280.0,
+        "scaleMode": 0,
+        "sortOrder": 100,
+        "visible": false
       }
     },
     {
       "name": "OptPanel",
       "parent": 20,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.5
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "anchorMax": [
-          0.5,
-          0.5
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          -230.0,
-          -250.0
-        ],
-        "offsetMax": [
-          230.0,
-          250.0
-        ],
-        "visible": true,
-        "order": 1
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 2,
+        "showDelay": 0.0,
+        "showDuration": 0.23999999463558197,
+        "showEasing": 4,
+        "slideOffset": 80.0
       },
       "uiImage": {
-        "texturePath": "",
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
         "color": [
-          0.09,
-          0.11,
-          0.17,
-          0.97
-        ],
-        "gradientDir": 1,
-        "gradientColor2": [
-          0.05,
-          0.06,
-          0.1,
-          0.98
+          0.09000000357627869,
+          0.10999999940395355,
+          0.17000000178813934,
+          0.9700000286102295
         ],
         "cornerRadius": 16.0,
-        "raycastBlock": true,
-        "outlineWidth": 1.5,
-        "outlineColor": [
-          0.4,
-          0.85,
-          1.0,
-          0.35
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          0.05000000074505806,
+          0.05999999865889549,
+          0.10000000149011612,
+          0.9800000190734863
         ],
+        "gradientDir": 1,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.4000000059604645,
+          0.8500000238418579,
+          1.0,
+          0.3499999940395355
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 1.5,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
         "shadowColor": [
           0.0,
           0.0,
           0.0,
-          0.55
+          0.550000011920929
         ],
         "shadowOffset": [
           0.0,
           10.0
         ],
-        "shadowSoftness": 12.0
+        "shadowSoftness": 12.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
       },
-      "uiAnimator": {
-        "showAnim": 2,
-        "showDuration": 0.24,
-        "showDelay": 0.0,
-        "showEasing": 4,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.5
+        ],
+        "anchorMin": [
+          0.5,
+          0.5
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          230.0,
+          250.0
+        ],
+        "offsetMin": [
+          -230.0,
+          -250.0
+        ],
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "OptDim",
       "parent": 20,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.0,
+        "showDuration": 0.15000000596046448,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
+        "color": [
+          0.0,
+          0.0,
+          0.0,
+          0.6000000238418579
+        ],
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
+      },
+      "uiRect": {
         "anchorMax": [
           1.0,
           1.0
         ],
-        "pivot": [
-          0.5,
-          0.5
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          0.0,
+          0.0
         ],
         "offsetMin": [
           0.0,
           0.0
         ],
-        "offsetMax": [
-          0.0,
-          0.0
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 0
-      },
-      "uiImage": {
-        "texturePath": "",
-        "color": [
-          0.0,
-          0.0,
-          0.0,
-          0.6
-        ],
-        "raycastBlock": true
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.15,
-        "showDelay": 0.0,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "OptTitle",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.075
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.03999999910593033,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
-          0.075
+          0.07500000298023224
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.07500000298023224
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          200.0,
+          24.0
         ],
         "offsetMin": [
           -200.0,
           -24.0
         ],
-        "offsetMax": [
-          200.0,
-          24.0
+        "order": 2,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 2
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "OPTIONS",
-        "fontSize": 34.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
         "color": [
-          0.6,
-          0.92,
+          0.6000000238418579,
+          0.9200000166893005,
           1.0,
           1.0
         ],
-        "alignH": 1,
-        "alignV": 1,
-        "wrap": false,
-        "letterSpacing": 10.0,
-        "outlineWidth": 2.0,
-        "outlineColor": [
-          0.05,
-          0.12,
-          0.22,
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 34.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
           1.0
         ],
+        "gradientDir": 0,
+        "letterSpacing": 10.0,
+        "outlineColor": [
+          0.05000000074505806,
+          0.11999999731779099,
+          0.2199999988079071,
+          1.0
+        ],
+        "outlineWidth": 2.0,
+        "rich": false,
         "shadowColor": [
           0.0,
           0.0,
@@ -2048,1170 +2282,2031 @@
         "shadowOffset": [
           0.0,
           3.0
-        ]
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.04,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        ],
+        "text": "OPTIONS",
+        "typewriterSpeed": 0.0,
+        "wrap": false
       }
     },
     {
       "name": "OptMasterLabel",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.185
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.05999999865889549,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
-          0.185
+          0.1850000023841858
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.1850000023841858
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          -104.0,
+          14.0
         ],
         "offsetMin": [
           -190.0,
           -14.0
         ],
-        "offsetMax": [
-          -104.0,
-          14.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "マスター",
-        "fontSize": 21.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "color": [
-          0.85,
-          0.92,
-          1.0,
-          0.95
-        ],
         "alignH": 0,
         "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
+        "color": [
+          0.8500000238418579,
+          0.9200000166893005,
+          1.0,
+          0.949999988079071
+        ],
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 21.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "マスター",
+        "typewriterSpeed": 0.0,
         "wrap": false
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.06,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
       }
     },
     {
       "name": "OptMasterSlider",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.185
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.07999999821186066,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
-          0.185
+          0.1850000023841858
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.1850000023841858
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          190.0,
+          14.0
         ],
         "offsetMin": [
           -92.0,
           -14.0
         ],
-        "offsetMax": [
-          190.0,
-          14.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiSlider": {
-        "value": 1.0,
-        "minValue": 0.0,
-        "maxValue": 1.0,
-        "step": 0.05,
-        "onChangeEvent": "opt_master_changed",
-        "trackColor": [
-          0.16,
-          0.19,
-          0.28,
-          1.0
-        ],
         "fillColor": [
-          0.35,
-          0.85,
+          0.3499999940395355,
+          0.8500000238418579,
           1.0,
           1.0
         ],
+        "interactable": true,
         "knobColor": [
-          0.95,
-          0.99,
+          0.949999988079071,
+          0.9900000095367432,
           1.0,
           1.0
         ],
-        "interactable": true
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.08,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        "maxValue": 1.0,
+        "minValue": 0.0,
+        "onChangeEvent": "opt_master_changed",
+        "step": 0.05000000074505806,
+        "trackColor": [
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
+          1.0
+        ],
+        "value": 1.0
       }
     },
     {
       "name": "OptBgmLabel",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.28
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.05999999865889549,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
-          0.28
+          0.2800000011920929
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.2800000011920929
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          -104.0,
+          14.0
         ],
         "offsetMin": [
           -190.0,
           -14.0
         ],
-        "offsetMax": [
-          -104.0,
-          14.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "BGM",
-        "fontSize": 21.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "color": [
-          0.85,
-          0.92,
-          1.0,
-          0.95
-        ],
         "alignH": 0,
         "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
+        "color": [
+          0.8500000238418579,
+          0.9200000166893005,
+          1.0,
+          0.949999988079071
+        ],
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 21.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "BGM",
+        "typewriterSpeed": 0.0,
         "wrap": false
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.06,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
       }
     },
     {
       "name": "OptBgmSlider",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.28
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.07999999821186066,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
-          0.28
+          0.2800000011920929
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.2800000011920929
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          190.0,
+          14.0
         ],
         "offsetMin": [
           -92.0,
           -14.0
         ],
-        "offsetMax": [
-          190.0,
-          14.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiSlider": {
-        "value": 1.0,
-        "minValue": 0.0,
-        "maxValue": 1.0,
-        "step": 0.05,
-        "onChangeEvent": "opt_bgm_changed",
-        "trackColor": [
-          0.16,
-          0.19,
-          0.28,
-          1.0
-        ],
         "fillColor": [
-          0.35,
-          0.85,
+          0.3499999940395355,
+          0.8500000238418579,
           1.0,
           1.0
         ],
+        "interactable": true,
         "knobColor": [
-          0.95,
-          0.99,
+          0.949999988079071,
+          0.9900000095367432,
           1.0,
           1.0
         ],
-        "interactable": true
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.08,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        "maxValue": 1.0,
+        "minValue": 0.0,
+        "onChangeEvent": "opt_bgm_changed",
+        "step": 0.05000000074505806,
+        "trackColor": [
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
+          1.0
+        ],
+        "value": 1.0
       }
     },
     {
       "name": "OptSeLabel",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.375
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.05999999865889549,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
           0.375
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.375
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          -104.0,
+          14.0
         ],
         "offsetMin": [
           -190.0,
           -14.0
         ],
-        "offsetMax": [
-          -104.0,
-          14.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "SE",
-        "fontSize": 21.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "color": [
-          0.85,
-          0.92,
-          1.0,
-          0.95
-        ],
         "alignH": 0,
         "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
+        "color": [
+          0.8500000238418579,
+          0.9200000166893005,
+          1.0,
+          0.949999988079071
+        ],
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 21.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "SE",
+        "typewriterSpeed": 0.0,
         "wrap": false
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.06,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
       }
     },
     {
       "name": "OptSeSlider",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.375
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.07999999821186066,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
           0.375
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.375
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          190.0,
+          14.0
         ],
         "offsetMin": [
           -92.0,
           -14.0
         ],
-        "offsetMax": [
-          190.0,
-          14.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiSlider": {
-        "value": 1.0,
-        "minValue": 0.0,
-        "maxValue": 1.0,
-        "step": 0.05,
-        "onChangeEvent": "opt_se_changed",
-        "trackColor": [
-          0.16,
-          0.19,
-          0.28,
-          1.0
-        ],
         "fillColor": [
-          0.35,
-          0.85,
+          0.3499999940395355,
+          0.8500000238418579,
           1.0,
           1.0
         ],
+        "interactable": true,
         "knobColor": [
-          0.95,
-          0.99,
+          0.949999988079071,
+          0.9900000095367432,
           1.0,
           1.0
         ],
-        "interactable": true
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.08,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        "maxValue": 1.0,
+        "minValue": 0.0,
+        "onChangeEvent": "opt_se_changed",
+        "step": 0.05000000074505806,
+        "trackColor": [
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
+          1.0
+        ],
+        "value": 1.0
       }
     },
     {
       "name": "OptWinModeButton",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.485
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "anchorMax": [
-          0.5,
-          0.485
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          -190.0,
-          -21.0
-        ],
-        "offsetMax": [
-          190.0,
-          21.0
-        ],
-        "visible": true,
-        "order": 1
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
       },
-      "uiImage": {
-        "texturePath": "",
-        "color": [
-          0.16,
-          0.19,
-          0.28,
-          1.0
-        ],
-        "gradientDir": 1,
-        "gradientColor2": [
-          0.1,
-          0.12,
-          0.18,
-          1.0
-        ],
-        "cornerRadius": 10.0,
-        "raycastBlock": true,
-        "outlineWidth": 1.5,
-        "outlineColor": [
-          1.0,
-          1.0,
-          1.0,
-          0.14
-        ],
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.4
-        ],
-        "shadowOffset": [
-          0.0,
-          4.0
-        ],
-        "shadowSoftness": 6.0
+      "uiAnimator": {
+        "hoverScale": 1.0499999523162842,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 0.949999988079071,
+        "showAnim": 1,
+        "showDelay": 0.10000000149011612,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
       "uiButton": {
-        "onClickEvent": "opt_winmode_clicked",
+        "clickSound": "audio/ui/menu_enter.wav",
+        "hoverColor": [
+          1.2000000476837158,
+          1.2000000476837158,
+          1.25,
+          1.0
+        ],
+        "hoverSound": "audio/ui/menu_select.wav",
+        "interactable": true,
         "normalColor": [
           1.0,
           1.0,
           1.0,
           1.0
         ],
-        "hoverColor": [
-          1.2,
-          1.2,
-          1.25,
-          1.0
-        ],
+        "onClickEvent": "opt_winmode_clicked",
         "pressedColor": [
           0.75,
           0.75,
-          0.8,
+          0.800000011920929,
+          1.0
+        ]
+      },
+      "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
+        "color": [
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
           1.0
         ],
-        "interactable": true,
-        "hoverSound": "audio/ui/menu_select.wav",
-        "clickSound": "audio/ui/menu_enter.wav"
+        "cornerRadius": 10.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          0.10000000149011612,
+          0.11999999731779099,
+          0.18000000715255737,
+          1.0
+        ],
+        "gradientDir": 1,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.14000000059604645
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 1.5,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.4000000059604645
+        ],
+        "shadowOffset": [
+          0.0,
+          4.0
+        ],
+        "shadowSoftness": 6.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
       },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.1,
-        "showEasing": 2,
-        "hoverScale": 1.05,
-        "pressScale": 0.95,
-        "hoverSpeed": 14.0,
-        "loopAnim": 0
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.48500001430511475
+        ],
+        "anchorMin": [
+          0.5,
+          0.48500001430511475
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          190.0,
+          21.0
+        ],
+        "offsetMin": [
+          -190.0,
+          -21.0
+        ],
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "OptWinModeValue",
       "parent": 30,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiRect": {
         "anchorMax": [
           1.0,
           1.0
         ],
-        "pivot": [
-          0.5,
-          0.5
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          0.0,
+          0.0
         ],
         "offsetMin": [
           0.0,
           0.0
         ],
-        "offsetMax": [
-          0.0,
-          0.0
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 0
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "画面モード： ウィンドウ",
-        "fontSize": 21.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
         "color": [
-          0.95,
-          0.97,
+          0.949999988079071,
+          0.9700000286102295,
           1.0,
           1.0
         ],
-        "alignH": 1,
-        "alignV": 1,
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 21.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "画面モード： ウィンドウ",
+        "typewriterSpeed": 0.0,
         "wrap": false
       }
     },
     {
       "name": "OptVsyncToggle",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.585
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.09000000357627869,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
-          0.585
+          0.5849999785423279
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
-          0.5
+          0.5849999785423279
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          -158.0,
+          16.0
         ],
         "offsetMin": [
           -190.0,
           -16.0
         ],
-        "offsetMax": [
-          -158.0,
-          16.0
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 1
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiToggle": {
-        "isOn": false,
-        "onChangeEvent": "opt_vsync_changed",
         "boxColor": [
-          0.16,
-          0.19,
-          0.28,
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
           1.0
         ],
         "checkColor": [
-          0.35,
-          0.85,
+          0.3499999940395355,
+          0.8500000238418579,
           1.0,
           1.0
         ],
-        "interactable": true
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.09,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        "interactable": true,
+        "isOn": false,
+        "onChangeEvent": "opt_vsync_changed"
       }
     },
     {
       "name": "OptVsyncLabel",
       "parent": 32,
-      "uiRect": {
-        "anchorMin": [
-          1.0,
-          0.5
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiRect": {
         "anchorMax": [
           1.0,
           0.5
         ],
-        "pivot": [
-          0.5,
+        "anchorMin": [
+          1.0,
           0.5
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          260.0,
+          14.0
         ],
         "offsetMin": [
           12.0,
           -14.0
         ],
-        "offsetMax": [
-          260.0,
-          14.0
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 0
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "垂直同期",
-        "fontSize": 20.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
-        "color": [
-          0.85,
-          0.92,
-          1.0,
-          0.95
-        ],
         "alignH": 0,
         "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
+        "color": [
+          0.8500000238418579,
+          0.9200000166893005,
+          1.0,
+          0.949999988079071
+        ],
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 20.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "垂直同期",
+        "typewriterSpeed": 0.0,
         "wrap": false
       }
     },
     {
       "name": "OptFpsButton",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.685
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "anchorMax": [
-          0.5,
-          0.685
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          -190.0,
-          -21.0
-        ],
-        "offsetMax": [
-          190.0,
-          21.0
-        ],
-        "visible": true,
-        "order": 1
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
       },
-      "uiImage": {
-        "texturePath": "",
-        "color": [
-          0.16,
-          0.19,
-          0.28,
-          1.0
-        ],
-        "gradientDir": 1,
-        "gradientColor2": [
-          0.1,
-          0.12,
-          0.18,
-          1.0
-        ],
-        "cornerRadius": 10.0,
-        "raycastBlock": true,
-        "outlineWidth": 1.5,
-        "outlineColor": [
-          1.0,
-          1.0,
-          1.0,
-          0.14
-        ],
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.4
-        ],
-        "shadowOffset": [
-          0.0,
-          4.0
-        ],
-        "shadowSoftness": 6.0
+      "uiAnimator": {
+        "hoverScale": 1.0499999523162842,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 0.949999988079071,
+        "showAnim": 1,
+        "showDelay": 0.10000000149011612,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
       "uiButton": {
-        "onClickEvent": "opt_fps_clicked",
+        "clickSound": "audio/ui/menu_enter.wav",
+        "hoverColor": [
+          1.2000000476837158,
+          1.2000000476837158,
+          1.25,
+          1.0
+        ],
+        "hoverSound": "audio/ui/menu_select.wav",
+        "interactable": true,
         "normalColor": [
           1.0,
           1.0,
           1.0,
           1.0
         ],
-        "hoverColor": [
-          1.2,
-          1.2,
-          1.25,
-          1.0
-        ],
+        "onClickEvent": "opt_fps_clicked",
         "pressedColor": [
           0.75,
           0.75,
-          0.8,
+          0.800000011920929,
+          1.0
+        ]
+      },
+      "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
+        "color": [
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
           1.0
         ],
-        "interactable": true,
-        "hoverSound": "audio/ui/menu_select.wav",
-        "clickSound": "audio/ui/menu_enter.wav"
+        "cornerRadius": 10.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          0.10000000149011612,
+          0.11999999731779099,
+          0.18000000715255737,
+          1.0
+        ],
+        "gradientDir": 1,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.14000000059604645
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 1.5,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.4000000059604645
+        ],
+        "shadowOffset": [
+          0.0,
+          4.0
+        ],
+        "shadowSoftness": 6.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
       },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.1,
-        "showEasing": 2,
-        "hoverScale": 1.05,
-        "pressScale": 0.95,
-        "hoverSpeed": 14.0,
-        "loopAnim": 0
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.6850000023841858
+        ],
+        "anchorMin": [
+          0.5,
+          0.6850000023841858
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          190.0,
+          21.0
+        ],
+        "offsetMin": [
+          -190.0,
+          -21.0
+        ],
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "OptFpsValue",
       "parent": 34,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiRect": {
         "anchorMax": [
           1.0,
           1.0
         ],
-        "pivot": [
-          0.5,
-          0.5
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          0.0,
+          0.0
         ],
         "offsetMin": [
           0.0,
           0.0
         ],
-        "offsetMax": [
-          0.0,
-          0.0
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 0
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "FPS上限： 無制限",
-        "fontSize": 21.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
         "color": [
-          0.95,
-          0.97,
+          0.949999988079071,
+          0.9700000286102295,
           1.0,
           1.0
         ],
-        "alignH": 1,
-        "alignV": 1,
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 21.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "FPS上限： 無制限",
+        "typewriterSpeed": 0.0,
         "wrap": false
       }
     },
     {
       "name": "OptCloseButton",
       "parent": 21,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.83
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "anchorMax": [
-          0.5,
-          0.83
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          -190.0,
-          -23.0
-        ],
-        "offsetMax": [
-          190.0,
-          23.0
-        ],
-        "visible": true,
-        "order": 1
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
       },
-      "uiImage": {
-        "texturePath": "",
-        "color": [
-          0.16,
-          0.19,
-          0.28,
-          1.0
-        ],
-        "gradientDir": 1,
-        "gradientColor2": [
-          0.1,
-          0.12,
-          0.18,
-          1.0
-        ],
-        "cornerRadius": 10.0,
-        "raycastBlock": true,
-        "outlineWidth": 1.5,
-        "outlineColor": [
-          1.0,
-          1.0,
-          1.0,
-          0.14
-        ],
-        "shadowColor": [
-          0.0,
-          0.0,
-          0.0,
-          0.4
-        ],
-        "shadowOffset": [
-          0.0,
-          4.0
-        ],
-        "shadowSoftness": 6.0
+      "uiAnimator": {
+        "hoverScale": 1.0499999523162842,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 0.949999988079071,
+        "showAnim": 1,
+        "showDelay": 0.10000000149011612,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
       "uiButton": {
-        "onClickEvent": "opt_close_clicked",
+        "clickSound": "audio/ui/menu_enter.wav",
+        "hoverColor": [
+          1.2000000476837158,
+          1.2000000476837158,
+          1.25,
+          1.0
+        ],
+        "hoverSound": "audio/ui/menu_select.wav",
+        "interactable": true,
         "normalColor": [
           1.0,
           1.0,
           1.0,
           1.0
         ],
-        "hoverColor": [
-          1.2,
-          1.2,
-          1.25,
-          1.0
-        ],
+        "onClickEvent": "opt_close_clicked",
         "pressedColor": [
           0.75,
           0.75,
-          0.8,
+          0.800000011920929,
+          1.0
+        ]
+      },
+      "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
+        "color": [
+          0.1599999964237213,
+          0.1899999976158142,
+          0.2800000011920929,
           1.0
         ],
-        "interactable": true,
-        "hoverSound": "audio/ui/menu_select.wav",
-        "clickSound": "audio/ui/menu_enter.wav"
+        "cornerRadius": 10.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          0.10000000149011612,
+          0.11999999731779099,
+          0.18000000715255737,
+          1.0
+        ],
+        "gradientDir": 1,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          1.0,
+          1.0,
+          1.0,
+          0.14000000059604645
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 1.5,
+        "raycastBlock": true,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.4000000059604645
+        ],
+        "shadowOffset": [
+          0.0,
+          4.0
+        ],
+        "shadowSoftness": 6.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
       },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.1,
-        "showEasing": 2,
-        "hoverScale": 1.05,
-        "pressScale": 0.95,
-        "hoverSpeed": 14.0,
-        "loopAnim": 0
+      "uiRect": {
+        "anchorMax": [
+          0.5,
+          0.8299999833106995
+        ],
+        "anchorMin": [
+          0.5,
+          0.8299999833106995
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          190.0,
+          23.0
+        ],
+        "offsetMin": [
+          -190.0,
+          -23.0
+        ],
+        "order": 1,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "Label",
       "parent": 36,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiRect": {
         "anchorMax": [
           1.0,
           1.0
         ],
-        "pivot": [
-          0.5,
-          0.5
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          0.0,
+          0.0
         ],
         "offsetMin": [
           0.0,
           0.0
         ],
-        "offsetMax": [
-          0.0,
-          0.0
+        "order": 0,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 0
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "とじる",
-        "fontSize": 21.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
         "color": [
-          0.95,
-          0.97,
+          0.949999988079071,
+          0.9700000286102295,
           1.0,
           1.0
         ],
-        "alignH": 1,
-        "alignV": 1,
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 21.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          1.0,
+          1.0
+        ],
+        "text": "とじる",
+        "typewriterSpeed": 0.0,
         "wrap": false
       }
     },
     {
       "name": "OptHint",
       "parent": 20,
-      "uiRect": {
-        "anchorMin": [
-          0.5,
-          0.5
+      "transform": {
+        "position": [
+          0.0,
+          0.0,
+          0.0
         ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.11999999731779099,
+        "showDuration": 0.2199999988079071,
+        "showEasing": 2,
+        "slideOffset": 80.0
+      },
+      "uiRect": {
         "anchorMax": [
           0.5,
           0.5
         ],
-        "pivot": [
+        "anchorMin": [
           0.5,
           0.5
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          320.0,
+          288.0
         ],
         "offsetMin": [
           -320.0,
           262.0
         ],
-        "offsetMax": [
-          320.0,
-          288.0
+        "order": 2,
+        "pivot": [
+          0.5,
+          0.5
         ],
-        "visible": true,
-        "order": 2
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       },
       "uiText": {
-        "text": "ESC / ☰ : とじる　　←→ : 音量",
-        "fontSize": 16.0,
-        "fontPath": "fonts/DotGothic16-400.ttf",
+        "alignH": 1,
+        "alignV": 1,
+        "charAnim": 0,
+        "charAnimAmount": 4.0,
+        "charAnimSpeed": 2.0,
         "color": [
           1.0,
           1.0,
           1.0,
           0.5
         ],
-        "alignH": 1,
-        "alignV": 1,
-        "wrap": false,
+        "fontPath": "fonts/DotGothic16-400.ttf",
+        "fontSize": 16.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "letterSpacing": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineWidth": 0.0,
+        "rich": false,
         "shadowColor": [
           0.0,
           0.0,
           0.0,
-          0.6
+          0.6000000238418579
         ],
         "shadowOffset": [
           0.0,
           2.0
-        ]
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.22,
-        "showDelay": 0.12,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        ],
+        "text": "ESC / ☰ : とじる　　←→ : 音量",
+        "typewriterSpeed": 0.0,
+        "wrap": false
       }
     },
     {
       "name": "SelectBg",
       "parent": 5,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
-        "anchorMax": [
+        "rotation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "scale": [
+          1.0,
           1.0,
           1.0
-        ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          0.0,
-          0.0
-        ],
-        "offsetMax": [
-          0.0,
-          0.0
-        ],
-        "visible": true,
-        "order": -5
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.0,
+        "showDuration": 0.6000000238418579,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
       "uiImage": {
-        "texturePath": "textures/ui/bg_stage_select.png",
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
         "color": [
           1.0,
           1.0,
           1.0,
           1.0
         ],
-        "raycastBlock": false
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
+        "raycastBlock": false,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "textures/ui/bg_stage_select.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
       },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.6,
-        "showDelay": 0.0,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+      "uiRect": {
+        "anchorMax": [
+          1.0,
+          1.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          1.1575562953948975,
+          0.0
+        ],
+        "offsetMin": [
+          1.1575562953948975,
+          0.0
+        ],
+        "order": -5,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "SelectGear_gearL1",
       "parent": 5,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
-        "anchorMax": [
+        "rotation": [
+          0.0,
           0.0,
           0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          200.7,
-          31.9
-        ],
-        "offsetMax": [
-          463.3,
-          294.5
-        ],
-        "visible": true,
-        "order": -4
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.0,
+        "showDuration": 0.6000000238418579,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
       "uiImage": {
-        "texturePath": "textures/ui/select_gearL1.png",
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
         "color": [
           1.0,
           1.0,
           1.0,
           1.0
         ],
-        "raycastBlock": false
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
+        "raycastBlock": false,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "texturePath": "textures/ui/select_gearL1.png",
+        "uvMax": [
+          1.0,
+          1.0
+        ],
+        "uvMin": [
+          0.0,
+          0.0
+        ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
       },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.6,
-        "showDelay": 0.0,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+      "uiRect": {
+        "anchorMax": [
+          0.0,
+          0.0
+        ],
+        "anchorMin": [
+          0.0,
+          0.0
+        ],
+        "clipChildren": false,
+        "offsetMax": [
+          463.29998779296875,
+          294.5
+        ],
+        "offsetMin": [
+          200.6999969482422,
+          31.899999618530273
+        ],
+        "order": -4,
+        "pivot": [
+          0.5,
+          0.5
+        ],
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     },
     {
       "name": "SelectGear_gearL2",
       "parent": 5,
-      "uiRect": {
-        "anchorMin": [
+      "transform": {
+        "position": [
+          0.0,
           0.0,
           0.0
         ],
-        "anchorMax": [
+        "rotation": [
+          0.0,
           0.0,
           0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          147.2,
-          -78.8
-        ],
-        "offsetMax": [
-          315.2,
-          89.2
-        ],
-        "visible": true,
-        "order": -4
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "uiAnimator": {
+        "hoverScale": 1.0,
+        "hoverSpeed": 14.0,
+        "loopAmount": 8.0,
+        "loopAnim": 0,
+        "loopSpeed": 1.0,
+        "pressScale": 1.0,
+        "showAnim": 1,
+        "showDelay": 0.0,
+        "showDuration": 0.6000000238418579,
+        "showEasing": 2,
+        "slideOffset": 80.0
       },
       "uiImage": {
+        "animCols": 0,
+        "animFps": 8.0,
+        "animFrames": 0,
+        "animMode": 0,
+        "animRow": 0,
+        "animRows": 0,
+        "color": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "cornerRadius": 0.0,
+        "fillAmount": 1.0,
+        "fillDir": 0,
+        "fillOrigin": 0.0,
+        "gradientColor2": [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "gradientDir": 0,
+        "gradientScrollSpeed": 0.0,
+        "outlineColor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "outlineDash": 12.0,
+        "outlineStyle": 0,
+        "outlineWidth": 0.0,
+        "raycastBlock": false,
+        "ringThickness": 8.0,
+        "segmentColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.699999988079071
+        ],
+        "segmentGap": 3.0,
+        "segments": 0,
+        "shadowColor": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "shadowOffset": [
+          2.0,
+          2.0
+        ],
+        "shadowSoftness": 4.0,
+        "shape": 0,
+        "sliceBorder": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
         "texturePath": "textures/ui/select_gearL2.png",
-        "color": [
-          1.0,
-          1.0,
+        "uvMax": [
           1.0,
           1.0
         ],
-        "raycastBlock": false
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.6,
-        "showDelay": 0.0,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
-      }
-    },
-    {
-      "name": "SelectGear_gearR1",
-      "parent": 5,
-      "uiRect": {
-        "anchorMin": [
+        "uvMin": [
           0.0,
           0.0
         ],
+        "uvScroll": [
+          0.0,
+          0.0
+        ]
+      },
+      "uiRect": {
         "anchorMax": [
           0.0,
           0.0
         ],
-        "pivot": [
-          0.5,
-          0.5
-        ],
-        "offsetMin": [
-          852.1,
-          6.8
-        ],
-        "offsetMax": [
-          1073.5,
-          228.2
-        ],
-        "visible": true,
-        "order": -4
-      },
-      "uiImage": {
-        "texturePath": "textures/ui/select_gearR1.png",
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "raycastBlock": false
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.6,
-        "showDelay": 0.0,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
-      }
-    },
-    {
-      "name": "SelectGear_gearR2",
-      "parent": 5,
-      "uiRect": {
         "anchorMin": [
           0.0,
           0.0
         ],
-        "anchorMax": [
-          0.0,
-          0.0
+        "clipChildren": false,
+        "offsetMax": [
+          315.20001220703125,
+          89.19999694824219
         ],
+        "offsetMin": [
+          147.1999969482422,
+          -78.80000305175781
+        ],
+        "order": -4,
         "pivot": [
           0.5,
           0.5
         ],
-        "offsetMin": [
-          983.8,
-          -94.0
-        ],
-        "offsetMax": [
-          1125.2,
-          47.4
-        ],
-        "visible": true,
-        "order": -4
-      },
-      "uiImage": {
-        "texturePath": "textures/ui/select_gearR2.png",
-        "color": [
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "raycastBlock": false
-      },
-      "uiAnimator": {
-        "showAnim": 1,
-        "showDuration": 0.6,
-        "showDelay": 0.0,
-        "showEasing": 2,
-        "hoverScale": 1.0,
-        "pressScale": 1.0,
-        "loopAnim": 0
+        "rotation": 0.0,
+        "skewX": 0.0,
+        "visible": true
       }
     }
   ],

@@ -355,6 +355,7 @@ function OnStart(self)
   events:on("stage_cleared", function()
     if self.phase == "done" then return end
     self.phase = "done"
+    saveNum("ta_tutorial_done", 1)   -- 以後タイトルのSTARTはセレクト直行(title.lua が参照)
     pop(self, "チュートリアル クリア！", COL.gold, 1.25)
     if self.panel then
       scene:tweenUi(self.panel, { alpha = 0, dy = 160, duration = 0.45, easing = "in" })

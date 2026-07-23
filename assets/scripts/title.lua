@@ -131,7 +131,10 @@ function startGame(buttonEntity)
     end
   end)
   time.after(0.70, function()
-    transitionToScene("scenes/stage_select.json", 4, 1.3)   -- 4=シークバー早送り
+    -- 初回はチュートリアル(stage0)を挟む。クリア済み(ta_tutorial_done)ならセレクト直行
+    local dest = loadNum("ta_tutorial_done", 0) > 0.5
+                 and "scenes/stage_select.json" or "scenes/stage0.json"
+    transitionToScene(dest, 4, 1.3)   -- 4=シークバー早送り
   end)
 end
 
