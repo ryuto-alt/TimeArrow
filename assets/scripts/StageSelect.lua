@@ -114,6 +114,14 @@ end
 
 function OnUpdate(self, dt)
   if leaving then return end
+  -- 開発者コマンド: F3=タイトルへ即帰還(プレイ会の進行用)
+  local f3 = false
+  pcall(function() f3 = input:isKeyPressed(KEY_F3) end)
+  if f3 then
+    leaving = true
+    goToScene("scenes/title.json", 0.3)
+    return
+  end
   entryT = entryT + dt
 
   if state == "out" then

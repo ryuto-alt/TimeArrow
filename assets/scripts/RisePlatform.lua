@@ -11,6 +11,7 @@ properties = {
   { name = "listenButton",type = "bool",   default = false,                    label = "ボタン連動リフト(押すたびに上下をトグル)" },
   { name = "reverse",     type = "bool",   default = false,                    label = "逆モード: 設置位置から上空へ上がっていく(後戻しで引き戻す)" },
   { name = "arrowBoost",  type = "float",  default = 4.0,  min = 1,   max = 10,label = "矢1秒で時計が進む倍率(序盤の1発でもarriveTに届くように)" },
+  { name = "triggerDist", type = "float",  default = 0.0,  min = 0,   max = 40,label = "プレイヤーがこの距離に入るまで時計停止(0=常時進行。カメラ視界≒13)" },
 }
 
 function OnStart(self)
@@ -64,6 +65,19 @@ end
 
 function OnUpdate(self, dt)
   dt = dt * (self.ts or 1)  -- 弓の構え中はスローモーション
+
+  -- triggerDist>0: プレイヤーが近づく(=カメラ視界に入る)まで時計を止めて待機。
+  -- 一度見つかったら以後は通常進行(2026-07-24「視界に入ったら動き出す橋」用)
+  if (self.triggerDist or 0) > 0 and not self.sighted then
+    local pl = scene:findEntity("Player")
+    if pl and pl:isValid() and math.abs(pl.transform.position.x - self.bx) < self.triggerDist then
+      self.sighted = true
+      local p = self.transform.position
+      FX.shockwave(p.x, p.y, p.z, 8, 5, 1.0, 0.8, 0.4)   -- 「動き出した」合図
+    else
+      return
+    end
+  end
   local frac
   if self.listenButton then
     -- ボタンはトグルの瞬間値しか持たないので、ここだけ滑らかに追従させる

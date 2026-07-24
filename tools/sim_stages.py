@@ -5,7 +5,8 @@
   - ギミック時計 = 実時間 + オフセット(FF+/RW-、0で底打ち)。実時間=世界時間
   - 引き絞り中は世界0.25倍速 → 引きd秒(壁時計)で世界は d*0.25 だけ進む
   - 矢: 発射→飛行(距離/15)→命中時に効果→0.9秒後に次弾可(刺さり0.4+帰還0.5)
-  - タイマー = 実時間 + FF代償(量*0.5) - RW返金(実効量*0.5)
+  - タイマー = 実時間 + FF代償(量*0.5) - RW返金(撃った量*0.35、即時。2026-07-24変更:
+    旧「実効量*0.5」は対象の時計が浅いとほぼ戻らず体感が悪かった)
   - 【重要な物理的事実】平地の振り子ノコは歩行5u/sでは絶対に通過不能
     (追走=追突、対向=すれ違い時に必ず接触)。刃は必ず「退避ピット」構造で使う。
 
@@ -23,8 +24,12 @@ STUCK_RETURN = 0.9
 SAW_HALF = 0.56 + 0.4          # 刃半幅(s1.4×0.8)+プレイヤー半幅
 
 
-def draw_time(amount):
-    frac = max(0.0, min(1.0, (amount - 2.0) / 8.0))
+def draw_time(amount, mode="ff"):
+    # 2026-07-24: FF=2..8を3秒で / RW=2..5を1.5秒で(チャージ倍速)
+    if mode == "rw":
+        frac = max(0.0, min(1.0, (amount - 2.0) / 3.0))
+        return 0.15 + frac * (1.5 - 0.15)
+    frac = max(0.0, min(1.0, (amount - 2.0) / 6.0))
     return 0.15 + frac * (3.0 - 0.15)
 
 
@@ -80,7 +85,9 @@ class Run:
             w = self.arrow_ready - self.real
             self.advance(w)
             self.note(f"矢の帰還待ち {w:.1f}s")
-        self.advance(draw_time(amount) * DRAW_SLOW)
+        # 量はモード別の上限でクランプ(FF最大8 / RW最大5)
+        amount = min(amount, 8.0 if mode == "ff" else 5.0)
+        self.advance(draw_time(amount, mode) * DRAW_SLOW)
         self.advance(dist / ARROW_V)
         actual = 0.0
         if mode == "ff":
@@ -97,8 +104,9 @@ class Run:
             cur = self.clock(target) if cap is None else min(self.clock(target), cap)
             actual = min(amount, cur)
             self.off[target] = (cur - actual) - self.real
-            self.timer = max(0.0, self.timer - actual * 0.5)
-            self.note(f"RW-{amount:g}(実効{actual:g}, 返金{actual * 0.5:g})→{target} {label}")
+            # 返金は撃った量×0.35を即時(実効量に依存しない固定率=FF×0.5の30%減)
+            self.timer = max(0.0, self.timer - amount * 0.35)
+            self.note(f"RW-{amount:g}(実効{actual:g}, 返金{amount * 0.35:g})→{target} {label}")
         self.arrow_ready = self.real + STUCK_RETURN
         return actual
 
@@ -147,13 +155,15 @@ class Run:
             w = self.arrow_ready - self.real
             self.advance(w)
             self.note(f"矢の帰還待ち {w:.1f}s")
-        self.advance(draw_time(2.0) * DRAW_SLOW)
+        self.advance(draw_time(2.0, "rw") * DRAW_SLOW)
         self.advance(dist / ARROW_V)
         if self.shots <= 0:
             self.dead = self.dead or f"RW残数切れ: 起立針山{name}を寝かせられない"
             return
         self.shots -= 1
-        self.note(f"RW→起立針山{name} を寝かせる (残数消費, 返金なし) {label}")
+        # 新経済: RW矢は対象を問わず撃った量×0.35を即時返金(最小引き=2.0)
+        self.timer = max(0.0, self.timer - 2.0 * 0.35)
+        self.note(f"RW→起立針山{name} を寝かせる (残数消費, 返金{2.0 * 0.35:g}) {label}")
         self.arrow_ready = self.real + STUCK_RETURN
         self.advance(0.45)
         self.note(f"針山{name} が寝転がるのを待つ 0.5s")
@@ -410,11 +420,10 @@ def s2_plan(r):
     r.walk(4.4, "ゴール")
 
 
-ALL_OK &= report("S2 四枚の閉門回廊", S2["limit"], S2["rw"], [
-    ("矢なし", s2_noarrow, False),
-    ("FFのみ", s2_ffonly, False),
-    ("想定解", s2_plan, True),
-], margin=(2.0, 14.0))
+# 2026-07-24: stage4(回廊)はユーザーがエディタで全面リメイク(吸い込みファン+落下橋
+# +封鎖壁の新構成)したため、旧回廊ジオメトリ前提のこの証明はシーンと不一致になった。
+# sim対象外とする(バランスは実機プレイで調整中)。プランは記録として残す。
+print("\n■ S2 四枚の閉門回廊 → stage4手作りリメイクにつきsim対象外(2026-07-24)")
 
 # ════════════════════════════════════════════════════════════════════
 # S3「風の谷」(幅58, RW2) — gen_stages.py 座標に一致

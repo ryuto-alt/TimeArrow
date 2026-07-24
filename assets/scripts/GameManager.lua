@@ -13,6 +13,12 @@ properties = {
 
 local seekBar, screenFlash, timeBanner, timeLeft
 
+-- リトライでの再読込前に印を残す → StageIntro.lua が読んで開幕シネマを短縮版にする
+local function markRetry(self)
+  local stem = self.scenePath and self.scenePath:match("([%w_]+)%.json")
+  if stem then savePersist("ta_retry_" .. stem, 1) end
+end
+
 local function flash(r, g, b, a, fadeDur)
   if not (screenFlash and screenFlash:isValid()) then return end
   scene:setUiColor(screenFlash, r, g, b, a)
@@ -21,7 +27,13 @@ end
 
 function OnStart(self)
   self.t = 0
-  self.state = "play"   -- play / dead / over / cleared / reloading
+  -- IntroDirector(StageIntro.lua)がいるステージは開幕シネマが終わるまで "intro" で待機
+  self.state = "play"   -- intro / play / dead / over / cleared / reloading
+  local dir = scene:findEntity("IntroDirector")
+  if dir and dir:isValid() then self.state = "intro" end
+  events:on("stage_intro", function(d)
+    if self.state == "intro" and not (d and d.on) then self.state = "play" end
+  end)
   self.waitT = 0
   self.nextScene = nil
   self.rewindGlow = 0
@@ -32,13 +44,19 @@ function OnStart(self)
   timeBanner  = scene:findEntity("TimeBanner")
   timeLeft    = scene:findEntity("TimeLeft")
 
-  -- ステージBGM: 前半(stage0〜2)=時計仕掛け / 後半(stage3〜)=時計台ダンジョン
+  -- ステージBGM: 内容に随伴(2026-07-24のstage2⇔4入替を反映)。
+  -- 時計台ダンジョン=工房(stage2)と風の谷(stage3) / 最終回廊(stage4)=専用曲 /
+  -- 時計仕掛け=それ以外
   local stageNo = tonumber(tostring(self.scenePath):match("stage(%d+)")) or 1
-  audio:playBGM(stageNo >= 3 and "audio/bgm/stage_clocktower.mp3"
-                              or "audio/bgm/stage_clockwork.mp3", true)
+  local clocktower = (stageNo == 2 or stageNo == 3)
+  local bgm = (stageNo == 4 and "audio/bgm/stage_final.mp3")
+              or (clocktower and "audio/bgm/stage_clocktower.mp3")
+              or "audio/bgm/stage_clockwork.mp3"
+  audio:playBGM(bgm, true)
   -- 後戻り用: 同じ曲の逆再生早送りスニペット(areverse+1.7x事前生成)
-  self.bgmRev = stageNo >= 3 and "audio/se/bgm_rev_clocktower.wav"
-                              or "audio/se/bgm_rev_clockwork.wav"
+  self.bgmRev = (stageNo == 4 and "audio/se/bgm_rev_final.wav")
+                or (clocktower and "audio/se/bgm_rev_clocktower.wav")
+                or "audio/se/bgm_rev_clockwork.wav"
   self.bannerT = 2.4
   self.lastShown = -1
   self.ts = 1.0
@@ -55,19 +73,18 @@ function OnStart(self)
     pcall(function() audio:setBGMRate(2.0) end)
     self.ffRateT = 1.6
   end)
+  -- 後戻りの返金: 撃った瞬間に量×0.35を即時返金(2026-07-24ユーザー指示)。
+  -- 旧仕様の「対象が実際に巻き戻せた量×0.5をじわじわ返金」は、対象の時計が浅いと
+  -- ほとんど戻らず「戻りが少なすぎる」ため廃止。先送り(×0.5)より30%少ない固定率にして
+  -- 予測可能に。FF→RW往復は 0.5-0.35=0.15 の目減り=時間の錬金術も引き続き不成立
   events:on("time_rewind", function(data)
     if self.state ~= "play" then return end
+    self.t = math.max(0, self.t - (data.amount or 0) * 0.35)
     self.rewindGlow = 0.25
     -- 後戻り中: BGMを止めて同じ曲の逆再生早送りを重ねる(=曲が巻き戻る)
     audio:pauseBGM()
     audio:playSFX(self.bgmRev, false)
     self.rwMuteT = 1.7
-  end)
-  -- 返金は「対象が実際に巻き戻せた量」だけ(ギミック側が消化しながら発行する)
-  -- 返金も半額(先送り→後戻りの往復で収支トントン=時間の錬金術を防ぐ)
-  events:on("time_refund", function(data)
-    if self.state ~= "play" then return end
-    self.t = math.max(0, self.t - (data.amount or 0) * 0.5)
   end)
 
   -- オプションメニュー(OptionsMenu.lua)連携: 開いている間は入力を止め、
@@ -79,6 +96,7 @@ function OnStart(self)
     if self.state == "reloading" then return end
     self.state = "reloading"
     time.setScale(1)
+    markRetry(self)
     goToScene(self.scenePath, 0.2)
   end)
   events:on("options_quit", function()
@@ -241,6 +259,7 @@ function OnUpdate(self, dt)
       if self.nextScene then
         goToScene(self.nextScene, 0.5)
       else
+        markRetry(self)
         goToScene(self.scenePath, 0.3)
       end
     end
@@ -250,6 +269,17 @@ function OnUpdate(self, dt)
      and (keyPressed("R") or padPressed("Y")) then
     self.state = "reloading"
     time.setScale(1)
+    markRetry(self)
     goToScene(self.scenePath, 0.2)
+  end
+
+  -- 開発者コマンド: F3=タイトルへ即帰還(プレイ会の進行用。ポーズ中でも効く)
+  local f3 = false
+  pcall(function() f3 = input:isKeyPressed(KEY_F3) end)
+  if f3 and self.state ~= "reloading" then
+    self.state = "reloading"
+    time.setScale(1)
+    audio:stopBGM()
+    goToScene("scenes/title.json", 0.3)
   end
 end

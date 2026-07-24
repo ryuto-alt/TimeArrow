@@ -23,17 +23,38 @@ function OnStart(self)
   self.spin = r.z
   self.clock = self.phase
   self.life = 0
+  self.jump = 0        -- 先送り/後戻りでアニメ時計が消化すべき残量(±)
   self.slowSent = -1
-  -- 世界タイマーと同じ収支(GameManager.luaと同係数)。
-  -- 先送りで一気に砕け、後戻りの返金で砕けた分が再生する
-  events:on("time_skip", function(d) self.life = self.life + (d.amount or 0) * 0.5 end)
-  events:on("time_refund", function(d) self.life = math.max(0, self.life - (d.amount or 0) * 0.5) end)
+  -- 消滅進行(life)は世界タイマーと同じ収支(GameManager.luaと同係数):
+  -- 先送りで一気に砕け、後戻りの「返金」で砕けた分が再生する。
+  -- 回転/浮遊のアニメ時計(self.clock)は見た目の演出なので、返金ではなく
+  -- 「後戻り矢を撃った瞬間」に逆回転する(jump 経由で最大6倍速のスイープ消化)。
+  -- ※返金でもjumpを動かすと後戻り対応ギミックで二重に戻ってしまうため分離
+  events:on("time_skip", function(d)
+    local a = (d.amount or 0) * 0.5
+    self.life = self.life + a
+    self.jump = self.jump + a
+  end)
+  events:on("time_rewind", function(d)
+    local a = (d.amount or 0) * 0.35   -- GameManagerの即時返金と同係数
+    self.life = math.max(0, self.life - a)
+    self.jump = self.jump - a
+  end)
 end
 
 function OnUpdate(self, dt)
+  local rawDt = dt
   dt = dt * (self.ts or 1)
   self.clock = self.clock + dt
   self.life = self.life + dt
+  -- 時間ジャンプの消化: 最大14倍速+2.2倍に誇張して回す(歯車がブオンと順/逆回転、
+  -- 装飾なので時間の正確さより「時間が動いた」の視認性を優先)
+  if self.jump ~= 0 then
+    local step = clamp(self.jump, -rawDt * 14.0, rawDt * 14.0)
+    self.clock = self.clock + step * 2.2
+    self.jump = self.jump - step
+    if math.abs(self.jump) < 0.001 then self.jump = 0 end
+  end
 
   if self.spinZ ~= 0 then
     self.spin = (self.spin + self.spinZ * dt) % 360

@@ -26,6 +26,15 @@ function goBack()
 end
 
 function OnUpdate(self, dt)
+  -- 開発者コマンド: F3=タイトルへ即帰還(プレイ会の進行用)
+  local f3 = false
+  pcall(function() f3 = input:isKeyPressed(KEY_F3) end)
+  if f3 and not leaving then
+    leaving = true
+    audio:stopBGM()
+    goToScene("scenes/title.json", 0.3)
+    return
+  end
   if not leaving and not optionsOpen
      and (keyPressed("SPACE") or keyPressed("ENTER") or padPressed("A")) then
     goBack()

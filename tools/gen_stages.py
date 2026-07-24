@@ -84,7 +84,9 @@ def player(x, y, targets="", standables="", climbables="", arrowStops="", solids
         prop("halfW", "float", 0.34), prop("halfHeight", "float", 0.55),
         prop("arrowSpeed", "float", 15.0), prop("arrowRange", "float", 18.0),
         prop("arrowHalf", "float", 0.1), prop("minSkip", "float", 2.0),
-        prop("maxSkip", "float", 10.0), prop("maxDrawTime", "float", 3.0),
+        # 2026-07-24: FF最大10→8 / RW最大5(1.5秒で満充填=チャージ倍速)
+        prop("maxSkip", "float", 8.0), prop("maxDrawTime", "float", 3.0),
+        prop("maxRewind", "float", 5.0), prop("rewindDrawTime", "float", 1.5),
         prop("aimTurnSpeed", "float", 220.0), prop("climbSpeed", "float", 4.0),
         prop("targets", "string", targets), prop("standables", "string", standables),
         prop("climbables", "string", climbables), prop("arrowStops", "string", arrowStops),
@@ -95,16 +97,15 @@ def player(x, y, targets="", standables="", climbables="", arrowStops="", solids
 
 
 def exit_(x, y, nxt):
-    e = copy.deepcopy(T["Exit"])
-    e["transform"]["position"] = [float(x), float(y), 0.0]
-    e["luaScript"]["props"] = [prop("radius", "float", 1.2), prop("next", "string", nxt)]
-    return e
-
-
-def gate(x, y):
-    e = copy.deepcopy(T["GoalGate"])
-    e["transform"]["position"] = [float(x), float(y), 0.8]
-    return e
+    # 時計仕掛けの出口ゲート(Blender自作 Exit_Door)+内側で回るシアンの環。
+    # 旧2Dスプライト+GoalGateの後継。判定は Exit.lua が AABB
+    # (halfW/halfH × プレイヤー半幅0.34/半高0.55)で取る。
+    door = mesh("Exit", "Exit_Door", x, y, 1.15, 1.15, 1.15, rough=0.5,
+                lua=script("Exit.lua", [prop("halfW", "float", 0.8),
+                                        prop("halfH", "float", 0.9),
+                                        prop("next", "string", nxt)]))
+    ring = mesh("ExitRing", "Exit_Ring", x, y + 0.05, 1.15, 1.15, 1.15, z=-0.12)
+    return [door, ring]
 
 
 def block(name, x, y, sx, sy, sz=3.0):
@@ -130,13 +131,15 @@ def door(name, x, openT, closeT, base=0.0):
     return [frame, grill]
 
 
-def riseplat(name, x, y, sx, sy, arriveT, waitHeight, riseTime, trigger="", reverse=False):
+def riseplat(name, x, y, sx, sy, arriveT, waitHeight, riseTime, trigger="", reverse=False,
+             triggerDist=0.0):
     return mesh(name, "Bridge_Plank", x, y, sx, sy, 1.0, shader=TIMEWARP,
                 lua=script("RisePlatform.lua", [
                     prop("arriveT", "float", float(arriveT)), prop("riseTime", "float", float(riseTime)),
                     prop("waitHeight", "float", float(waitHeight)), prop("triggerName", "string", trigger),
                     prop("listenButton", "bool", False),
-                    prop("reverse", "bool", bool(reverse))]))
+                    prop("reverse", "bool", bool(reverse)),
+                    prop("triggerDist", "float", float(triggerDist))]))
 
 
 def pendulum(name, x, y, s, period, amplitude, phase, deadly=True):
@@ -257,7 +260,10 @@ def hammer(name, x, pivotY, s=1.0, period=3.2, maxAngle=55.0, phase=0.0, decayT=
                  shader=TIMEWARP)
         t["material"] = {"metallic": 0.3, "roughness": 0.25}
         parts.append(t)
-    parts.append({"name": name + "X", "transform": transform(x, pivotY - 1.3 * s, 2.2 * s, 2.9 * s)})
+    # 矢の的プロキシ: 縦は的判定の最低保証(半高0.8)ぴったり=これ以上縮まない下限。
+    # 中心を振り子ヘッド寄り(pivot-1.0s)に置き、地面からの水平ショット(高さ~0.9)は
+    # 絶対に掠らない(2026-07-24ユーザー指摘×2で段階縮小: 2.9s→1.4s→固定1.6)
+    parts.append({"name": name + "X", "transform": transform(x, pivotY - 1.0 * s, 2.2 * s, 1.6)})
     return parts
 
 
@@ -344,11 +350,11 @@ def tut_hud():
                     {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
                      "oMin": [96.0, 16.0], "oMax": [-96.0, 48.0]})
     title["uiText"]["alignH"] = 0
-    body = ui_text("TutStepText", "", 26, [1.0, 1.0, 1.0, 1.0], [0.02, 0.05, 0.15, 1.0],
+    body = ui_text("TutStepText", "", 33, [1.0, 1.0, 1.0, 1.0], [0.02, 0.05, 0.15, 1.0],
                    {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
-                    "oMin": [24.0, 48.0], "oMax": [-24.0, 84.0]})
+                    "oMin": [24.0, 24.0], "oMax": [-24.0, 92.0]})
     body["uiText"]["rich"] = True
-    body["uiText"]["typewriterSpeed"] = 30.0
+    body["uiText"]["typewriterSpeed"] = 20.0
     sub = ui_text("TutStepSub", "", 18, [0.72, 0.8, 0.98, 1.0], [0.02, 0.05, 0.15, 1.0],
                   {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0], "pivot": [0.5, 0.0],
                    "oMin": [24.0, 86.0], "oMax": [-24.0, 112.0]})
@@ -412,19 +418,28 @@ BGLAYER = "shaders/BackdropLayer.hlsl"
 # 奥段  : 空壁(z=30)。ステージ別の自作空 bg_sky{n}.png をアンリット表示。
 #         追従カメラとTAB全景の両フラスタムから必要サイズを逆算して、
 #         画面外のクリアカラー(青)が絶対に見えないよう覆い切る。
+# 2026-07-24: ステージ2⇔4を内容ごと入替(回廊=難しいので後ろへ)。背景・BGMも内容に随伴
+# 2026-07-24: stage4=最終ステージ演出(終焉の蝕)。専用モデル(BG_Ridge_Collapse/
+# BG_Tower_Doom/BG_Needle_Fallen/BG_Gear_Broken)+血赤の空bg_sky5+残火かけら
 RIDGES = {0: ["BG_Ridge_Ruins"], 1: ["BG_Ridge_Gears"],
-          2: ["BG_Ridge_Ruins", "BG_Ridge_Gears"],
-          3: ["BG_Ridge_Spires"], 4: ["BG_Ridge_Spires", "BG_Ridge_Gears"]}
-RIDGE_H = {"BG_Ridge_Gears": 0.271, "BG_Ridge_Ruins": 0.231, "BG_Ridge_Spires": 0.315}
-RIDGE_TINT = {0: [0.85, 0.88, 1.0], 1: [1.0, 1.0, 1.0], 2: [0.82, 1.0, 0.9],
-              3: [0.9, 0.8, 1.0], 4: [1.0, 0.8, 0.68]}
+          2: ["BG_Ridge_Spires", "BG_Ridge_Gears"],
+          3: ["BG_Ridge_Spires"], 4: ["BG_Ridge_Collapse", "BG_Ridge_Gears"]}
+RIDGE_H = {"BG_Ridge_Gears": 0.271, "BG_Ridge_Ruins": 0.231, "BG_Ridge_Spires": 0.315,
+           "BG_Ridge_Collapse": 0.230}
+RIDGE_TINT = {0: [0.85, 0.88, 1.0], 1: [1.0, 1.0, 1.0], 2: [1.0, 0.8, 0.68],
+              3: [0.9, 0.8, 1.0], 4: [1.0, 0.74, 0.62]}
 # ステージ別フォグ色(空bg_sky{n}の中間色に合わせる)。shaderParams.xyzで
 # BackdropLayer/Ridge へ渡す(未指定=旧来の青系デフォルト)
-FOG_COL = {0: [0.30, 0.34, 0.52], 1: [0.10, 0.22, 0.33], 2: [0.09, 0.26, 0.23],
-           3: [0.22, 0.15, 0.34], 4: [0.34, 0.15, 0.11]}
+FOG_COL = {0: [0.30, 0.34, 0.52], 1: [0.10, 0.22, 0.33], 2: [0.34, 0.15, 0.11],
+           3: [0.22, 0.15, 0.34], 4: [0.34, 0.10, 0.09]}
+# 空テクスチャも内容に随伴させる(bg_sky2=回廊の空はスロット4へ)
+SKY_TEX = {0: 0, 1: 1, 2: 4, 3: 3, 4: 5}
 # かけら色パレット(ティント=頂点カラー。結晶は白ベースなので鮮やかに染まる)
 SHARD_COLORS = [[0.55, 0.9, 1.0], [1.0, 0.82, 0.4], [0.8, 0.6, 1.0],
                 [1.0, 0.55, 0.75], [0.55, 1.0, 0.8], [0.95, 0.95, 1.0]]
+# 最終ステージは「舞い上がる残火」: 赤〜橙〜金だけの単色系で緊迫感を出す
+SHARD_COLORS_FINAL = [[1.0, 0.42, 0.16], [1.0, 0.62, 0.22], [1.0, 0.30, 0.10],
+                      [0.95, 0.78, 0.35], [0.85, 0.22, 0.12], [1.0, 0.52, 0.30]]
 SHARD_MODELS = ["BG_Shard_Crystal", "BG_Shard_Crystal", "BG_Shard_Rock",
                 "BG_Shard_Rock", "BG_Shard_Gear"]
 
@@ -436,6 +451,9 @@ def shards(n, width, count_per_u=0.75):
     import random
     rnd = random.Random(300 + n)
     w = float(width)
+    palette = SHARD_COLORS_FINAL if n == 4 else SHARD_COLORS
+    if n == 4:
+        count_per_u = 0.95   # 最終ステージは残火を濃く
     ents = []
     for i in range(int(w * count_per_u)):
         m = rnd.choice(SHARD_MODELS)
@@ -452,7 +470,7 @@ def shards(n, width, count_per_u=0.75):
                      prop("phase", "float", round(rnd.uniform(0, 20), 1))]),
                  shader=BGLAYER, rot=(0.0, 0.0, round(rnd.uniform(0, 360), 0)),
                  z=round(z, 2))
-        e["color"] = rnd.choice(SHARD_COLORS)
+        e["color"] = rnd.choice(palette)
         e["shaderParams"] = FOG_COL[n] + [round(rnd.uniform(0.6, 1.8), 2)]
         ents.append(e)
     return ents
@@ -475,7 +493,7 @@ def backdrop_sky(n, width, y_top, fx, fy, fz):
     x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
     return {"name": "Backdrop", "primitive": "box",
             "shader": "shaders/BackdropSky.hlsl",
-            "materialTextureOverrides": [{"albedo": f"textures/bg_sky{n}.png"}],
+            "materialTextureOverrides": [{"albedo": f"textures/bg_sky{SKY_TEX[n]}.png"}],
             "luaScript": script("BGProp.lua", [
                 prop("spinZ", "float", 0.0), prop("bobAmp", "float", 0.0),
                 prop("bobPeriod", "float", 9.0), prop("phase", "float", 0.0)]),
@@ -511,12 +529,75 @@ def backdrop_ridge(n, width, limit):
     return pieces
 
 
+def bg_decor_final(width):
+    """stage4(最終)専用の背景: 終焉の蝕。崩壊する時計塔・突き刺さる折れた大針・
+    割れた歯車で「時の世界の最期」を組む。層構造・シェーダーは他ステージと同一。"""
+    import random
+    rnd = random.Random(1004)
+    w = float(width)
+    ents = []
+    TINT = [0.94, 0.78, 0.70]   # 減光は暖色に寄せる(血赤の空に馴染ませる)
+
+    def bg(name, model, fx, y, s, z, spin=0.0, bob=0.0, per=9.0, rot_z=0.0):
+        lua = script("BGProp.lua", [
+            prop("spinZ", "float", round(spin, 2)), prop("bobAmp", "float", round(bob, 2)),
+            prop("bobPeriod", "float", round(per, 2)),
+            prop("phase", "float", round(rnd.uniform(0, 8), 2))])
+        e = mesh(name, model, round(fx * w, 2), round(y, 2), s, s, s,
+                 lua=lua, shader=BGLAYER, rot=(0.0, 0.0, round(rot_z, 1)),
+                 z=round(z, 2))
+        e["color"] = TINT
+        e["shaderParams"] = FOG_COL[4] + [0.0]
+        ents.append(e)
+
+    # ── 遠景の主役: 大きく傾いた壊れた大時計(終わりの時計)+動く針 ──
+    clk_fx, clk_y, clk_s, clk_rz = 0.5, 9.0, 15.5, -11.0
+    bg("BG_Clock", "BG_ClockRuin", clk_fx, clk_y, clk_s, 6.2, rot_z=clk_rz)
+    for hname, model, hs, hz, dps, tick in (
+            ("BG_ClockSec", "BG_Hand_S", clk_s * 0.42, 5.95, 6.0, True),
+            ("BG_ClockMin", "BG_Hand_M", clk_s * 0.46, 6.05, 1.0, False)):
+        h = mesh(hname, model, round(clk_fx * w, 2), round(clk_y, 2), hs, hs, hs,
+                 lua=script("BgClockHands.lua", [
+                     prop("degPerSec", "float", dps), prop("tick", "bool", tick)]),
+                 shader=BGLAYER, rot=(0.0, 0.0, clk_rz), z=hz)
+        h["color"] = TINT
+        h["shaderParams"] = FOG_COL[4] + [0.0]
+        ents.append(h)
+
+    # ── 遠景: 崩壊しかけの時計塔が大時計を左右から挟む(赤熱の窓とクラック) ──
+    bg("BG_TowerL", "BG_Tower_Doom", 0.15, 6.2, 8.2, 5.7, rot_z=2.0)
+    bg("BG_TowerR", "BG_Tower_Doom", 0.87, 5.4, 6.8, 5.5, rot_z=-3.5)
+    # 半分沈んだ割れ歯車(まだ弱々しく回る=死にかけの機構)
+    bg("BG_GearL", "BG_Gear_Broken", 0.06, -1.6, 7.8, 5.8, spin=5.0)
+    bg("BG_GearR", "BG_Gear_Broken", 0.95, -0.9, 6.0, 6.0, spin=-7.5, rot_z=140)
+
+    # ── 中景: 空から堕ちて突き刺さった時計の大針(2本)+終末に残る遺構 ──
+    bg("BG_Needle1", "BG_Needle_Fallen", 0.34, 1.15, 4.8, 4.3, rot_z=-4)
+    bg("BG_Needle2", "BG_Needle_Fallen", 0.66, 0.9, 3.7, 4.5, rot_z=7)
+    bg("BG_Hourglass1", "BG_Hourglass", 0.24, 1.75, 4.9, 4.4, rot_z=-4)
+    bg("BG_Arch1", "BG_Arch", 0.76, 1.05, 4.1, 4.2, rot_z=3)
+
+    # ── 中景の浮遊岩: 数を増やし、忙しなく揺れる(世界が軋む) ──
+    for i in range(5):
+        fx = (i + 0.5 + rnd.uniform(-0.2, 0.2)) / 5
+        bg(f"BG_Isle{i+1}", "BG_Isle", fx, rnd.uniform(6.6, 9.8),
+           rnd.uniform(2.0, 3.4), rnd.uniform(3.4, 4.8),
+           bob=rnd.uniform(0.45, 0.8), per=rnd.uniform(5, 9), rot_z=rnd.uniform(-14, 14))
+
+    # ── 近景アクセント: 画面端で回る割れ歯車(欠けた歯の影がよぎる) ──
+    bg("BG_GearN1", "BG_Gear_Broken", 0.035, 0.8, 2.2, 3.4, spin=16.0, rot_z=60)
+    bg("BG_GearN2", "BG_Gear_Broken", 0.97, 1.3, 1.9, 3.5, spin=-20.0, rot_z=200)
+    return ents
+
+
 def bg_decor(n, width):
     """Blender自作の背景モデル群(BG_*)を奥行き3層に散らす。純装飾でギミック無関係。
     z: ゲーム面=0 / 近景3.4 / 中景4.2前後 / 遠景6前後 / 稜線9.5 / かけら11-24 / 空30。
     時間で消えるのは稜線(BackdropRidge)だけ。装飾は減光ティント(color)で
     ゲーム面と見分けやすく沈める。配置はステージ番号シードの決定論。"""
     import random
+    if n == 4:
+        return bg_decor_final(width)
     rnd = random.Random(1000 + n)
     w = float(width)
     ents = []
@@ -533,9 +614,22 @@ def bg_decor(n, width):
         e["shaderParams"] = FOG_COL[n] + [0.0]
         ents.append(e)
 
-    # ── 遠景: 壊れた大時計(針は凍結したまま)+半分沈んで回り続ける大歯車 ──
-    bg("BG_Clock", "BG_ClockRuin", 0.5 + rnd.uniform(-0.13, 0.13), 8.2 + rnd.uniform(-0.8, 1.2),
-       13.0, 6.2, rot_z=rnd.uniform(-14, 14))
+    # ── 遠景: 壊れた大時計+動く針(秒針チクタク+世界時間ジャンプでスイープ)──
+    clk_fx = 0.5 + rnd.uniform(-0.13, 0.13)
+    clk_y = 8.2 + rnd.uniform(-0.8, 1.2)
+    clk_rz = rnd.uniform(-14, 14)
+    bg("BG_Clock", "BG_ClockRuin", clk_fx, clk_y, 13.0, 6.2, rot_z=clk_rz)
+    for hname, model, hs, hz, dps, tick in (
+            ("BG_ClockSec", "BG_Hand_S", 13.0 * 0.42, 5.95, 6.0, True),
+            ("BG_ClockMin", "BG_Hand_M", 13.0 * 0.46, 6.05, 1.0, False)):
+        h = mesh(hname, model, round(clk_fx * w, 2), round(clk_y, 2), hs, hs, hs,
+                 lua=script("BgClockHands.lua", [
+                     prop("degPerSec", "float", dps), prop("tick", "bool", tick)]),
+                 shader=BGLAYER, rot=(0.0, 0.0, round(clk_rz, 1)), z=hz)
+        h["color"] = [0.80, 0.83, 0.95]
+        h["shaderParams"] = FOG_COL[n] + [0.0]
+        ents.append(h)
+    # 半分沈んで回り続ける大歯車
     bg("BG_GearL", "BG_Gear", 0.10 + rnd.uniform(-0.03, 0.03), rnd.uniform(-2.5, -0.5),
        rnd.uniform(6.5, 8.5), 5.8, spin=rnd.uniform(8, 14))
     bg("BG_GearR", "BG_Gear", 0.90 + rnd.uniform(-0.03, 0.03), rnd.uniform(-2.0, 0.5),
@@ -573,13 +667,62 @@ def bg_decor(n, width):
     return ents
 
 
-def build(n, entities, limit, width, hud_extra=None, banner=None):
+def rewind_icon(i):
+    # 巻き戻し残数アイコン(左下に1個+「×N」テキスト、Player.lua が更新)。
+    # アイコンを並べる方式は表示が多くて邪魔だったので廃止(2026-07-24ユーザー指示)
+    x0 = 16.0 + (i - 1) * 48.0
+    return {"name": f"RewindIcon{i}", "transform": transform(0, 0, 1, 1),
+            "uiRect": {"anchorMax": [0.0, 0.0], "anchorMin": [0.0, 0.0],
+                       "clipChildren": False, "offsetMax": [x0 + 66.0, 92.0],
+                       "offsetMin": [x0, 26.0], "order": 2, "pivot": [0.0, 0.0],
+                       "rotation": 0.0, "skewX": 0.0, "visible": True},
+            "uiImage": {"animCols": 0, "animFps": 8.0, "animFrames": 0, "animMode": 0,
+                        "animRow": 0, "animRows": 0, "color": [0.78, 0.58, 1.0, 1.0],
+                        "cornerRadius": 0.0, "fillAmount": 1.0, "fillDir": 0,
+                        "fillOrigin": 0.0, "gradientColor2": [1.0, 1.0, 1.0, 1.0],
+                        "gradientDir": 0, "gradientScrollSpeed": 0.0,
+                        "outlineColor": [0.0, 0.0, 0.0, 1.0], "outlineDash": 12.0,
+                        "outlineStyle": 0, "outlineWidth": 0.0, "raycastBlock": False,
+                        "ringThickness": 8.0, "segmentColor": [0.0, 0.0, 0.0, 0.7],
+                        "segmentGap": 3.0, "segments": 0,
+                        "shadowColor": [0.0, 0.0, 0.0, 0.0], "shadowOffset": [2.0, 2.0],
+                        "shadowSoftness": 4.0, "shape": 0,
+                        "sliceBorder": [0.0, 0.0, 0.0, 0.0],
+                        "texturePath": "textures/ui_rewind_icon.png",
+                        "uvMax": [1.0, 1.0], "uvMin": [0.0, 0.0], "uvScroll": [0.0, 0.0]}}
+
+
+def stage_intro(n, limit):
+    # 開幕シネマ(StageIntro.lua)。数字は制限時間の桁ぶんだけ 3D モデルを実体化する。
+    # モデル群は開始時 y=-200 に隠してあり、演出スクリプトがカメラ正面へ呼び出す。
+    # stage0(チュートリアル)には入れない(banner「矢で 時間を あやつれ！」が開幕役)。
+    ents = [{"name": "IntroDirector", "transform": transform(0, 0, 1, 1),
+             "luaScript": script("StageIntro.lua", [
+                 prop("limit", "float", float(limit)),
+                 prop("retryKey", "string", f"ta_retry_stage{n}")])}]
+    GLOW = "shaders/IntroGlow.hlsl"   # 暗転中も自発光で主役として光る専用シェーダー
+    # 本体(発光)+縁取り(暗色・シェーダーなし)の2段構造=タイトルのTitleCharOut方式
+    for i, ch in enumerate(str(int(limit))):
+        ents.append(mesh(f"IntroDigit{i + 1}", f"Intro_D{ch}", 0, -200, 1, 1, 1, shader=GLOW))
+        ents.append(mesh(f"IntroDigit{i + 1}Out", f"Intro_D{ch}_Out", 0, -200, 1, 1, 1))
+    ents.append(mesh("IntroPlate", "Intro_Plate", 0, -200, 1, 1, 1, shader=GLOW))
+    ents.append(mesh("IntroStart", "Intro_Start", 0, -200, 1, 1, 1, shader=GLOW))
+    ents.append(mesh("IntroStartOut", "Intro_Start_Out", 0, -200, 1, 1, 1))
+    return ents
+
+
+def build(n, entities, limit, width, hud_extra=None, banner=None, shelf=None):
     if 5 <= n <= 8:   # いったんstage4まで(5-8は封印中: シーンを書き出さない)
         return
     flat = []
     for e in entities:
         (flat.extend if isinstance(e, list) else flat.append)(e)
     entities = flat + [marker()]
+    # shelf: ステージ外の「置き場」実体(ギミックパレット等)。カメラ画角の逆算
+    # (content_box)から除外するため、entities とは別で ents に合流させる
+    shelf_flat = []
+    for e in (shelf or []):
+        (shelf_flat.extend if isinstance(e, list) else shelf_flat.append)(e)
 
     # プレイヤー追従カメラ(dist13=視界約22u)+ TAB長押しで全景俯瞰(fit()で逆算)
     cam = copy.deepcopy(T["GameCamera"])
@@ -601,32 +744,40 @@ def build(n, entities, limit, width, hud_extra=None, banner=None):
     sun = copy.deepcopy(T["Sun"])
     sun["transform"]["position"][0] = width / 2.0
 
-    ents = entities + copy.deepcopy(EXTRAS["player_sprites"]) + \
+    ents = entities + shelf_flat + copy.deepcopy(EXTRAS["player_sprites"]) + \
         copy.deepcopy(EXTRAS.get(f"stage{n}", [])) + \
         [backdrop_sky(n, width, y1, fx, fy, fz)] + \
         shards(n, width) + backdrop_ridge(n, width, limit) + \
         bg_decor(n, width) + \
+        (stage_intro(n, limit) if n >= 1 else []) + \
         [sun, cam, copy.deepcopy(T["Grid"]), copy.deepcopy(T["HudCanvas"])]
     hud_i = len(ents) - 1
+    # シークバー: 「残り時間の主表示」として太く・高コントラストに(秒数テキストは廃止)
     seek = copy.deepcopy(T["SeekBar"])
     seek["uiSlider"]["maxValue"] = float(limit)
-    banner = ui_text("TimeBanner", banner or f"{int(limit)}秒以内にゴールしろ！", 44,
-                     [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
-                     {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
-                      "oMin": [0.0, 26.0], "oMax": [0.0, 120.0], "pivot": [0.5, 0.0]})
-    tleft = ui_text("TimeLeft", f"{limit:.1f}", 34,
-                    [1.0, 1.0, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
-                    {"aMin": [1.0, 0.0], "aMax": [1.0, 0.0],
-                     "oMin": [-180.0, 26.0], "oMax": [-16.0, 80.0], "pivot": [1.0, 0.0]})
-    draw_amt = ui_text("DrawAmount", "", 38,
-                       [0.4, 0.9, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
-                       {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
-                        "oMin": [0.0, 140.0], "oMax": [0.0, 200.0], "pivot": [0.5, 0.0]})
-    rw_cnt = ui_text("RewindCount", "まき戻し ×0", 26,
-                     [0.75, 0.55, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
-                     {"aMin": [0.0, 0.0], "aMax": [0.0, 0.0],
-                      "oMin": [16.0, 26.0], "oMax": [300.0, 78.0], "pivot": [0.0, 0.0]})
-    for child in (seek, copy.deepcopy(T["ScreenFlash"]), banner, tleft, draw_amt, rw_cnt):
+    seek["uiSlider"]["trackColor"] = [0.06, 0.08, 0.16, 0.9]
+    seek["uiSlider"]["fillColor"] = [1.0, 0.25, 0.12, 1.0]
+    seek["uiSlider"]["knobColor"] = [1.0, 1.0, 1.0, 1.0]
+    seek["uiRect"]["offsetMin"] = [0.0, -26.0]
+    hud_children = [seek, copy.deepcopy(T["ScreenFlash"])]
+    # 開幕バナーは明示指定(stage0チュートリアル)だけ。通常ステージは
+    # 3Dシネマ(StageIntro.lua)が「◯秒以内にゴールしろ！」を見せる
+    if banner:
+        hud_children.append(ui_text("TimeBanner", banner, 44,
+                            [1.0, 0.85, 0.3, 1.0], [0.05, 0.1, 0.25, 1.0],
+                            {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
+                             "oMin": [0.0, 26.0], "oMax": [0.0, 120.0], "pivot": [0.5, 0.0]}))
+    hud_children.append(ui_text("DrawAmount", "", 38,
+                        [0.4, 0.9, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
+                        {"aMin": [0.0, 0.0], "aMax": [1.0, 0.0],
+                         "oMin": [0.0, 140.0], "oMax": [0.0, 200.0], "pivot": [0.5, 0.0]}))
+    # 巻き戻し残数: アイコン1個+「×N」(Player.lua が残数を更新)
+    hud_children.append(rewind_icon(1))
+    hud_children.append(ui_text("RewindCount", "×0", 46,
+                        [0.78, 0.58, 1.0, 1.0], [0.05, 0.1, 0.25, 1.0],
+                        {"aMin": [0.0, 0.0], "aMax": [0.0, 0.0],
+                         "oMin": [86.0, 26.0], "oMax": [220.0, 92.0], "pivot": [0.0, 0.0]}))
+    for child in hud_children:
         child["parent"] = hud_i
         ents.append(child)
     # 追加HUD(チュートリアル等)。parentName 指定があればその名前のエンティティ(先に
@@ -635,6 +786,45 @@ def build(n, entities, limit, width, hud_extra=None, banner=None):
         pn = child.pop("parentName", None)
         child["parent"] = (next(i for i, e in enumerate(ents) if e["name"] == pn)
                            if pn else hud_i)
+        ents.append(child)
+    # 引き絞りゲージ(時計盤HUD)。以前は tools/inject_draw_gauge.py の後処理だったが、
+    # 注入忘れでゲージの無いシーンが配られたため gen 本体で必ず出す(2026-07-24)。
+    # inject_draw_gauge.py は今も安全(DrawGauge* を strip してから同じものを足す)
+    def gauge_img(gname, tex, rect, order, color, fill_dir=0, fill=1.0):
+        return {"name": gname, "transform": transform(0, 0, 1, 1),
+                "uiRect": {"anchorMax": rect["aMax"], "anchorMin": rect["aMin"],
+                           "clipChildren": False, "offsetMax": rect["oMax"],
+                           "offsetMin": rect["oMin"], "order": order,
+                           "pivot": [0.5, 0.5], "rotation": 0.0, "skewX": 0.0,
+                           "visible": True},
+                "uiImage": {"texturePath": tex, "color": color,
+                            "uvMin": [0.0, 0.0], "uvMax": [1.0, 1.0],
+                            "sliceBorder": [0.0, 0.0, 0.0, 0.0], "cornerRadius": 0.0,
+                            "raycastBlock": False, "fillAmount": fill,
+                            "fillDir": fill_dir}}
+    g_full = {"aMin": [0.0, 0.0], "aMax": [1.0, 1.0], "oMin": [0.0, 0.0], "oMax": [0.0, 0.0]}
+    g_root = gauge_img("DrawGauge", "textures/ui_gauge_dial_rgba.png",
+                       {"aMin": [0.5, 0.5], "aMax": [0.5, 0.5],
+                        "oMin": [110.0, -30.0], "oMax": [250.0, 110.0]},
+                       3, [1.0, 1.0, 1.0, 1.0])
+    g_root["parent"] = hud_i
+    ents.append(g_root)
+    g_i = len(ents) - 1
+    for gname, tex, order, color, fdir in [
+            ("DrawGaugeArcFF", "textures/ui_gauge_arc_rgba.png", 4, [0.33, 0.85, 1.0, 0.95], 4),
+            ("DrawGaugeArcRW", "textures/ui_gauge_arc_rgba.png", 4, [0.72, 0.50, 1.0, 0.95], 5),
+            ("DrawGaugeHand", "textures/ui_gauge_hand_rgba.png", 5, [0.95, 0.97, 1.0, 1.0], 0)]:
+        e = gauge_img(gname, tex, dict(g_full), order, color, fdir,
+                      0.0 if "Arc" in gname else 1.0)
+        e["parent"] = g_i
+        ents.append(e)
+    # オプションメニューUI(エンジン内で手作りした原文をEXTRASへ退避したもの)。
+    # OptionsCanvas は自前の uiCanvas を持つトップレベル、それ以外は parentName で系譜復元。
+    # 子は親より後に並んでいる前提(抽出時の順序を保存している)
+    for child in copy.deepcopy(EXTRAS.get("options_ui", [])):
+        pn = child.pop("parentName", None)
+        if pn:
+            child["parent"] = next(i for i, e in enumerate(ents) if e["name"] == pn)
         ents.append(child)
     scene = {k: copy.deepcopy(v) for k, v in tpl.items() if k != "entities"}
     scene["entities"] = ents
@@ -666,7 +856,7 @@ build(1, [
            arrowStops="FloorA,FloorB,FloorC", solids="FloorA,FloorB,FloorC",
            rewindShots=S1["rw"]),
     copy.deepcopy(arrow),
-    exit_(43.0, 0.65, "scenes/stage2.json"), gate(43.0, 0.5),
+    exit_(43.0, 0.65, "scenes/stage2.json"),
     block("FloorA", 7.0, -0.5, 14.0, 1.0),        # [0,14]
     riseplat("Bridge1", 17.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
              riseTime=S1["rise1"]),                # 橋を直接撃つ(FF=降ろす/RW=戻す)
@@ -678,76 +868,18 @@ build(1, [
     block("FloorC", 40.5, -0.5, 9.0, 1.0),        # [36,45]
 ], limit=S1["limit"], width=45)
 
-# ── STAGE 2「四枚の閉門回廊」(幅52) ──────────────────────────────────
-# 全ての門が目の前で閉まる。RW3発では4枚に足りない→最低1枚は「走って」間に合わせる。
-# 道中: ハンマー(タイミング)/タレット弾幕(スロモで抜ける)/崩れ橋(急いで渡る or 戻す)
-build(2, [
-    gm(2, S2["limit"]),
-    player(0.8, 0.55, targets="GateA,GateB,GateC,GateD,Ham2,Ham2X,Tur2,CrA2,CrB2,P2aN,P2cN",
-           standables="CrA2,CrB2",
-           arrowStops="F2a,F2b",
-           solids="F2a,F2b,GateA,GateB,GateC,GateD",
-           rewindShots=S2["rw"]),
-    copy.deepcopy(arrow),
-    exit_(49.5, 0.65, "scenes/stage3.json"), gate(49.5, 0.5),
-    block("F2a", 19.25, -0.5, 38.5, 1.0),         # [0,38.5]
-    block("F2b", 47.25, -0.5, 9.5, 1.0),          # [42.5,52] 間は奈落
-    patch("P2a", 5.0, 6.7, 0.7),
-    patch("P2b", 10.0, 11.7, 0.7),
-    door("GateA", 14.6, openT=0.0, closeT=S2["closeA"]),      # スラム(RW)
-    hammer("Ham2", 17.6, 3.5, 1.2, period=3.0, maxAngle=50.0),
-    door("GateB", 24.0, openT=0.0, closeT=S2["closeB"]),      # 走れば間に合う
-    turret("Tur2", 33.0, 1.0, period=2.6, shotSpeed=6.0, rng=11.0),
-    patch("P2c", 27.0, 28.7, 0.7),
-    door("GateC", 35.5, openT=0.0, closeT=S2["closeC"]),
-    crumble("CrA2", 39.6, 0.2, 1.6, 1.6),         # 崩れ橋(奈落[38.5,42.5]の上)
-    crumble("CrB2", 41.5, 0.2, 1.6, 1.6),
-    door("GateD", 45.0, openT=0.0, closeT=S2["closeD"]),
-], limit=S2["limit"], width=52)
-
-# ── STAGE 3「風の谷」(幅58) ──────────────────────────────────
-# 門は1枚だけ。主役は【橋(FF)】と【上昇気流ファン(FFサージ)】と【崩れ足場】。
-# 谷1は自然には架からない橋 → FF。谷2は地上ルート皆無 → ファンでしか棚に上がれない。
-# 棚の途中は崩れ足場(渡り切るか、RWで復活させるか)。最後の閉門はRWでしか開かない。
-build(3, [
-    gm(3, S3["limit"]),
-    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,GateZ3,P3aN",
-           standables="Bridge3,CrA3,CrB3",
-           arrowStops="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c",
-           solids="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c,Fan3,GateZ3",
-           rewindShots=S3["rw"]),
-    copy.deepcopy(arrow),
-    exit_(54.0, 0.65, "scenes/stage4.json"), gate(54.0, 0.5),
-    block("F3a", 10.5, -0.5, 21.0, 1.0),          # [0,21]
-    patch("P3a", 3.0, 4.6),
-    block("StepA3", 6.6, 0.6, 1.1, 1.2),          # 射撃台(橋を早撃ちする高台)
-    block("StepB3", 7.8, 0.85, 1.1, 1.7),
-    riseplat("Bridge3", 24.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
-             riseTime=S3["rise3"]),                # 谷1[21,27]: 自然降下は間に合わない
-    beacon("Bridge3"),
-    block("F3b", 32.0, -0.5, 10.0, 1.0),          # [27,37]
-    fan("Fan3", 30.0, 0.0, liftH=2.6, surgeH=7.6),  # 谷2は地上ルート無し=サージ必須
-    beacon("Fan3", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
-    block("L3a", 34.5, 5.15, 6.0, 0.5),           # 棚[31.5,37.5](上面5.4)
-    crumble("CrA3", 38.6, 5.175, 1.6, 1.5),       # 谷2[37,44]の上の崩れ足場
-    crumble("CrB3", 40.4, 5.175, 1.6, 1.5),
-    block("L3b", 44.4, 5.15, 6.0, 0.5),           # 棚[41.4,47.4]
-    block("F3c", 51.0, -0.5, 14.0, 1.0),          # [44,58]
-    door("GateZ3", 50.0, openT=0.0, closeT=S3["closeZ"]),     # 到着時には必ず閉じている
-], limit=S3["limit"], width=58)
-
-# ── STAGE 4「昇降の工房」(幅64) ────────────────────────────────
+# ── STAGE 2「昇降の工房」(幅64) ── 2026-07-24: 旧stage4と内容入替(こちらが易しい)
 # 門は2枚だけ(スラムA=RW教材 / 錠Z=種まき教材)。主役は【乗り物】:
 # 横に振れるフェリー(位相合わせ)と縦に往復する昇降足場(FFで手繰り寄せて乗る)。
 # 途中に刃ピット/ハンマー(平地で唯一渡れる刃)/崩れ足場。
-build(4, [
-    gm(4, S4["limit"]),
+build(2, [
+    gm(2, S4["limit"]),
     player(0.8, 0.55, targets="GateA4,Saw4,Ham4,Ham4X,Ferry4,Elev4,Lock4,CrA4,CrB4,P4aN,P4bN",
            standables="Ferry4,Elev4,CrA4,CrB4",
            arrowStops="F4a,PitF4,F4b,F4c,L4a,L4b",
            solids="F4a,PitF4,F4b,F4c,L4a,L4b,GateA4,Lock4", rewindShots=S4["rw"]),
     copy.deepcopy(arrow),
-    exit_(62.5, 5.55, "scenes/game_clear.json"), gate(62.5, 5.4),
+    exit_(62.5, 6.007, "scenes/stage3.json"),   # y=エディタ手調整値(床上面5.4に接地)
     block("F4a", 9.4, -0.5, 18.8, 1.0),           # [0,18.8]
     block("PitF4", 19.4, -1.5, 1.2, 1.0),         # 刃の退避ピット
     block("F4b", 25.5, -0.5, 11.0, 1.0),          # [20,31]
@@ -768,6 +900,98 @@ build(4, [
     block("L4b", 62.3, 5.15, 3.4, 0.5),           # [60.6,64]
 ], limit=S4["limit"], width=64)
 
+# ── STAGE 3「風の谷」(幅58) ──────────────────────────────────
+# 門は1枚だけ。主役は【橋(FF)】と【上昇気流ファン(FFサージ)】と【崩れ足場】。
+# 谷1は自然には架からない橋 → FF。谷2は地上ルート皆無 → ファンでしか棚に上がれない。
+# 棚の途中は崩れ足場(渡り切るか、RWで復活させるか)。最後の閉門はRWでしか開かない。
+build(3, [
+    gm(3, S3["limit"]),
+    # L3b は基本体を廃止して手パッチ複製 "L3b (1..4)"(EXTRAS)だけが実体。
+    # リスト名に L3b を残すのは expandDuplicates が複製を拾うため(基本体は無くてよい)
+    player(0.8, 0.55, targets="Bridge3,Fan3,CrA3,CrB3,P3aN",
+           standables="Bridge3,CrA3,CrB3",
+           arrowStops="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c",
+           solids="F3a,StepA3,StepB3,F3b,L3a,L3b,F3c,Fan3",
+           rewindShots=S3["rw"]),
+    copy.deepcopy(arrow),
+    exit_(54.0, 0.65, "scenes/stage4.json"),
+    # F3a はエディタ手調整(commit 3fd1f1a)の実寸を採用: 序盤床を短縮し、
+    # 先は StepB3 (1..3)(EXTRAS)の飛び石コースで谷1へ繋ぐ
+    block("F3a", 4.418724536895752, -0.5, 7.930633068084717, 1.0),
+    patch("P3a", 3.0, 4.6),
+    block("StepA3", 6.6, 0.6, 1.1, 1.2),          # 射撃台(橋を早撃ちする高台)
+    block("StepB3", 7.8, 0.85, 1.1, 1.7),
+    riseplat("Bridge3", 24.0, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=6.0,
+             riseTime=S3["rise3"]),                # 谷1[21,27]: 自然降下は間に合わない
+    beacon("Bridge3"),
+    block("F3b", 32.0, -0.5, 10.0, 1.0),          # [27,37]
+    fan("Fan3", 30.0, 0.0, liftH=2.6, surgeH=7.6),  # 谷2は地上ルート無し=サージ必須
+    beacon("Fan3", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
+    block("L3a", 34.5, 5.15, 6.0, 0.5),           # 棚[31.5,37.5](上面5.4)
+    crumble("CrA3", 38.6, 5.175, 1.6, 1.5),       # 谷2[37,44]の上の崩れ足場
+    crumble("CrB3", 40.4, 5.175, 1.6, 1.5),
+    block("F3c", 51.0, -0.5, 14.0, 1.0),          # [44,58]
+    # GateZ3(最後の閉門)はエディタ改修で廃止済み(2つ目のファン+飛び石ルートに置換)
+], limit=S3["limit"], width=58)
+
+# ── STAGE 4「四枚の閉門回廊」(幅52) ── 2026-07-24: 旧stage2と内容入替(難しいので最後)
+# 全ての門が目の前で閉まる。RW残数では4枚に足りない→最低1枚は「走って」間に合わせる。
+# 道中: ハンマー(タイミング)/タレット弾幕(スロモで抜ける)/崩れ橋(急いで渡る or 戻す)
+# ── STAGE 4「時限の回廊・改」(2026-07-24ユーザーがエディタで全面リメイク) ──
+# 序盤床の先を壁で封鎖 → 頭上の扇風機を後戻り矢で逆流させ【吸い込み】で壁を越える →
+# 視界に入ると降下を始める橋(30秒)で谷を渡る → 中盤床(ハンマー2連+門B/C+砲台) →
+# 崩れ橋 → 門D → 出口。終端の高台砲台(10秒周期)が最後まで圧をかける。
+# ジオメトリはエディタ配置の実測値をそのまま採用(シーン保存 2026-07-24 から抽出)
+build(4, [
+    gm(4, S2["limit"]),
+    player(-0.97, 0.55,
+           targets="GateB,GateC,GateD,Ham2,Ham2X,Ham2 (1)X,Ham2 (2)X,Tur2,CrA2,CrB2,"
+                   "P2aN,P2bN,P2cN,Fan2,Bridge1",
+           standables="CrA2,CrB2,Bridge1",
+           arrowStops="F2a,F2b,WallB2",
+           solids="F2a,F2b,GateB,GateC,GateD,Fan2,Tur2,WallB2",
+           rewindShots=S2["rw"]),
+    copy.deepcopy(arrow),
+    exit_(49.5, 0.65, "scenes/game_clear.json"),
+    # ── 地形(ユーザー実測値) ──
+    block("F2a", 3.82, -0.5, 11.75, 1.0),         # 序盤床[-2.1,9.7]
+    breakwall("WallB2 (1)", 10.18, 1.94, 1.54, 5.89),   # 序盤の封鎖壁(高5.9)
+    breakwall("WallB2 (2)", 19.66, 5.98, 1.54, 7.51),   # 落下橋ルートの高壁(2026-07-24追加)
+    breakwall("WallB2 (3)", 25.65, -0.45, 13.52, 1.0),  # 中盤床[18.9,32.4]
+    block("F2b (1)", 35.91, -0.5, 4.38, 1.0),     # [33.7,38.1]
+    block("F2b", 47.25, -0.5, 9.5, 1.0),          # [42.5,52] 手前は奈落
+    needle("P2aN", 2.82, 0.3, 1.6, 0.6, stand=True),
+    needle("P2bN", 6.36, 0.3, 1.6, 0.6, stand=True),
+    needle("P2cN", 26.45, 0.3, 1.6, 0.6, stand=True),
+    # ── 吸い込み扇風機(頭上に逆さ付け)。RWで逆流→下から吸い上げられて壁越え ──
+    # 風量(2026-07-24実測調整): strength 150=半径の縁(地上)でも実効+34/s²で即浮く。
+    # suckPerRewind 1.4=最小チャージ(2秒)でも2.8秒吸う=地上→ファン(6.2u)に確実に届く
+    mesh("Fan2", "Fan_Base", 8.88, 6.76, 1.5, 1.5, 1.5, shader=TIMEWARP,
+         lua=script("Fan.lua", [
+             prop("bladesName", "string", "Fan2Blades"),
+             prop("liftHeight", "float", 2.6), prop("surgeHeight", "float", 7.0),
+             prop("strength", "float", 150.0), prop("surgePerSkip", "float", 0.8),
+             prop("suckPerRewind", "float", 1.4), prop("zoneHalfW", "float", 0.9),
+             prop("suckRadius", "float", 8.5)])),
+    mesh("Fan2Blades", "Fan_Blades", 8.85, 6.45, 1.5, 1.5, 1.5),
+    beacon("Fan2", color=(0.4, 0.9, 1.0, 0.95), offset=1.1),
+    # ── 落下橋: 視界に入る(距離13)と降下開始、30秒かけて上(7.5)→下(-0.3)へ ──
+    riseplat("Bridge1 (1)", 15.17, -0.3, 6.0, 0.6, arriveT=0.0, waitHeight=7.8,
+             riseTime=30.0, triggerDist=13.0),
+    beacon("Bridge1 (1)"),
+    # ── 中盤〜終盤(ハンマー3基/門3枚/砲台2基) ──
+    hammer("Ham2", 21.84, 3.5, 1.2, period=3.0, maxAngle=50.0),
+    hammer("Ham2 (1)", 29.25, 3.5, 1.2, period=3.0, maxAngle=50.0),
+    hammer("Ham2 (2)", 48.08, 3.29, 1.2, period=3.0, maxAngle=50.0),
+    door("GateB", 24.0, openT=0.0, closeT=S2["closeB"]),
+    turret("Tur2", 33.0, 1.0, period=2.6, shotSpeed=6.0, rng=11.0),
+    door("GateC", 35.5, openT=0.0, closeT=S2["closeC"]),
+    crumble("CrA2", 39.6, 0.2, 1.6, 1.6),         # 崩れ橋(奈落[38.1,42.5]の上)
+    crumble("CrB2", 41.5, 0.2, 1.6, 1.6),
+    door("GateD", 45.0, openT=0.0, closeT=S2["closeD"]),
+    turret("Tur2 (1)", 53.89, 0.59, period=10.0, shotSpeed=6.0, rng=14.0),  # 10秒に1発
+], limit=S2["limit"], width=55)
+
 # ── STAGE 5「時の昇降機」(幅88, 3層) ─────────────────────────────────
 # 門は3枚(スラムG=RW教材 / 錠D・錠Z=種まき教材)。P1リフトをFFで降ろし乗ったまま
 # RWで昇る → P2デッキ: スラムG+大玉チェイス+ハンマー+退避ピット+錠D種まき
@@ -780,7 +1004,7 @@ build(5, [
            solids="F5a,F5b,StepA5,StepB5,D5a,PitR1F,D5b,PitR2F,D5c,T5a,T5b1,T5b2,Sill5,"
                   "Gate5,LockD5,LockZ5", rewindShots=S5["rw"]),
     copy.deepcopy(arrow),
-    exit_(85.5, 9.45, "scenes/stage6.json"), gate(85.5, 9.3),
+    exit_(85.5, 9.45, "scenes/stage6.json"),
     block("F5a", 27.0, -0.5, 54.0, 1.0),          # [0,54]
     block("F5b", 73.5, -0.5, 29.0, 1.0),          # [59,88] 間は奈落
     crumble("CrA5", 55.2, 0.2, 1.6, 1.6),
@@ -822,7 +1046,7 @@ build(6, [
            solids="F6a,F6b,WallW6,WallW62,L6,Sill6,Fan6,CW6,LockZ6,Tur6",
            rewindShots=S6["rw"]),
     copy.deepcopy(arrow),
-    exit_(92.0, 0.65, "scenes/stage7.json"), gate(92.0, 0.5),
+    exit_(92.0, 0.65, "scenes/stage7.json"),
     block("F6a", 8.0, -0.5, 16.0, 1.0),           # [0,16]
     patch("P6a", 4.4, 6.1, 0.7),
     patch("P6b", 9.4, 11.0, 0.7),
@@ -863,7 +1087,7 @@ build(7, [
                   "St7a,St7b,St7c,St7d,T7a,T7b,Pit3F,LockD7,LatticeL1,LockZ7",
            rewindShots=S7["rw"]),
     copy.deepcopy(arrow),
-    exit_(101.5, 9.45, "scenes/stage8.json"), gate(101.5, 9.3),
+    exit_(101.5, 9.45, "scenes/stage8.json"),
     block("F7a", 6.0, -0.5, 12.0, 1.0),           # [0,12]
     riseplat("RevB7", 14.25, -0.3, 4.5, 0.6, arriveT=0.0, waitHeight=6.0,
              riseTime=S7["rev7"], reverse=True),   # 谷[12,16.5]: 開幕のRW教材(門ではない)
@@ -918,7 +1142,7 @@ build(8, [
                   "GateA8,LockE8,Fan8,Tur8,LatticeL8",
            rewindShots=S8["rw"]),
     copy.deepcopy(arrow),
-    exit_(117.0, 9.45, "scenes/game_clear.json"), gate(117.0, 9.3),
+    exit_(117.0, 9.45, "scenes/game_clear.json"),
 
     # ── P1 地上: スラム門(RW) → 爆弾で壁を割る → ファンでデッキへ ──
     block("F8a", 12.0, -0.5, 24.0, 1.0),          # [0,24]
@@ -984,7 +1208,7 @@ build(0, [
      "luaScript": script("Tutorial.lua", [
          prop("walkGoal", "float", 2.5), prop("jumpX", "float", 12.8),
          prop("doorX", "float", 18.5), prop("needleX", "float", 27.0)])},
-    exit_(34.0, 0.65, "scenes/stage1.json"), gate(34.0, 0.5),
+    exit_(34.0, 0.65, "scenes/stage_select.json"),   # チュートリアル後はセレクトへ
     block("TutF", 17.0, -0.5, 42.0, 1.0),         # x[-4,38] 全面床(奈落なし)
     block("TutStep", 11.0, 0.6, 2.6, 1.2),        # 上面y=1.2: ジャンプ(高1.68)で越える段差
     door("TutDoor", 18.5, openT=40.0, closeT=9999.0),
@@ -998,13 +1222,13 @@ build(0, [
            lua=script("Beacon.lua", [prop("targetName", "string", "TutNeedle"),
                                      prop("offsetY", "float", 1.6),
                                      prop("bob", "float", 0.18)])),
-], limit=75, width=38, banner="チュートリアル！ 矢で 時間を あやつれ！", hud_extra=tut_hud())
+], limit=75, width=38, banner="矢で 時間を あやつれ！", hud_extra=tut_hud())
 
 # ── 検証: JSON再読込 + parent整合 + スラム門の最速到達チェック ─────────
 WALK, HOPJ = 5.0, 0.15
+# スロット2=工房のGateA4。スロット4はユーザーの全面リメイクでスラム門廃止(2026-07-24)
 SLAMS = {
-    2: (14.6, K["s2"]["closeA"], 2, 0.8),
-    4: (13.0, K["s4"]["slamA"], 2, 0.8),
+    2: (13.0, K["s4"]["slamA"], 2, 0.8),
     8: (12.2, K["s8"]["slamA"], 2, 0.8),
 }
 for n in range(1, 5):   # 5-8は封印中(build()が書き出さない)ので検証も1-4のみ
@@ -1015,10 +1239,15 @@ for n in range(1, 5):   # 5-8は封印中(build()が書き出さない)ので検
     plprops = {q["name"]: q["value"] for q in pl["luaScript"]["props"]}
     for key in ("targets", "standables", "climbables", "arrowStops", "solids"):
         for nm in filter(None, [x.strip() for x in plprops.get(key, "").split(",")]):
-            assert nm in names, f"stage{n}: {key} に実在しない名前 '{nm}'"
+            # 基本名が無くても手パッチ複製 "名前 (1)" があれば有効
+            # (Player.lua の expandDuplicates が拾う)
+            assert nm in names or f"{nm} (1)" in names, \
+                f"stage{n}: {key} に実在しない名前 '{nm}'"
     for e in s["entities"]:
         if "parent" in e:
-            assert names[e["parent"]] == "HudCanvas", (n, e["name"])
+            # 親はUIコンテナ(HudCanvas/OptionsCanvas)かUI要素(Opt系ボタンの子ラベル等)
+            p = s["entities"][e["parent"]]
+            assert "uiCanvas" in p or "uiRect" in p, (n, e["name"], names[e["parent"]])
     assert "PlayerMarker" in names
     if n in SLAMS:
         gx, ct, hops, sx = SLAMS[n]

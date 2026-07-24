@@ -61,6 +61,12 @@ function OnStart(self)
   demoT = 0
   barFill = scene:findEntity("DemoBarFill")
 
+  -- 行き先シーンのテクスチャ/モデルをタイトル表示前に先読み(トランジション中のカクつき対策)。
+  -- preloadScene はエンジン v1.6.3+ の API なので旧エンジンでは黙ってスキップ
+  if preloadScene then
+    preloadScene("scenes/stage0.json")
+  end
+
   audio:playBGM(BGM_PATH, true)
   bgmT = 0
   wall = scene:findEntity("Backdrop")
@@ -131,10 +137,9 @@ function startGame(buttonEntity)
     end
   end)
   time.after(0.70, function()
-    -- 初回はチュートリアル(stage0)を挟む。クリア済み(ta_tutorial_done)ならセレクト直行
-    local dest = loadNum("ta_tutorial_done", 0) > 0.5
-                 and "scenes/stage_select.json" or "scenes/stage0.json"
-    transitionToScene(dest, 4, 1.3)   -- 4=シークバー早送り
+    -- STARTは常にチュートリアル(stage0)を挟む(プレイ会で毎回見せる方針。
+    -- クリア済みスキップは廃止: ta_tutorial_done はもう参照しない)
+    transitionToScene("scenes/stage0.json", 4, 1.3)   -- 4=シークバー早送り
   end)
 end
 

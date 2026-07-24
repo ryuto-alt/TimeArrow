@@ -15,7 +15,8 @@ K = {
     "s1": dict(limit=16.0, rw=1, rise1=12.0, rise2=9.0),
 
     # S2「四枚の閉門回廊」スラム(RW)とスプリント(急げば間に合う)の混合
-    "s2": dict(limit=18.0, rw=5, closeA=2.8, closeB=8.6, closeC=12.5, closeD=15.5),
+    # rw=7 / limit=27: 2026-07-24ユーザー指示(35→30→27に締め直し)
+    "s2": dict(limit=27.0, rw=7, closeA=2.8, closeB=8.6, closeC=12.5, closeD=15.5),
 
     # S3「風の谷」橋(FF)+ファンサージ(FF)+崩れ足場+閉門1枚(RW)
     "s3": dict(limit=33.0, rw=3, rise3=24.0, closeZ=14.0),

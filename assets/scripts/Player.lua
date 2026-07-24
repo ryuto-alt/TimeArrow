@@ -21,8 +21,10 @@ properties = {
   { name = "arrowRange",    type = "float",  default = 18.0, min = 1,  max = 60, label = "矢の最大飛距離" },
   { name = "arrowHalf",     type = "float",  default = 0.1,  min = 0.02,max = 1, label = "矢自体の当たり半径(先端の太さ)" },
   { name = "minSkip",       type = "float",  default = 2.0,  min = 0,  max = 20, label = "最小先送り量(軽く引いた時)" },
-  { name = "maxSkip",       type = "float",  default = 10.0, min = 0,  max = 30, label = "最大先送り量(引き絞りきった時)" },
-  { name = "maxDrawTime",   type = "float",  default = 3.0,  min = 0.2, max = 8, label = "引き絞り最大秒数" },
+  { name = "maxSkip",       type = "float",  default = 8.0,  min = 0,  max = 30, label = "最大先送り量(引き絞りきった時)" },
+  { name = "maxDrawTime",   type = "float",  default = 3.0,  min = 0.2, max = 8, label = "先送りの引き絞り最大秒数" },
+  { name = "maxRewind",     type = "float",  default = 5.0,  min = 0,  max = 30, label = "最大後戻り量(2026-07-24: メーター後半が使われないため半減)" },
+  { name = "rewindDrawTime", type = "float", default = 1.5,  min = 0.2, max = 8, label = "後戻りの引き絞り最大秒数(量が半分なのでチャージも倍速)" },
   { name = "aimTurnSpeed",  type = "float",  default = 270.0,min = 30,  max = 1080,label = "照準の旋回速度(度/秒。WASDでいきなり真上/真下にならないように)" },
   { name = "climbSpeed",    type = "float",  default = 4.0,  min = 1,  max = 12, label = "ツタを登る速度" },
   { name = "targets",       type = "string", default = "",                      label = "先送り対象(カンマ区切り)" },
@@ -65,11 +67,44 @@ local function overlapAABB(ax, ay, ahw, ahh, bx, by, bhw, bhh)
   return math.abs(ax - bx) < (ahw + bhw) and math.abs(ay - by) < (ahh + bhh)
 end
 
+-- 巻き戻し残量HUD(アイコン1個+「×N」)。残数0でアイコンごと暗く沈める
+local function refreshRewindIcons(self)
+  local on = self.shotsLeft > 0
+  for _, e in pairs(self.rewindIcons or {}) do
+    if e and e:isValid() then
+      if on then
+        scene:setUiColor(e, 0.78, 0.58, 1.0, 1.0)
+      else
+        scene:setUiColor(e, 0.45, 0.35, 0.65, 0.25)
+      end
+    end
+  end
+  if self.rewindCountUi and self.rewindCountUi:isValid() then
+    scene:setUiText(self.rewindCountUi, "×" .. self.shotsLeft)
+    pcall(function()
+      if on then
+        scene:setUiColor(self.rewindCountUi, 0.78, 0.58, 1.0, 1.0)
+      else
+        scene:setUiColor(self.rewindCountUi, 0.5, 0.42, 0.68, 0.5)
+      end
+    end)
+  end
+end
+
 function OnStart(self)
   -- オプションメニューが開いている間は操作を受け付けない(環境分離のためイベントで受ける)
   self.optionsOpen = false
   events:on("options_open",  function() self.optionsOpen = true  end)
   events:on("options_close", function() self.optionsOpen = false end)
+  -- 開幕シネマ中は入力・物理ごと凍結(StageIntro.lua が発行)
+  self.introOn = false
+  events:on("stage_intro", function(d) self.introOn = d and d.on or false end)
+  -- 横長で低い的(寝ている針山・崩れ足場など。各スクリプトが flat_target で通知):
+  -- 矢判定の縦膨張(最低±0.8)を外して実寸にする=水平弾道が上を素通りできる
+  self.lyingN = {}
+  events:on("flat_target", function(d)
+    if d and d.name then self.lyingN[d.name] = d.on end
+  end)
 
   local p = self.transform.position
   self.startX, self.startY, self.startZ = p.x, p.y, p.z
@@ -96,11 +131,23 @@ function OnStart(self)
   self.pendingMode = "skip"
   self.shotsLeft = self.rewindShots
   self.lastTs = 1.0
-  self.drawAmountUi = scene:findEntity("DrawAmount")
-  self.rewindCountUi = scene:findEntity("RewindCount")
-  if self.rewindCountUi and self.rewindCountUi:isValid() then
-    scene:setUiText(self.rewindCountUi, "まき戻し ×" .. self.shotsLeft)
+  -- 引き絞りゲージ(時計盤HUD)。旧 DrawAmount テキストの後継(tools/inject_draw_gauge.py が配置)
+  self.gaugeE     = scene:findEntity("DrawGauge")
+  self.gaugeFF    = scene:findEntity("DrawGaugeArcFF")
+  self.gaugeRW    = scene:findEntity("DrawGaugeArcRW")
+  self.gaugeHand  = scene:findEntity("DrawGaugeHand")
+  self.gaugeShown = false
+  if self.gaugeE and self.gaugeE:isValid() then
+    scene:tweenUi(self.gaugeE, { alpha = 0, duration = 0.001 })
   end
+  -- 巻き戻し残量: アイコン1個+「×N」テキスト(gen_stages.py が生成)
+  self.rewindIcons = {}
+  for i = 1, 9 do
+    local e = scene:findEntity("RewindIcon" .. i)
+    if e and e:isValid() then self.rewindIcons[i] = e end
+  end
+  self.rewindCountUi = scene:findEntity("RewindCount")
+  refreshRewindIcons(self)
 
   -- エディタで複製すると「名前 (1)」「名前 (2)」…ができる。propsのリストは基本名だけ書けば
   -- よいように、実在する "(n)" 付き複製をシーンから探して自動で同じリストに加える。
@@ -456,11 +503,21 @@ local function aimTargetDir(self)
   return ax / len, ay / len
 end
 
+-- モード別の引き絞りパラメータ(最大量, 満充填秒)。
+-- 後戻りは最大5秒・1.5秒で満充填(2026-07-24: メーター後半が使われないため半減+倍速)
+local function drawSpec(self)
+  if self.drawMode == "rewind" then
+    return self.maxRewind, self.rewindDrawTime
+  end
+  return self.maxSkip, self.maxDrawTime
+end
+
 local function fireArrow(self)
   local arrowE = scene:findEntity("Arrow")
   if not (arrowE and arrowE:isValid()) then return end
 
-  local amount = lerp(self.minSkip, self.maxSkip, clamp(self.drawT / self.maxDrawTime, 0, 1))
+  local maxAmt, maxT = drawSpec(self)
+  local amount = lerp(self.minSkip, maxAmt, clamp(self.drawT / maxT, 0, 1))
   local ax, ay = self.aimX or self.facing, self.aimY or 0
   local p = self.transform.position
   local sx, sy, sz = p.x + ax * 0.7, p.y + 0.2 + ay * 0.3, p.z
@@ -486,9 +543,7 @@ local function fireArrow(self)
 
   if self.drawMode == "rewind" then
     self.shotsLeft = self.shotsLeft - 1
-    if self.rewindCountUi and self.rewindCountUi:isValid() then
-      scene:setUiText(self.rewindCountUi, "まき戻し ×" .. self.shotsLeft)
-    end
+    refreshRewindIcons(self)
   end
 end
 
@@ -561,7 +616,8 @@ local function updateDraw(self, dt)
       self.aimElev = clamp(math.floor(elev / 10 + 0.5) * 10, -90, 90)
       self.stepRepeatT = 0
     end
-    self.drawT = math.min(self.drawT + dt, self.maxDrawTime)
+    local maxAmt, maxT = drawSpec(self)
+    self.drawT = math.min(self.drawT + dt, maxT)
 
     -- 照準: パッド=スティックへなめらか追従(感度=aimTurnSpeed、低め) /
     --        キーボード=矢印(またはWASD)で10度刻みのステップ選択
@@ -608,19 +664,35 @@ local function updateDraw(self, dt)
     local ax, ay = math.cos(rad), math.sin(rad)
     self.aimX, self.aimY = ax, ay
 
-    local amount = lerp(self.minSkip, self.maxSkip, clamp(self.drawT / self.maxDrawTime, 0, 1))
-    if self.drawAmountUi and self.drawAmountUi:isValid() then
-      if self.drawMode == "rewind" then
-        scene:setUiText(self.drawAmountUi, string.format("-%.1f秒 もどす", amount))
-        pcall(function() scene:setUiColor(self.drawAmountUi, 0.75, 0.55, 1.0, 1.0) end)
-      else
-        scene:setUiText(self.drawAmountUi, string.format("+%.1f秒 すすめる", amount))
-        pcall(function() scene:setUiColor(self.drawAmountUi, 0.4, 0.9, 1.0, 1.0) end)
+    local amount = lerp(self.minSkip, maxAmt, clamp(self.drawT / maxT, 0, 1))
+    -- 引き絞りゲージ(時計盤): 扇形が引き絞りに応じて満ち、針が回る。
+    -- 先送り=シアン/時計回り、まき戻し=紫/反時計回り(針も逆回転)
+    if self.gaugeE and self.gaugeE:isValid() then
+      local gfrac = clamp(self.drawT / maxT, 0, 1)
+      if not self.gaugeShown then
+        self.gaugeShown = true
+        scene:stopUiTweens(self.gaugeE)
+        scene:tweenUi(self.gaugeE, { alpha = 0, scale = 0.55, duration = 0.001 })
+        scene:tweenUi(self.gaugeE, { alpha = 1, scale = 1.0, duration = 0.22, easing = "back" })
+      end
+      local rw = (self.drawMode == "rewind")
+      if self.gaugeFF and self.gaugeFF:isValid() then
+        scene:setUiFill(self.gaugeFF, rw and 0 or gfrac)
+      end
+      if self.gaugeRW and self.gaugeRW:isValid() then
+        scene:setUiFill(self.gaugeRW, rw and gfrac or 0)
+      end
+      if self.gaugeHand and self.gaugeHand:isValid() then
+        scene:setUiRotation(self.gaugeHand, (rw and -1 or 1) * gfrac * 350.0)
+        pcall(function()
+          if rw then scene:setUiColor(self.gaugeHand, 0.85, 0.7, 1.0, 1.0)
+          else scene:setUiColor(self.gaugeHand, 0.75, 0.95, 1.0, 1.0) end
+        end)
       end
     end
 
     local p = self.transform.position
-    local frac = self.drawT / self.maxDrawTime
+    local frac = self.drawT / maxT
     local len = 1.1 + 2.3 * frac
     if self.drawMode == "rewind" then
       -- 後戻り矢: 紫のビーム
@@ -632,68 +704,92 @@ local function updateDraw(self, dt)
               0.4 + 0.4 * frac, 0.75 + 0.2 * frac, 1.0, 0.1, "energy", 3 + frac * 3)
     end
 
-    -- 軌道予測: 矢の到達点を点線で示し、当たる対象をモード色で点滅させ(aim_preview)、
-    -- 対象の脇に「効果量ゲージ」(引き絞りに応じて伸びる縦ビーム)を立てる
-    self.scanT = (self.scanT or 0) + dt
-    if self.scanT > 0.05 then
-      self.scanT = 0
-      local rx, ry = p.x + ax * 0.7, p.y + 0.2 + ay * 0.3
-      local hitT, hitX, hitY, hitH = nil, nil, nil, 1.0
-      local d = 0.5
-      while d < self.arrowRange do
-        local sx2, sy2 = rx + ax * d, ry + ay * d
-        for _, name in ipairs(self.targetList) do
-          local tE = scene:findEntity(name)
-          if tE and tE:isValid() then
-            local tp, ts2 = tE.transform.position, tE.transform.scale
-            if tp.y > -50 and overlapAABB(sx2, sy2, 0.05, 0.05, tp.x, tp.y,
-                                          math.max(ts2.x * 0.5, 0.8), math.max(ts2.y * 0.5, 0.8)) then
-              hitT, hitX, hitY = name, tp.x, tp.y
-              hitH = math.max(ts2.y, 1.2)
-              break
-            end
-          end
+    -- 軌道レーダー: 発射線を途切れない実線ビームとして毎フレーム描く。
+    -- 当たり候補/地形は先に座標をまとめて取り(毎ステップ findEntity しない)、
+    -- 細かい歩幅(0.25)で到達点を求めて 発射点→到達点 を1本のビームで結ぶ。
+    local rx, ry = p.x + ax * 0.7, p.y + 0.2 + ay * 0.3
+    local cands, stops = {}, {}
+    for _, name in ipairs(self.targetList) do
+      local tE = scene:findEntity(name)
+      if tE and tE:isValid() then
+        local tp, ts2 = tE.transform.position, tE.transform.scale
+        if tp.y > -50 then
+          local hh = self.lyingN[name] and ts2.y * 0.5 or math.max(ts2.y * 0.5, 0.8)
+          cands[#cands + 1] = { name = name, x = tp.x, y = tp.y,
+                                hw = math.max(ts2.x * 0.5, 0.8),
+                                hh = hh,
+                                h = math.max(ts2.y, 1.2) }
         end
-        if hitT then break end
-        local blocked = false
-        for _, name in ipairs(self.stopList) do
-          local tE = scene:findEntity(name)
-          if tE and tE:isValid() then
-            local tp, ts2 = tE.transform.position, tE.transform.scale
-            if tp.y > -50 and overlapAABB(sx2, sy2, 0.05, 0.05, tp.x, tp.y,
-                                          ts2.x * 0.5, ts2.y * 0.5) then
-              blocked = true
-              break
-            end
-          end
-        end
-        if blocked then break end
-        if math.floor(d / 0.5) % 2 == 0 then
-          if self.drawMode == "rewind" then
-            FX.trail(sx2, sy2, p.z, 0.5, 0.32, 0.85)
-          else
-            FX.trail(sx2, sy2, p.z, 0.25, 0.6, 0.85)
-          end
-        end
-        d = d + 0.5
       end
-      if hitT then
-        events:emit("aim_preview", { target = hitT, mode = self.drawMode })
-        local gh = 0.4 + 2.2 * clamp((amount - self.minSkip) / (self.maxSkip - self.minSkip), 0, 1)
-        local gx = hitX - 1.3
-        local gy = hitY - hitH * 0.5
-        if self.drawMode == "rewind" then
-          FX.beam(gx, gy, p.z, gx, gy + gh, p.z, 0.62, 0.35, 1.0, 0.14, "energy", 5)
-        else
-          FX.beam(gx, gy, p.z, gx, gy + gh, p.z, 0.3, 0.85, 1.0, 0.14, "energy", 5)
+    end
+    for _, name in ipairs(self.stopList) do
+      local tE = scene:findEntity(name)
+      if tE and tE:isValid() then
+        local tp, ts2 = tE.transform.position, tE.transform.scale
+        if tp.y > -50 then
+          stops[#stops + 1] = { x = tp.x, y = tp.y, hw = ts2.x * 0.5, hh = ts2.y * 0.5 }
         end
+      end
+    end
+    local hit, endD = nil, self.arrowRange
+    local d = 0.3
+    while d < self.arrowRange do
+      local sx2, sy2 = rx + ax * d, ry + ay * d
+      for _, c in ipairs(cands) do
+        if overlapAABB(sx2, sy2, 0.05, 0.05, c.x, c.y, c.hw, c.hh) then
+          hit = c
+          break
+        end
+      end
+      if hit then endD = d; break end
+      local blocked = false
+      for _, c in ipairs(stops) do
+        if overlapAABB(sx2, sy2, 0.05, 0.05, c.x, c.y, c.hw, c.hh) then
+          blocked = true
+          break
+        end
+      end
+      if blocked then endD = d; break end
+      d = d + 0.25
+    end
+    local ex2, ey2 = rx + ax * endD, ry + ay * endD
+    local cr, cg, cb
+    if self.drawMode == "rewind" then cr, cg, cb = 0.62, 0.4, 1.0
+    else cr, cg, cb = 0.35, 0.8, 1.0 end
+    -- 本線(モード色)+細い白コア=どんな背景でも読める二重線
+    FX.beam(rx, ry, p.z, ex2, ey2, p.z, cr, cg, cb, 0.06, "energy", 2.6)
+    FX.beam(rx, ry, p.z, ex2, ey2, p.z, 1.0, 1.0, 1.0, 0.06, "energy", 1.0)
+    -- 終端マーカー: 進行方向と直交する短い横棒(当たる場所を明示)
+    local pxp, pyp = -ay, ax
+    FX.beam(ex2 - pxp * 0.35, ey2 - pyp * 0.35, p.z,
+            ex2 + pxp * 0.35, ey2 + pyp * 0.35, p.z, cr, cg, cb, 0.06, "energy", 3)
+    -- 終端のパルスリング(0.25秒おき。的に当たる時は大きく)
+    self.pulseT = (self.pulseT or 0) + dt
+    if self.pulseT > 0.25 then
+      self.pulseT = 0
+      FX.shockwave(ex2, ey2, p.z, hit and 6 or 3, hit and 4 or 2.5, cr, cg, cb)
+    end
+    if hit then
+      -- 対象の点滅(aim_preview)と効果量ゲージは従来の0.05秒間隔で
+      self.scanT = (self.scanT or 0) + dt
+      if self.scanT > 0.05 then
+        self.scanT = 0
+        events:emit("aim_preview", { target = hit.name, mode = self.drawMode })
+        local gh = 0.4 + 2.2 * clamp((amount - self.minSkip) / (maxAmt - self.minSkip), 0, 1)
+        local gx = hit.x - 1.3
+        local gy = hit.y - hit.h * 0.5
+        FX.beam(gx, gy, p.z, gx, gy + gh, p.z, cr, cg, cb, 0.14, "energy", 5)
       end
     end
   elseif self.drawing then
     self.drawing = false
     fireArrow(self)
-    if self.drawAmountUi and self.drawAmountUi:isValid() then
-      scene:setUiText(self.drawAmountUi, "")
+    if self.gaugeShown then
+      self.gaugeShown = false
+      if self.gaugeE and self.gaugeE:isValid() then
+        scene:stopUiTweens(self.gaugeE)
+        scene:tweenUi(self.gaugeE, { alpha = 0, scale = 1.25, duration = 0.16, easing = "in" })
+      end
     end
   end
 end
@@ -716,6 +812,9 @@ local function stickArrow(self, arrowE, hitTargetName)
     fx:pulse(0.18)
     padVibrate(0.5, 0.3, 0.12)
     audio:playSpatial("audio/se/arrow_hit.wav", ap.x, ap.y, ap.z, 3, 26, 1.0)  -- 刺さってビーンと振動(刺さった場所から)
+  else
+    -- 地形・障害物に刺さった(的ではない)
+    audio:playSpatial("audio/se/arrow_stick.wav", ap.x, ap.y, ap.z, 3, 26, 1.0)
   end
 end
 
@@ -740,9 +839,11 @@ local function updateArrow(self, dt)
       local t = scene:findEntity(name)
       if t and t:isValid() then
         local tp, ts = t.transform.position, t.transform.scale
-        -- 的の判定は最低でも半幅/半高0.8を保証(薄い足場や小型ギミックも狙いやすく)
+        -- 的の判定は最低でも半幅/半高0.8を保証(薄い足場や小型ギミックも狙いやすく)。
+        -- ただし寝ている針山は縦を実寸に(水平弾道が上を素通りできる)
+        local hh = self.lyingN[name] and ts.y * 0.5 or math.max(ts.y * 0.5, 0.8)
         if overlapAABB(nx, ny, self.arrowHalf, self.arrowHalf, tp.x, tp.y,
-                       math.max(ts.x * 0.5, 0.8), math.max(ts.y * 0.5, 0.8)) then
+                       math.max(ts.x * 0.5, 0.8), hh) then
           hitName = name
           break
         end
@@ -824,6 +925,7 @@ end
 
 function OnUpdate(self, dt)
   if self.optionsOpen then return end   -- ポーズ中は入力ごと止める
+  if self.introOn then return end       -- 開幕シネマ中: StageIntro.lua が世界を凍結している
   -- 弓の発射表示時間を減らし、0未満にはしない。
   self.bowTimer = math.max(0, (self.bowTimer or 0) - dt)
   for name, t in pairs(self.ghostSolids) do

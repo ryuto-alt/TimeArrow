@@ -56,9 +56,10 @@ function OnStart(self)
       end
     end
   end)
-  -- 後戻りの返金分だけ背景も再生する(シェーダーは進行度の純関数なので戻せば蘇る)
-  events:on("time_refund", function(data)
-    self.clock = math.max(0, self.clock - (data.amount or 0) * 0.5)
+  -- 後戻り矢の即時返金(量×0.35=GameManagerと同係数)ぶん背景も再生する
+  -- (シェーダーは進行度の純関数なので戻せば蘇る)
+  events:on("time_rewind", function(data)
+    self.clock = math.max(0, self.clock - (data.amount or 0) * 0.35)
   end)
 end
 

@@ -630,5 +630,1416 @@
     ]
    }
   }
+ ],
+ "options_ui": [
+  {
+   "name": "OptionsCanvas",
+   "uiCanvas": {
+    "refWidth": 1280.0,
+    "refHeight": 720.0,
+    "scaleMode": 0,
+    "sortOrder": 100,
+    "visible": false
+   },
+   "luaScript": {
+    "enabled": true,
+    "scriptPath": "scripts/OptionsMenu.lua",
+    "props": [
+     {
+      "name": "mode",
+      "type": "string",
+      "value": "play"
+     }
+    ]
+   }
+  },
+  {
+   "name": "OptPanel",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.5
+    ],
+    "anchorMax": [
+     0.5,
+     0.5
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -230.0,
+     -300.0
+    ],
+    "offsetMax": [
+     230.0,
+     300.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.09,
+     0.11,
+     0.17,
+     0.97
+    ],
+    "gradientDir": 1,
+    "gradientColor2": [
+     0.05,
+     0.06,
+     0.1,
+     0.98
+    ],
+    "cornerRadius": 16.0,
+    "raycastBlock": true,
+    "outlineWidth": 1.5,
+    "outlineColor": [
+     0.4,
+     0.85,
+     1.0,
+     0.35
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.55
+    ],
+    "shadowOffset": [
+     0.0,
+     10.0
+    ],
+    "shadowSoftness": 12.0
+   },
+   "uiAnimator": {
+    "showAnim": 2,
+    "showDuration": 0.24,
+    "showDelay": 0.0,
+    "showEasing": 4,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptionsCanvas"
+  },
+  {
+   "name": "OptDim",
+   "uiRect": {
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "raycastBlock": true
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.15,
+    "showDelay": 0.0,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptionsCanvas"
+  },
+  {
+   "name": "OptTitle",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.062
+    ],
+    "anchorMax": [
+     0.5,
+     0.062
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -200.0,
+     -24.0
+    ],
+    "offsetMax": [
+     200.0,
+     24.0
+    ],
+    "visible": true,
+    "order": 2
+   },
+   "uiText": {
+    "text": "OPTIONS",
+    "fontSize": 34.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.6,
+     0.92,
+     1.0,
+     1.0
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false,
+    "letterSpacing": 10.0,
+    "outlineWidth": 2.0,
+    "outlineColor": [
+     0.05,
+     0.12,
+     0.22,
+     1.0
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.5
+    ],
+    "shadowOffset": [
+     0.0,
+     3.0
+    ]
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.04,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptMasterLabel",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.152
+    ],
+    "anchorMax": [
+     0.5,
+     0.152
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -14.0
+    ],
+    "offsetMax": [
+     -104.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiText": {
+    "text": "マスター",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.85,
+     0.92,
+     1.0,
+     0.95
+    ],
+    "alignH": 0,
+    "alignV": 1,
+    "wrap": false
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.06,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptMasterSlider",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.152
+    ],
+    "anchorMax": [
+     0.5,
+     0.152
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -92.0,
+     -14.0
+    ],
+    "offsetMax": [
+     190.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiSlider": {
+    "value": 1.0,
+    "minValue": 0.0,
+    "maxValue": 1.0,
+    "step": 0.05,
+    "onChangeEvent": "opt_master_changed",
+    "trackColor": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "fillColor": [
+     0.35,
+     0.85,
+     1.0,
+     1.0
+    ],
+    "knobColor": [
+     0.95,
+     0.99,
+     1.0,
+     1.0
+    ],
+    "interactable": true
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.08,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptBgmLabel",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.232
+    ],
+    "anchorMax": [
+     0.5,
+     0.232
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -14.0
+    ],
+    "offsetMax": [
+     -104.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiText": {
+    "text": "BGM",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.85,
+     0.92,
+     1.0,
+     0.95
+    ],
+    "alignH": 0,
+    "alignV": 1,
+    "wrap": false
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.06,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptBgmSlider",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.232
+    ],
+    "anchorMax": [
+     0.5,
+     0.232
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -92.0,
+     -14.0
+    ],
+    "offsetMax": [
+     190.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiSlider": {
+    "value": 1.0,
+    "minValue": 0.0,
+    "maxValue": 1.0,
+    "step": 0.05,
+    "onChangeEvent": "opt_bgm_changed",
+    "trackColor": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "fillColor": [
+     0.35,
+     0.85,
+     1.0,
+     1.0
+    ],
+    "knobColor": [
+     0.95,
+     0.99,
+     1.0,
+     1.0
+    ],
+    "interactable": true
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.08,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptSeLabel",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.312
+    ],
+    "anchorMax": [
+     0.5,
+     0.312
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -14.0
+    ],
+    "offsetMax": [
+     -104.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiText": {
+    "text": "SE",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.85,
+     0.92,
+     1.0,
+     0.95
+    ],
+    "alignH": 0,
+    "alignV": 1,
+    "wrap": false
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.06,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptSeSlider",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.312
+    ],
+    "anchorMax": [
+     0.5,
+     0.312
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -92.0,
+     -14.0
+    ],
+    "offsetMax": [
+     190.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiSlider": {
+    "value": 1.0,
+    "minValue": 0.0,
+    "maxValue": 1.0,
+    "step": 0.05,
+    "onChangeEvent": "opt_se_changed",
+    "trackColor": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "fillColor": [
+     0.35,
+     0.85,
+     1.0,
+     1.0
+    ],
+    "knobColor": [
+     0.95,
+     0.99,
+     1.0,
+     1.0
+    ],
+    "interactable": true
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.08,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptWinModeButton",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.402
+    ],
+    "anchorMax": [
+     0.5,
+     0.402
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -21.0
+    ],
+    "offsetMax": [
+     190.0,
+     21.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "gradientDir": 1,
+    "gradientColor2": [
+     0.1,
+     0.12,
+     0.18,
+     1.0
+    ],
+    "cornerRadius": 10.0,
+    "raycastBlock": true,
+    "outlineWidth": 1.5,
+    "outlineColor": [
+     1.0,
+     1.0,
+     1.0,
+     0.14
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.4
+    ],
+    "shadowOffset": [
+     0.0,
+     4.0
+    ],
+    "shadowSoftness": 6.0
+   },
+   "uiButton": {
+    "onClickEvent": "opt_winmode_clicked",
+    "normalColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "hoverColor": [
+     1.2,
+     1.2,
+     1.25,
+     1.0
+    ],
+    "pressedColor": [
+     0.75,
+     0.75,
+     0.8,
+     1.0
+    ],
+    "interactable": true,
+    "hoverSound": "audio/ui/menu_select.wav",
+    "clickSound": "audio/ui/menu_enter.wav"
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.1,
+    "showEasing": 2,
+    "hoverScale": 1.05,
+    "pressScale": 0.95,
+    "hoverSpeed": 14.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptWinModeValue",
+   "uiRect": {
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiText": {
+    "text": "画面モード： ウィンドウ",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.95,
+     0.97,
+     1.0,
+     1.0
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false
+   },
+   "parentName": "OptWinModeButton"
+  },
+  {
+   "name": "OptVsyncToggle",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.484
+    ],
+    "anchorMax": [
+     0.5,
+     0.484
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -16.0
+    ],
+    "offsetMax": [
+     -158.0,
+     16.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiToggle": {
+    "isOn": false,
+    "onChangeEvent": "opt_vsync_changed",
+    "boxColor": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "checkColor": [
+     0.35,
+     0.85,
+     1.0,
+     1.0
+    ],
+    "interactable": true
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.09,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptVsyncLabel",
+   "uiRect": {
+    "anchorMin": [
+     1.0,
+     0.5
+    ],
+    "anchorMax": [
+     1.0,
+     0.5
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     12.0,
+     -14.0
+    ],
+    "offsetMax": [
+     260.0,
+     14.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiText": {
+    "text": "垂直同期",
+    "fontSize": 20.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.85,
+     0.92,
+     1.0,
+     0.95
+    ],
+    "alignH": 0,
+    "alignV": 1,
+    "wrap": false
+   },
+   "parentName": "OptVsyncToggle"
+  },
+  {
+   "name": "OptFpsButton",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.566
+    ],
+    "anchorMax": [
+     0.5,
+     0.566
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -21.0
+    ],
+    "offsetMax": [
+     190.0,
+     21.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "gradientDir": 1,
+    "gradientColor2": [
+     0.1,
+     0.12,
+     0.18,
+     1.0
+    ],
+    "cornerRadius": 10.0,
+    "raycastBlock": true,
+    "outlineWidth": 1.5,
+    "outlineColor": [
+     1.0,
+     1.0,
+     1.0,
+     0.14
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.4
+    ],
+    "shadowOffset": [
+     0.0,
+     4.0
+    ],
+    "shadowSoftness": 6.0
+   },
+   "uiButton": {
+    "onClickEvent": "opt_fps_clicked",
+    "normalColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "hoverColor": [
+     1.2,
+     1.2,
+     1.25,
+     1.0
+    ],
+    "pressedColor": [
+     0.75,
+     0.75,
+     0.8,
+     1.0
+    ],
+    "interactable": true,
+    "hoverSound": "audio/ui/menu_select.wav",
+    "clickSound": "audio/ui/menu_enter.wav"
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.1,
+    "showEasing": 2,
+    "hoverScale": 1.05,
+    "pressScale": 0.95,
+    "hoverSpeed": 14.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "OptFpsValue",
+   "uiRect": {
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiText": {
+    "text": "FPS上限： 無制限",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.95,
+     0.97,
+     1.0,
+     1.0
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false
+   },
+   "parentName": "OptFpsButton"
+  },
+  {
+   "name": "OptRetryButton",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.672
+    ],
+    "anchorMax": [
+     0.5,
+     0.672
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -23.0
+    ],
+    "offsetMax": [
+     190.0,
+     23.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.13,
+     0.38,
+     0.55,
+     1.0
+    ],
+    "gradientDir": 1,
+    "gradientColor2": [
+     0.07,
+     0.2,
+     0.38,
+     1.0
+    ],
+    "cornerRadius": 10.0,
+    "raycastBlock": true,
+    "outlineWidth": 1.5,
+    "outlineColor": [
+     0.45,
+     0.9,
+     1.0,
+     0.5
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.4
+    ],
+    "shadowOffset": [
+     0.0,
+     4.0
+    ],
+    "shadowSoftness": 6.0
+   },
+   "uiButton": {
+    "onClickEvent": "opt_retry_clicked",
+    "normalColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "hoverColor": [
+     1.2,
+     1.2,
+     1.25,
+     1.0
+    ],
+    "pressedColor": [
+     0.75,
+     0.75,
+     0.8,
+     1.0
+    ],
+    "interactable": true,
+    "hoverSound": "audio/ui/menu_select.wav",
+    "clickSound": "audio/ui/menu_enter.wav"
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.1,
+    "showEasing": 2,
+    "hoverScale": 1.05,
+    "pressScale": 0.95,
+    "hoverSpeed": 14.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "Label",
+   "uiRect": {
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiText": {
+    "text": "リトライ",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.95,
+     0.97,
+     1.0,
+     1.0
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false
+   },
+   "parentName": "OptRetryButton"
+  },
+  {
+   "name": "OptQuitButton",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.76
+    ],
+    "anchorMax": [
+     0.5,
+     0.76
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -23.0
+    ],
+    "offsetMax": [
+     190.0,
+     23.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "gradientDir": 1,
+    "gradientColor2": [
+     0.1,
+     0.12,
+     0.18,
+     1.0
+    ],
+    "cornerRadius": 10.0,
+    "raycastBlock": true,
+    "outlineWidth": 1.5,
+    "outlineColor": [
+     1.0,
+     1.0,
+     1.0,
+     0.14
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.4
+    ],
+    "shadowOffset": [
+     0.0,
+     4.0
+    ],
+    "shadowSoftness": 6.0
+   },
+   "uiButton": {
+    "onClickEvent": "opt_quit_clicked",
+    "normalColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "hoverColor": [
+     1.2,
+     1.2,
+     1.25,
+     1.0
+    ],
+    "pressedColor": [
+     0.75,
+     0.75,
+     0.8,
+     1.0
+    ],
+    "interactable": true,
+    "hoverSound": "audio/ui/menu_select.wav",
+    "clickSound": "audio/ui/menu_enter.wav"
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.1,
+    "showEasing": 2,
+    "hoverScale": 1.05,
+    "pressScale": 0.95,
+    "hoverSpeed": 14.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "Label",
+   "uiRect": {
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiText": {
+    "text": "ステージセレクトへ",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.95,
+     0.97,
+     1.0,
+     1.0
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false
+   },
+   "parentName": "OptQuitButton"
+  },
+  {
+   "name": "OptCloseButton",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.848
+    ],
+    "anchorMax": [
+     0.5,
+     0.848
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -190.0,
+     -23.0
+    ],
+    "offsetMax": [
+     190.0,
+     23.0
+    ],
+    "visible": true,
+    "order": 1
+   },
+   "uiImage": {
+    "texturePath": "",
+    "color": [
+     0.16,
+     0.19,
+     0.28,
+     1.0
+    ],
+    "gradientDir": 1,
+    "gradientColor2": [
+     0.1,
+     0.12,
+     0.18,
+     1.0
+    ],
+    "cornerRadius": 10.0,
+    "raycastBlock": true,
+    "outlineWidth": 1.5,
+    "outlineColor": [
+     1.0,
+     1.0,
+     1.0,
+     0.14
+    ],
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.4
+    ],
+    "shadowOffset": [
+     0.0,
+     4.0
+    ],
+    "shadowSoftness": 6.0
+   },
+   "uiButton": {
+    "onClickEvent": "opt_close_clicked",
+    "normalColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "hoverColor": [
+     1.2,
+     1.2,
+     1.25,
+     1.0
+    ],
+    "pressedColor": [
+     0.75,
+     0.75,
+     0.8,
+     1.0
+    ],
+    "interactable": true,
+    "hoverSound": "audio/ui/menu_select.wav",
+    "clickSound": "audio/ui/menu_enter.wav"
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.1,
+    "showEasing": 2,
+    "hoverScale": 1.05,
+    "pressScale": 0.95,
+    "hoverSpeed": 14.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptPanel"
+  },
+  {
+   "name": "Label",
+   "uiRect": {
+    "anchorMin": [
+     0.0,
+     0.0
+    ],
+    "anchorMax": [
+     1.0,
+     1.0
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     0.0,
+     0.0
+    ],
+    "offsetMax": [
+     0.0,
+     0.0
+    ],
+    "visible": true,
+    "order": 0
+   },
+   "uiText": {
+    "text": "とじる",
+    "fontSize": 21.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     0.95,
+     0.97,
+     1.0,
+     1.0
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false
+   },
+   "parentName": "OptCloseButton"
+  },
+  {
+   "name": "OptHint",
+   "uiRect": {
+    "anchorMin": [
+     0.5,
+     0.5
+    ],
+    "anchorMax": [
+     0.5,
+     0.5
+    ],
+    "pivot": [
+     0.5,
+     0.5
+    ],
+    "offsetMin": [
+     -320.0,
+     312.0
+    ],
+    "offsetMax": [
+     320.0,
+     338.0
+    ],
+    "visible": true,
+    "order": 2
+   },
+   "uiText": {
+    "text": "ESC / ☰ : とじる　　←→ : 音量　　Y : リトライ",
+    "fontSize": 16.0,
+    "fontPath": "fonts/DotGothic16-400.ttf",
+    "color": [
+     1.0,
+     1.0,
+     1.0,
+     0.5
+    ],
+    "alignH": 1,
+    "alignV": 1,
+    "wrap": false,
+    "shadowColor": [
+     0.0,
+     0.0,
+     0.0,
+     0.6
+    ],
+    "shadowOffset": [
+     0.0,
+     2.0
+    ]
+   },
+   "uiAnimator": {
+    "showAnim": 1,
+    "showDuration": 0.22,
+    "showDelay": 0.12,
+    "showEasing": 2,
+    "hoverScale": 1.0,
+    "pressScale": 1.0,
+    "loopAnim": 0
+   },
+   "parentName": "OptionsCanvas"
+  }
  ]
 }

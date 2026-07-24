@@ -295,18 +295,19 @@ function OnUpdate(self, dt)
   local hx = self.bx + math.sin(rad) * R
   local hy = self.by - math.cos(rad) * R
 
-  -- 的判定ボックス(自名+"X")を振り子の可動域全体へ毎フレーム追従させる。
-  -- アーム・ヘッドのどこに矢が当たっても作動し、エディタで支点を動かしてもズレない
+  -- 的判定ボックス(自名+"X")。旧実装は「可動域全体を覆う静的な箱」で、ヘッドが
+  -- いない高さの水平弾道まで吸っていた(2026-07-24ユーザー指摘×3)。
+  -- 通常時: 【いまヘッドがある場所】へ毎フレーム追従する小箱だけにする。
+  -- チリ状態: 山の的箱は床下へ沈める(的の最低保証±0.8があるため、床上に置くと
+  --   地上弾道が必ず掠る)。復活させたい時は山を狙って撃ち下ろせば届く
   local xE = scene:findEntity(self.name .. "X")
   if xE and xE:isValid() then
     if self.lastStage == 4 then
-      -- チリ状態: 残骸の山を覆う的にする(後戻り矢での復活用)
-      xE.transform.position = Vec3.new(self.bx, groundY + 0.5, self.bz)
-      xE.transform.scale = Vec3.new(2.6 * self.transform.scale.y, 1.4, 1.0)
+      xE.transform.position = Vec3.new(self.bx, groundY - 0.55, self.bz)
+      xE.transform.scale = Vec3.new(2.4 * self.transform.scale.y, 0.5, 1.0)
     else
-      local sweepHalfW = R * math.sin(math.rad(self.maxAngle)) + 0.6
-      xE.transform.position = Vec3.new(self.bx, self.by - R * 0.5, self.bz)
-      xE.transform.scale = Vec3.new(sweepHalfW * 2, R + 1.2, 1.0)
+      xE.transform.position = Vec3.new(hx, hy, self.bz)
+      xE.transform.scale = Vec3.new(1.4 * self.transform.scale.y, 1.4 * self.transform.scale.y, 1.0)
     end
   end
 
@@ -383,5 +384,15 @@ function OnUpdate(self, dt)
   local pp = pl.transform.position
   if math.abs(pp.x - hx) < (self.hitHalf + 0.30) and math.abs(pp.y - hy) < (self.hitHalf + 0.42) then
     events:emit("player_died", {})
+  end
+  -- 腕(はり)にも当たり判定: 支点→ヘッド間を3点サンプリング(腕は細いので小半径)
+  for i = 1, 3 do
+    local r = R * i * 0.25
+    local ax = self.bx + math.sin(rad) * r
+    local ay = self.by - math.cos(rad) * r
+    if math.abs(pp.x - ax) < (0.25 + 0.30) and math.abs(pp.y - ay) < (0.25 + 0.42) then
+      events:emit("player_died", {})
+      break
+    end
   end
 end

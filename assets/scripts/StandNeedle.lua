@@ -7,7 +7,9 @@
 properties = {
   { name = "deadly",      type = "bool",  default = true,  label = "接触で死亡" },
   { name = "hitScale",    type = "float", default = 0.6, min = 0.2, max = 1.5, label = "当たり判定の見た目に対する倍率" },
-  { name = "tiltTime",    type = "float", default = 0.45, min = 0.1, max = 2.0, label = "起き上がり/寝転がりの所要秒" },
+  { name = "tiltTime",    type = "float", default = 0.45, min = 0.1, max = 2.0, label = "寝転がりの所要秒" },
+  { name = "riseTime",    type = "float", default = 1.5,  min = 0.1, max = 4.0, label = "起き上がりの所要秒(ゆっくり=脅かさない)" },
+  { name = "standHeight", type = "float", default = 3.0,  min = 0.5, max = 6.0, label = "起立時の高さ(ジャンプ頂点約2.5より高く=飛び越え不可)" },
   { name = "hinge",       type = "float", default = -1.0, min = -1.0, max = 1.0, label = "起立の軸(-1=左端: 牙が左=来る側を向く / 1=右端)" },
   { name = "triggerDist", type = "float", default = 11.0, min = 2.0, max = 40.0, label = "この距離まで近づくと起立(≒画面に入る距離)" },
 }
@@ -22,7 +24,8 @@ function OnStart(self)
 
   local p, s = self.transform.position, self.transform.scale
   self.bx, self.bz = p.x, p.z
-  self.sx, self.sy = s.x, s.y            -- 寝ている時の実寸(横長: 例 1.6 x 0.6)
+  self.sx, self.sy, self.sz = s.x, s.y, s.z   -- 寝ている時の実寸(横長: 例 1.6 x 0.6)
+  self.standLen = math.max(self.sx, self.standHeight)   -- 起立時は伸びて飛び越え不可の高さになる
   self.footY = p.y - s.y * 0.5           -- 接地面
   self.hingeX = self.bx + self.hinge * self.sx * 0.5   -- 回転軸(端)
   self.u = 0.0                           -- 0=寝 / 1=立。最初は寝ている
@@ -76,7 +79,7 @@ function OnUpdate(self, dt)
   -- 起き/寝モーション(端ヒンジ)
   if self.target ~= self.u then
     local dir = (self.target > self.u) and 1 or -1
-    self.u = clamp(self.u + dir * dt / self.tiltTime, 0, 1)
+    self.u = clamp(self.u + dir * dt / ((dir > 0) and self.riseTime or self.tiltTime), 0, 1)
     if math.random() < 0.4 then
       FX.trail(self.hingeX - self.hinge * math.random() * self.sx, self.footY + 0.15, self.bz, 0.6, 0.55, 0.45)
     end
@@ -86,11 +89,22 @@ function OnUpdate(self, dt)
     end
   end
 
+  -- 寝ている間はPlayer側の矢判定の縦膨張(最低±0.8)を外してもらう(2026-07-24:
+  -- 寝た針山が水平弾道を吸ってしまう指摘)。状態が変わった時だけ通知
+  local lying = self.u < 0.3
+  if lying ~= self.lastLying then
+    self.lastLying = lying
+    events:emit("flat_target", { name = self.name, on = lying })
+  end
+
   local ease = self.u * self.u * (3 - 2 * self.u)   -- smoothstep
+  -- 起き上がりに合わせて長さが standLen まで伸びる(=起立時はジャンプで飛び越えられない高さ)
+  local L = self.sx + (self.standLen - self.sx) * ease
   local th = math.rad(90.0 * ease)
-  local cx = self.hingeX - self.hinge * (self.sx * 0.5) * math.cos(th)
-  local cy = self.footY + (self.sx * 0.5) * math.sin(th) + (self.sy * 0.5) * math.cos(th)
+  local cx = self.hingeX - self.hinge * (L * 0.5) * math.cos(th)
+  local cy = self.footY + (L * 0.5) * math.sin(th) + (self.sy * 0.5) * math.cos(th)
   self.transform.position = Vec3.new(cx, cy, self.bz)
+  self.transform.scale = Vec3.new(L, self.sy, self.sz)
   -- Z正回転=画面反時計回り(DirectXMath)。左端ヒンジ(hinge=-1)は+90°で牙が左を向く
   self.transform.rotation = Vec3.new(0, 0, -self.hinge * 90.0 * ease)
 
@@ -122,8 +136,8 @@ function OnUpdate(self, dt)
 
   if not self.deadly then return end
   if not pp then return end
-  local hw = (self.sx * (1 - ease) + self.sy * ease) * 0.5
-  local hh = (self.sy * (1 - ease) + self.sx * ease) * 0.5
+  local hw = (L * (1 - ease) + self.sy * ease) * 0.5
+  local hh = (self.sy * (1 - ease) + L * ease) * 0.5
   if overlapAABB(cx, cy, hw * self.hitScale, hh * self.hitScale, pp.x, pp.y, 0.30, 0.42) then
     events:emit("player_died", {})
   end

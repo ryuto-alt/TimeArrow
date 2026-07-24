@@ -1,21 +1,18 @@
 -- Tutorial.lua -- stage0 チュートリアルの進行役。空エンティティ(TutorialDirector)に付ける。
--- 実プレイしながら6ステップ(移動→ジャンプ→時間のルール→先送り矢→まき戻し矢→ゴール)を教える。
--- 操作/ルールの詳細はサブ行の「ヒントカルーセル」(数秒ごとにフェードで差し替え)で全部見せる。
--- 入力デバイスを毎フレーム検出し、キーボード⇔ゲームパッドで説明とキー表示を自動で切り替える
--- (パッド: 移動=Lスティック / ジャンプ=A / 先送り=RB / まき戻し=LB / 全景=X / リトライ=BACK)。
--- HUD側は gen_stages.py が stage0 にだけ生成する専用エンティティ群を操作する:
---   TutPanel(下部パネル) > TutStepTitle / TutStepText(タイプライター) / TutStepSub(カルーセル) /
+-- 設計原則(2026-07 リサーチ反映): ①1ステップ=1操作、実際にできるまで次へ進まない
+-- ②文言は1行の短文のみ(カルーセル/知識ダンプ廃止) ③教えるのは「必要になる直前」
+-- ④達成は単調(先にやってしまっても取りこぼさない) ⑤開幕バナーが消えてからパネル登場。
+-- 8ステップ: 移動→ジャンプ→見わたす→かまえ→ねらい→先送り矢→まき戻し矢→ゴール。
+-- 入力デバイスを毎フレーム検出し、キーボード⇔ゲームパッドで説明とキー表示を自動で切り替える。
+-- HUD側は stage0 専用エンティティ群(元は gen_stages.py 生成、現在はシーンJSONが正):
+--   TutPanel(下部パネル) > TutStepTitle(未使用) / TutStepText(1行指示) / TutStepSub(未使用) /
 --   TutKeyCap1,2 (+子ラベル) / TutKeyWide(+子ラベル) / TutIconFF / TutIconRW / TutCheck / TutDots
 --   TutBurst(画面中央のポップ文字、HudCanvas直下)
--- 完了判定は「実際にできたか」: 歩行距離 / 段差の先のX / 門の先のX / 針山の先のX / stage_cleared。
--- X判定は単調(戻っても達成は消えない)なので、演出中に先へ進まれても取りこぼさない。
 -- ⚠ このエンジンの tweenUi の dx/dy は「相対移動」(実レイアウトを動かす)。絶対座標指定ではないので
 --   出し入れは +140 → -140 のように往復で書く。
 properties = {
   { name = "walkGoal", type = "float", default = 2.5,  label = "STEP1: 必要な歩行距離" },
   { name = "jumpX",    type = "float", default = 12.8, label = "STEP2: 段差を越えたと見なすX" },
-  { name = "doorX",    type = "float", default = 18.5, label = "先送り矢STEP: 門のX(+1.0で通過)" },
-  { name = "needleX",  type = "float", default = 27.0, label = "まき戻しSTEP: 針山のX(+1.0で通過)" },
 }
 
 local COL = {
@@ -26,79 +23,56 @@ local COL = {
   red    = { 1.0, 0.45, 0.4 },
 }
 
--- kind: 完了条件の種類 / autoT: 秒数経過で自動クリア / icon: パネル左の時計アイコン
--- kb / pad: 入力デバイス別の表示(text=メイン行, hints=サブ行カルーセル,
---            keys=四角キーキャップ(最大2), wide=横長キャップ, wideLabel=その文字)
+-- kind: 完了条件の種類 / icon: パネル左の時計アイコン
+-- kb / pad: 入力デバイス別の表示(text=指示1行, keys=四角キーキャップ(最大2),
+--            wide=横長キャップ, wideLabel=その文字)
 local STEPS = {
-  { kind = "walk", title = "STEP 1 ／ いどう", tcol = COL.gold,
-    kb = { text = "[c=55E0FF]A[/c] / [c=55E0FF]D[/c] で 左右に うごこう！",
-           hints = { "やじるしキー でも うごける",
-                     "R キー: いつでも さいしょから やりなおし" },
-           keys = { "A", "D" } },
-    pad = { text = "[c=55E0FF]Lスティック[/c] で 左右に うごこう！",
-            hints = { "十字キー でも うごける",
-                      "BACK ボタン: さいしょから やりなおし" },
+  { kind = "walk", tcol = COL.gold,
+    kb  = { text = "[c=55E0FF]A[/c] / [c=55E0FF]D[/c] で あるこう",
+            keys = { "A", "D" } },
+    pad = { text = "[c=55E0FF]Lスティック[/c] で あるこう",
             keys = {}, wide = true, wideLabel = "Lスティック" } },
-  { kind = "jump", title = "STEP 2 ／ ジャンプ", tcol = COL.gold,
-    kb = { text = "[c=FFD866]SPACE[/c] で だんさを とびこえろ！",
-           hints = { "W や ↑ でも とべる" },
-           keys = {}, wide = true, wideLabel = "SPACE" },
-    pad = { text = "[c=FFD866]A ボタン[/c] で だんさを とびこえろ！",
-            hints = { "だんさの 上へ とびのろう" },
+  { kind = "jump", tcol = COL.gold,
+    kb  = { text = "[c=FFD866]SPACE[/c] で ジャンプ！",
+            keys = {}, wide = true, wideLabel = "SPACE" },
+    pad = { text = "[c=FFD866]A ボタン[/c] で ジャンプ！",
             keys = { "A" } } },
-  { kind = "rules", title = "STEP 3 ／ 時間のルール", tcol = COL.gold, autoT = 10.5,
-    kb = { text = "この世界では [c=FFD866]時間が ぶき[/c] だ！",
-           hints = { "下の [c=FF6655]赤いバー[/c] が のこり時間。0 で しっぱい",
-                     "もっている 矢で モノの時間を あやつれる",
-                     "[c=55E0FF]TAB[/c] ながおしで ステージ全体を みわたせる" },
-           keys = {} },
-    pad = { text = "この世界では [c=FFD866]時間が ぶき[/c] だ！",
-            hints = { "下の [c=FF6655]赤いバー[/c] が のこり時間。0 で しっぱい",
-                      "もっている 矢で モノの時間を あやつれる",
-                      "[c=55E0FF]X ボタン[/c] ながおしで ステージ全体を みわたせる" },
-            keys = {} } },
-  { kind = "ff", title = "STEP 4 ／ 先おくりの矢", tcol = COL.cyan, icon = "ff",
-    kb = { text = "[c=55E0FF]E[/c] ながおしで ため → はなすと 発射！",
-           hints = { "とびらの [c=55E0FF]時間を すすめて[/c] あけろ！",
-                     "ためるほど つよい (+2 〜 +10秒)",
-                     "かまえ中は 世界が [c=55E0FF]スロー[/c] に なる",
-                     "かまえたまま W / S (↑↓) で ねらいを かえる",
-                     "先おくりは [c=FF6655]のこり時間を すこし つかう[/c]",
-                     "矢は じどうで 手もとに かえってくる" },
-           keys = { "E" } },
-    pad = { text = "[c=55E0FF]RB[/c] ながおしで ため → はなすと 発射！",
-            hints = { "とびらの [c=55E0FF]時間を すすめて[/c] あけろ！",
-                      "ためるほど つよい (+2 〜 +10秒)",
-                      "かまえ中は 世界が [c=55E0FF]スロー[/c] に なる",
-                      "かまえたまま Lスティックで ねらいを かえる",
-                      "先おくりは [c=FF6655]のこり時間を すこし つかう[/c]",
-                      "矢は じどうで 手もとに かえってくる" },
+  { kind = "look", tcol = COL.gold,
+    kb  = { text = "[c=55E0FF]TAB[/c] ながおしで 見わたそう",
+            keys = { "TAB" } },
+    pad = { text = "[c=55E0FF]X[/c] ながおしで 見わたそう",
+            keys = { "X" } } },
+  { kind = "draw", tcol = COL.cyan, icon = "ff",
+    kb  = { text = "[c=55E0FF]E[/c] を おしつづけて かまえよう",
+            keys = { "E" } },
+    pad = { text = "[c=55E0FF]RB[/c] を おしつづけて かまえよう",
             keys = { "RB" } } },
-  { kind = "rw", title = "STEP 5 ／ まき戻しの矢", tcol = COL.purple, icon = "rw",
-    kb = { text = "[c=CC99FF]Q[/c] ながおしで まき戻しの矢！",
-           hints = { "針山の [c=CC99FF]時間を もどして[/c] ねかせろ！",
-                     "まき戻しの矢は [c=CC99FF]回数制[/c] (左上の ×のこり)",
-                     "あてると [c=7CFF9E]のこり時間が すこし もどる[/c]",
-                     "ねかせた針山は 時間がたつと また おきあがる" },
-           keys = { "Q" } },
-    pad = { text = "[c=CC99FF]LB[/c] ながおしで まき戻しの矢！",
-            hints = { "針山の [c=CC99FF]時間を もどして[/c] ねかせろ！",
-                      "まき戻しの矢は [c=CC99FF]回数制[/c] (左上の ×のこり)",
-                      "あてると [c=7CFF9E]のこり時間が すこし もどる[/c]",
-                      "ねかせた針山は 時間がたつと また おきあがる" },
+  { kind = "aim", tcol = COL.cyan, icon = "ff",
+    kb  = { text = "かまえたまま [c=FFD866]W[/c] / [c=FFD866]S[/c] で ねらおう",
+            keys = { "W", "S" } },
+    pad = { text = "かまえたまま [c=FFD866]Lスティック[/c] で ねらおう",
+            keys = {}, wide = true, wideLabel = "Lスティック" } },
+  { kind = "shoot", tcol = COL.cyan, icon = "ff",
+    kb  = { text = "はなして [c=55E0FF]とびら[/c] に あてよう！",
+            keys = { "E" } },
+    pad = { text = "はなして [c=55E0FF]とびら[/c] に あてよう！",
+            keys = { "RB" } } },
+  { kind = "rw", tcol = COL.purple, icon = "rw",
+    kb  = { text = "[c=CC99FF]Q[/c] ながおしで 針山に あてよう",
+            keys = { "Q" } },
+    pad = { text = "[c=CC99FF]LB[/c] ながおしで 針山に あてよう",
             keys = { "LB" } } },
-  { kind = "goal", title = "STEP 6 ／ ゴール", tcol = COL.green,
-    kb = { text = "とけいが 0 に なるまえに [c=7CFF9E]ゴール[/c]！",
-           hints = { "これで きほんは バッチリ！",
-                     "本番ステージでは 時間との しょうぶ だ！" },
-           keys = {} },
-    pad = { text = "とけいが 0 に なるまえに [c=7CFF9E]ゴール[/c]！",
-            hints = { "これで きほんは バッチリ！",
-                      "本番ステージでは 時間との しょうぶ だ！" },
+  { kind = "goal", tcol = COL.green,
+    kb  = { text = "[c=FF6655]バー[/c]が 端に つくまえに [c=7CFF9E]ゴール[/c]へ！",
+            keys = {} },
+    pad = { text = "[c=FF6655]バー[/c]が 端に つくまえに [c=7CFF9E]ゴール[/c]へ！",
             keys = {} } },
 }
 
-local HINT_PERIOD = 3.4
+-- 開幕バナー(GameManagerが2.4秒表示)が消えてからパネルを出す
+local INTRO_PANEL_AT = 2.6
+local INTRO_STEP1_AT = 3.3
+local CELEB_DUR      = 1.6    -- STEP CLEAR演出→次ステップまでの間(ゆっくりめ)
 
 local function ent(name)
   local e = scene:findEntity(name)
@@ -147,27 +121,6 @@ local function dotsText(step, doneUpTo)
   return table.concat(out, " ")
 end
 
--- サブ行のヒントを入れ替える(フェードアウト→差し替え→フェードイン)
-local function setHint(self, idx, instant)
-  local v = variant(self)
-  if not (v and self.sub) then return end
-  local n = #v.hints
-  if n == 0 then scene:setUiText(self.sub, "") return end
-  local txt = v.hints[((idx - 1) % n) + 1]
-  if instant then
-    scene:setUiText(self.sub, txt)
-    return
-  end
-  local sub = self.sub
-  scene:tweenUi(sub, { alpha = 0, duration = 0.18, easing = "in",
-    onComplete = function()
-      if sub and sub:isValid() then
-        scene:setUiText(sub, txt)
-        scene:tweenUi(sub, { alpha = 1, duration = 0.22, easing = "out" })
-      end
-    end })
-end
-
 local function setKey(cap, lbl, key)
   if not cap then return end
   if key then
@@ -179,17 +132,15 @@ local function setKey(cap, lbl, key)
 end
 
 -- ステップ内容をHUDへ反映する。refresh=true はデバイス切替による差し替え
--- (タイマーやチェック状態は維持し、音も鳴らさない)
+-- (チェック状態は維持し、音も鳴らさない)
 local function applyStep(self, i, refresh)
   local st = STEPS[i]
   local v = variant(self, st)
 
-  if self.title then
-    scene:setUiText(self.title, st.title)
-    setColor(self.title, st.tcol)
+  if self.text then
+    scene:setUiText(self.text, v.text)        -- タイプライター再スタート
+    setColor(self.text, { 1, 1, 1 })
   end
-  if self.text then scene:setUiText(self.text, v.text) end        -- タイプライター再スタート
-  setHint(self, self.hintI or 1, true)
   if self.dots then scene:setUiText(self.dots, dotsText(i)) end
 
   -- キーキャップ: 2枚 / 1枚(中央へ寄せる) / ワイド
@@ -219,13 +170,53 @@ local function applyStep(self, i, refresh)
   end
 end
 
+-- 表示中の操作キー1つぶんの「いま押されているか」。ラベル表記からキーボード/パッド両対応で判定
+local function labelDown(label)
+  local down = false
+  pcall(function()
+    if label == "Lスティック" then
+      local sx, sy = padStick("left")
+      down = math.abs(sx) > 0.35 or math.abs(sy) > 0.35
+      return
+    end
+    if keyDown(label) then down = true end
+    if not down and padDown(label) then down = true end
+  end)
+  return down
+end
+
+-- 現ステップで表示中の全キーキャップのラベル一覧
+local function requiredLabels(v)
+  local t = {}
+  if v.keys[1] then t[#t + 1] = v.keys[1] end
+  if v.keys[2] then t[#t + 1] = v.keys[2] end
+  if v.wide and v.wideLabel then t[#t + 1] = v.wideLabel end
+  return t
+end
+
+-- 表示中の操作キーを「全部」押したか(1回ずつでよい)。押した瞬間を pressed に記録
+local function allKeysPressed(self)
+  local v = variant(self)
+  if not v then return true end
+  local ok = true
+  for _, l in ipairs(requiredLabels(v)) do
+    if labelDown(l) then self.pressed[l] = true end
+    if not self.pressed[l] then ok = false end
+  end
+  return ok
+end
+
 local function showStep(self, i)
   self.step = i
   self.phase = "active"
   self.stepT = 0
-  self.hintI = 1
-  self.hintT = 0
+  self.pressed = {}        -- このステップで押した操作キーの記録(全部押すまでクリアしない)
+  self.demoT = nil         -- goalステップのシークバー実演タイマー
+  self.demoPhase = nil
+  self.demoN = 0
   applyStep(self, i, false)
+  -- 背景のコントローラーデモ(TutPadDemo.lua)へ現ステップの操作を通知
+  events:emit("tut_step", { kind = STEPS[i].kind })
 end
 
 local function complete(self)
@@ -305,6 +296,25 @@ local function detectDevice(self)
   end
 end
 
+-- 達成トラッカー(単調): 該当ステップより前にやってしまっても取りこぼさない
+local function trackProgress(self, dt)
+  local drawHeld, aimHeld, lookHeld = false, false, false
+  pcall(function()
+    drawHeld = keyDown("E") or padDown("RB")
+    aimHeld  = keyDown("W") or keyDown("S") or keyDown("UP") or keyDown("DOWN")
+    if not aimHeld then
+      local sx, sy = padStick("left")
+      aimHeld = math.abs(sy) > 0.35
+    end
+    lookHeld = keyDown("TAB") or padDown("X")
+  end)
+  if drawHeld then
+    self.gDrawT = self.gDrawT + dt
+    if aimHeld then self.gAimT = self.gAimT + dt end
+  end
+  if lookHeld then self.gLookT = self.gLookT + dt end
+end
+
 function OnStart(self)
   self.t = 0
   self.step = 0
@@ -314,12 +324,18 @@ function OnStart(self)
   self.walked = 0
   self.prevX = nil
   self.cap1Shift = 0
-  self.padMode = false
+  self.padMode = true      -- 初期表示はコントローラ。キーボード入力を検出したら自動で切替
+  self.pressed = {}
+  self.gDrawT = 0          -- かまえ(E/RB長押し)の累計秒
+  self.gAimT = 0           -- かまえ中にねらいを動かした累計秒
+  self.gLookT = 0          -- 全景(TAB/X長押し)の累計秒
+  self.doorHit = false     -- 先送り矢がとびらに当たった
+  self.needleHit = false   -- まき戻し矢が針山に当たった
 
   self.panel  = ent("TutPanel")
-  self.title  = ent("TutStepTitle")
+  self.title  = ent("TutStepTitle")   -- 旧レイアウトの見出し行。1行構成にしたので常に空
   self.text   = ent("TutStepText")
-  self.sub    = ent("TutStepSub")
+  self.sub    = ent("TutStepSub")     -- 旧ヒントカルーセル行。廃止につき常に空
   self.dots   = ent("TutDots")
   self.burstE = ent("TutBurst")
   self.check  = ent("TutCheck")
@@ -332,24 +348,24 @@ function OnStart(self)
   self.iconFF = ent("TutIconFF")
   self.iconRW = ent("TutIconRW")
   self.player = ent("Player")
+  self.seekBar   = ent("SeekBar")
+  self.seekGhost = ent("TutSeekGhost")   -- goalステップの「端までいったらアウト」実演▼
 
   -- 初期状態: パネルは画面下(+140px)へ隠す。バースト/チェック/キー/アイコンは透明
   if self.panel then scene:tweenUi(self.panel, { alpha = 0, dy = 140, duration = 0.001 }) end
   for _, e in ipairs({ self.burstE, self.check, self.iconFF, self.iconRW,
-                       self.cap1, self.cap2, self.wide }) do
+                       self.cap1, self.cap2, self.wide, self.seekGhost }) do
     if e then scene:tweenUi(e, { alpha = 0, duration = 0.001 }) end
   end
+  if self.title then scene:setUiText(self.title, "") end
+  if self.sub then scene:setUiText(self.sub, "") end
 
-  -- 矢が的に当たった瞬間の「ほめ」ポップ(該当ステップ中のみ)
+  -- 矢ヒットの達成フラグ(単調)。完了演出は complete() 側に一本化
   events:on("time_skip", function(d)
-    if d.target == "TutDoor" and (STEPS[self.step] or {}).kind == "ff" then
-      pop(self, "ナイスショット！", COL.cyan, 0.9)
-    end
+    if d.target == "TutDoor" then self.doorHit = true end
   end)
   events:on("time_rewind", function(d)
-    if d.target == "TutNeedle" and (STEPS[self.step] or {}).kind == "rw" then
-      pop(self, "その調子！", COL.purple, 0.9)
-    end
+    if d.target == "TutNeedle" then self.needleHit = true end
   end)
 
   events:on("stage_cleared", function()
@@ -360,6 +376,7 @@ function OnStart(self)
     if self.panel then
       scene:tweenUi(self.panel, { alpha = 0, dy = 160, duration = 0.45, easing = "in" })
     end
+    if self.seekGhost then scene:tweenUi(self.seekGhost, { alpha = 0, duration = 0.15 }) end
     local p = self.player and self.player.transform.position
     if p then
       FX.spark(p.x, p.y + 1.0, p.z, 24, 1.0, 0.85, 0.3)
@@ -377,14 +394,15 @@ end
 function OnUpdate(self, dt)
   self.t = self.t + dt
   detectDevice(self)
+  trackProgress(self, dt)
 
-  -- 入場: パネルが下から back で滑り込み(dyは相対なので -140 で戻す)、少し置いて STEP 1
+  -- 入場: 開幕バナーが消えてから、パネルが下から back で滑り込み → STEP 1
   if self.phase == "intro" then
-    if self.t > 0.35 and not self.panelIn then
+    if self.t > INTRO_PANEL_AT and not self.panelIn then
       self.panelIn = true
       if self.panel then scene:tweenUi(self.panel, { alpha = 1, dy = -140, duration = 0.6, easing = "back" }) end
     end
-    if self.t > 1.0 then showStep(self, 1) end
+    if self.t > INTRO_STEP1_AT then showStep(self, 1) end
     return
   end
 
@@ -399,40 +417,56 @@ function OnUpdate(self, dt)
 
   if self.phase == "celebrate" then
     self.celebT = self.celebT + dt
-    if self.celebT >= 1.15 then
+    if self.celebT >= CELEB_DUR then
       if self.step < #STEPS then showStep(self, self.step + 1) end
     end
     return
   end
 
-  -- ヒントカルーセル(サブ行を数秒ごとに差し替え)
-  local v = variant(self)
+  -- 完了判定(phase == "active"): 「表示中の操作キーを全部押した」AND「実際にその操作ができた」
   local st = STEPS[self.step]
-  self.stepT = self.stepT + dt
-  if v and #v.hints > 1 then
-    self.hintT = self.hintT + dt
-    if self.hintT >= HINT_PERIOD then
-      self.hintT = 0
-      self.hintI = (self.hintI or 1) + 1
-      setHint(self, self.hintI)
-    end
-  end
-
-  -- 完了判定(phase == "active")
   local p = self.player and self.player.transform.position
   if not (p and st) then return end
+  self.stepT = self.stepT + dt
+  local keysOk = allKeysPressed(self)
   if st.kind == "walk" then
     if self.prevX then self.walked = self.walked + math.abs(p.x - self.prevX) end
     self.prevX = p.x
-    if self.walked >= self.walkGoal then complete(self) end
+    if keysOk and self.walked >= self.walkGoal then complete(self) end
   elseif st.kind == "jump" then
-    if p.x > self.jumpX then complete(self) end
-  elseif st.kind == "rules" then
-    if self.stepT >= (st.autoT or 8.0) then complete(self) end
-  elseif st.kind == "ff" then
-    if p.x > self.doorX + 1.0 then complete(self) end
+    if keysOk and p.x > self.jumpX then complete(self) end
+  elseif st.kind == "look" then
+    if keysOk and self.gLookT >= 0.7 then complete(self) end
+  elseif st.kind == "draw" then
+    if keysOk and self.gDrawT >= 0.6 then complete(self) end
+  elseif st.kind == "aim" then
+    if keysOk and self.gAimT >= 0.35 then complete(self) end
+  elseif st.kind == "shoot" then
+    if keysOk and self.doorHit then complete(self) end
   elseif st.kind == "rw" then
-    if p.x > self.needleX + 1.0 then complete(self) end
+    if keysOk and self.needleHit then complete(self) end
+  elseif st.kind == "goal" then
+    -- シークバー実演: ▼が左端→右端へ掃引し「アウト！」(最初の2周だけ。以降は静かに)
+    self.demoT = (self.demoT or 0) + dt
+    local g = self.seekGhost
+    if g and (self.demoN or 0) < 2 then
+      if not self.demoPhase then
+        self.demoPhase = "sweep"
+        scene:stopUiTweens(g)
+        scene:tweenUi(g, { alpha = 1, duration = 0.12 })
+        scene:tweenUi(g, { dx = SCREEN_W - 48, duration = 1.5 })
+      elseif self.demoPhase == "sweep" and self.demoT >= 1.55 then
+        self.demoPhase = "out"
+        pop(self, "アウト！", COL.red, 0.95)
+        fx:pulse(0.1)
+        scene:tweenUi(g, { alpha = 0, duration = 0.2 })
+      elseif self.demoPhase == "out" and self.demoT >= 3.4 then
+        scene:tweenUi(g, { dx = -(SCREEN_W - 48), duration = 0.001 })
+        self.demoT = 0
+        self.demoPhase = nil
+        self.demoN = (self.demoN or 0) + 1
+      end
+    end
   end
   -- goal ステップは stage_cleared イベントで完了
 end

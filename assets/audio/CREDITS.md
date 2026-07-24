@@ -12,6 +12,7 @@ SEは 24/32bit → 16bit 44.1kHz に変換済み。
 | rewind.wav | - | 未使用 (後戻りはBGM逆再生方式に変更。元: atomodori.wav) | - |
 | bgm_rev_clockwork.wav | - | 後戻り用: stage_clockwork の逆再生1.7倍速スニペット(生成物) | - |
 | bgm_rev_clocktower.wav | - | 後戻り用: stage_clocktower の逆再生1.7倍速スニペット(生成物) | - |
+| bgm_rev_final.wav | - | 後戻り用: stage_final の逆再生1.7倍速スニペット(生成物、2026-07-24) | - |
 | slowmo.wav | - | 弓構えスローモの溜め音 (ユーザー支給 slow.wav) | - |
 | timeup_glass.wav | - | TIME UPのガラス割れ (ユーザー支給 timelimit.wav、頭0秒=インパクト) | - |
 | jump.wav | 208249 | シンプルなジャンプ音 | KN-5 |
@@ -28,3 +29,4 @@ SEは 24/32bit → 16bit 44.1kHz に変換済み。
 | stage_clockwork.mp3 | 1554674 | 機械的で不思議な時計仕掛けの世界 | 菊地祐介 | ステージ前半 |
 | stage_clocktower.mp3 | 1248747 | 打楽器/時計台/ダンジョン/ファンタジー | yousuke | ステージ後半 |
 | select_clock_piano.mp3 | 1251543 | 不思議・浮遊感・あたたかい・ピアノ・時計 | のる | セレクト画面 |
+| stage_final.mp3 | 993664 | (タイトル未記録。Downloads\audiostock_993664.mp3 由来、2026-07-24) | - | 最終ステージ(stage4) |

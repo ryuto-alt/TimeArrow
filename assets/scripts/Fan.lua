@@ -79,13 +79,12 @@ function OnUpdate(self, dt)
   local h = surging and self.surgeHeight or self.liftHeight
   self.fxT = (self.fxT or 0) + sdt
   if sucking then
-    -- 吸い込み: 周囲から紫の粒がファンへ向かって流れる
+    -- 吸い込み: 柱状の吸気帯に沿って紫の粒がファンへ向かって流れる
     if self.fxT > 0.05 then
       self.fxT = 0
-      local ang = math.random() * 6.283
-      local r = 1.5 + math.random() * (self.suckRadius - 1.5)
-      FX.trail(self.bx + math.cos(ang) * r, self.by + 0.5 + math.abs(math.sin(ang)) * r * 0.7,
-               self.bz, 0.65, 0.4, 1.0)
+      local ox = (math.random() - 0.5) * self.zoneHalfW * 3.6
+      local oy = (0.6 + math.random() * (self.suckRadius - 1.0)) * (math.random() < 0.8 and -1 or 1)
+      FX.trail(self.bx + ox, self.by + 0.6 + oy, self.bz, 0.65, 0.4, 1.0)
     end
   elseif self.fxT > (surging and 0.05 or 0.12) then
     self.fxT = 0
@@ -99,13 +98,14 @@ function OnUpdate(self, dt)
   local pp = pl.transform.position
 
   if sucking then
-    -- 吸い込み: 半径内のプレイヤーを縦方向だけ引き寄せる(横位置は完全にプレイヤーの自由。
-    -- 横にも引くと空中で操作を奪われて窮屈なので ax は与えない)
-    local dx, dy = self.bx - pp.x, (self.by + 0.6) - pp.y
-    local dist = math.sqrt(dx * dx + dy * dy)
-    if dist < self.suckRadius and dist > 0.2 then
-      local pull = self.strength * 1.1 * (1.0 - dist / self.suckRadius + 0.25)
-      events:emit("fan_force", { ay = dy / dist * pull })
+    -- 吸い込み: ファン正面の【柱状範囲だけ】を縦方向のみ引き寄せる(2026-07-24ユーザー指示:
+    -- 旧・放射状の引力は横に離れた場所でもふわっと効いてしまった。横力は元から与えない)。
+    -- 頭上ファン=真下の柱を吸い上げ / 地上ファン=真上の柱を引き降ろす
+    local dx = pp.x - self.bx
+    local dy = (self.by + 0.6) - pp.y   -- +なら吸い上げ / -なら引き降ろし
+    if math.abs(dx) < self.zoneHalfW * 2.0 and math.abs(dy) > 0.2 and math.abs(dy) < self.suckRadius then
+      local pull = self.strength * 1.1 * (1.0 - math.abs(dy) / self.suckRadius + 0.25)
+      events:emit("fan_force", { ay = (dy > 0) and pull or -pull })
     end
   elseif math.abs(pp.x - self.bx) < self.zoneHalfW and pp.y > self.by and pp.y < self.by + h then
     local frac = 1.0 - (pp.y - self.by) / h

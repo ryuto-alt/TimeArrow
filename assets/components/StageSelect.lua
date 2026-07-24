@@ -1,10 +1,10 @@
 -- 4枚目を先読み連続スクロール ステージ選択
+-- 2026-07-24: stage2⇔4を内容ごと入替(回廊が難しいので最後へ)。名前とサムネは内容に随伴
 local STAGES = {
   { path = "scenes/stage1.json", name = "遅れ橋の丘", thumbnail = "textures/ui/stage1.png" },
-  { path = "scenes/stage2.json", name = "時限の回廊", thumbnail = "textures/ui/stage2.png" },
+  { path = "scenes/stage2.json", name = "歯車の工房", thumbnail = "textures/ui/stage4.png" },
   { path = "scenes/stage3.json", name = "風わたる谷", thumbnail = "textures/ui/stage3.png" },
-  { path = "scenes/stage4.json", name = "歯車の工房", thumbnail = "textures/ui/stage4.png" },
-  { path = "scenes/stage5.json", name = "時果ての塔", thumbnail = "textures/ui/stage5.png" },
+  { path = "scenes/stage4.json", name = "時限の回廊", thumbnail = "textures/ui/stage2.png" },
 }
 
 local ENTER_AT = 0.45
@@ -312,6 +312,14 @@ end
 function OnUpdate(self, dt)
   spinGears(dt)
   if leaving or optionsOpen then return end
+  -- 開発者コマンド: F3=タイトルへ即帰還(プレイ会の進行用)
+  local f3 = false
+  pcall(function() f3 = input:isKeyPressed(KEY_F3) end)
+  if f3 then
+    leaving = true
+    goToScene("scenes/title.json", 0.3)
+    return
+  end
   entryTime = entryTime + dt
 
   if state == "transitioning" then

@@ -1,4 +1,8 @@
 {
+  "ta_retry_stage1": 0.0,
+  "ta_retry_stage2": 0.0,
+  "ta_retry_stage3": 0.0,
+  "ta_retry_stage4": 0.0,
   "video_fps": 144.0,
   "video_mode": 0.0,
   "video_vsync": 0.0

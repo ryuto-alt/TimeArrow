@@ -50,6 +50,12 @@ local function playerOnTop(self)
 end
 
 function OnUpdate(self, dt)
+  -- 薄い横長足場なので、矢判定の縦膨張(最低±0.8)を常時外してもらう
+  -- (2026-07-24: 水平弾道が崩れ橋に吸われる指摘。全リスナー登録後の初回フレームで通知)
+  if not self.flatSent then
+    self.flatSent = true
+    events:emit("flat_target", { name = self.name, on = true })
+  end
   dt = dt * (self.ts or 1)
 
   if not self.armed and playerOnTop(self) then
